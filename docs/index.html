@@ -1,0 +1,689 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>Unified Strategic Influence, FARA Corporate & Edge Infrastructure Topology</title>
+  <script src="https://unpkg.com/lucide@latest"></script>
+  <style>
+    * { box-sizing: border-box; }
+    html, body {
+      margin: 0; padding: 0; width: 100%; height: 100%;
+      overflow: hidden; background: #060a12; color: #cbd5e1;
+      font-family: monospace; user-select: none;
+    }
+    canvas { display: block; width: 100%; height: 100%; cursor: grab; }
+    canvas:active { cursor: grabbing; }
+    .grid {
+      background-image:
+        radial-gradient(circle at 50% 50%, rgba(14, 165, 233, .08) 0, transparent 75%),
+        linear-gradient(to right, rgba(30, 41, 59, .22) 1px, transparent 1px),
+        linear-gradient(to bottom, rgba(30, 41, 59, .22) 1px, transparent 1px);
+      background-size: 100% 100%, 36px 36px, 36px 36px;
+    }
+    header, footer {
+      position: absolute; left: 0; right: 0; z-index: 10;
+      display: flex; align-items: center; background: #090f1de6;
+      border: 1px solid #1e293b; backdrop-filter: blur(8px);
+    }
+    header { top: 0; justify-content: space-between; padding: 8px 12px; gap: 8px; }
+    footer { bottom: 0; justify-content: space-between; padding: 6px 12px; font-size: 10px; }
+    button {
+      background: #0f172a; border: 1px solid #334155; color: #e2e8f0;
+      padding: 4px 8px; border-radius: 6px; cursor: pointer;
+      font-family: inherit; font-size: 11px; display: flex; align-items: center; gap: 4px;
+    }
+    button:hover { background: #1e293b; }
+    #btn-auto { background: #0284c7; border-color: #38bdf8; color: #fff; font-weight: 700; }
+    aside {
+      position: absolute; top: 54px; right: 10px; width: 430px;
+      max-width: calc(100% - 20px); background: #0c1426f5;
+      border: 1px solid #06b6d466; border-radius: 10px; padding: 12px;
+      z-index: 20; transition: transform .3s ease-out; transform: translateX(460px);
+    }
+    aside.open { transform: translateX(0); }
+    .prop-row {
+      background: #020617; padding: 5px; border: 1px solid #1e293b; border-radius: 4px;
+    }
+  </style>
+</head>
+<body class="grid">
+  <canvas id="cv"></canvas>
+  <header>
+    <div style="display:flex;align-items:center;gap:8px">
+      <b style="color:#f43f5e;font-size:12px">STRATEGIC RADAR // FARA CORPORATE, CTX & TPUSA EDGE TOPOLOGY</b>
+      <span id="st" style="font-size:10px;padding:2px 6px;border-radius:4px;background:#38bdf822;color:#38bdf8;border:1px solid #38bdf844">STANDBY</span>
+    </div>
+    <div style="display:flex;align-items:center;gap:6px">
+      <button id="btn-auto" onclick="toggleAuto()"><i data-lucide="play" style="width:12px;height:12px"></i><span id="btn-txt">AUTO</span></button>
+      <button onclick="step()"><i data-lucide="step-forward" style="width:12px;height:12px"></i>STEP</button>
+      <button id="btn-m" onclick="toggleMesh()" style="color:#38bdf8"><i data-lucide="network" style="width:12px;height:12px"></i>RELATIONSHIPS</button>
+      <button onclick="reset()"><i data-lucide="rotate-ccw" style="width:12px;height:12px"></i>RESET</button>
+      <div style="font-size:10px;border:1px solid #1e293b;padding:3px 6px;border-radius:6px;background:#020617">
+        <span id="cnt" style="color:#38bdf8;font-weight:700">0/97</span>
+      </div>
+    </div>
+  </header>
+
+  <footer>
+    <div style="display:flex;gap:10px;overflow-x:auto;padding-right:12px">
+      <span style="color:#a855f7">● FOREIGN PRINCIPALS [8]</span>
+      <span style="color:#f43f5e">● FARA REGISTRANTS [9]</span>
+      <span style="color:#fb7185">● CTX CORE TECH [6]</span>
+      <span style="color:#0284c7">● GEO & CITATION MESH [12]</span>
+      <span style="color:#eab308">● HOLDINGS & PARENTS [7]</span>
+      <span style="color:#ec4899">● BENEFICIAL OWNERS [6]</span>
+      <span style="color:#38bdf8">● ADDRESSES [4]</span>
+      <span style="color:#10b981">● CO-LOCATED COMMERCIAL [12]</span>
+      <span style="color:#38bdf8">● TPUSA SQUARESPACE [10]</span>
+      <span style="color:#f97316">● TPUSA CLOUDFLARE [12]</span>
+      <span style="color:#c084fc">● TPUSA GCP [5]</span>
+      <span style="color:#f43f5e">● TPUSA AWS [3]</span>
+      <span style="color:#34d399">● TPUSA SPECIALIZED [3]</span>
+    </div>
+    <div style="display:flex;gap:4px">
+      <button onclick="zoom(1.2)">+</button>
+      <button onclick="zoom(0.8)">-</button>
+      <button onclick="fit()">FIT</button>
+    </div>
+  </footer>
+
+  <aside id="dw">
+    <div style="display:flex;justify-content:space-between;border-bottom:1px solid #1e293b;padding-bottom:6px;margin-bottom:8px">
+      <div>
+        <div id="d-dom" style="font-size:13px;font-weight:700;color:#fff"></div>
+        <div id="d-ent" style="font-size:10px;color:#38bdf8"></div>
+      </div>
+      <button onclick="closeD()">✕</button>
+    </div>
+    <div id="d-desc" style="font-size:10px;color:#94a3b8;margin-bottom:8px;line-height:1.4"></div>
+    <div style="font-size:10px;display:grid;grid-template-columns:1fr 1fr;gap:4px;margin-bottom:8px">
+      <div class="prop-row">CATEGORY / TIER:<br><b id="d-cat" style="color:#4ade80"></b></div>
+      <div class="prop-row">STATUS / REGISTRATION / ASN:<br><b id="d-fara" style="color:#fbbf24"></b></div>
+      <div class="prop-row" style="grid-column:span 2">RELATIONSHIP / ROUTING / LINK:<br><b id="d-rel" style="color:#38bdf8"></b></div>
+      <div class="prop-row" style="grid-column:span 2">IP RESOLUTION / ADMIN HOST / TENANT:<br><b id="d-aux" style="color:#c084fc"></b></div>
+    </div>
+    <button id="d-btn" style="width:100%;justify-content:center;font-weight:700" onclick="toggleSel()">TOGGLE NODE</button>
+  </aside>
+
+  <script>
+    const HUBS = [
+      // FARA & Corporate Group
+      { id: "h_fp",   n: "Foreign Principals & Brokers",  c: "#a855f7", x: 0, y: 0, r: 32 },
+      { id: "h_reg",  n: "FARA Registrant Entities",      c: "#f43f5e", x: 0, y: 0, r: 32 },
+      { id: "h_hold", n: "Holding Corps & Parents",       c: "#eab308", x: 0, y: 0, r: 28 },
+      { id: "h_own",  n: "Beneficial Owners",             c: "#ec4899", x: 0, y: 0, r: 26 },
+      { id: "h_adr",  n: "Addresses & Co-Locations",      c: "#38bdf8", x: 0, y: 0, r: 32 },
+
+      // Clock Tower X Digital Influence & GEO Network
+      { id: "h_core", n: "Clock Tower X Core Systems",    c: "#fb7185", x: 0, y: 0, r: 30 },
+      { id: "h_geo",  n: "GEO Citation & Outreach Mesh",  c: "#0284c7", x: 0, y: 0, r: 32 },
+
+      // TPUSA Edge & Infrastructure Network
+      { id: "h_tpsq", n: "TPUSA Squarespace Pool",        c: "#38bdf8", x: 0, y: 0, r: 28 },
+      { id: "h_tpcf", n: "TPUSA Cloudflare & Spectrum",   c: "#f97316", x: 0, y: 0, r: 30 },
+      { id: "h_tpgc", n: "TPUSA Google Cloud Ingress",    c: "#c084fc", x: 0, y: 0, r: 26 },
+      { id: "h_tpaw", n: "TPUSA AWS & CloudFront",        c: "#f43f5e", x: 0, y: 0, r: 26 },
+      { id: "h_tpsp", n: "TPUSA Dedicated & Origin",      c: "#34d399", x: 0, y: 0, r: 26 }
+    ];
+
+    const NODES = [
+      // 1-8: Foreign Principals & Financial Brokers
+      { id: 1,  d: "State of Israel (MFA / LAPAM)",    h: "h_fp",   c: "#a855f7", cat: "Foreign Principal", fara: "State Sponsor", rel: "Directs narrative & campaign budgets via LAPAM", e: "Israeli Ministry of Foreign Affairs", aux: "Geopolitical Principal Sponsor" },
+      { id: 2,  d: "Israel Ministry of Tourism",       h: "h_fp",   c: "#a855f7", cat: "Foreign Principal", fara: "State Sponsor", rel: "Directs tourism campaign expenditures", e: "Government of Israel", aux: "Tourism Desk" },
+      { id: 3,  d: "Ministry of Finance (Israel)",     h: "h_fp",   c: "#a855f7", cat: "Foreign Principal", fara: "State Sponsor", rel: "Directs treasury and economic engagement", e: "State of Israel Treasury", aux: "Economic Policy Principal" },
+      { id: 4,  d: "Government of Israel (General)",   h: "h_fp",   c: "#a855f7", cat: "Foreign Principal", fara: "State Sponsor", rel: "Principal in intermediary media subcontracts", e: "Sovereign Executive", aux: "Direct State Executive" },
+      { id: 5,  d: "Xtend Reality, Inc.",              h: "h_fp",   c: "#a855f7", cat: "Foreign Principal", fara: "Corporate Sponsor", rel: "Defense tech & UAV contractor", e: "Corporate Principal", aux: "Defense Tech / Autonomous Systems" },
+      { id: 6,  d: "Havas Media Germany GmbH",         h: "h_fp",   c: "#a855f7", cat: "Financial Broker", fara: "Exempt Intermediary", rel: "Channels foreign funds to Clock Tower X & Bridges", e: "Global Media Broker", aux: "$9.0M - $4.5M/Mo Prime Media Allocation" },
+      { id: 7,  d: "Havas Media Group USA LLC",        h: "h_fp",   c: "#a855f7", cat: "Financial Broker", fara: "Exempt Intermediary", rel: "Routes LAPAM tourism media spend", e: "US Media Broker", aux: "US Commercial Booking Arm" },
+      { id: 8,  d: "L.D.R.S Group LTD",                h: "h_fp",   c: "#a855f7", cat: "Financial Broker", fara: "Exempt Intermediary", rel: "Channels funds for Davis Media NY LLC", e: "Foreign Media Broker", aux: "European Procurement Broker" },
+
+      // 9-17: FARA Registrant LLCs
+      { id: 9,  d: "Clock Tower X LLC",                h: "h_reg",  c: "#f43f5e", cat: "FARA Registrant", fara: "FARA #7649", rel: "Contracted via Havas Media Germany", e: "Lead Digital & Strategic Influence Desk", aux: "Sole Owner: Bradley Parscale" },
+      { id: 10, d: "Bridges Partners LLC",             h: "h_reg",  c: "#f43f5e", cat: "FARA Registrant", fara: "FARA #7652", rel: "Subcontract via Havas Media Germany", e: "Strategic Influence Contractor", aux: "Uri Steinberg & Yair Levi Joint Partnership" },
+      { id: 11, d: "Targeted Communications Global",   h: "h_reg",  c: "#f43f5e", cat: "FARA Registrant", fara: "FARA #7553", rel: "Direct subsidiary of Targeted Holdings LLC", e: "Digital & Targeted Media Desk", aux: "Mgt Agreement: Targeted Victory LLC" },
+      { id: 12, d: "Genesis 21 Consulting LLC",        h: "h_reg",  c: "#f43f5e", cat: "FARA Registrant", fara: "FARA #7631", rel: "Direct contract with Israeli MFA / LAPAM", e: "Strategic Consulting LLC", aux: "Registered at 1 Hillcrest Center Dr." },
+      { id: 13, d: "Show Faith by Works, LLC",         h: "h_reg",  c: "#f43f5e", cat: "FARA Registrant", fara: "FARA #7653", rel: "Direct contract with Israeli MFA", e: "Evangelical Outreach & Mobile Geofencing", aux: "Registered at 1111 6th Ave., San Diego" },
+      { id: 14, d: "Davis Media NY LLC",               h: "h_reg",  c: "#f43f5e", cat: "FARA Registrant", fara: "FARA #7662", rel: "Routes via L.D.R.S Group LTD", e: "Digital Production Desk", aux: "Owner / CEO: Yoav Davis" },
+      { id: 15, d: "MMGY Global, LLC",                 h: "h_reg",  c: "#f43f5e", cat: "FARA Registrant", fara: "FARA #6492", rel: "Direct Tourism Ministry Contract", e: "Travel & Hospitality Marketing", aux: "Owned by MMGY Acquisition LLC" },
+      { id: 16, d: "PLUS Communications, LLC",         h: "h_reg",  c: "#f43f5e", cat: "FARA Registrant", fara: "FARA #7107", rel: "Direct Finance Ministry Contract", e: "Public Affairs & Advocacy Agency", aux: "Registered at 3001 Washington Blvd., VA" },
+      { id: 17, d: "Pearson Unlimited, LLC",           h: "h_reg",  c: "#f43f5e", cat: "FARA Registrant", fara: "FARA #7768", rel: "Direct contract with Xtend Reality, Inc.", e: "Strategic Technology Services", aux: "Owner / Controller: Coreco Pearson" },
+
+      // 18-23: Clock Tower X Core Technical Infrastructure
+      { id: 18, d: "www.clocktowerx.com",              h: "h_core", c: "#fb7185", cat: "Technical Edge", fara: "Cloudflare AS13335", rel: "Edge Redundancy & SSL Termination", e: "Apex CDN Ingress", aux: "172.67.135.161 · ryan/tess.ns.cloudflare.com" },
+      { id: 19, d: "command.clocktowerx.com",          h: "h_core", c: "#fb7185", cat: "Operational Console", fara: "Vercel AS16509", rel: "Multi-Client Operational Workspace", e: "Console Backend", aux: "216.150.1.193 · Vercel Serverless Edge" },
+      { id: 20, d: "autodiscover.clocktowerx.com",     h: "h_core", c: "#fb7185", cat: "Identity Nexus", fara: "M365 AS8075", rel: "Central Collection Hub for Inquiries", e: "Directory Services Ingress", aux: "52.96.87.248 · Exchange Online Tenant" },
+      { id: 21, d: "link.email.clocktowerx.com",       h: "h_core", c: "#fb7185", cat: "Telemetry Router", fara: "AWS AS14618", rel: "Outbound Click Tracking Apparatus", e: "Dyspatch Telemetry", aux: "35.169.94.3 · CNAME ga.dyspatchit.net" },
+      { id: 22, d: "forms.clocktowerx.com",            h: "h_core", c: "#fb7185", cat: "Pipeline Intake", fara: "Cloudflare AS13335", rel: "Stakeholder Qualification & Intake", e: "Inbound Pipeline", aux: "104.21.26.78 · Managed Cloudflare Forms" },
+      { id: 23, d: "events.clocktowerx.com",           h: "h_core", c: "#fb7185", cat: "Scheduling Desk", fara: "Cloudflare AS13335", rel: "Engagement & Event Coordination", e: "Scheduling Desk", aux: "172.67.135.161 · Managed WAF Ingress" },
+
+      // 24-35: GEO Mesh & Multi-Channel Influence Outreach
+      { id: 24, d: "allyvia.org",                      h: "h_geo",  c: "#0284c7", cat: "GEO Think Tank", fara: "Batch 2025-09-18", rel: "Bilateral Defense Pact Front (160+ Articles)", e: "Cloudflare Ingress", aux: "162.159.136.54 · allyvia-privacy@clocktowerx.com" },
+      { id: 25, d: "paxpoint.org",                     h: "h_geo",  c: "#0284c7", cat: "GEO Think Tank", fara: "Batch 2025-09-18", rel: "Regional Peace & Accords Institute", e: "Cloudflare Ingress", aux: "162.159.137.54 · paxpoint-privacy@clocktowerx.com" },
+      { id: 26, d: "econora.org",                      h: "h_geo",  c: "#0284c7", cat: "GEO Think Tank", fara: "Batch 2025-09-18", rel: "Trade & Venture Capital Think Tank", e: "Cloudflare Ingress", aux: "192.0.78.28 · econora-privacy@clocktowerx.com" },
+      { id: 27, d: "innovascope.org",                  h: "h_geo",  c: "#0284c7", cat: "GEO Think Tank", fara: "Batch 2025-09-18", rel: "Dual-Use Tech & Cyber Partnerships", e: "Cloudflare Ingress", aux: "192.0.78.27 · innovascope-privacy@clocktowerx.com" },
+      { id: 28, d: "culturavia.org",                   h: "h_geo",  c: "#0284c7", cat: "GEO Think Tank", fara: "Batch 2025-09-18", rel: "Evangelical Christian-Zionist Outreach", e: "Cloudflare Ingress", aux: "162.159.136.54 · culturavia-privacy@clocktowerx.com" },
+      { id: 29, d: "justorium.org",                    h: "h_geo",  c: "#0284c7", cat: "GEO Legal Front", fara: "Citation Elementor", rel: "Military Ethics & IHL Legal Authority", e: "Cloudflare Ingress", aux: "162.159.137.54 · justorium-privacy@clocktowerx.com" },
+      { id: 30, d: "cognitura.org",                    h: "h_geo",  c: "#0284c7", cat: "GEO Research Front", fara: "Citation Elementor", rel: "Radicalization & Psychological Research", e: "Cloudflare Ingress", aux: "162.159.137.54 · cognitura-privacy@clocktowerx.com" },
+      { id: 31, d: "compassionpulse.org",              h: "h_geo",  c: "#0284c7", cat: "GEO Humanitarian Front", fara: "Citation Elementor", rel: "Humanitarian Corridor Documentation", e: "Cloudflare Ingress", aux: "192.0.78.26 · compassionpulse-privacy@clocktowerx.com" },
+      { id: 32, d: "factsignal.org",                   h: "h_geo",  c: "#0284c7", cat: "GEO Media Audit", fara: "ECH Header Marked", rel: "Media Audit & Counter-Disinformation", e: "Cloudflare Ingress", aux: "172.67.130.12 · info-factsignal@clocktowerx.com" },
+      { id: 33, d: "thetruthaboutiran.com",            h: "h_geo",  c: "#f59e0b", cat: "Targeted Outreach", fara: "FARA #7649 Declared", rel: "Regional Containment & Threat Intel", e: "Psychz AS40676", aux: "45.58.16.69 · info@AlliesForPeace.com" },
+      { id: 34, d: "alliesforpeace.com",               h: "h_geo",  c: "#f59e0b", cat: "Targeted Outreach", fara: "SparkFire Anchor", rel: "Video Hosting for Conversational SMS", e: "Commercial CDN", aux: "info@AlliesForPeace.com" },
+      { id: 35, d: "SparkFire Technologies",           h: "h_geo",  c: "#f59e0b", cat: "Conversational SMS", fara: "$6M Subcontract", rel: "Automated AI Conversational Outreach", e: "SMS Shortcode Apparatus", aux: "Targeted SMS Push Engine" },
+
+      // 36-42: Corporate Holding Companies & Lineage
+      { id: 36, d: "Stagwell Global LLC",              h: "h_hold", c: "#eab308", cat: "Parent Holding Co", fara: "SEC / Corp Parent", rel: "Ultimate parent of Targeted Communications Global", e: "Global Marketing Holding Group", aux: "Public Entity (STGW)" },
+      { id: 37, d: "Stagwell Marketing Comm LLC",      h: "h_hold", c: "#eab308", cat: "Parent Holding Co", fara: "Subsidiary", rel: "Parent of Targeted Holdings LLC", e: "Stagwell Division", aux: "Intermediary Holding Sub" },
+      { id: 38, d: "Targeted Holdings LLC",            h: "h_hold", c: "#eab308", cat: "Holding Co", fara: "Direct Parent", rel: "Direct 100% owner of Targeted Comm Global", e: "Immediate Holding Entity", aux: "Arlington, VA Holding Link" },
+      { id: 39, d: "MMGY Acquisition LLC",             h: "h_hold", c: "#eab308", cat: "Parent Holding Co", fara: "99% Owner", rel: "Reported as 99% owner of MMGY Global, LLC", e: "Acquisition Vehicle I", aux: "Corporate Ownership Link" },
+      { id: 40, d: "MMGY Acquisition II, LLC",          h: "h_hold", c: "#eab308", cat: "Parent Holding Co", fara: "1% Owner", rel: "Reported as 1% owner of MMGY Global, LLC", e: "Acquisition Vehicle II", aux: "Corporate Ownership Link" },
+      { id: 41, d: "FP1 Public Affairs, LLC",          h: "h_hold", c: "#eab308", cat: "Legal Predecessor", fara: "Exhibit C", rel: "Former entity name of PLUS Communications (2019 rename)", e: "Predecessor Legal Entity", aux: "Predecessor Corporate Filing" },
+      { id: 42, d: "PLUS PR, LLC",                     h: "h_hold", c: "#eab308", cat: "Operating Entity", fara: "VA Reg Link", rel: "Virginia registered name of PLUS Communications", e: "State Operating Entity", aux: "Active VA Incorporation" },
+
+      // 43-48: Beneficial Owners / Controlling Individuals
+      { id: 43, d: "Bradley Parscale",                 h: "h_own",  c: "#ec4899", cat: "Beneficial Owner", fara: "Sole FARA Owner", rel: "Disclosed 100% sole owner of Clock Tower X LLC", e: "Political & Digital Strategist", aux: "FARA Principal Controller" },
+      { id: 44, d: "Yitzhak Tzahi Daboush",            h: "h_own",  c: "#ec4899", cat: "Beneficial Owner", fara: "Sole FARA Owner", rel: "Disclosed sole owner of Genesis 21 Consulting LLC", e: "Managing Principal", aux: "Spring Valley NY Registration" },
+      { id: 45, d: "Uri Steinberg",                    h: "h_own",  c: "#ec4899", cat: "Beneficial Owner", fara: "Joint FARA Partner", rel: "Disclosed 50% joint owner of Bridges Partners LLC", e: "Managing Partner", aux: "Strategic Media Consultant" },
+      { id: 46, d: "Yair Levi",                        h: "h_own",  c: "#ec4899", cat: "Beneficial Owner", fara: "Joint FARA Partner", rel: "Disclosed 50% joint owner of Bridges Partners LLC", e: "Managing Partner", aux: "Strategic Media Consultant" },
+      { id: 47, d: "Yoav Davis",                       h: "h_own",  c: "#ec4899", cat: "Beneficial Owner", fara: "Sole FARA Owner", rel: "Disclosed sole owner and CEO of Davis Media NY LLC", e: "Founder / Executive", aux: "New York Digital Exec" },
+      { id: 48, d: "Coreco Pearson",                   h: "h_own",  c: "#ec4899", cat: "Beneficial Owner", fara: "Sole FARA Owner", rel: "Disclosed owner & controller of Pearson Unlimited", e: "Principal Consultant", aux: "Tech Strategy Consultant" },
+
+      // 49-52: Physical Addresses with Documented Co-Locations
+      { id: 49, d: "1 Hillcrest Center Dr., NY",       h: "h_adr",  c: "#38bdf8", cat: "Registered Address", fara: "Spring Valley, NY", rel: "Genesis 21 + 4 Co-Located Corporate LLCs", e: "Suite 232, Spring Valley, NY 10977", aux: "Rockland County Corporate Hub" },
+      { id: 50, d: "1111 6th Ave., San Diego, CA",     h: "h_adr",  c: "#38bdf8", cat: "Registered Address", fara: "San Diego, CA", rel: "Show Faith by Works + 4 Co-Located LLCs", e: "Suite 550, San Diego, CA 92101", aux: "California Commercial Hub" },
+      { id: 51, d: "2311 Wilson Blvd., Arlington, VA", h: "h_adr",  c: "#38bdf8", cat: "Registered Address", fara: "Arlington, VA", rel: "Targeted Comm + Targeted Victory + TMA Direct", e: "Floor 2, Arlington, VA 22201", aux: "Targeted Victory HQ Hub" },
+      { id: 52, d: "3001 Washington Blvd., VA",        h: "h_adr",  c: "#38bdf8", cat: "Registered Address", fara: "Arlington, VA", rel: "PLUS Comm + FP1 Strategies + 2 LLCs", e: "7th Floor, Arlington, VA 22201", aux: "Public Affairs Complex Hub" },
+
+      // 53-64: Co-Located Commercial Entities
+      { id: 53, d: "Leonite Capital LLC",              h: "h_adr",  c: "#10b981", cat: "Co-Located Entity", fara: "NY Registry", rel: "Co-located at 1 Hillcrest Center Dr.", e: "Commercial Entity", aux: "Rockland County Registry" },
+      { id: 54, d: "Hillcrest Property Mgmt LLC",      h: "h_adr",  c: "#10b981", cat: "Co-Located Entity", fara: "NY Registry", rel: "Co-located at 1 Hillcrest Center Dr.", e: "Commercial Entity", aux: "Rockland County Registry" },
+      { id: 55, d: "Hillcrest Acquisitions LLC",       h: "h_adr",  c: "#10b981", cat: "Co-Located Entity", fara: "NY Registry", rel: "Co-located at 1 Hillcrest Center Dr.", e: "Commercial Entity", aux: "Rockland County Registry" },
+      { id: 56, d: "SFSE F 1 LLC",                     h: "h_adr",  c: "#10b981", cat: "Co-Located Entity", fara: "NY Registry", rel: "Co-located at 1 Hillcrest Center Dr.", e: "Commercial Entity", aux: "Rockland County Registry" },
+      { id: 57, d: "Neptune Holdings, LLC",            h: "h_adr",  c: "#10b981", cat: "Co-Located Entity", fara: "CA Registry", rel: "Co-located at 1111 6th Ave., San Diego", e: "Commercial Entity", aux: "San Diego Suite 550" },
+      { id: 58, d: "Love & War Associates, LLC",       h: "h_adr",  c: "#10b981", cat: "Co-Located Entity", fara: "CA Registry", rel: "Co-located at 1111 6th Ave., San Diego", e: "Commercial Entity", aux: "San Diego Suite 550" },
+      { id: 59, d: "Wavelength Dynamics, LLC",         h: "h_adr",  c: "#10b981", cat: "Co-Located Entity", fara: "CA Registry", rel: "Co-located at 1111 6th Ave., San Diego", e: "Commercial Entity", aux: "San Diego Suite 550" },
+      { id: 60, d: "Pacific Air Systems LLC",          h: "h_adr",  c: "#10b981", cat: "Co-Located Entity", fara: "CA Registry", rel: "Co-located at 1111 6th Ave., San Diego", e: "Commercial Entity", aux: "San Diego Suite 550" },
+      { id: 61, d: "Targeted Victory LLC",             h: "h_adr",  c: "#10b981", cat: "Co-Located Entity", fara: "Management Link", rel: "Co-located + Restated Management Agreement with TCG", e: "Digital Campaign Agency", aux: "Arlington Digital Firm" },
+      { id: 62, d: "TMA Direct, LLC",                  h: "h_adr",  c: "#10b981", cat: "Co-Located Entity", fara: "VA Registry", rel: "Co-located at 2311 Wilson Blvd., VA", e: "Data & Media Desk", aux: "Direct Marketing Desk" },
+      { id: 63, d: "FP1 Strategies LLC",               h: "h_adr",  c: "#10b981", cat: "Co-Located Entity", fara: "VA Registry", rel: "Co-located at 3001 Washington Blvd., VA", e: "Campaign & Media Firm", aux: "Political Consulting Group" },
+      { id: 64, d: "Fusion 3001, LLC",                 h: "h_adr",  c: "#10b981", cat: "Co-Located Entity", fara: "VA Registry", rel: "Co-located at 3001 Washington Blvd., VA", e: "Commercial Entity", aux: "Commercial Real Estate Facility" },
+
+      // 65-74: TPUSA Squarespace Multi-Tenant Cluster (AS53831)
+      { id: 65, d: "1776.tpusa.com",           h: "h_tpsq", c: "#38bdf8", cat: "Squarespace Host", fara: "AS53831 · SQUARESPACE", rel: "Shares IP with 22 other hosts", e: "1776 Project Portal", aux: "198.49.23.145 / .144", g: "sq_pool" },
+      { id: 66, d: "ap.tpusa.com",             h: "h_tpsq", c: "#38bdf8", cat: "Squarespace Host", fara: "AS53831 · SQUARESPACE", rel: "Shares IP with 22 other hosts", e: "Action Points Ingress", aux: "198.49.23.145 / .144", g: "sq_pool" },
+      { id: 67, d: "ball.tpusa.com",           h: "h_tpsq", c: "#38bdf8", cat: "Squarespace Host", fara: "AS53831 · SQUARESPACE", rel: "Shares IP with 22 other hosts", e: "Gala Winter Ball Portal", aux: "198.49.23.145 / .144", g: "sq_pool" },
+      { id: 68, d: "border.battle.tpusa.com",  h: "h_tpsq", c: "#38bdf8", cat: "Squarespace Host", fara: "AS53831 · SQUARESPACE", rel: "Shares IP with 22 other hosts", e: "Border Battle Landing", aux: "198.49.23.145 / .144", g: "sq_pool" },
+      { id: 69, d: "donors.tpusa.com",         h: "h_tpsq", c: "#38bdf8", cat: "Squarespace Host", fara: "AS53831 · SQUARESPACE", rel: "Shares IP with 22 other hosts", e: "Donor Relations Frontend", aux: "198.49.23.145 / .144", g: "sq_pool" },
+      { id: 70, d: "gala.tpusa.com",           h: "h_tpsq", c: "#38bdf8", cat: "Squarespace Host", fara: "AS53831 · SQUARESPACE", rel: "Shares IP with 22 other hosts", e: "Annual Gala Operations", aux: "198.49.23.145 / .144", g: "sq_pool" },
+      { id: 71, d: "israel.tpusa.com",         h: "h_tpsq", c: "#38bdf8", cat: "Advocacy Portal",  fara: "AS53831 · SQUARESPACE", rel: "TPUSA Israel Advocacy Portal", e: "Israel Advocacy Campaign", aux: "198.49.23.145 / .144", g: "sq_pool" },
+      { id: 72, d: "reset.tpusa.com",          h: "h_tpsq", c: "#38bdf8", cat: "Squarespace Host", fara: "AS53831 · SQUARESPACE", rel: "Shares IP with 22 other hosts", e: "Great Reset Campaign", aux: "198.49.23.145 / .144", g: "sq_pool" },
+      { id: 73, d: "springinvestor.tpusa.com", h: "h_tpsq", c: "#38bdf8", cat: "Squarespace Host", fara: "AS53831 · SQUARESPACE", rel: "Shares IP with 22 other hosts", e: "Spring Investor Summit", aux: "198.49.23.145 / .144", g: "sq_pool" },
+      { id: 74, d: "summit.tpusa.com",         h: "h_tpsq", c: "#38bdf8", cat: "Squarespace Host", fara: "AS53831 · SQUARESPACE", rel: "Shares IP with 22 other hosts", e: "Student Summit Portal", aux: "198.49.23.145 / .144", g: "sq_pool" },
+
+      // 75-86: TPUSA Cloudflare Edge & Cloudflare Spectrum (AS13335 / AS209242)
+      { id: 75, d: "autoconfig.admin.tpusa.com", h: "h_tpcf", c: "#f97316", cat: "Spectrum Mail",  fara: "AS209242 · SPECTRUM", rel: "CNAME tpusa.com · 6 shared hosts", e: "Admin Autoconfig Mail", aux: "141.193.213.11 / .10", g: "cf_spec" },
+      { id: 76, d: "autoconfig.tpusa.com",       h: "h_tpcf", c: "#f97316", cat: "Spectrum Mail",  fara: "AS209242 · SPECTRUM", rel: "CNAME tpusa.com · 6 shared hosts", e: "Client Autoconfig Mail", aux: "141.193.213.11 / .10", g: "cf_spec" },
+      { id: 77, d: "autodiscover.admin.tpusa.com",h: "h_tpcf", c: "#f97316", cat: "Spectrum Mail", fara: "AS209242 · SPECTRUM", rel: "CNAME tpusa.com · 6 shared hosts", e: "Admin Autodiscover Mail", aux: "141.193.213.11 / .10", g: "cf_spec" },
+      { id: 78, d: "autodiscover.tpusa.com",      h: "h_tpcf", c: "#f97316", cat: "Spectrum Mail", fara: "AS209242 · SPECTRUM", rel: "CNAME tpusa.com · 6 shared hosts", e: "Client Autodiscover Mail", aux: "141.193.213.11 / .10", g: "cf_spec" },
+      { id: 79, d: "borderbattle.tpusa.com",     h: "h_tpcf", c: "#f97316", cat: "Cloudflare Edge",fara: "AS13335 · CLOUDFLARE", rel: "Shares IP with 15 hosts", e: "Border Battle Edge", aux: "104.26.10.135 / .11", g: "cf_edge" },
+      { id: 80, d: "cloud.tpusa.com",            h: "h_tpcf", c: "#f97316", cat: "Cloudflare Edge",fara: "AS13335 · CLOUDFLARE", rel: "Shares IP with 15 hosts", e: "Internal Cloud Storage", aux: "104.26.10.135 / .11", g: "cf_edge" },
+      { id: 81, d: "cpanel.tpusa.com",           h: "h_tpcf", c: "#f97316", cat: "Cloudflare Edge",fara: "AS13335 · CLOUDFLARE", rel: "Proxied cPanel Router", e: "cPanel Web Console", aux: "104.26.10.135 / .11", g: "cf_edge" },
+      { id: 82, d: "dashboard.tpusa.com",        h: "h_tpcf", c: "#f97316", cat: "Cloudflare Edge",fara: "AS13335 · CLOUDFLARE", rel: "Shares IP with 15 hosts", e: "Campaign Dashboard", aux: "104.26.10.135 / .11", g: "cf_edge" },
+      { id: 83, d: "donate.tpusa.com",           h: "h_tpcf", c: "#f97316", cat: "Cloudflare Edge",fara: "AS13335 · CLOUDFLARE", rel: "Shares IP with 15 hosts", e: "Payment Gateway Ingress", aux: "104.26.10.135 / .11", g: "cf_edge" },
+      { id: 84, d: "mail.tpusa.com",             h: "h_tpcf", c: "#f97316", cat: "Cloudflare Edge",fara: "AS13335 · CLOUDFLARE", rel: "Proxied Webmail Gateway", e: "Corporate Webmail Host", aux: "104.26.10.135 / .11", g: "cf_edge" },
+      { id: 85, d: "protectyourrights.tpusa.com",h: "h_tpcf", c: "#f97316", cat: "Cloudflare Edge",fara: "AS13335 · CLOUDFLARE", rel: "Shares IP with 15 hosts", e: "Rights Advocacy Site", aux: "104.26.10.135 / .11", g: "cf_edge" },
+      { id: 86, d: "stage.tpusa.com",            h: "h_tpcf", c: "#f97316", cat: "Cloudflare Edge",fara: "AS13335 · CLOUDFLARE", rel: "High-Value Staging Env", e: "Staging Pipeline Host", aux: "104.26.10.135 / .11", g: "cf_edge" },
+
+      // 87-91: TPUSA Google Cloud Platform Direct Ingress (AS396982)
+      { id: 87, d: "backend.tpusa.com",          h: "h_tpgc", c: "#c084fc", cat: "GCP Core Origin", fara: "AS396982 · GOOGLE-CLOUD", rel: "Collocated on 35.196.58.81", e: "Core Backend API Origin", aux: "35.196.58.81", g: "gcp_core" },
+      { id: 88, d: "blogger.tpusa.com",          h: "h_tpgc", c: "#c084fc", cat: "GCP Ingress",     fara: "AS396982 · GOOGLE-CLOUD", rel: "Collocated on 35.196.58.81", e: "Blogger Ingress Endpoint", aux: "35.196.58.81", g: "gcp_core" },
+      { id: 89, d: "chapters.tpusa.com",         h: "h_tpgc", c: "#c084fc", cat: "GCP Ingress",     fara: "AS396982 · GOOGLE-CLOUD", rel: "Collocated on 35.196.58.81", e: "Campus Chapter Ingress", aux: "35.196.58.81", g: "gcp_core" },
+      { id: 90, d: "old.tpusa.com",              h: "h_tpgc", c: "#c084fc", cat: "GCP Ingress",     fara: "AS396982 · GOOGLE-CLOUD", rel: "Collocated on 35.196.58.81", e: "Legacy Web Archive", aux: "35.196.58.81", g: "gcp_core" },
+      { id: 91, d: "email.tours.tpusa.com",      h: "h_tpgc", c: "#c084fc", cat: "GCP Mail Router", fara: "AS396982 · GOOGLE-CLOUD", rel: "Google Cloud Mail Routing", e: "Tour Blast Dispatch", aux: "34.102.239.211", g: "gcp_core" },
+
+      // 92-94: TPUSA AWS & CloudFront (AS14618 / AS16509)
+      { id: 92, d: "cdn.tpusa.com",              h: "h_tpaw", c: "#f43f5e", cat: "CloudFront CDN",  fara: "AS16509 · CLOUDFRONT", rel: "Amazon CloudFront Edge Pool", e: "Primary Media Assets CDN", aux: "18.239.225.125 / .128", g: "aws_cf" },
+      { id: 93, d: "events.tpusa.com",           h: "h_tpaw", c: "#f43f5e", cat: "CloudFront CDN",  fara: "AS16509 · CLOUDFRONT", rel: "Amazon CloudFront Edge Pool", e: "Event Registration Cloud", aux: "13.33.4.9 / 18.239.x", g: "aws_cf" },
+      { id: 94, d: "bd77g4l.14495387t.tpusa.com",h: "h_tpaw", c: "#f43f5e", cat: "AWS Origin",      fara: "AS14618 · AMAZON-AES", rel: "Dedicated AWS-AES Origin", e: "HubSpot Telemetry Bridge", aux: "143.244.93.227", g: "aws_cf" },
+
+      // 95-97: TPUSA Shopify / Webflow / Dedicated Origin
+      { id: 95, d: "getmerch.tpusa.com",          h: "h_tpsp", c: "#34d399", cat: "E-Commerce Anycast", fara: "AS13335 · SHOPIFY", rel: "Shopify Merchant Anycast", e: "Shopify Merch Storefront", aux: "23.227.38.74", g: "misc_tenancy" },
+      { id: 96, d: "join.tpusa.com",              h: "h_tpsp", c: "#34d399", cat: "Webflow Anycast",   fara: "AS393560 · WEBFLOW", rel: "Webflow Anycast Ingress", e: "Member Signup Pipeline", aux: "199.60.103.227", g: "misc_tenancy" },
+      { id: 97, d: "forms.tpusa.com",             h: "h_tpsp", c: "#34d399", cat: "Dedicated Host",     fara: "AS3356 · LEVEL3/LUMEN", rel: "Dedicated Lumen Origin IP", e: "Lumen Direct Forms Host", aux: "8.233.166.209", g: "misc_tenancy" }
+    ];
+
+    // Explicit Directed & Cross-Network Relational Edges
+    const LINKS = [
+      // FARA Contractual Links (Registrant -> Principal)
+      { s: 9,  t: 1,  lbl: "REPRESENTS" },
+      { s: 10, t: 4,  lbl: "REPRESENTS" },
+      { s: 11, t: 2,  lbl: "REPRESENTS" },
+      { s: 12, t: 1,  lbl: "REPRESENTS" },
+      { s: 13, t: 1,  lbl: "REPRESENTS" },
+      { s: 14, t: 4,  lbl: "REPRESENTS" },
+      { s: 15, t: 2,  lbl: "REPRESENTS" },
+      { s: 16, t: 3,  lbl: "REPRESENTS" },
+      { s: 17, t: 5,  lbl: "REPRESENTS" },
+
+      // Cross-Network Link: TPUSA Israel Advocacy -> State of Israel Principal Sponsor
+      { s: 71, t: 1,  lbl: "ADVOCACY_ALIGNMENT" },
+
+      // Intermediary Brokers
+      { s: 9,  t: 6,  lbl: "ROUTED_THROUGH" },
+      { s: 10, t: 6,  lbl: "ROUTED_THROUGH" },
+      { s: 6,  t: 1,  lbl: "CONTRACTED_BY" },
+      { s: 11, t: 7,  lbl: "ROUTED_THROUGH" },
+      { s: 7,  t: 2,  lbl: "CONTRACTED_BY" },
+      { s: 14, t: 8,  lbl: "ROUTED_THROUGH" },
+      { s: 8,  t: 4,  lbl: "CONTRACTED_BY" },
+
+      // Clock Tower X Core Technical Infrastructure Nexus
+      { s: 9,  t: 18, lbl: "APEX_CANONICAL" },
+      { s: 9,  t: 19, lbl: "OPERATIONAL_CONSOLE" },
+      { s: 9,  t: 20, lbl: "CENTRAL_MAIL_NEXUS" },
+      { s: 9,  t: 21, lbl: "TELEMETRY_ROUTER" },
+      { s: 9,  t: 22, lbl: "INBOUND_PIPELINE" },
+      { s: 9,  t: 23, lbl: "EVENT_CALENDAR" },
+
+      // M365 Mailbox Nexus to GEO Domains
+      { s: 20, t: 24, lbl: "MANAGED_ADMIN_EMAIL" },
+      { s: 20, t: 25, lbl: "MANAGED_ADMIN_EMAIL" },
+      { s: 20, t: 26, lbl: "MANAGED_ADMIN_EMAIL" },
+      { s: 20, t: 27, lbl: "MANAGED_ADMIN_EMAIL" },
+      { s: 20, t: 28, lbl: "MANAGED_ADMIN_EMAIL" },
+      { s: 20, t: 29, lbl: "MANAGED_ADMIN_EMAIL" },
+      { s: 20, t: 30, lbl: "MANAGED_ADMIN_EMAIL" },
+      { s: 20, t: 31, lbl: "MANAGED_ADMIN_EMAIL" },
+      { s: 20, t: 32, lbl: "MANAGED_ADMIN_EMAIL" },
+
+      // Outreach & SMS Pipeline to CTX Core
+      { s: 9,  t: 33, lbl: "DISCLOSED_ASSET" },
+      { s: 33, t: 34, lbl: "CONTENT_RELAY" },
+      { s: 34, t: 35, lbl: "DISPATCH_SMS_PIPELINE" },
+
+      // Corporate Ownership Lineage: Stagwell Chain
+      { s: 36, t: 37, lbl: "PARENT_OF" },
+      { s: 37, t: 38, lbl: "PARENT_OF" },
+      { s: 38, t: 11, lbl: "DIRECT_OWNER_OF" },
+      { s: 11, t: 61, lbl: "MANAGEMENT_AGREEMENT" },
+
+      // Corporate Ownership Lineage: MMGY Chain
+      { s: 39, t: 15, lbl: "99%_OWNER_OF" },
+      { s: 40, t: 15, lbl: "1%_OWNER_OF" },
+
+      // PLUS Communications Legal Lineage
+      { s: 41, t: 16, lbl: "PREDECESSOR_ENTITY" },
+      { s: 16, t: 42, lbl: "STATE_REG_LINK" },
+
+      // Beneficial Ownership / Direct Individual Control
+      { s: 43, t: 9,  lbl: "100%_SOLE_OWNER" },
+      { s: 44, t: 12, lbl: "SOLE_OWNER" },
+      { s: 45, t: 10, lbl: "50%_JOINT_OWNER" },
+      { s: 46, t: 10, lbl: "50%_JOINT_OWNER" },
+      { s: 47, t: 14, lbl: "SOLE_OWNER_CEO" },
+      { s: 48, t: 17, lbl: "OWNER_CONTROLLER" },
+
+      // Physical Address Registrations
+      { s: 12, t: 49, lbl: "REGISTERED_AT" },
+      { s: 13, t: 50, lbl: "REGISTERED_AT" },
+      { s: 11, t: 51, lbl: "REGISTERED_AT" },
+      { s: 16, t: 52, lbl: "REGISTERED_AT" },
+
+      // Co-Location Links (Address -> Entity)
+      { s: 49, t: 53, lbl: "CO_LOCATED_AT" },
+      { s: 49, t: 54, lbl: "CO_LOCATED_AT" },
+      { s: 49, t: 55, lbl: "CO_LOCATED_AT" },
+      { s: 49, t: 56, lbl: "CO_LOCATED_AT" },
+      { s: 50, t: 57, lbl: "CO_LOCATED_AT" },
+      { s: 50, t: 58, lbl: "CO_LOCATED_AT" },
+      { s: 50, t: 59, lbl: "CO_LOCATED_AT" },
+      { s: 50, t: 60, lbl: "CO_LOCATED_AT" },
+      { s: 51, t: 61, lbl: "CO_LOCATED_AT" },
+      { s: 51, t: 62, lbl: "CO_LOCATED_AT" },
+      { s: 52, t: 63, lbl: "CO_LOCATED_AT" },
+      { s: 52, t: 64, lbl: "CO_LOCATED_AT" }
+    ];
+
+    // Compute pairwise mesh links for identical hosting/IP pools within TPUSA & GEO batches
+    for (let i = 0; i < NODES.length; i++) {
+      for (let j = i + 1; j < NODES.length; j++) {
+        if (NODES[i].g && NODES[i].g === NODES[j].g) {
+          LINKS.push({
+            s: NODES[i].id,
+            t: NODES[j].id,
+            lbl: "SHARED_INFRASTRUCTURE"
+          });
+        }
+      }
+    }
+
+    const S = { act: new Set(), sel: null, hov: null, tm: null, z: 0.52, px: 0, py: 0, dg: null, isD: false, lx: 0, ly: 0, msh: true };
+    const cv = document.getElementById('cv'), cx = cv.getContext('2d');
+    let W = 0, H = 0;
+
+    function layout() {
+      const mx = W / 2, my = H / 2;
+
+      // 12 Hub Spatial Anchors (Dual Outer Ring Layout)
+      // North / Central: FARA & Corporate
+      HUBS[0].x = mx - 460; HUBS[0].y = my - 240; // NW: Foreign Principals
+      HUBS[1].x = mx - 160; HUBS[1].y = my - 340; // N-NW: FARA Registrants
+      HUBS[2].x = mx + 160; HUBS[2].y = my - 340; // N-NE: Holdings & Parents
+      HUBS[3].x = mx - 380; HUBS[3].y = my - 80;  // W: Beneficial Owners
+      HUBS[4].x = mx - 420; HUBS[4].y = my + 180; // SW: Addresses & Co-Locations
+
+      // East: Clock Tower X & GEO
+      HUBS[5].x = mx + 420; HUBS[5].y = my - 240; // NE: CTX Core Systems
+      HUBS[6].x = mx + 520; HUBS[6].y = my;       // E: GEO Citation Mesh
+
+      // South / Southeast: TPUSA Clusters
+      HUBS[7].x = mx - 180; HUBS[7].y = my + 260; // S-SW: TPUSA Squarespace
+      HUBS[8].x = mx + 140; HUBS[8].y = my + 260; // S-SE: TPUSA Cloudflare
+      HUBS[9].x = mx + 380; HUBS[9].y = my + 220; // SE: TPUSA GCP
+      HUBS[10].x = mx - 40; HUBS[10].y = my + 380; // S: TPUSA AWS
+      HUBS[11].x = mx + 240; HUBS[11].y = my + 380; // SE-Far: TPUSA Dedicated
+
+      NODES.forEach((n) => {
+        const h = HUBS.find(x => x.id === n.h) || HUBS[0];
+        const sibs = NODES.filter(x => x.h === n.h);
+        const o = sibs.indexOf(n), tot = sibs.length;
+
+        const a = (o / tot) * Math.PI * 2;
+        const bd = n.h === 'h_adr' ? 120 + (o % 3) * 35 : (n.h === 'h_geo' ? 105 + (o % 2) * 30 : 85 + (o % 2) * 25);
+        n.x = h.x + Math.cos(a) * bd;
+        n.y = h.y + Math.sin(a) * bd;
+        n.vx = 0; n.vy = 0;
+        n.r = n.cat === "Co-Located Entity" ? 6.5 : (n.h === 'h_reg' ? 9.5 : 8);
+        n.p = Math.random() * 6;
+      });
+    }
+
+    function rs() {
+      W = cv.parentElement.clientWidth;
+      H = cv.parentElement.clientHeight;
+      cv.width = W * devicePixelRatio;
+      cv.height = H * devicePixelRatio;
+      cx.scale(devicePixelRatio, devicePixelRatio);
+      if (!HUBS[0].x) layout();
+    }
+    window.addEventListener('resize', rs);
+
+    function phys() {
+      NODES.forEach(n => {
+        const h = HUBS.find(x => x.id === n.h) || HUBS[0];
+        const dx = h.x - n.x, dy = h.y - n.y, dist = Math.hypot(dx, dy) || 1;
+
+        const targetDist = n.h === 'h_adr' ? 120 : (n.h === 'h_geo' ? 105 : 90);
+        const f = (dist - targetDist) * 0.005;
+        n.vx += (dx / dist) * f;
+        n.vy += (dy / dist) * f;
+
+        NODES.forEach(o => {
+          if (n === o) return;
+          const rx = n.x - o.x, ry = n.y - o.y, rd = Math.hypot(rx, ry) || 1;
+          const minSpace = 50;
+          if (rd < minSpace) {
+            const rep = (minSpace - rd) * 0.024;
+            n.vx += (rx / rd) * rep;
+            n.vy += (ry / rd) * rep;
+          }
+        });
+
+        HUBS.forEach(hub => {
+          const hx = n.x - hub.x, hy = n.y - hub.y, hd = Math.hypot(hx, hy) || 1;
+          if (hd < 48) {
+            const rep = (48 - hd) * 0.04;
+            n.vx += (hx / hd) * rep;
+            n.vy += (hy / hd) * rep;
+          }
+        });
+
+        n.vx *= 0.85; n.vy *= 0.85;
+        if (n !== S.dg) { n.x += n.vx; n.y += n.vy; }
+        n.p += 0.05;
+      });
+    }
+
+    function draw() {
+      phys();
+      cx.clearRect(0, 0, W, H);
+      cx.save();
+      cx.translate(S.px, S.py);
+      cx.scale(S.z, S.z);
+
+      const activeFocus = S.sel || S.hov;
+
+      // 1. Draw Explicit & Mesh Relational Links
+      if (S.msh) {
+        LINKS.forEach(l => {
+          const sNode = NODES.find(n => n.id === l.s);
+          const tNode = NODES.find(n => n.id === l.t);
+          if (!sNode || !tNode) return;
+
+          const isPeerActive = activeFocus && (activeFocus.id === sNode.id || activeFocus.id === tNode.id);
+
+          cx.beginPath();
+          if (isPeerActive) {
+            cx.setLineDash([4, 2]);
+            if (l.lbl.includes("OWNER") || l.lbl.includes("PARENT")) cx.strokeStyle = "#eab308";
+            else if (l.lbl.includes("REPRESENTS")) cx.strokeStyle = "#a855f7";
+            else if (l.lbl.includes("CO_LOCATED")) cx.strokeStyle = "#10b981";
+            else if (l.lbl.includes("MAIL") || l.lbl.includes("CONSOLE") || l.lbl.includes("ROUTER")) cx.strokeStyle = "#4ade80";
+            else cx.strokeStyle = "#38bdf8";
+            cx.lineWidth = 2.4;
+          } else {
+            cx.setLineDash([2, 4]);
+            if (l.lbl.includes("OWNER") || l.lbl.includes("PARENT")) cx.strokeStyle = "rgba(234, 179, 8, 0.35)";
+            else if (l.lbl.includes("CO_LOCATED")) cx.strokeStyle = "rgba(16, 185, 129, 0.22)";
+            else if (l.lbl.includes("MAIL") || l.lbl.includes("CONSOLE")) cx.strokeStyle = "rgba(74, 222, 128, 0.25)";
+            else cx.strokeStyle = activeFocus ? "rgba(71, 85, 105, 0.10)" : "rgba(244, 63, 94, 0.22)";
+            cx.lineWidth = 0.85;
+          }
+
+          const mx = (sNode.x + tNode.x) / 2;
+          const my = (sNode.y + tNode.y) / 2;
+          const dx = tNode.x - sNode.x;
+          const dy = tNode.y - sNode.y;
+          const cxArc = mx - dy * 0.08;
+          const cyArc = my + dx * 0.08;
+
+          cx.moveTo(sNode.x, sNode.y);
+          cx.quadraticCurveTo(cxArc, cyArc, tNode.x, tNode.y);
+          cx.stroke();
+          cx.setLineDash([]);
+
+          if (isPeerActive) {
+            const t = (Math.sin(sNode.p * 2) + 1) / 2;
+            const px = (1 - t) * (1 - t) * sNode.x + 2 * (1 - t) * t * cxArc + t * t * tNode.x;
+            const py = (1 - t) * (1 - t) * sNode.y + 2 * (1 - t) * t * cyArc + t * t * tNode.y;
+            cx.beginPath();
+            cx.arc(px, py, 2.5, 0, Math.PI * 2);
+            cx.fillStyle = "#bae6fd";
+            cx.fill();
+          }
+        });
+      }
+
+      // 2. Spokes to Master Hubs
+      NODES.forEach(n => {
+        const h = HUBS.find(x => x.id === n.h);
+        const on = S.act.has(n.id);
+        const isDimmed = activeFocus && activeFocus.id !== n.id && !LINKS.some(l => (l.s === activeFocus.id && l.t === n.id) || (l.t === activeFocus.id && l.s === n.id));
+        cx.beginPath();
+        cx.moveTo(h.x, h.y);
+        cx.lineTo(n.x, n.y);
+        cx.strokeStyle = isDimmed ? 'rgba(30, 41, 59, 0.18)' : (on ? n.c : 'rgba(51, 65, 85, 0.35)');
+        cx.lineWidth = on ? 1.6 : 0.85;
+        cx.stroke();
+      });
+
+      // 3. Master Infrastructure Hubs
+      HUBS.forEach(h => {
+        const cnt = NODES.filter(x => x.h === h.id && S.act.has(x.id)).length;
+        const tot = NODES.filter(x => x.h === h.id).length;
+        cx.beginPath();
+        cx.arc(h.x, h.y, h.r, 0, Math.PI * 2);
+        cx.fillStyle = '#0c1529';
+        cx.fill();
+        cx.strokeStyle = h.c;
+        cx.lineWidth = 2.4;
+        cx.stroke();
+
+        cx.fillStyle = '#fff';
+        cx.font = 'bold 10px monospace';
+        cx.textAlign = 'center';
+        cx.textBaseline = 'middle';
+        cx.fillText(`${cnt}/${tot}`, h.x, h.y);
+
+        cx.fillStyle = '#94a3b8';
+        cx.font = '9px monospace';
+        cx.fillText(h.n.toUpperCase(), h.x, h.y + h.r + 12);
+      });
+
+      // 4. Target Nodes & Pill Labels
+      NODES.forEach(n => {
+        const on = S.act.has(n.id);
+        const sel = S.sel && S.sel.id === n.id;
+        const hov = S.hov && S.hov.id === n.id;
+        const isConnected = activeFocus && LINKS.some(l => (l.s === activeFocus.id && l.t === n.id) || (l.t === activeFocus.id && l.s === n.id));
+        const isDimmed = activeFocus && !sel && !hov && !isConnected;
+
+        if (isConnected) {
+          cx.beginPath();
+          cx.arc(n.x, n.y, n.r + 5, 0, Math.PI * 2);
+          cx.strokeStyle = '#38bdf8';
+          cx.setLineDash([3, 2]);
+          cx.lineWidth = 1.6;
+          cx.stroke();
+          cx.setLineDash([]);
+        }
+
+        if (sel || hov) {
+          cx.beginPath();
+          cx.arc(n.x, n.y, n.r + 5, 0, Math.PI * 2);
+          cx.strokeStyle = '#38bdf8';
+          cx.lineWidth = 2.2;
+          cx.stroke();
+        }
+
+        cx.beginPath();
+        cx.arc(n.x, n.y, n.r, 0, Math.PI * 2);
+        cx.fillStyle = isDimmed ? '#070b14' : (on ? n.c : '#0f172a');
+        cx.fill();
+        cx.strokeStyle = isDimmed ? '#1e293b' : (on ? '#fff' : '#334155');
+        cx.lineWidth = 1.4;
+        cx.stroke();
+
+        // Label pill
+        cx.font = (sel || hov) ? 'bold 9.5px monospace' : '9px monospace';
+        cx.textAlign = 'center';
+        const w = cx.measureText(n.d).width, py = n.y + n.r + 3;
+        cx.fillStyle = isConnected ? 'rgba(12, 74, 110, 0.95)' : (isDimmed ? 'rgba(8, 13, 24, 0.4)' : 'rgba(8, 13, 24, 0.88)');
+        cx.fillRect(n.x - w / 2 - 3, py, w + 6, 13);
+        cx.fillStyle = isConnected ? '#bae6fd' : (isDimmed ? '#475569' : (on ? '#fff' : '#94a3b8'));
+        cx.fillText(n.d, n.x, py + 9.5);
+      });
+
+      cx.restore();
+      requestAnimationFrame(draw);
+    }
+
+    function s2w(x, y) { return { x: (x - S.px) / S.z, y: (y - S.py) / S.z }; }
+
+    cv.addEventListener('mousedown', e => {
+      const r = cv.getBoundingClientRect(), p = s2w(e.clientX - r.left, e.clientY - r.top);
+      const c = NODES.find(n => Math.hypot(n.x - p.x, n.y - p.y) <= n.r + 8);
+      if (c) { S.dg = c; selNode(c); }
+      else { S.isD = true; S.lx = e.clientX; S.ly = e.clientY; }
+    });
+
+    window.addEventListener('mousemove', e => {
+      const r = cv.getBoundingClientRect(), p = s2w(e.clientX - r.left, e.clientY - r.top);
+      S.hov = NODES.find(n => Math.hypot(n.x - p.x, n.y - p.y) <= n.r + 6) || null;
+
+      if (S.dg) {
+        S.dg.x = p.x; S.dg.y = p.y; S.dg.vx = 0; S.dg.vy = 0;
+      } else if (S.isD) {
+        S.px += e.clientX - S.lx; S.py += e.clientY - S.ly;
+        S.lx = e.clientX; S.ly = e.clientY;
+      }
+    });
+
+    window.addEventListener('mouseup', () => { S.dg = null; S.isD = false; });
+
+    function zoom(f) { S.z = Math.max(0.18, Math.min(2.5, S.z * f)); }
+    function fit() { S.z = 0.52; S.px = 0; S.py = 0; }
+    cv.addEventListener('wheel', e => { e.preventDefault(); zoom(e.deltaY < 0 ? 1.08 : 0.92); }, { passive: false });
+
+    function selNode(n) {
+      S.sel = n;
+      document.getElementById('d-dom').textContent = n.d;
+      document.getElementById('d-ent').textContent = n.e;
+      document.getElementById('d-cat').textContent = n.cat;
+      document.getElementById('d-fara').textContent = n.fara;
+      document.getElementById('d-rel').textContent = n.rel;
+      document.getElementById('d-aux').textContent = n.aux || 'N/A';
+
+      const connectedCount = LINKS.filter(l => l.s === n.id || l.t === n.id).length;
+      document.getElementById('d-desc').textContent = `${n.e} · Explicit Relational Links: ${connectedCount}`;
+
+      const b = document.getElementById('d-btn');
+      b.textContent = S.act.has(n.id) ? 'DEACTIVATE' : 'PROVISION';
+      b.style.background = S.act.has(n.id) ? '#e11d48' : '#0284c7';
+      document.getElementById('dw').classList.add('open');
+    }
+
+    function closeD() { S.sel = null; document.getElementById('dw').classList.remove('open'); }
+
+    function toggleSel() {
+      if (!S.sel) return;
+      if (S.act.has(S.sel.id)) S.act.delete(S.sel.id);
+      else S.act.add(S.sel.id);
+      upd();
+      selNode(S.sel);
+    }
+
+    function upd() {
+      document.getElementById('cnt').textContent = `${S.act.size}/${NODES.length}`;
+      document.getElementById('st').textContent = S.act.size === NODES.length ? 'ONLINE' : (S.act.size ? 'RUNNING' : 'STANDBY');
+    }
+
+    function step() {
+      const n = NODES.find(x => !S.act.has(x.id));
+      if (n) { S.act.add(n.id); selNode(n); upd(); }
+    }
+
+    function toggleAuto() {
+      if (S.tm) {
+        clearInterval(S.tm);
+        S.tm = null;
+        document.getElementById('btn-txt').textContent = 'AUTO';
+      } else {
+        document.getElementById('btn-txt').textContent = 'PAUSE';
+        S.tm = setInterval(() => {
+          if (S.act.size >= NODES.length) toggleAuto();
+          else step();
+        }, 280);
+      }
+    }
+
+    function toggleMesh() {
+      S.msh = !S.msh;
+      document.getElementById('btn-m').style.color = S.msh ? '#38bdf8' : '#64748b';
+    }
+
+    function reset() {
+      if (S.tm) toggleAuto();
+      S.act.clear();
+      upd();
+      if (S.sel) selNode(S.sel);
+    }
+
+    document.addEventListener('DOMContentLoaded', () => {
+      rs();
+      draw();
+      lucide.createIcons();
+    });
+  </script>
+</body>
+</html>
