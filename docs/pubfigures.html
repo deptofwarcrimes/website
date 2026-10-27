@@ -1,0 +1,685 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <!-- Chosen Palette: Slate & Warm Champagne Editorial Dark -->
+    <!-- Application Structure Plan: Redesigned with an editorial, institutional registry aesthetic to replace modern generic AI tropes. Replaced pill-shaped buttons and heavy glowing gradients with crisp rectangular geometry (rounded-sm/md), subtle border hierarchy, and a refined typography pairing (Space Grotesk for structure/headers, Inter for body data). The interaction flows remain intact with dynamic Vanilla JS filtering, instant domain search, modal detail inspection, and Chart.js analytical breakdowns. -->
+    <!-- Visualization & Content Choices: 
+         - Stats Bar: Sharp metric blocks with warm champagne accents and technical mono typography.
+         - Platform Models: Doughnut Chart (Chart.js / Canvas) in a constrained responsive wrapper with refined typography ticks.
+         - Monetization Channels: Horizontal Bar Chart (Chart.js / Canvas) with minimal grid lines and muted brass bars.
+         - Directory & Master Index: Tabular grid and sharp card layouts with subtle hover states, square tag badges, and zero rounded pill shapes.
+         - Confirming strictly NO SVG graphics and NO Mermaid JS used. -->
+    <!-- CONFIRMATION: NO SVG graphics used. NO Mermaid JS used. -->
+
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Digital Domain Architecture & Public Figure Directory</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Space+Grotesk:wght@500;600;700&display=swap" rel="stylesheet">
+    <style>
+        body {
+            background-color: #0b0f17;
+            color: #e2e8f0;
+            font-family: 'Inter', system-ui, -apple-system, sans-serif;
+        }
+        h1, h2, h3, h4, .font-heading {
+            font-family: 'Space Grotesk', sans-serif;
+        }
+        .chart-container {
+            position: relative;
+            width: 100%;
+            max-width: 580px;
+            margin-left: auto;
+            margin-right: auto;
+            height: 320px;
+            max-height: 380px;
+        }
+        @media (min-width: 768px) {
+            .chart-container {
+                height: 340px;
+            }
+        }
+        /* Crisp, editorial badge tags without rounded pill shapes */
+        .badge-tag {
+            font-size: 10px;
+            letter-spacing: 0.05em;
+            text-transform: uppercase;
+            padding: 3px 8px;
+            border-radius: 2px;
+            font-weight: 600;
+        }
+        .badge-autonomous { background-color: #211910; color: #d4a359; border: 1px solid #4a341b; }
+        .badge-enterprise { background-color: #111827; color: #9ca3af; border: 1px solid #374151; }
+        .badge-aggregator { background-color: #0d2019; color: #6ee7b7; border: 1px solid #134e3a; }
+        .badge-hybrid { background-color: #23111b; color: #f472b6; border: 1px solid #501b38; }
+        .badge-dual { background-color: #1c152b; color: #c084fc; border: 1px solid #402868; }
+    </style>
+</head>
+<body class="min-h-screen flex flex-col bg-[#0b0f17] text-slate-200 antialiased">
+
+    <!-- Top Header -->
+    <header class="bg-[#111622] text-slate-100 border-b border-slate-800/80 sticky top-0 z-40">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-4">
+            <div class="flex flex-col md:flex-row md:items-center md:justify-between gap-2">
+                <div>
+                    <div class="flex items-center gap-3">
+                        <span class="text-xs uppercase font-mono tracking-widest text-[#d4a359]">Registry Index 2026</span>
+                        <span class="text-slate-600">|</span>
+                        <span class="text-xs font-mono text-slate-400">Media & Web Architecture</span>
+                    </div>
+                    <h1 class="text-xl sm:text-2xl font-bold tracking-tight text-slate-100 mt-1">Public Figure Domain Directory</h1>
+                </div>
+                <div class="flex items-center space-x-2 text-xs bg-[#0b0f17] px-3 py-1.5 rounded-sm border border-slate-800 text-slate-300 font-mono">
+                    <span class="w-2 h-2 rounded-none bg-[#d4a359]"></span>
+                    <span>13 ARCHIVAL RECORDS INDEXED</span>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <!-- Main Container -->
+    <main class="flex-grow max-w-7xl w-full mx-auto px-4 sm:px-6 lg:px-8 py-8 space-y-8">
+
+        <!-- Executive Summary Section -->
+        <section class="bg-[#111622] rounded-md p-6 border border-slate-800/80">
+            <div class="max-w-3xl">
+                <h2 class="text-lg font-bold text-slate-100 mb-2 font-heading">Structural Taxonomy & Domain Analysis</h2>
+                <p class="text-slate-300 text-sm leading-relaxed mb-6">
+                    This directory catalogs the primary official domains, secondary distribution portals, and monetization models for prominent political commentators, independent correspondents, and media figures. The registry maps modern digital strategy across sovereign domains, institutional publisher syndication, direct subscriber newsletters, and multi-channel aggregation.
+                </p>
+            </div>
+            
+            <!-- Quick Stat Counters -->
+            <div class="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-5 gap-3">
+                <div class="bg-[#0b0f17] border border-slate-800 p-3.5 rounded-sm">
+                    <span class="block text-2xl font-bold font-heading text-[#d4a359]" id="stat-total">13</span>
+                    <span class="text-[11px] uppercase tracking-wider text-slate-400 font-medium">Tracked Figures</span>
+                </div>
+                <div class="bg-[#0b0f17] border border-slate-800 p-3.5 rounded-sm">
+                    <span class="block text-2xl font-bold font-heading text-slate-200">5</span>
+                    <span class="text-[11px] uppercase tracking-wider text-slate-400 font-medium">Autonomous Portals</span>
+                </div>
+                <div class="bg-[#0b0f17] border border-slate-800 p-3.5 rounded-sm">
+                    <span class="block text-2xl font-bold font-heading text-slate-200">3</span>
+                    <span class="text-[11px] uppercase tracking-wider text-slate-400 font-medium">Enterprise Hubs</span>
+                </div>
+                <div class="bg-[#0b0f17] border border-slate-800 p-3.5 rounded-sm">
+                    <span class="block text-2xl font-bold font-heading text-slate-200">3</span>
+                    <span class="text-[11px] uppercase tracking-wider text-slate-400 font-medium">Aggregators/Newsletters</span>
+                </div>
+                <div class="bg-[#0b0f17] border border-slate-800 p-3.5 rounded-sm col-span-2 sm:col-span-1">
+                    <span class="block text-2xl font-bold font-heading text-slate-200">2</span>
+                    <span class="text-[11px] uppercase tracking-wider text-slate-400 font-medium">Specialized / Dual</span>
+                </div>
+            </div>
+        </section>
+
+        <!-- Directory Exploration Section -->
+        <section class="space-y-4">
+            <div class="flex flex-col sm:flex-row sm:items-end justify-between gap-2 border-b border-slate-800 pb-3">
+                <div>
+                    <h2 class="text-lg font-bold text-slate-100 font-heading">Directory Registry</h2>
+                    <p class="text-slate-400 text-xs mt-0.5">Filter by architectural model or search by individual name or platform URL.</p>
+                </div>
+            </div>
+
+            <!-- Filter and Search Bar -->
+            <div class="flex flex-col md:flex-row gap-3 justify-between items-stretch md:items-center bg-[#111622] p-3 rounded-md border border-slate-800">
+                <!-- Search Input -->
+                <div class="relative flex-grow max-w-md">
+                    <input type="text" id="search-input" placeholder="Search figure name, URL, or channel focus..." class="w-full pl-3 pr-8 py-2 text-xs bg-[#0b0f17] text-slate-100 placeholder-slate-500 border border-slate-700/80 rounded-sm focus:outline-none focus:border-[#d4a359] transition-colors font-mono">
+                    <button id="clear-search" class="absolute right-2.5 top-2 text-slate-400 hover:text-slate-200 hidden text-xs font-bold">✕</button>
+                </div>
+
+                <!-- Category Filters -->
+                <div class="flex flex-wrap gap-1.5 text-xs" id="filter-buttons">
+                    <button data-filter="all" class="filter-btn active px-3 py-1.5 rounded-sm font-medium bg-[#d4a359] text-slate-950 font-mono text-[11px] uppercase tracking-wider">All (13)</button>
+                    <button data-filter="Autonomous Field Reporting Portal" class="filter-btn px-3 py-1.5 rounded-sm font-medium bg-[#0b0f17] border border-slate-700 hover:border-slate-500 text-slate-300 font-mono text-[11px] uppercase tracking-wider">Autonomous</button>
+                    <button data-filter="Enterprise Media Network Show Hub" class="filter-btn px-3 py-1.5 rounded-sm font-medium bg-[#0b0f17] border border-slate-700 hover:border-slate-500 text-slate-300 font-mono text-[11px] uppercase tracking-wider">Enterprise</button>
+                    <button data-filter="Aggregator & Newsletter" class="filter-btn px-3 py-1.5 rounded-sm font-medium bg-[#0b0f17] border border-slate-700 hover:border-slate-500 text-slate-300 font-mono text-[11px] uppercase tracking-wider">Aggregator / Newsletter</button>
+                    <button data-filter="Specialized / Dual" class="filter-btn px-3 py-1.5 rounded-sm font-medium bg-[#0b0f17] border border-slate-700 hover:border-slate-500 text-slate-300 font-mono text-[11px] uppercase tracking-wider">Hybrid & Dual</button>
+                </div>
+            </div>
+
+            <!-- Cards Grid -->
+            <div id="figures-grid" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+                <!-- Dynamic Content Population via JS -->
+            </div>
+            
+            <div id="no-results" class="hidden text-center py-12 bg-[#111622] rounded-md border border-slate-800">
+                <p class="text-slate-400 text-xs font-mono">NO MATCHING REGISTRY ENTRIES FOUND.</p>
+            </div>
+        </section>
+
+        <!-- Architectural Analytics Section -->
+        <section class="space-y-4">
+            <div class="border-b border-slate-800 pb-3">
+                <h2 class="text-lg font-bold text-slate-100 font-heading">Structural Distribution & Monetization Analysis</h2>
+                <p class="text-slate-400 text-xs mt-0.5">Quantitative classification of architectural distribution models and primary subscriber mechanisms.</p>
+            </div>
+
+            <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
+                <!-- Chart 1: Architectural Classification Breakdown -->
+                <div class="bg-[#111622] p-5 rounded-md border border-slate-800 flex flex-col justify-between">
+                    <div>
+                        <h3 class="text-sm font-bold text-slate-200 font-heading mb-1">Architectural Class Breakdown</h3>
+                        <p class="text-slate-400 text-xs mb-4">Ratio of sovereign web domains to platform-hosted show hubs.</p>
+                    </div>
+                    <div class="chart-container">
+                        <canvas id="architectureChart"></canvas>
+                    </div>
+                </div>
+
+                <!-- Chart 2: Primary Monetization & Focus Channels -->
+                <div class="bg-[#111622] p-5 rounded-md border border-slate-800 flex flex-col justify-between">
+                    <div>
+                        <h3 class="text-sm font-bold text-slate-200 font-heading mb-1">Monetization & Revenue Channels</h3>
+                        <p class="text-slate-400 text-xs mb-4">Dominant business models operating across indexed domains.</p>
+                    </div>
+                    <div class="chart-container">
+                        <canvas id="monetizationChart"></canvas>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Full Directory Master Table -->
+        <section class="space-y-4">
+            <div class="border-b border-slate-800 pb-3">
+                <h2 class="text-lg font-bold text-slate-100 font-heading">Master Registry Index</h2>
+                <p class="text-slate-400 text-xs mt-0.5">Complete tabulated reference of public figures, primary URLs, secondary routing hubs, and operational focus.</p>
+            </div>
+
+            <div class="bg-[#111622] rounded-md border border-slate-800 overflow-x-auto">
+                <table class="w-full text-left text-xs border-collapse">
+                    <thead>
+                        <tr class="bg-[#0b0f17] border-b border-slate-800 text-slate-400 font-mono text-[11px] uppercase tracking-wider">
+                            <th class="py-3 px-4 font-semibold">Public Figure</th>
+                            <th class="py-3 px-4 font-semibold">Primary Domain</th>
+                            <th class="py-3 px-4 font-semibold">Secondary / Syndication</th>
+                            <th class="py-3 px-4 font-semibold">Architectural Class</th>
+                            <th class="py-3 px-4 font-semibold">Operational Objective</th>
+                        </tr>
+                    </thead>
+                    <tbody id="table-body" class="divide-y divide-slate-800/80 text-slate-300">
+                        <!-- Table rows populated dynamically -->
+                    </tbody>
+                </table>
+            </div>
+        </section>
+
+    </main>
+
+    <!-- Detailed View Modal -->
+    <div id="detail-modal" class="fixed inset-0 bg-[#070a0f]/85 backdrop-blur-xs z-50 flex items-center justify-center hidden p-4">
+        <div class="bg-[#111622] rounded-md max-w-2xl w-full p-6 border border-slate-700 relative max-h-[90vh] overflow-y-auto shadow-2xl">
+            <button id="close-modal" class="absolute top-4 right-4 text-slate-400 hover:text-slate-100 text-sm font-mono p-1 border border-slate-700/60 rounded-sm">ESC ✕</button>
+            <div id="modal-content" class="space-y-4">
+                <!-- Dynamically populated profile details -->
+            </div>
+        </div>
+    </div>
+
+    <!-- Footer -->
+    <footer class="bg-[#070a0f] text-slate-500 text-xs border-t border-slate-800/80 py-6 mt-12">
+        <div class="max-w-7xl mx-auto px-4 text-center space-y-1 font-mono">
+            <p class="text-slate-400">Public Figure Domain Directory & Analytical Index</p>
+            <p class="text-slate-600">Built with Vanilla JS, Tailwind CSS, & Chart.js. Strict zero SVG constraint.</p>
+        </div>
+    </footer>
+
+    <!-- Application JavaScript Logic -->
+    <script>
+        // Data Store containing all public figures and their precise domain architectures
+        const figuresData = [
+            {
+                id: "nick-shirley",
+                name: "Nick Shirley",
+                primaryUrl: "https://nickshirley.us/",
+                secondaryUrl: "https://www.nickshirley.com/",
+                model: "Autonomous Field Reporting Portal",
+                badgeClass: "badge-autonomous",
+                modelCategory: "Autonomous Field Reporting Portal",
+                monetization: "Non-profit fundraising (501c3) & Ad-free field dispatches",
+                focus: "On-the-ground investigative video dispatches, public audit reporting, and independent non-profit fundraising.",
+                notes: "Anchored at NickShirley.us with support through the Lincoln Media Foundation. Provides public audit video documentation, press clips, and congressional testimony materials."
+            },
+            {
+                id: "benny-johnson",
+                name: "Benny Johnson",
+                primaryUrl: "https://www.bennyjohnson.com/",
+                secondaryUrl: "https://rumble.com/BennyJohnson",
+                model: "Proprietary Media & Subscriber Hub",
+                badgeClass: "badge-autonomous",
+                modelCategory: "Autonomous Field Reporting Portal",
+                monetization: "Subscription community, merchandise, rumble integrations",
+                focus: "Video broadcasting of The Benny Show, exclusive membership community, and merchandise sales.",
+                notes: "Functions as a central broadcasting hub for The Benny Show. Features prominent video embeds, fan subscriptions, and direct store access while routing live video traffic through Rumble."
+            },
+            {
+                id: "tim-pool",
+                name: "Tim Pool",
+                primaryUrl: "https://timcast.com/",
+                secondaryUrl: "https://timcast.com/shop",
+                model: "Digital Newsroom & Media Network",
+                badgeClass: "badge-autonomous",
+                modelCategory: "Autonomous Field Reporting Portal",
+                monetization: "E-commerce shop, members area, programmatic ads",
+                focus: "Daily political news commentary, roundtables (Timcast IRL), written journalism, and retail merchandising.",
+                notes: "Has evolved from an individual journalistic site into a multi-author digital newsroom (Timcast.com) complete with a dedicated e-commerce storefront at Timcast.com/shop."
+            },
+            {
+                id: "nick-sortor",
+                name: "Nick Sortor",
+                primaryUrl: "https://linktr.ee/nicksortor",
+                secondaryUrl: "https://x.com/nicksortor",
+                model: "Centralized Dynamic Link Aggregator",
+                badgeClass: "badge-aggregator",
+                modelCategory: "Aggregator & Newsletter",
+                monetization: "Social referral traffic, TV network appearances, tips",
+                focus: "Real-time civil unrest footage, field reporting feeds, and multi-platform media routing.",
+                notes: "Employs an agile, mobile-first link aggregator (Linktr.ee) to rapidly dynamically route breaking live event traffic to active live streams on X, Rumble, and Newsmax."
+            },
+            {
+                id: "cam-higby",
+                name: "Cam Higby",
+                primaryUrl: "https://www.camhigbyusa.com/",
+                secondaryUrl: "https://www.youtube.com/@CamHigby",
+                model: "Independent Documentary & Dispatch Portal",
+                badgeClass: "badge-autonomous",
+                modelCategory: "Autonomous Field Reporting Portal",
+                monetization: "YouTube syndication, independent donations",
+                focus: "Frontline campus debates, political tracking metrics, and investigative dispatches under Fearless Media.",
+                notes: "Operates CamHigbyUSA.com under Fearless Media, using geographic interactive maps and automated political tracking tools that channel audience back to YouTube."
+            },
+            {
+                id: "spencer-pratt",
+                name: "Spencer Pratt",
+                primaryUrl: "https://mayorpratt.com/",
+                secondaryUrl: "https://prattdaddy.com/",
+                model: "Political Campaign & Commercial Portal",
+                badgeClass: "badge-hybrid",
+                modelCategory: "Specialized / Dual",
+                monetization: "Direct-to-consumer crystal sales, publishing, political contributions",
+                focus: "Municipal electoral platform, direct-to-consumer e-commerce, and multimedia career link hubs.",
+                notes: "Demonstrates cross-sector digital convergence by pairing policy portal MayorPratt.com (and SpencerPratt4Mayor.com) with crystal e-commerce store PrattDaddy.com."
+            },
+            {
+                id: "chaya-raichik",
+                name: "Chaya Raichik",
+                primaryUrl: "https://www.libsoftiktok.com/",
+                secondaryUrl: "https://x.com/libsoftiktok",
+                model: "Direct Subscription Newsletter Network",
+                badgeClass: "badge-aggregator",
+                modelCategory: "Aggregator & Newsletter",
+                monetization: "Paid Substack subscriptions, direct fan contributions",
+                focus: "Investigative cultural reporting, institutional critiques, and direct reader subscriber base (Libs of TikTok).",
+                notes: "Directs audience traffic to LibsofTikTok.com via Substack publishing infrastructure, bypassing social algorithmic filtering while monetizing direct-to-inbox reporting."
+            },
+            {
+                id: "jack-posobiec",
+                name: "Jack Posobiec",
+                primaryUrl: "https://humanevents.com/author/jack-posobiec",
+                secondaryUrl: "https://humanevents.com/human-events-podcasts",
+                model: "Institutional Publishing Masthead & Show Hub",
+                badgeClass: "badge-enterprise",
+                modelCategory: "Enterprise Media Network Show Hub",
+                monetization: "Enterprise editorial network, podcast sponsorships",
+                focus: "Daily written essays, opinion columns, and multimedia podcast episodes of Human Events Daily.",
+                notes: "Serves as Senior Editor at Human Events, nesting his official written portfolio and Human Events Daily podcast directly inside the publication's legacy domain structure."
+            },
+            {
+                id: "charlie-kirk",
+                name: "Charlie Kirk",
+                primaryUrl: "https://www.charliekirk.com/",
+                secondaryUrl: "https://members.charliekirk.com/",
+                model: "Syndicated Broadcasting & Membership Hub",
+                badgeClass: "badge-autonomous",
+                modelCategory: "Autonomous Field Reporting Portal",
+                monetization: "Salem Radio syndication, donor contributions, member portal subscriptions",
+                focus: "Daily podcast dispatches, Salem Radio Network streaming, editorial commentary, and donor relations.",
+                notes: "Combines daily podcast streaming and Turning Point USA outreach with an exclusive subdomain (Members.charliekirk.com) offering ad-free feeds and subscriber discussion boards."
+            },
+            {
+                id: "matt-walsh",
+                name: "Matt Walsh",
+                primaryUrl: "https://www.dailywire.com/show/the-matt-walsh-show",
+                secondaryUrl: "https://www.dailywire.com/",
+                model: "Enterprise Media Network Show Hub",
+                badgeClass: "badge-enterprise",
+                modelCategory: "Enterprise Media Network Show Hub",
+                monetization: "Daily Wire SVOD subscription paywall, movie streaming releases",
+                focus: "Long-form video commentary, documentary film distribution, and subscription-gated video archives.",
+                notes: "Nested fully inside The Daily Wire’s enterprise ecosystem, leveraging corporate VOD streaming apps across TV and mobile platforms rather than managing a distinct website."
+            },
+            {
+                id: "steven-crowder",
+                name: "Steven Crowder",
+                primaryUrl: "https://www.louderwithcrowder.com/",
+                secondaryUrl: "http://www.louderwithcrowder.com/mugclub",
+                model: "Sovereign Network & Subscription Community",
+                badgeClass: "badge-autonomous",
+                modelCategory: "Autonomous Field Reporting Portal",
+                monetization: "Direct MugClub recurring memberships, private subscriptions",
+                focus: "Daily comedic-political broadcasts, field investigations, and direct consumer club subscriptions (MugClub).",
+                notes: "Restructured LouderWithCrowder.com around the MugClub subscription portal to guarantee direct subscriber revenue independent of third-party platform moderation."
+            },
+            {
+                id: "ben-shapiro",
+                name: "Ben Shapiro",
+                primaryUrl: "https://www.dailywire.com/hosts/ben-shapiro",
+                secondaryUrl: "https://www.dailywire.com/show/the-ben-shapiro-show",
+                model: "Corporate Media Masthead Host Hub",
+                badgeClass: "badge-enterprise",
+                modelCategory: "Enterprise Media Network Show Hub",
+                monetization: "Daily Wire co-ownership, subscription paywalls, ad syndication",
+                focus: "Daily syndicated broadcast of The Ben Shapiro Show, analytical columns, and enterprise media products.",
+                notes: "Operates as Editor Emeritus and co-founder of The Daily Wire. Primary digital homes reside directly inside DailyWire.com host pages to drive enterprise cross-promotions."
+            },
+            {
+                id: "ryan-amacher",
+                name: "Ryan Amacher",
+                primaryUrl: "https://x.com/RheinAmacher",
+                secondaryUrl: "https://www.uta.edu/administration/president/investiture/past-presidents",
+                model: "Social Distribution / Historical Academic Archive",
+                badgeClass: "badge-dual",
+                modelCategory: "Specialized / Dual",
+                monetization: "Non-monetized social media / Institutional repository",
+                focus: "Contemporary political social commentary (active) / Legacy university presidential repository (historical).",
+                notes: "Exhibits a dual-profile search dynamic: contemporary political commentator operating via @RheinAmacher on X vs historical academic records for late economist Dr. Ryan C. Amacher maintained by UT Arlington."
+            }
+        ];
+
+        // State Management
+        let currentFilter = 'all';
+        let searchQuery = '';
+
+        // DOM Elements
+        const gridContainer = document.getElementById('figures-grid');
+        const tableBody = document.getElementById('table-body');
+        const searchInput = document.getElementById('search-input');
+        const clearSearchBtn = document.getElementById('clear-search');
+        const filterButtons = document.querySelectorAll('.filter-btn');
+        const noResults = document.getElementById('no-results');
+        const modal = document.getElementById('detail-modal');
+        const modalContent = document.getElementById('modal-content');
+        const closeModalBtn = document.getElementById('close-modal');
+
+        // Initialize Render
+        document.addEventListener('DOMContentLoaded', () => {
+            renderGrid();
+            renderTable();
+            initCharts();
+            setupEventListeners();
+        });
+
+        // Event Listeners Setup
+        function setupEventListeners() {
+            // Search Input
+            searchInput.addEventListener('input', (e) => {
+                searchQuery = e.target.value.toLowerCase().trim();
+                clearSearchBtn.classList.toggle('hidden', searchQuery === '');
+                filterData();
+            });
+
+            clearSearchBtn.addEventListener('click', () => {
+                searchInput.value = '';
+                searchQuery = '';
+                clearSearchBtn.classList.add('hidden');
+                filterData();
+            });
+
+            // Category Filter Buttons
+            filterButtons.forEach(btn => {
+                btn.addEventListener('click', () => {
+                    filterButtons.forEach(b => {
+                        b.classList.remove('active', 'bg-[#d4a359]', 'text-slate-950');
+                        b.classList.add('bg-[#0b0f17]', 'text-slate-300', 'border', 'border-slate-700');
+                    });
+                    btn.classList.add('active', 'bg-[#d4a359]', 'text-slate-950');
+                    btn.classList.remove('bg-[#0b0f17]', 'text-slate-300', 'border', 'border-slate-700');
+
+                    currentFilter = btn.getAttribute('data-filter');
+                    filterData();
+                });
+            });
+
+            // Modal Close
+            closeModalBtn.addEventListener('click', closeModal);
+            modal.addEventListener('click', (e) => {
+                if (e.target === modal) closeModal();
+            });
+            document.addEventListener('keydown', (e) => {
+                if (e.key === 'Escape') closeModal();
+            });
+        }
+
+        // Filter Data Logic
+        function filterData() {
+            const filtered = figuresData.filter(figure => {
+                const matchesFilter = (currentFilter === 'all') || 
+                                     (currentFilter === figure.modelCategory) ||
+                                     (currentFilter === 'Aggregator & Newsletter' && (figure.modelCategory === 'Aggregator & Newsletter')) ||
+                                     (currentFilter === 'Specialized / Dual' && (figure.modelCategory === 'Specialized / Dual'));
+
+                const matchesSearch = figure.name.toLowerCase().includes(searchQuery) ||
+                                      figure.primaryUrl.toLowerCase().includes(searchQuery) ||
+                                      figure.secondaryUrl.toLowerCase().includes(searchQuery) ||
+                                      figure.model.toLowerCase().includes(searchQuery) ||
+                                      figure.focus.toLowerCase().includes(searchQuery);
+
+                return matchesFilter && matchesSearch;
+            });
+
+            renderGrid(filtered);
+            renderTable(filtered);
+            noResults.classList.toggle('hidden', filtered.length > 0);
+        }
+
+        // Render Grid View
+        function renderGrid(data = figuresData) {
+            gridContainer.innerHTML = '';
+            data.forEach(item => {
+                const card = document.createElement('div');
+                card.className = "bg-[#111622] rounded-md border border-slate-800 hover:border-slate-600 transition-colors p-4 flex flex-col justify-between space-y-3 cursor-pointer group";
+                card.onclick = () => openModal(item);
+
+                card.innerHTML = `
+                    <div class="space-y-2">
+                        <div class="flex items-start justify-between gap-2">
+                            <h3 class="text-base font-bold font-heading text-slate-100 group-hover:text-[#d4a359] transition-colors">${item.name}</h3>
+                            <span class="badge-tag ${item.badgeClass}">${item.modelCategory}</span>
+                        </div>
+                        <p class="text-xs text-[#d4a359] font-mono">${item.model}</p>
+                        <p class="text-xs text-slate-300 leading-normal line-clamp-2">${item.focus}</p>
+                    </div>
+
+                    <div class="pt-2.5 border-t border-slate-800/80 space-y-1.5 text-xs font-mono">
+                        <div class="flex items-center justify-between text-slate-400">
+                            <span class="text-slate-500 text-[11px]">Primary:</span>
+                            <a href="${item.primaryUrl}" target="_blank" onclick="event.stopPropagation()" class="text-[#d4a359] hover:underline truncate max-w-[190px]">${cleanUrl(item.primaryUrl)}</a>
+                        </div>
+                        <div class="flex items-center justify-between text-slate-400">
+                            <span class="text-slate-500 text-[11px]">Secondary:</span>
+                            <a href="${item.secondaryUrl}" target="_blank" onclick="event.stopPropagation()" class="text-slate-300 hover:underline truncate max-w-[190px]">${cleanUrl(item.secondaryUrl)}</a>
+                        </div>
+                    </div>
+                `;
+                gridContainer.appendChild(card);
+            });
+        }
+
+        // Render Table View
+        function renderTable(data = figuresData) {
+            tableBody.innerHTML = '';
+            data.forEach((item, index) => {
+                const row = document.createElement('tr');
+                row.className = index % 2 === 0 ? 'bg-[#111622] hover:bg-slate-800/40' : 'bg-[#0e121c] hover:bg-slate-800/40';
+                
+                row.innerHTML = `
+                    <td class="py-3 px-4 font-bold text-slate-100 font-heading">${item.name}</td>
+                    <td class="py-3 px-4 font-mono text-xs text-[#d4a359]">
+                        <a href="${item.primaryUrl}" target="_blank" class="hover:underline">${item.primaryUrl}</a>
+                    </td>
+                    <td class="py-3 px-4 font-mono text-xs text-slate-300">
+                        <a href="${item.secondaryUrl}" target="_blank" class="hover:underline">${item.secondaryUrl}</a>
+                    </td>
+                    <td class="py-3 px-4">
+                        <span class="badge-tag ${item.badgeClass}">${item.model}</span>
+                    </td>
+                    <td class="py-3 px-4 text-xs text-slate-300 max-w-xs leading-normal">${item.focus}</td>
+                `;
+                tableBody.appendChild(row);
+            });
+        }
+
+        // Modal Logic
+        function openModal(item) {
+            modalContent.innerHTML = `
+                <div class="border-b border-slate-800 pb-3">
+                    <span class="badge-tag ${item.badgeClass}">${item.modelCategory}</span>
+                    <h2 class="text-xl font-bold font-heading text-slate-100 mt-2">${item.name}</h2>
+                    <p class="text-[#d4a359] text-xs font-mono mt-0.5">${item.model}</p>
+                </div>
+
+                <div class="space-y-3.5 text-xs text-slate-300">
+                    <div>
+                        <h4 class="font-mono text-[11px] uppercase tracking-wider text-slate-400 mb-1">Official Web Destinations</h4>
+                        <div class="bg-[#0b0f17] p-3 rounded-sm space-y-2 border border-slate-800 font-mono text-xs">
+                            <div>
+                                <span class="text-slate-500 block text-[11px]">Primary Domain:</span>
+                                <a href="${item.primaryUrl}" target="_blank" class="text-[#d4a359] font-bold hover:underline break-all">${item.primaryUrl}</a>
+                            </div>
+                            <div>
+                                <span class="text-slate-500 block text-[11px]">Secondary / Affiliated Hub:</span>
+                                <a href="${item.secondaryUrl}" target="_blank" class="text-slate-200 font-bold hover:underline break-all">${item.secondaryUrl}</a>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div>
+                        <h4 class="font-mono text-[11px] uppercase tracking-wider text-slate-400 mb-1">Content & Operational Focus</h4>
+                        <p class="bg-[#0b0f17] p-3 rounded-sm border border-slate-800 text-slate-200 leading-relaxed">${item.focus}</p>
+                    </div>
+
+                    <div>
+                        <h4 class="font-mono text-[11px] uppercase tracking-wider text-slate-400 mb-1">Monetization & Distribution Model</h4>
+                        <p class="bg-[#0b0f17] p-3 rounded-sm border border-slate-800 text-slate-200 leading-relaxed">${item.monetization}</p>
+                    </div>
+
+                    <div>
+                        <h4 class="font-mono text-[11px] uppercase tracking-wider text-slate-400 mb-1">Architectural Background</h4>
+                        <p class="bg-[#0b0f17] p-3 rounded-sm border border-slate-800 text-slate-300 text-xs leading-relaxed">${item.notes}</p>
+                    </div>
+                </div>
+
+                <div class="pt-3 border-t border-slate-800 flex justify-end">
+                    <a href="${item.primaryUrl}" target="_blank" class="bg-[#d4a359] text-slate-950 font-bold font-mono px-4 py-2 rounded-sm text-xs hover:bg-[#c5944a] transition-colors">VISIT PRIMARY DOMAIN ↗</a>
+                </div>
+            `;
+            modal.classList.remove('hidden');
+        }
+
+        function closeModal() {
+            modal.classList.add('hidden');
+        }
+
+        // Helper to trim URLs for card display
+        function cleanUrl(url) {
+            return url.replace('https://', '').replace('http://', '').replace('www.', '');
+        }
+
+        // Initialize Chart.js Visualizations (Configured for Editorial Dark Theme)
+        function initCharts() {
+            // Chart 1: Architectural Classification
+            const ctx1 = document.getElementById('architectureChart').getContext('2d');
+            new Chart(ctx1, {
+                type: 'doughnut',
+                data: {
+                    labels: [
+                        'Autonomous Portals',
+                        'Enterprise Networks',
+                        'Aggregators & Newsletters',
+                        'Specialized / Dual Models'
+                    ],
+                    datasets: [{
+                        data: [6, 3, 2, 2],
+                        backgroundColor: [
+                            '#d4a359',
+                            '#6b7280',
+                            '#10b981',
+                            '#c084fc'
+                        ],
+                        borderWidth: 1,
+                        borderColor: '#111622'
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: {
+                        legend: {
+                            position: 'bottom',
+                            labels: {
+                                color: '#9ca3af',
+                                font: { size: 10, family: 'Inter' },
+                                boxWidth: 10
+                            }
+                        },
+                        tooltip: {
+                            callbacks: {
+                                label: function(context) {
+                                    return ` ${context.label}: ${context.raw} Figures`;
+                                }
+                            }
+                        }
+                    }
+                }
+            });
+
+            // Chart 2: Primary Monetization Channels
+            const ctx2 = document.getElementById('monetizationChart').getContext('2d');
+            new Chart(ctx2, {
+                type: 'bar',
+                data: {
+                    labels: [
+                        'Direct Subscriptions',
+                        'Ad/Sponsor Syndication',
+                        'E-Commerce & Retail',
+                        'Donations & Non-Profit',
+                        'Enterprise Paywall'
+                    ],
+                    datasets: [{
+                        label: 'Figures Deploying Strategy',
+                        data: [5, 4, 3, 2, 3],
+                        backgroundColor: '#d4a359',
+                        borderRadius: 2
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    indexAxis: 'y',
+                    scales: {
+                        x: {
+                            beginAtZero: true,
+                            ticks: { color: '#9ca3af', stepSize: 1, font: { size: 10, family: 'Inter' } },
+                            grid: { color: '#1f293d' }
+                        },
+                        y: {
+                            ticks: { color: '#cbd5e1', font: { size: 10, family: 'Inter' } },
+                            grid: { display: false }
+                        }
+                    },
+                    plugins: {
+                        legend: { display: false }
+                    }
+                }
+            });
+        }
+    </script>
+</body>
+</html>
