@@ -1,0 +1,729 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Political Influence & AI — Investigative Briefing</title>
+<style>
+:root {
+  color-scheme: dark;
+  --bg-canvas: #090c15;
+  --bg-surface: #121726;
+  --bg-surface-elevated: #1a2236;
+  --panel-glass: rgba(26, 34, 54, 0.72);
+  --border-subtle: rgba(140, 165, 210, 0.18);
+  --border-prominent: rgba(140, 165, 210, 0.38);
+
+  --accent-cyan: #00d2ff;
+  --accent-blue: #3b82f6;
+  --accent-magenta: #e040fb;
+  --accent-amber: #f59e0b;
+  --accent-emerald: #10b981;
+
+  --text-main: #f8fafc;
+  --text-muted: #94a3b8;
+  --text-dim: #64748b;
+
+  --radius-sm: 8px;
+  --radius-md: 14px;
+  --radius-lg: 22px;
+  --shadow-elevation: 0 18px 45px -10px rgba(0, 0, 0, 0.55);
+}
+
+*, *::before, *::after { box-sizing: border-box; }
+html { scroll-behavior: smooth; }
+
+body {
+  margin: 0;
+  background-color: var(--bg-canvas);
+  background-image: 
+    radial-gradient(ellipse 90% 50% at 20% -10%, rgba(224, 64, 251, 0.14), transparent 60%),
+    radial-gradient(ellipse 70% 45% at 80% 15%, rgba(0, 210, 255, 0.12), transparent 50%),
+    linear-gradient(180deg, var(--bg-canvas) 0%, #0d121f 50%, var(--bg-canvas) 100%);
+  color: var(--text-main);
+  font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+  line-height: 1.65;
+  -webkit-font-smoothing: antialiased;
+}
+
+.shell {
+  max-width: 1140px;
+  margin: 0 auto;
+  padding: 40px 24px 90px;
+}
+
+/* Header & Hero */
+.badge-eyebrow {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 5px 12px;
+  border-radius: 9999px;
+  background: rgba(224, 64, 251, 0.12);
+  border: 1px solid rgba(224, 64, 251, 0.35);
+  color: #ff9eff;
+  font-size: 0.75rem;
+  font-weight: 700;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+}
+
+h1 {
+  font-size: clamp(2.4rem, 5vw, 4.2rem);
+  font-weight: 850;
+  line-height: 1.05;
+  letter-spacing: -0.04em;
+  margin: 18px 0 16px;
+  background: linear-gradient(135deg, #ffffff 40%, var(--text-muted) 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+.hero-lead {
+  font-size: clamp(1.1rem, 2vw, 1.28rem);
+  color: var(--text-muted);
+  max-width: 820px;
+  margin: 0 0 28px;
+}
+
+/* Callouts & Key Takeaways */
+.key-takeaway {
+  position: relative;
+  overflow: hidden;
+  border-radius: var(--radius-md);
+  padding: 24px 28px;
+  border: 1px solid var(--border-prominent);
+  background: linear-gradient(135deg, rgba(59, 130, 246, 0.15), rgba(16, 185, 129, 0.08));
+  backdrop-filter: blur(14px);
+  margin: 28px 0;
+}
+
+.key-takeaway::before {
+  content: "";
+  position: absolute;
+  top: 0; left: 0; bottom: 0;
+  width: 5px;
+  background: linear-gradient(180deg, var(--accent-cyan), var(--accent-blue));
+}
+
+.key-takeaway strong {
+  color: #93c5fd;
+  display: block;
+  font-size: 0.86rem;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  margin-bottom: 6px;
+}
+
+/* Filter Controller via :has() */
+.filter-deck {
+  margin: 40px 0 20px;
+  padding: 16px;
+  border-radius: var(--radius-md);
+  background: var(--bg-surface);
+  border: 1px solid var(--border-subtle);
+}
+
+.filter-deck-header {
+  font-size: 0.82rem;
+  font-weight: 700;
+  color: var(--text-muted);
+  margin-bottom: 10px;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+}
+
+.filter-pills {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+}
+
+.filter-pills label {
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 0.88rem;
+  font-weight: 600;
+  padding: 8px 16px;
+  border-radius: 9999px;
+  background: var(--bg-surface-elevated);
+  border: 1px solid var(--border-subtle);
+  transition: all 0.2s ease;
+  user-select: none;
+}
+
+.filter-pills input { display: none; }
+
+.filter-pills label:hover {
+  border-color: var(--accent-cyan);
+  background: rgba(0, 210, 255, 0.08);
+}
+
+.shell:has(#filter-all:checked) label[for="filter-all"],
+.shell:has(#filter-verified:checked) label[for="filter-verified"],
+.shell:has(#filter-unverified:checked) label[for="filter-unverified"] {
+  background: linear-gradient(135deg, var(--accent-blue), #1d4ed8);
+  border-color: var(--accent-cyan);
+  color: #fff;
+  box-shadow: 0 4px 14px rgba(59, 130, 246, 0.4);
+}
+
+/* Filter Behavior using :has() */
+.shell:has(#filter-verified:checked) .card[data-status="unverified"],
+.shell:has(#filter-verified:checked) .pipeline-block {
+  opacity: 0.25;
+  filter: grayscale(0.8);
+  transition: opacity 0.3s ease;
+}
+
+.shell:has(#filter-unverified:checked) .card[data-status="verified"] {
+  opacity: 0.25;
+  filter: grayscale(0.8);
+  transition: opacity 0.3s ease;
+}
+
+/* Sticky Breadcrumb Navigation */
+.subnav {
+  position: sticky;
+  top: 14px;
+  z-index: 50;
+  display: flex;
+  gap: 8px;
+  overflow-x: auto;
+  padding: 8px;
+  margin: 25px 0 40px;
+  border-radius: 9999px;
+  background: rgba(18, 23, 38, 0.85);
+  border: 1px solid var(--border-subtle);
+  backdrop-filter: blur(16px);
+}
+
+.subnav a {
+  white-space: nowrap;
+  padding: 6px 14px;
+  border-radius: 9999px;
+  text-decoration: none;
+  font-size: 0.82rem;
+  font-weight: 600;
+  color: var(--text-muted);
+  transition: all 0.2s ease;
+}
+
+.subnav a:hover {
+  color: var(--text-main);
+  background: rgba(255, 255, 255, 0.08);
+}
+
+/* Layout Grids */
+.grid { display: grid; gap: 20px; }
+.grid-cols-3 { grid-template-columns: repeat(auto-fit, minmax(290px, 1fr)); }
+.grid-cols-2 { grid-template-columns: repeat(auto-fit, minmax(360px, 1fr)); }
+
+/* Interactive Cards */
+.card {
+  position: relative;
+  background: var(--panel-glass);
+  border: 1px solid var(--border-subtle);
+  border-radius: var(--radius-md);
+  padding: 24px;
+  box-shadow: var(--shadow-elevation);
+  transition: border-color 0.25s ease, transform 0.25s ease;
+}
+
+.card:hover {
+  border-color: var(--border-prominent);
+  transform: translateY(-2px);
+}
+
+.card-tag {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 4px 10px;
+  font-size: 0.72rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  border-radius: 6px;
+  margin-bottom: 14px;
+}
+
+.tag-verified {
+  background: rgba(16, 185, 129, 0.14);
+  color: #6ee7b7;
+  border: 1px solid rgba(16, 185, 129, 0.35);
+}
+
+.tag-unverified {
+  background: rgba(224, 64, 251, 0.14);
+  color: #f0abfc;
+  border: 1px solid rgba(224, 64, 251, 0.35);
+}
+
+.metric-big {
+  font-size: clamp(2rem, 3.5vw, 2.8rem);
+  font-weight: 850;
+  letter-spacing: -0.04em;
+  color: var(--accent-cyan);
+  line-height: 1.1;
+  margin-bottom: 6px;
+}
+
+.card-title {
+  font-size: 1.08rem;
+  font-weight: 750;
+  margin: 0 0 8px;
+}
+
+.card-desc {
+  font-size: 0.9rem;
+  color: var(--text-muted);
+  margin: 0;
+}
+
+/* Visualization: Influence Volume Bar */
+.ratio-cluster {
+  margin: 22px 0 10px;
+  display: grid;
+  gap: 16px;
+}
+
+.ratio-row {
+  display: flex;
+  justify-content: space-between;
+  font-size: 0.88rem;
+  font-weight: 600;
+}
+
+.meter-track {
+  height: 12px;
+  background: #1e2638;
+  border-radius: 9999px;
+  overflow: hidden;
+  margin-top: 6px;
+}
+
+.meter-fill {
+  height: 100%;
+  border-radius: 9999px;
+  transition: width 0.8s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.fill-palestine {
+  width: 93.7%;
+  background: linear-gradient(90deg, #3b82f6, #06b6d4);
+}
+
+.fill-israel {
+  width: 6.3%;
+  background: linear-gradient(90deg, #ec4899, #f43f5e);
+}
+
+/* Pipeline / Stepper: AI Vector */
+.pipeline-block {
+  margin-top: 24px;
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+  gap: 14px;
+}
+
+.step-card {
+  position: relative;
+  background: var(--bg-surface-elevated);
+  border: 1px solid var(--border-subtle);
+  border-radius: var(--radius-sm);
+  padding: 18px;
+}
+
+.step-counter {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 26px;
+  height: 26px;
+  border-radius: 50%;
+  background: var(--accent-blue);
+  color: #fff;
+  font-size: 0.78rem;
+  font-weight: 800;
+  margin-bottom: 12px;
+}
+
+.step-card strong {
+  display: block;
+  font-size: 0.95rem;
+  margin-bottom: 6px;
+  color: #ffffff;
+}
+
+.step-card p {
+  margin: 0;
+  font-size: 0.84rem;
+  color: var(--text-muted);
+}
+
+/* Modern Details & Accordions */
+details.modern-disclosure {
+  border: 1px solid var(--border-subtle);
+  border-radius: var(--radius-md);
+  background: var(--bg-surface);
+  margin-top: 18px;
+  overflow: hidden;
+  transition: border-color 0.2s;
+}
+
+details.modern-disclosure[open] {
+  border-color: var(--border-prominent);
+}
+
+details.modern-disclosure summary {
+  padding: 18px 22px;
+  cursor: pointer;
+  font-weight: 700;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  user-select: none;
+}
+
+details.modern-disclosure summary::after {
+  content: "+";
+  font-size: 1.25rem;
+  color: var(--accent-cyan);
+  transition: transform 0.2s ease;
+}
+
+details.modern-disclosure[open] summary::after {
+  content: "−";
+}
+
+.disclosure-body {
+  padding: 0 22px 20px;
+  font-size: 0.92rem;
+  color: var(--text-muted);
+}
+
+/* Table Design */
+.data-table-wrapper {
+  overflow-x: auto;
+  border-radius: var(--radius-md);
+  border: 1px solid var(--border-subtle);
+  background: var(--bg-surface);
+  margin-top: 20px;
+}
+
+table.modern-table {
+  width: 100%;
+  border-collapse: collapse;
+  text-align: left;
+  font-size: 0.92rem;
+}
+
+table.modern-table th {
+  padding: 16px 20px;
+  background: rgba(255, 255, 255, 0.03);
+  border-bottom: 1px solid var(--border-subtle);
+  font-weight: 700;
+  color: var(--text-main);
+}
+
+table.modern-table td {
+  padding: 16px 20px;
+  border-bottom: 1px solid var(--border-subtle);
+  color: var(--text-muted);
+}
+
+table.modern-table tr:last-child td { border-bottom: none; }
+
+/* Footnotes & Sources */
+.sources-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+  gap: 12px;
+  margin-top: 18px;
+}
+
+.source-card {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 10px 14px;
+  border-radius: var(--radius-sm);
+  background: var(--bg-surface);
+  border: 1px solid var(--border-subtle);
+  font-size: 0.84rem;
+  color: var(--text-main);
+  text-decoration: none;
+  transition: all 0.2s;
+}
+
+.source-card:hover {
+  border-color: var(--accent-cyan);
+  background: rgba(0, 210, 255, 0.05);
+}
+
+@media print {
+  body { background: #fff !important; color: #000 !important; }
+  .badge-eyebrow, .subnav, .filter-deck { display: none !important; }
+  .card, .key-takeaway, .step-card { 
+    background: #fff !important; 
+    border: 1px solid #ccc !important; 
+    box-shadow: none !important; 
+    color: #000 !important;
+  }
+  .card-desc, .hero-lead, .text-muted { color: #444 !important; }
+}
+</style>
+</head>
+<body>
+
+<!-- Hidden Radio Buttons to drive Filter State via CSS :has() -->
+<div class="shell">
+  <input type="radio" name="scope-filter" id="filter-all" checked>
+  <input type="radio" name="scope-filter" id="filter-verified">
+  <input type="radio" name="scope-filter" id="filter-unverified">
+
+  <header class="hero">
+    <div class="badge-eyebrow">
+      <span>●</span> Primary Intelligence Briefing
+    </div>
+    <h1>How Money & Influence Reshape What People See</h1>
+    <p class="hero-lead">
+      Political micro-payments, state-backed foreign narratives, and algorithmic content placement all compete for public perception. This brief separates <strong>formally registered public filings</strong> from <strong>unverified claims</strong>.
+    </p>
+
+    <div class="key-takeaway">
+      <strong>Core Structural Distinction</strong>
+      Directly purchasing media ads influences human viewers immediately. A parallel, less visible maneuver targets <em>machine information ingest</em>—seeding the open web so retrieval-augmented AI systems and search engines index manufactured consensus as factual citation.
+    </div>
+
+    <!-- Interactive Layer Filtering (Zero-JS) -->
+    <div class="filter-deck">
+      <div class="filter-deck-header">Filter Information Level</div>
+      <div class="filter-pills">
+        <label for="filter-all">View All Findings</label>
+        <label for="filter-verified">✓ Verified / Public Filings</label>
+        <label for="filter-unverified">⚠ Allegations / Unverified</label>
+      </div>
+    </div>
+  </header>
+
+  <nav class="subnav" aria-label="Section Navigation">
+    <a href="#domestic">01 · Domestic Finance</a>
+    <a href="#foreign">02 · Foreign Filings</a>
+    <a href="#algorithmic">03 · AI Synthesis & RAG</a>
+    <a href="#oversight">04 · Legal Mandates</a>
+    <a href="#citations">05 · Primary Sources</a>
+  </nav>
+
+  <!-- Section 01 -->
+  <section id="domestic" style="margin-bottom: 50px;">
+    <h2 style="font-size: 1.6rem; letter-spacing: -0.02em; margin-bottom: 8px;">01. Domestic Campaign Finance Footprint</h2>
+    <p style="color: var(--text-muted); margin-top: 0; font-size: 0.95rem;">
+      Specific entity transactions identified in campaign finance reports. Transaction size does not inherently demonstrate improper conduct under current PAC thresholds.
+    </p>
+
+    <div class="grid grid-cols-3">
+      <article class="card" data-status="verified">
+        <span class="card-tag tag-verified">FEC Records</span>
+        <div class="metric-big">$5.0M</div>
+        <div class="card-title">Extremity Care → MAGA Inc.</div>
+        <p class="card-desc">Federal election record filing transaction cited in source dossier.</p>
+      </article>
+
+      <article class="card" data-status="verified">
+        <span class="card-tag tag-verified">FEC Records</span>
+        <div class="metric-big">$500K</div>
+        <div class="card-title">ML Organization → MAGA Again!</div>
+        <p class="card-desc">Entity transfer documented within historical contribution schedules.</p>
+      </article>
+
+      <article class="card" data-status="verified">
+        <span class="card-tag tag-verified">State Reporting</span>
+        <div class="metric-big">$18,000</div>
+        <div class="card-title">Defend Texas Liberty → Influencable LLC</div>
+        <p class="card-desc">Disbursement linked to Texas localized influencer posting and amplification.</p>
+      </article>
+    </div>
+  </section>
+
+  <!-- Section 02 -->
+  <section id="foreign" style="margin-bottom: 50px;">
+    <h2 style="font-size: 1.6rem; letter-spacing: -0.02em; margin-bottom: 8px;">02. Cross-Border Influence Operations</h2>
+    <p style="color: var(--text-muted); margin-top: 0; font-size: 0.95rem;">
+      Disclosed agency registrations contrasted with private third-party social telemetry.
+    </p>
+
+    <div class="grid grid-cols-2">
+      <article class="card" data-status="verified">
+        <span class="card-tag tag-verified">DOJ / FARA Official Registry</span>
+        <h3 class="card-title">FARA Registration #7652: Esther Project</h3>
+        <p class="card-desc">
+          Official FARA registration confirms Bridges Partners contracted on behalf of the Government of Israel via Havas Media Germany. 
+        </p>
+        <div style="margin-top: 14px; font-size: 0.85rem; color: var(--text-dim);">
+          <em>Note:</em> The frequently quoted rate of <strong>$6,100–$7,400 per post</strong> represents calculated budget modeling rather than a mandated flat rate stipulated in the filing.
+        </div>
+      </article>
+
+      <article class="card" data-status="unverified">
+        <span class="card-tag tag-unverified">Private Analytics Telemetry</span>
+        <h3 class="card-title">Post-Oct 7 Tagged Volume (Humanz Study)</h3>
+        <p class="card-desc">
+          CTech publication reviewing social tagging volume on TikTok & Instagram identified a ~15:1 disparity in organic/amplified tagging velocity.
+        </p>
+
+        <div class="ratio-cluster">
+          <div>
+            <div class="ratio-row">
+              <span>Pro-Palestinian Tagged Impressions</span>
+              <span style="color: var(--accent-cyan);">109.61B (93.7%)</span>
+            </div>
+            <div class="meter-track">
+              <div class="meter-fill fill-palestine"></div>
+            </div>
+          </div>
+
+          <div>
+            <div class="ratio-row">
+              <span>Pro-Israeli Tagged Impressions</span>
+              <span style="color: var(--accent-magenta);">7.39B (6.3%)</span>
+            </div>
+            <div class="meter-track">
+              <div class="meter-fill fill-israel"></div>
+            </div>
+          </div>
+        </div>
+      </article>
+    </div>
+  </section>
+
+  <!-- Section 03 -->
+  <section id="algorithmic" style="margin-bottom: 50px;">
+    <h2 style="font-size: 1.6rem; letter-spacing: -0.02em; margin-bottom: 8px;">03. The AI & Search Manipulation Vector</h2>
+    <p style="color: var(--text-muted); margin-top: 0; font-size: 0.95rem;">
+      Evaluating the structural feasibility of “Source Poisoning” in Modern Large Language Model (LLM) search engines.
+    </p>
+
+    <div class="card" data-status="unverified" style="border-left: 4px solid var(--accent-magenta);">
+      <span class="card-tag tag-unverified">Uncorroborated Intelligence Dossier</span>
+      <h3 class="card-title">Claims Regarding “Project 545”</h3>
+      <p class="card-desc">
+        The briefing alleges an organized <strong>$545 Million</strong> deployment featuring <strong>11 synthetic authoritative domains</strong> designed to feed targeted demographics (campuses, church coalitions, and Gen Z). 
+        <em>These figures lack primary audit corroboration.</em>
+      </p>
+    </div>
+
+    <!-- Interactive Pipeline Graphic -->
+    <h3 style="font-size: 1.05rem; margin-top: 28px; margin-bottom: 4px;">Hypothesized Mechanics: Retrieval-Augmented Generation (RAG) Bias Injection</h3>
+    <div class="pipeline-block">
+      <div class="step-card">
+        <span class="step-counter">1</span>
+        <strong>Fabricate Sites</strong>
+        <p>Establish high-density synthetic news sites optimized for domain authority & SEO indexing.</p>
+      </div>
+
+      <div class="step-card">
+        <span class="step-counter">2</span>
+        <strong>Crawl Indexing</strong>
+        <p>Search crawlers ingest high volumes of pseudo-academic & referenced assertions.</p>
+      </div>
+
+      <div class="step-card">
+        <span class="step-counter">3</span>
+        <strong>Vector Retrieval</strong>
+        <p>AI search models query the index, weighting semantic relevance over verifiable provenance.</p>
+      </div>
+
+      <div class="step-card">
+        <span class="step-counter">4</span>
+        <strong>Output Echo</strong>
+        <p>The generative assistant quotes manufactured facts without flagging synthetic origin.</p>
+      </div>
+    </div>
+
+    <details class="modern-disclosure">
+      <summary>Technical Safeguards: How Systems Protect Against RAG Exploitation</summary>
+      <div class="disclosure-body">
+        Robust machine retrieval stacks mitigate automated narrative flooding by enforcing:
+        <ul>
+          <li><strong>Domain Provenance Cross-Checking:</strong> Checking source historical age and verified registry.</li>
+          <li><strong>Consensus Isolation:</strong> Flagging claims that exist solely across clustered, co-hosted domains.</li>
+          <li><strong>Zero-Shot Attribution Verification:</strong> Verifying if external sources cited by a website actually validate the claim made.</li>
+        </ul>
+      </div>
+    </details>
+  </section>
+
+  <!-- Section 04 -->
+  <section id="oversight" style="margin-bottom: 50px;">
+    <h2 style="font-size: 1.6rem; letter-spacing: -0.02em; margin-bottom: 8px;">04. Regulatory Scopes & Jurisdictional Lines</h2>
+    <div class="data-table-wrapper">
+      <table class="modern-table">
+        <thead>
+          <tr>
+            <th scope="col" style="width: 25%;">Enforcement Body</th>
+            <th scope="col" style="width: 40%;">Core Regulatory Jurisdiction</th>
+            <th scope="col" style="width: 35%;">Influence Threshold</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td><strong>DOJ / FARA</strong></td>
+            <td>Transparency in foreign principal representation.</td>
+            <td>Requires registration prior to narrative dissemination.</td>
+          </tr>
+          <tr>
+            <td><strong>FEC</strong></td>
+            <td>Federal political funding, hard/soft coordination.</td>
+            <td>Restricted to electioneering & candidate advocacy.</td>
+          </tr>
+          <tr>
+            <td><strong>FTC</strong></td>
+            <td>Commercial creator endorsements & product promotions.</td>
+            <td>Exempts pure political discourse from standard commercial rules.</td>
+          </tr>
+          <tr>
+            <td><strong>State Commissions</strong></td>
+            <td>State-specific ad disclosure (e.g., Texas Ethics Comm.).</td>
+            <td>Governs paid localized micro-influencer engagements.</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </section>
+
+  <!-- Section 05 -->
+  <section id="citations">
+    <h2 style="font-size: 1.6rem; letter-spacing: -0.02em; margin-bottom: 8px;">05. Verified Public References</h2>
+    <div class="sources-grid">
+      <a class="source-card" href="https://efile.fara.gov/ords/fara/f?p=1381:200:::NO:RP,200:P200_REG_NUMBER:7652" target="_blank" rel="noopener">
+        <span>📄</span> <strong>DOJ FARA: Reg. #7652</strong>
+      </a>
+      <a class="source-card" href="https://www.fec.gov/data/legal/matter-under-review/7994/" target="_blank" rel="noopener">
+        <span>⚖️</span> <strong>FEC Matter Review 7994</strong>
+      </a>
+      <a class="source-card" href="https://www.texastribune.org/2024/06/18/texas-ethics-commission-influencers-political-ads/" target="_blank" rel="noopener">
+        <span>📰</span> <strong>Texas Tribune Influencer Review</strong>
+      </a>
+      <a class="source-card" href="https://www.calcalistech.com/ctechnews/article/sykzpeqqp" target="_blank" rel="noopener">
+        <span>📊</span> <strong>CTech Humanz Dataset</strong>
+      </a>
+      <a class="source-card" href="https://www.fec.gov/help-candidates-and-committees/partnership-llc-contributions/" target="_blank" rel="noopener">
+        <span>📑</span> <strong>FEC LLC Contribution Guidelines</strong>
+      </a>
+      <a class="source-card" href="https://www.ftc.gov/business-guidance/resources/ftcs-endorsement-guides-what-people-are-asking" target="_blank" rel="noopener">
+        <span>🏛️</span> <strong>FTC Material Connection FAQ</strong>
+      </a>
+    </div>
+  </section>
+
+  <footer style="margin-top: 50px; padding-top: 20px; border-top: 1px solid var(--border-subtle); font-size: 0.8rem; color: var(--text-dim); text-align: center;">
+    Rendered with modern semantic web technologies (CSS Grid, `:has()` conditional queries, and accessible tokenization). Redesigned for information clarity.
+  </footer>
+</div>
+
+</body>
+</html>
