@@ -1,729 +1,305 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Political Influence & AI — Investigative Briefing</title>
+<meta name="color-scheme" content="dark">
+<meta name="description" content="An evidence-graded briefing on political funding, registered foreign influence, social media metrics, and AI information integrity.">
+<title>Influence & Information Integrity | Investigative Briefing</title>
 <style>
-:root {
-  color-scheme: dark;
-  --bg-canvas: #090c15;
-  --bg-surface: #121726;
-  --bg-surface-elevated: #1a2236;
-  --panel-glass: rgba(26, 34, 54, 0.72);
-  --border-subtle: rgba(140, 165, 210, 0.18);
-  --border-prominent: rgba(140, 165, 210, 0.38);
-
-  --accent-cyan: #00d2ff;
-  --accent-blue: #3b82f6;
-  --accent-magenta: #e040fb;
-  --accent-amber: #f59e0b;
-  --accent-emerald: #10b981;
-
-  --text-main: #f8fafc;
-  --text-muted: #94a3b8;
-  --text-dim: #64748b;
-
-  --radius-sm: 8px;
-  --radius-md: 14px;
-  --radius-lg: 22px;
-  --shadow-elevation: 0 18px 45px -10px rgba(0, 0, 0, 0.55);
+:root{
+  color-scheme:dark;--bg:#080e19;--panel:#101b2b;--panel2:#132136;--panel3:#17273e;
+  --line:#293b51;--line2:#3c546c;--white:#f1f6ff;--soft:#cfdaea;--muted:#9fb1c6;
+  --cyan:#61d9e9;--blue:#86adff;--green:#87e1ba;--amber:#ffd18e;--violet:#c4a9ff;
+  --radius:16px;--shadow:0 18px 40px rgba(0,0,0,.15)
 }
-
-*, *::before, *::after { box-sizing: border-box; }
-html { scroll-behavior: smooth; }
-
-body {
-  margin: 0;
-  background-color: var(--bg-canvas);
-  background-image: 
-    radial-gradient(ellipse 90% 50% at 20% -10%, rgba(224, 64, 251, 0.14), transparent 60%),
-    radial-gradient(ellipse 70% 45% at 80% 15%, rgba(0, 210, 255, 0.12), transparent 50%),
-    linear-gradient(180deg, var(--bg-canvas) 0%, #0d121f 50%, var(--bg-canvas) 100%);
-  color: var(--text-main);
-  font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
-  line-height: 1.65;
-  -webkit-font-smoothing: antialiased;
-}
-
-.shell {
-  max-width: 1140px;
-  margin: 0 auto;
-  padding: 40px 24px 90px;
-}
-
-/* Header & Hero */
-.badge-eyebrow {
-  display: inline-flex;
-  align-items: center;
-  gap: 8px;
-  padding: 5px 12px;
-  border-radius: 9999px;
-  background: rgba(224, 64, 251, 0.12);
-  border: 1px solid rgba(224, 64, 251, 0.35);
-  color: #ff9eff;
-  font-size: 0.75rem;
-  font-weight: 700;
-  letter-spacing: 0.12em;
-  text-transform: uppercase;
-}
-
-h1 {
-  font-size: clamp(2.4rem, 5vw, 4.2rem);
-  font-weight: 850;
-  line-height: 1.05;
-  letter-spacing: -0.04em;
-  margin: 18px 0 16px;
-  background: linear-gradient(135deg, #ffffff 40%, var(--text-muted) 100%);
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
-}
-
-.hero-lead {
-  font-size: clamp(1.1rem, 2vw, 1.28rem);
-  color: var(--text-muted);
-  max-width: 820px;
-  margin: 0 0 28px;
-}
-
-/* Callouts & Key Takeaways */
-.key-takeaway {
-  position: relative;
-  overflow: hidden;
-  border-radius: var(--radius-md);
-  padding: 24px 28px;
-  border: 1px solid var(--border-prominent);
-  background: linear-gradient(135deg, rgba(59, 130, 246, 0.15), rgba(16, 185, 129, 0.08));
-  backdrop-filter: blur(14px);
-  margin: 28px 0;
-}
-
-.key-takeaway::before {
-  content: "";
-  position: absolute;
-  top: 0; left: 0; bottom: 0;
-  width: 5px;
-  background: linear-gradient(180deg, var(--accent-cyan), var(--accent-blue));
-}
-
-.key-takeaway strong {
-  color: #93c5fd;
-  display: block;
-  font-size: 0.86rem;
-  letter-spacing: 0.08em;
-  text-transform: uppercase;
-  margin-bottom: 6px;
-}
-
-/* Filter Controller via :has() */
-.filter-deck {
-  margin: 40px 0 20px;
-  padding: 16px;
-  border-radius: var(--radius-md);
-  background: var(--bg-surface);
-  border: 1px solid var(--border-subtle);
-}
-
-.filter-deck-header {
-  font-size: 0.82rem;
-  font-weight: 700;
-  color: var(--text-muted);
-  margin-bottom: 10px;
-  text-transform: uppercase;
-  letter-spacing: 0.08em;
-}
-
-.filter-pills {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 10px;
-}
-
-.filter-pills label {
-  cursor: pointer;
-  display: inline-flex;
-  align-items: center;
-  gap: 8px;
-  font-size: 0.88rem;
-  font-weight: 600;
-  padding: 8px 16px;
-  border-radius: 9999px;
-  background: var(--bg-surface-elevated);
-  border: 1px solid var(--border-subtle);
-  transition: all 0.2s ease;
-  user-select: none;
-}
-
-.filter-pills input { display: none; }
-
-.filter-pills label:hover {
-  border-color: var(--accent-cyan);
-  background: rgba(0, 210, 255, 0.08);
-}
-
-.shell:has(#filter-all:checked) label[for="filter-all"],
-.shell:has(#filter-verified:checked) label[for="filter-verified"],
-.shell:has(#filter-unverified:checked) label[for="filter-unverified"] {
-  background: linear-gradient(135deg, var(--accent-blue), #1d4ed8);
-  border-color: var(--accent-cyan);
-  color: #fff;
-  box-shadow: 0 4px 14px rgba(59, 130, 246, 0.4);
-}
-
-/* Filter Behavior using :has() */
-.shell:has(#filter-verified:checked) .card[data-status="unverified"],
-.shell:has(#filter-verified:checked) .pipeline-block {
-  opacity: 0.25;
-  filter: grayscale(0.8);
-  transition: opacity 0.3s ease;
-}
-
-.shell:has(#filter-unverified:checked) .card[data-status="verified"] {
-  opacity: 0.25;
-  filter: grayscale(0.8);
-  transition: opacity 0.3s ease;
-}
-
-/* Sticky Breadcrumb Navigation */
-.subnav {
-  position: sticky;
-  top: 14px;
-  z-index: 50;
-  display: flex;
-  gap: 8px;
-  overflow-x: auto;
-  padding: 8px;
-  margin: 25px 0 40px;
-  border-radius: 9999px;
-  background: rgba(18, 23, 38, 0.85);
-  border: 1px solid var(--border-subtle);
-  backdrop-filter: blur(16px);
-}
-
-.subnav a {
-  white-space: nowrap;
-  padding: 6px 14px;
-  border-radius: 9999px;
-  text-decoration: none;
-  font-size: 0.82rem;
-  font-weight: 600;
-  color: var(--text-muted);
-  transition: all 0.2s ease;
-}
-
-.subnav a:hover {
-  color: var(--text-main);
-  background: rgba(255, 255, 255, 0.08);
-}
-
-/* Layout Grids */
-.grid { display: grid; gap: 20px; }
-.grid-cols-3 { grid-template-columns: repeat(auto-fit, minmax(290px, 1fr)); }
-.grid-cols-2 { grid-template-columns: repeat(auto-fit, minmax(360px, 1fr)); }
-
-/* Interactive Cards */
-.card {
-  position: relative;
-  background: var(--panel-glass);
-  border: 1px solid var(--border-subtle);
-  border-radius: var(--radius-md);
-  padding: 24px;
-  box-shadow: var(--shadow-elevation);
-  transition: border-color 0.25s ease, transform 0.25s ease;
-}
-
-.card:hover {
-  border-color: var(--border-prominent);
-  transform: translateY(-2px);
-}
-
-.card-tag {
-  display: inline-flex;
-  align-items: center;
-  gap: 6px;
-  padding: 4px 10px;
-  font-size: 0.72rem;
-  font-weight: 700;
-  text-transform: uppercase;
-  letter-spacing: 0.06em;
-  border-radius: 6px;
-  margin-bottom: 14px;
-}
-
-.tag-verified {
-  background: rgba(16, 185, 129, 0.14);
-  color: #6ee7b7;
-  border: 1px solid rgba(16, 185, 129, 0.35);
-}
-
-.tag-unverified {
-  background: rgba(224, 64, 251, 0.14);
-  color: #f0abfc;
-  border: 1px solid rgba(224, 64, 251, 0.35);
-}
-
-.metric-big {
-  font-size: clamp(2rem, 3.5vw, 2.8rem);
-  font-weight: 850;
-  letter-spacing: -0.04em;
-  color: var(--accent-cyan);
-  line-height: 1.1;
-  margin-bottom: 6px;
-}
-
-.card-title {
-  font-size: 1.08rem;
-  font-weight: 750;
-  margin: 0 0 8px;
-}
-
-.card-desc {
-  font-size: 0.9rem;
-  color: var(--text-muted);
-  margin: 0;
-}
-
-/* Visualization: Influence Volume Bar */
-.ratio-cluster {
-  margin: 22px 0 10px;
-  display: grid;
-  gap: 16px;
-}
-
-.ratio-row {
-  display: flex;
-  justify-content: space-between;
-  font-size: 0.88rem;
-  font-weight: 600;
-}
-
-.meter-track {
-  height: 12px;
-  background: #1e2638;
-  border-radius: 9999px;
-  overflow: hidden;
-  margin-top: 6px;
-}
-
-.meter-fill {
-  height: 100%;
-  border-radius: 9999px;
-  transition: width 0.8s cubic-bezier(0.16, 1, 0.3, 1);
-}
-
-.fill-palestine {
-  width: 93.7%;
-  background: linear-gradient(90deg, #3b82f6, #06b6d4);
-}
-
-.fill-israel {
-  width: 6.3%;
-  background: linear-gradient(90deg, #ec4899, #f43f5e);
-}
-
-/* Pipeline / Stepper: AI Vector */
-.pipeline-block {
-  margin-top: 24px;
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
-  gap: 14px;
-}
-
-.step-card {
-  position: relative;
-  background: var(--bg-surface-elevated);
-  border: 1px solid var(--border-subtle);
-  border-radius: var(--radius-sm);
-  padding: 18px;
-}
-
-.step-counter {
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  width: 26px;
-  height: 26px;
-  border-radius: 50%;
-  background: var(--accent-blue);
-  color: #fff;
-  font-size: 0.78rem;
-  font-weight: 800;
-  margin-bottom: 12px;
-}
-
-.step-card strong {
-  display: block;
-  font-size: 0.95rem;
-  margin-bottom: 6px;
-  color: #ffffff;
-}
-
-.step-card p {
-  margin: 0;
-  font-size: 0.84rem;
-  color: var(--text-muted);
-}
-
-/* Modern Details & Accordions */
-details.modern-disclosure {
-  border: 1px solid var(--border-subtle);
-  border-radius: var(--radius-md);
-  background: var(--bg-surface);
-  margin-top: 18px;
-  overflow: hidden;
-  transition: border-color 0.2s;
-}
-
-details.modern-disclosure[open] {
-  border-color: var(--border-prominent);
-}
-
-details.modern-disclosure summary {
-  padding: 18px 22px;
-  cursor: pointer;
-  font-weight: 700;
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  user-select: none;
-}
-
-details.modern-disclosure summary::after {
-  content: "+";
-  font-size: 1.25rem;
-  color: var(--accent-cyan);
-  transition: transform 0.2s ease;
-}
-
-details.modern-disclosure[open] summary::after {
-  content: "−";
-}
-
-.disclosure-body {
-  padding: 0 22px 20px;
-  font-size: 0.92rem;
-  color: var(--text-muted);
-}
-
-/* Table Design */
-.data-table-wrapper {
-  overflow-x: auto;
-  border-radius: var(--radius-md);
-  border: 1px solid var(--border-subtle);
-  background: var(--bg-surface);
-  margin-top: 20px;
-}
-
-table.modern-table {
-  width: 100%;
-  border-collapse: collapse;
-  text-align: left;
-  font-size: 0.92rem;
-}
-
-table.modern-table th {
-  padding: 16px 20px;
-  background: rgba(255, 255, 255, 0.03);
-  border-bottom: 1px solid var(--border-subtle);
-  font-weight: 700;
-  color: var(--text-main);
-}
-
-table.modern-table td {
-  padding: 16px 20px;
-  border-bottom: 1px solid var(--border-subtle);
-  color: var(--text-muted);
-}
-
-table.modern-table tr:last-child td { border-bottom: none; }
-
-/* Footnotes & Sources */
-.sources-grid {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
-  gap: 12px;
-  margin-top: 18px;
-}
-
-.source-card {
-  display: flex;
-  align-items: center;
-  gap: 10px;
-  padding: 10px 14px;
-  border-radius: var(--radius-sm);
-  background: var(--bg-surface);
-  border: 1px solid var(--border-subtle);
-  font-size: 0.84rem;
-  color: var(--text-main);
-  text-decoration: none;
-  transition: all 0.2s;
-}
-
-.source-card:hover {
-  border-color: var(--accent-cyan);
-  background: rgba(0, 210, 255, 0.05);
-}
-
-@media print {
-  body { background: #fff !important; color: #000 !important; }
-  .badge-eyebrow, .subnav, .filter-deck { display: none !important; }
-  .card, .key-takeaway, .step-card { 
-    background: #fff !important; 
-    border: 1px solid #ccc !important; 
-    box-shadow: none !important; 
-    color: #000 !important;
-  }
-  .card-desc, .hero-lead, .text-muted { color: #444 !important; }
+*{box-sizing:border-box}html{scroll-behavior:smooth;scroll-padding-top:28px}
+body{margin:0;color:var(--white);font:15px/1.65 system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;background:var(--bg);min-width:320px}
+button,input{font:inherit}a{color:var(--cyan);text-decoration-thickness:1px;text-underline-offset:3px}a:hover{color:#a4f4ff}
+button{cursor:pointer}button:disabled{opacity:.6;cursor:not-allowed}:focus-visible{outline:3px solid var(--cyan);outline-offset:3px}
+::selection{background:#2a6074;color:#fff}
+.noise{position:absolute;inset:0;pointer-events:none;opacity:.25;background-image:radial-gradient(#b4c4dc 0.65px,transparent .65px);background-size:24px 24px;mask-image:linear-gradient(to bottom,#000,transparent 78%)}
+.top-rule{height:4px;background:linear-gradient(90deg,#63d9e6,#7898ff 48%,#b79cff)}
+.wrapper{max-width:1400px;margin:auto;padding:0 30px}
+.masthead{position:relative;isolation:isolate;overflow:hidden;background:radial-gradient(ellipse 60% 110% at 85% -5%,#203661 0,transparent 68%),radial-gradient(ellipse 58% 100% at 15% 15%,#0a3c4b 0,transparent 70%),linear-gradient(180deg,#0c1626 0%,#080e19 100%);border-bottom:1px solid var(--line)}
+.topbar{display:flex;align-items:center;gap:20px;justify-content:space-between;padding-top:23px;padding-bottom:21px;border-bottom:1px solid rgba(168,195,233,.16)}
+.brand{display:flex;align-items:center;gap:12px;font-weight:820;letter-spacing:.15em;font-size:.92rem}
+.brand-mark{width:34px;height:34px;border:2px solid var(--cyan);transform:rotate(45deg);border-radius:8px;display:grid;place-items:center;box-shadow:0 0 18px rgba(97,217,233,.22)}
+.brand-mark>span{width:13px;height:13px;border:2px solid #d8f9ff;border-radius:50%}
+.brand-name{white-space:nowrap}.brand-tag{color:var(--muted);font-size:.72rem;letter-spacing:.10em;font-weight:600;border-left:1px solid var(--line2);padding-left:16px}
+.top-actions,.hero-actions{display:flex;align-items:center;gap:10px;flex-wrap:wrap}
+.action{border:1px solid var(--line2);background:rgba(17,30,48,.85);color:var(--soft);padding:10px 14px;border-radius:10px;font-size:.82rem;font-weight:750;transition:.18s}
+.action:hover{background:var(--panel3);color:#fff;border-color:#7ea5c0}.action.primary{background:var(--cyan);color:#071622;border-color:var(--cyan)}
+.action.primary:hover{background:#a2f5fb}.action svg{vertical-align:middle;margin-right:5px}
+.hero{position:relative;padding:64px 0 58px}.eyebrow{font-size:.76rem;font-weight:800;letter-spacing:.18em;color:var(--cyan);text-transform:uppercase;display:flex;align-items:center;gap:10px;margin-bottom:20px}
+.eyebrow:before{content:"";width:26px;height:2px;background:currentColor}
+h1{font-size:clamp(2.35rem,5vw,4.9rem);line-height:1.09;letter-spacing:-.055em;font-weight:820;margin:0 0 20px;max-width:920px}h1 em{font-style:normal;color:var(--cyan)}
+.lead{font-size:clamp(1.02rem,1.6vw,1.18rem);line-height:1.75;max-width:770px;color:var(--soft);margin:0 0 27px}
+.hero-note{font-size:.81rem;color:var(--muted);margin-top:22px}.hero-note strong{color:var(--soft)}
+.stats{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:12px;padding-bottom:35px}
+.stat{padding:19px 20px;border:1px solid rgba(151,187,230,.22);border-radius:13px;background:rgba(20,35,55,.65);backdrop-filter:blur(12px)}
+.stat-val{display:block;font-size:clamp(1.45rem,2.4vw,2.12rem);font-weight:820;letter-spacing:-.045em;line-height:1.2;color:#fff}
+.stat-name{display:block;font-size:.76rem;line-height:1.5;color:var(--muted);margin-top:8px}
+.layout{display:grid;grid-template-columns:212px minmax(0,1fr);gap:38px;padding-top:36px;padding-bottom:95px}
+.side{position:relative}.side-inner{position:sticky;top:26px}.side-label{color:var(--muted);font-size:.69rem;letter-spacing:.15em;font-weight:800;text-transform:uppercase;margin:0 0 14px}
+.side nav{display:grid;gap:5px}.side nav a{display:block;padding:10px 12px;font-size:.86rem;text-decoration:none;color:var(--muted);border-left:2px solid transparent;border-radius:0 9px 9px 0}
+.side nav a:hover,.side nav a.active{background:#132235;border-color:var(--cyan);color:var(--white)}.side a .num{color:var(--cyan);font-size:.73rem;font-weight:800;margin-right:9px}
+.side-bottom{margin-top:24px;padding:15px;border:1px solid var(--line);border-radius:12px;background:var(--panel);font-size:.77rem;color:var(--muted)}.side-bottom strong{display:block;color:var(--soft);margin-bottom:5px}
+main{min-width:0}.section{margin-bottom:67px;scroll-margin-top:28px}.section-heading{display:flex;align-items:center;gap:16px;margin-bottom:12px}
+.section-num{font-size:.84rem;color:var(--cyan);font-weight:800;letter-spacing:.09em}.section h2{font-size:clamp(1.45rem,2.8vw,2rem);font-weight:780;letter-spacing:-.035em;line-height:1.23;margin:0}
+.intro{color:var(--muted);max-width:790px;margin:0 0 23px;font-size:.94rem}
+.subtle-label{font-size:.72rem;color:var(--muted);font-weight:800;letter-spacing:.12em;text-transform:uppercase;margin-bottom:12px}
+.assessment{display:grid;grid-template-columns:1.3fr 1fr;gap:14px;margin:25px 0}
+.assessment article{padding:23px;background:var(--panel);border:1px solid var(--line);border-radius:var(--radius)}.assessment h3{margin:0 0 8px;font-size:1.03rem}.assessment p{margin:0;color:var(--muted);font-size:.91rem}.assessment strong{color:var(--white)}
+.method-strip{background:#101c2c;border:1px solid var(--line);border-left:3px solid var(--cyan);padding:16px 18px;border-radius:0 11px 11px 0;color:var(--soft);font-size:.88rem;margin:19px 0 0}
+.toolbar{display:flex;gap:12px;flex-wrap:wrap;align-items:center;justify-content:space-between;margin:0 0 19px}
+.filter-group{display:flex;gap:6px;flex-wrap:wrap}.filter-btn{padding:8px 12px;border:1px solid var(--line);border-radius:9px;background:var(--panel);color:var(--muted);font-weight:720;font-size:.8rem;white-space:nowrap}
+.filter-btn:hover{border-color:var(--line2);color:var(--white)}.filter-btn[aria-pressed="true"]{background:#204254;color:#baf6fa;border-color:#52889c}
+.search-wrap{display:flex;align-items:center;position:relative;min-width:180px;flex:1;max-width:315px}
+.search-wrap svg{position:absolute;left:12px;color:var(--muted)}
+.search-wrap input{width:100%;background:var(--panel);border:1px solid var(--line);border-radius:9px;color:var(--white);padding:9px 12px 9px 35px;outline:none;font-size:.83rem}.search-wrap input:focus{border-color:var(--cyan)}.search-wrap input::placeholder{color:#8497af}
+.grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:14px}.evidence{background:linear-gradient(145deg,#121f31,#0e1928);border:1px solid var(--line);border-radius:var(--radius);padding:23px;display:flex;flex-direction:column;box-shadow:var(--shadow);min-width:0;transition:border-color .2s,transform .2s}
+.evidence:hover{border-color:var(--line2);transform:translateY(-2px)}.evidence[hidden]{display:none!important}
+.evidence-top{display:flex;justify-content:space-between;align-items:flex-start;gap:10px;margin-bottom:18px}
+.type{font-size:.68rem;text-transform:uppercase;letter-spacing:.075em;font-weight:800;padding:4px 9px;border-radius:6px;white-space:nowrap;border:1px solid}
+.type.filing{color:var(--green);background:rgba(79,178,138,.12);border-color:rgba(135,225,186,.3)}
+.type.reported{color:var(--blue);background:rgba(103,145,239,.13);border-color:rgba(134,173,255,.28)}
+.type.unverified{color:var(--amber);background:rgba(219,151,69,.1);border-color:rgba(255,209,142,.3)}
+.type.model{color:var(--violet);background:rgba(158,122,235,.12);border-color:rgba(196,169,255,.3)}
+.evidence-id{font-size:.71rem;color:#788da6;font-weight:800;letter-spacing:.08em}
+.big{color:var(--white);font-size:clamp(1.75rem,3vw,2.4rem);font-weight:820;letter-spacing:-.045em;line-height:1.15;margin-bottom:8px}
+.evidence h3{font-size:1.04rem;line-height:1.43;margin:0 0 8px;font-weight:760}.evidence p{color:var(--muted);font-size:.87rem;line-height:1.65;margin:0 0 12px}
+.evidence .card-note{font-size:.81rem;color:var(--soft);border-top:1px solid var(--line);padding-top:13px;margin-top:auto}
+.evidence .card-links{display:flex;flex-wrap:wrap;gap:10px;margin-top:12px}.evidence .card-links a{font-size:.8rem;font-weight:720;text-decoration:none}
+[data-empty]{padding:34px;border:1px dashed var(--line2);border-radius:12px;color:var(--muted);text-align:center}
+.result-count{font-size:.81rem;color:var(--muted);margin:8px 0 15px}.result-count b{color:var(--soft)}
+.split{display:grid;grid-template-columns:1.08fr .92fr;gap:14px}.chart-card,.insight-card,.tech-panel,.legal-card,.sources-wrap{background:var(--panel);border:1px solid var(--line);border-radius:var(--radius);padding:25px}
+.chart-card h3,.insight-card h3,.tech-panel h3{font-size:1.03rem;margin:0 0 8px}.chart-subtitle{margin:0 0 23px;font-size:.81rem;color:var(--muted)}
+.bar-row{margin:18px 0 21px}.bar-label{display:flex;justify-content:space-between;gap:10px;align-items:baseline;font-size:.85rem;font-weight:720}.bar-label span:last-child{font-variant-numeric:tabular-nums;color:var(--soft)}
+.track{width:100%;height:13px;border-radius:999px;background:#24344a;margin-top:8px;overflow:hidden}.bar{height:100%;border-radius:999px}.bar.p{width:93.7%;background:linear-gradient(90deg,#50bed1,#78a6ff)}.bar.i{width:6.3%;background:linear-gradient(90deg,#d7a3ff,#f3b2ce)}
+.caption{font-size:.78rem;color:var(--muted);margin:16px 0 0}.insight-card ul{padding-left:18px;color:var(--muted);font-size:.89rem}.insight-card li+li{margin-top:10px}.insight-card strong{color:var(--soft)}
+.flag{display:flex;align-items:flex-start;gap:12px;border:1px solid #62503d;background:linear-gradient(110deg,#30271e,#201d21);border-radius:12px;padding:19px;margin-top:18px}.flag .symbol{font-size:1.05rem;color:var(--amber)}.flag strong{color:var(--amber)}.flag p{margin:4px 0 0;color:#d6c6b6;font-size:.87rem}
+.pipeline{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:10px;margin-top:20px}
+.step{border:1px solid var(--line);background:var(--panel);border-radius:12px;padding:17px 13px;text-align:left;min-height:142px;color:var(--muted);transition:.2s}
+.step:hover,.step[aria-pressed="true"]{border-color:#639eb5;background:#183349}.step[aria-pressed="true"] .stepnum{color:#08202b;background:var(--cyan)}
+.stepnum{display:grid;place-items:center;width:28px;height:28px;border:1px solid var(--line2);border-radius:8px;color:var(--cyan);font-size:.79rem;font-weight:800;margin-bottom:18px}
+.step strong{display:block;font-size:.9rem;line-height:1.35;color:var(--white)}.step small{display:block;font-size:.73rem;margin-top:6px;color:var(--muted)}
+.detail-panel{border:1px solid var(--line2);border-top:3px solid var(--cyan);background:var(--panel2);padding:22px;border-radius:12px;margin-top:12px;min-height:136px}
+.detail-panel h3{font-size:1rem;margin:0 0 5px}.detail-panel p{font-size:.89rem;color:var(--soft);margin:0}.detail-panel .risk{font-size:.78rem;color:var(--muted);margin-top:10px}
+.technical-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:12px;margin-top:14px}.tech-panel{padding:19px}.tech-panel h3{font-size:.94rem}.tech-panel p{margin:0;font-size:.83rem;color:var(--muted)}
+table{width:100%;border-collapse:collapse;font-size:.86rem;text-align:left}th{font-size:.73rem;letter-spacing:.055em;text-transform:uppercase;color:var(--soft);background:#19283d}
+.Twrap{border:1px solid var(--line);overflow-x:auto;border-radius:var(--radius)}th,td{padding:17px 18px;border-bottom:1px solid var(--line);vertical-align:top}td{color:var(--muted);min-width:170px}tr:last-child td{border-bottom:0}td:first-child{font-weight:750;color:var(--white);min-width:150px}
+.sources-list{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-top:18px}.source{display:flex;flex-direction:column;align-items:flex-start;gap:5px;border:1px solid var(--line);background:var(--panel);border-radius:12px;padding:17px 19px;color:var(--soft);text-decoration:none;transition:.2s;min-width:0}
+.source:hover{border-color:#6191aa;background:var(--panel2)}.source strong{font-size:.89rem;line-height:1.4;color:var(--white)}.source small{font-size:.75rem;color:var(--muted)}.source .out{margin-top:4px;font-size:.75rem;font-weight:780;color:var(--cyan)}
+.disclosure{border:1px solid var(--line);border-radius:12px;background:var(--panel);margin-top:14px;overflow:hidden}
+.disclosure summary{padding:16px 19px;cursor:pointer;font-weight:750;display:flex;align-items:center;justify-content:space-between;gap:12px}.disclosure summary:after{content:"+";font-size:1.4rem;color:var(--cyan);line-height:1}
+.disclosure[open] summary:after{content:"−"}.disclosure>div{padding:0 19px 20px;color:var(--muted);font-size:.89rem}.disclosure p{margin:8px 0}.disclosure li{margin:7px 0}
+footer{border-top:1px solid var(--line);padding:29px 0 42px;color:var(--muted);font-size:.8rem;display:flex;justify-content:space-between;gap:20px;flex-wrap:wrap}
+footer a{color:var(--soft)}
+#toast{position:fixed;bottom:22px;right:22px;background:#214256;border:1px solid #6ebed2;color:#fff;border-radius:10px;padding:10px 16px;box-shadow:0 14px 42px #0008;z-index:10;font-size:.84rem;font-weight:700;max-width:min(90vw,450px)}#toast[hidden]{display:none}
+@media(max-width:1040px){.layout{grid-template-columns:165px minmax(0,1fr);gap:24px}.stats{grid-template-columns:repeat(2,1fr)}.pipeline{grid-template-columns:repeat(2,minmax(0,1fr))}.technical-grid{grid-template-columns:1fr}}
+@media(max-width:740px){.wrapper{padding:0 18px}.topbar{gap:12px}.brand-tag{display:none}.topbar .action{padding:8px 10px}.hero{padding:45px 0 37px}.stats{gap:8px;padding-bottom:20px}.stat{padding:15px}.layout{display:block;padding-top:25px}.side{margin:0 0 36px}.side-inner{position:static}.side-label,.side-bottom{display:none}.side nav{display:flex;gap:6px;overflow-x:auto;padding-bottom:8px}.side nav a{white-space:nowrap;border:1px solid var(--line);border-radius:8px;font-size:.78rem;padding:8px 10px}.side nav a.active{border-color:var(--cyan)}.section{margin-bottom:47px}.grid,.split,.assessment,.sources-list{grid-template-columns:1fr}.toolbar{align-items:stretch}.search-wrap{max-width:none;flex-basis:100%}.chart-card,.insight-card{padding:20px}.section-heading{gap:11px}td,th{padding:13px}.technical-grid{grid-template-columns:1fr}}
+@media(max-width:470px){.brand{font-size:.78rem}.brand-mark{width:29px;height:29px}.topbar .action{font-size:.74rem}.hero-actions{gap:7px}.hero-actions .action{flex:1}.stats{grid-template-columns:1fr 1fr}.stat-val{font-size:1.55rem}.evidence{padding:19px}.pipeline{grid-template-columns:1fr 1fr}.step{min-height:136px;padding:12px}.filter-group{width:100%}.filter-btn{flex:1;padding:7px 8px;font-size:.74rem}}
+@media(prefers-reduced-motion:reduce){html{scroll-behavior:auto}*,*::before,*::after{animation:none!important;transition:none!important}}
+@media print{
+  :root{color-scheme:light;--bg:#fff;--panel:#fff;--panel2:#fff;--panel3:#fff;--line:#cdd4dd;--line2:#b7c3ce;--white:#111;--soft:#222;--muted:#444;--cyan:#006b80;--blue:#245eb3;--green:#00744c;--amber:#835100;--violet:#69469a}
+  body{background:#fff;color:#111;font-size:11px}.masthead{background:#fff;border-bottom:1px solid #888}.noise,.top-actions,.hero-actions,.side,.toolbar,.result-count{display:none!important}.wrapper{max-width:none;padding:0 12mm}.topbar{padding:12px 0}.hero{padding:14px 0}.lead{font-size:13px}.hero-note{font-size:10px}.brand-mark{box-shadow:none}.stats{grid-template-columns:repeat(4,1fr);padding-bottom:15px}.stat{background:#fff;padding:9px}.stat-val{font-size:18px}.layout{display:block;padding:18px 0}.section{margin:0 0 22px;break-inside:avoid}.evidence,.assessment article,.chart-card,.insight-card,.step,.detail-panel,.tech-panel,.source,.flag{background:#fff;box-shadow:none;break-inside:avoid;color:#111}.evidence:hover{transform:none}.evidence[hidden]{display:flex!important}.section h2{font-size:18px}.section-num{color:#005a70}.type{border-color:#777}.flag{border-color:#777}.flag p{color:#444}.chart-card,.insight-card{padding:14px}.source strong{color:#111}a{color:#075f74;text-decoration:underline}a[href^="https://"]:after{content:""}footer{padding:10px 0}.step{min-height:0}.detail-panel{min-height:0}details.disclosure>div{display:block!important}
 }
 </style>
 </head>
 <body>
-
-<!-- Hidden Radio Buttons to drive Filter State via CSS :has() -->
-<div class="shell">
-  <input type="radio" name="scope-filter" id="filter-all" checked>
-  <input type="radio" name="scope-filter" id="filter-verified">
-  <input type="radio" name="scope-filter" id="filter-unverified">
-
-  <header class="hero">
-    <div class="badge-eyebrow">
-      <span>●</span> Primary Intelligence Briefing
-    </div>
-    <h1>How Money & Influence Reshape What People See</h1>
-    <p class="hero-lead">
-      Political micro-payments, state-backed foreign narratives, and algorithmic content placement all compete for public perception. This brief separates <strong>formally registered public filings</strong> from <strong>unverified claims</strong>.
-    </p>
-
-    <div class="key-takeaway">
-      <strong>Core Structural Distinction</strong>
-      Directly purchasing media ads influences human viewers immediately. A parallel, less visible maneuver targets <em>machine information ingest</em>—seeding the open web so retrieval-augmented AI systems and search engines index manufactured consensus as factual citation.
-    </div>
-
-    <!-- Interactive Layer Filtering (Zero-JS) -->
-    <div class="filter-deck">
-      <div class="filter-deck-header">Filter Information Level</div>
-      <div class="filter-pills">
-        <label for="filter-all">View All Findings</label>
-        <label for="filter-verified">✓ Verified / Public Filings</label>
-        <label for="filter-unverified">⚠ Allegations / Unverified</label>
-      </div>
-    </div>
-  </header>
-
-  <nav class="subnav" aria-label="Section Navigation">
-    <a href="#domestic">01 · Domestic Finance</a>
-    <a href="#foreign">02 · Foreign Filings</a>
-    <a href="#algorithmic">03 · AI Synthesis & RAG</a>
-    <a href="#oversight">04 · Legal Mandates</a>
-    <a href="#citations">05 · Primary Sources</a>
-  </nav>
-
-  <!-- Section 01 -->
-  <section id="domestic" style="margin-bottom: 50px;">
-    <h2 style="font-size: 1.6rem; letter-spacing: -0.02em; margin-bottom: 8px;">01. Domestic Campaign Finance Footprint</h2>
-    <p style="color: var(--text-muted); margin-top: 0; font-size: 0.95rem;">
-      Specific entity transactions identified in campaign finance reports. Transaction size does not inherently demonstrate improper conduct under current PAC thresholds.
-    </p>
-
-    <div class="grid grid-cols-3">
-      <article class="card" data-status="verified">
-        <span class="card-tag tag-verified">FEC Records</span>
-        <div class="metric-big">$5.0M</div>
-        <div class="card-title">Extremity Care → MAGA Inc.</div>
-        <p class="card-desc">Federal election record filing transaction cited in source dossier.</p>
-      </article>
-
-      <article class="card" data-status="verified">
-        <span class="card-tag tag-verified">FEC Records</span>
-        <div class="metric-big">$500K</div>
-        <div class="card-title">ML Organization → MAGA Again!</div>
-        <p class="card-desc">Entity transfer documented within historical contribution schedules.</p>
-      </article>
-
-      <article class="card" data-status="verified">
-        <span class="card-tag tag-verified">State Reporting</span>
-        <div class="metric-big">$18,000</div>
-        <div class="card-title">Defend Texas Liberty → Influencable LLC</div>
-        <p class="card-desc">Disbursement linked to Texas localized influencer posting and amplification.</p>
-      </article>
-    </div>
-  </section>
-
-  <!-- Section 02 -->
-  <section id="foreign" style="margin-bottom: 50px;">
-    <h2 style="font-size: 1.6rem; letter-spacing: -0.02em; margin-bottom: 8px;">02. Cross-Border Influence Operations</h2>
-    <p style="color: var(--text-muted); margin-top: 0; font-size: 0.95rem;">
-      Disclosed agency registrations contrasted with private third-party social telemetry.
-    </p>
-
-    <div class="grid grid-cols-2">
-      <article class="card" data-status="verified">
-        <span class="card-tag tag-verified">DOJ / FARA Official Registry</span>
-        <h3 class="card-title">FARA Registration #7652: Esther Project</h3>
-        <p class="card-desc">
-          Official FARA registration confirms Bridges Partners contracted on behalf of the Government of Israel via Havas Media Germany. 
-        </p>
-        <div style="margin-top: 14px; font-size: 0.85rem; color: var(--text-dim);">
-          <em>Note:</em> The frequently quoted rate of <strong>$6,100–$7,400 per post</strong> represents calculated budget modeling rather than a mandated flat rate stipulated in the filing.
-        </div>
-      </article>
-
-      <article class="card" data-status="unverified">
-        <span class="card-tag tag-unverified">Private Analytics Telemetry</span>
-        <h3 class="card-title">Post-Oct 7 Tagged Volume (Humanz Study)</h3>
-        <p class="card-desc">
-          CTech publication reviewing social tagging volume on TikTok & Instagram identified a ~15:1 disparity in organic/amplified tagging velocity.
-        </p>
-
-        <div class="ratio-cluster">
-          <div>
-            <div class="ratio-row">
-              <span>Pro-Palestinian Tagged Impressions</span>
-              <span style="color: var(--accent-cyan);">109.61B (93.7%)</span>
-            </div>
-            <div class="meter-track">
-              <div class="meter-fill fill-palestine"></div>
-            </div>
-          </div>
-
-          <div>
-            <div class="ratio-row">
-              <span>Pro-Israeli Tagged Impressions</span>
-              <span style="color: var(--accent-magenta);">7.39B (6.3%)</span>
-            </div>
-            <div class="meter-track">
-              <div class="meter-fill fill-israel"></div>
-            </div>
-          </div>
-        </div>
-      </article>
-    </div>
-  </section>
-
-  <!-- Section 03 -->
-  <section id="algorithmic" style="margin-bottom: 50px;">
-    <h2 style="font-size: 1.6rem; letter-spacing: -0.02em; margin-bottom: 8px;">03. The AI & Search Manipulation Vector</h2>
-    <p style="color: var(--text-muted); margin-top: 0; font-size: 0.95rem;">
-      Evaluating the structural feasibility of “Source Poisoning” in Modern Large Language Model (LLM) search engines.
-    </p>
-
-    <div class="card" data-status="unverified" style="border-left: 4px solid var(--accent-magenta);">
-      <span class="card-tag tag-unverified">Uncorroborated Intelligence Dossier</span>
-      <h3 class="card-title">Claims Regarding “Project 545”</h3>
-      <p class="card-desc">
-        The briefing alleges an organized <strong>$545 Million</strong> deployment featuring <strong>11 synthetic authoritative domains</strong> designed to feed targeted demographics (campuses, church coalitions, and Gen Z). 
-        <em>These figures lack primary audit corroboration.</em>
-      </p>
-    </div>
-
-    <!-- Interactive Pipeline Graphic -->
-    <h3 style="font-size: 1.05rem; margin-top: 28px; margin-bottom: 4px;">Hypothesized Mechanics: Retrieval-Augmented Generation (RAG) Bias Injection</h3>
-    <div class="pipeline-block">
-      <div class="step-card">
-        <span class="step-counter">1</span>
-        <strong>Fabricate Sites</strong>
-        <p>Establish high-density synthetic news sites optimized for domain authority & SEO indexing.</p>
-      </div>
-
-      <div class="step-card">
-        <span class="step-counter">2</span>
-        <strong>Crawl Indexing</strong>
-        <p>Search crawlers ingest high volumes of pseudo-academic & referenced assertions.</p>
-      </div>
-
-      <div class="step-card">
-        <span class="step-counter">3</span>
-        <strong>Vector Retrieval</strong>
-        <p>AI search models query the index, weighting semantic relevance over verifiable provenance.</p>
-      </div>
-
-      <div class="step-card">
-        <span class="step-counter">4</span>
-        <strong>Output Echo</strong>
-        <p>The generative assistant quotes manufactured facts without flagging synthetic origin.</p>
-      </div>
-    </div>
-
-    <details class="modern-disclosure">
-      <summary>Technical Safeguards: How Systems Protect Against RAG Exploitation</summary>
-      <div class="disclosure-body">
-        Robust machine retrieval stacks mitigate automated narrative flooding by enforcing:
-        <ul>
-          <li><strong>Domain Provenance Cross-Checking:</strong> Checking source historical age and verified registry.</li>
-          <li><strong>Consensus Isolation:</strong> Flagging claims that exist solely across clustered, co-hosted domains.</li>
-          <li><strong>Zero-Shot Attribution Verification:</strong> Verifying if external sources cited by a website actually validate the claim made.</li>
-        </ul>
-      </div>
-    </details>
-  </section>
-
-  <!-- Section 04 -->
-  <section id="oversight" style="margin-bottom: 50px;">
-    <h2 style="font-size: 1.6rem; letter-spacing: -0.02em; margin-bottom: 8px;">04. Regulatory Scopes & Jurisdictional Lines</h2>
-    <div class="data-table-wrapper">
-      <table class="modern-table">
-        <thead>
-          <tr>
-            <th scope="col" style="width: 25%;">Enforcement Body</th>
-            <th scope="col" style="width: 40%;">Core Regulatory Jurisdiction</th>
-            <th scope="col" style="width: 35%;">Influence Threshold</th>
-          </tr>
-        </thead>
-        <tbody>
-          <tr>
-            <td><strong>DOJ / FARA</strong></td>
-            <td>Transparency in foreign principal representation.</td>
-            <td>Requires registration prior to narrative dissemination.</td>
-          </tr>
-          <tr>
-            <td><strong>FEC</strong></td>
-            <td>Federal political funding, hard/soft coordination.</td>
-            <td>Restricted to electioneering & candidate advocacy.</td>
-          </tr>
-          <tr>
-            <td><strong>FTC</strong></td>
-            <td>Commercial creator endorsements & product promotions.</td>
-            <td>Exempts pure political discourse from standard commercial rules.</td>
-          </tr>
-          <tr>
-            <td><strong>State Commissions</strong></td>
-            <td>State-specific ad disclosure (e.g., Texas Ethics Comm.).</td>
-            <td>Governs paid localized micro-influencer engagements.</td>
-          </tr>
-        </tbody>
-      </table>
-    </div>
-  </section>
-
-  <!-- Section 05 -->
-  <section id="citations">
-    <h2 style="font-size: 1.6rem; letter-spacing: -0.02em; margin-bottom: 8px;">05. Verified Public References</h2>
-    <div class="sources-grid">
-      <a class="source-card" href="https://efile.fara.gov/ords/fara/f?p=1381:200:::NO:RP,200:P200_REG_NUMBER:7652" target="_blank" rel="noopener">
-        <span>📄</span> <strong>DOJ FARA: Reg. #7652</strong>
-      </a>
-      <a class="source-card" href="https://www.fec.gov/data/legal/matter-under-review/7994/" target="_blank" rel="noopener">
-        <span>⚖️</span> <strong>FEC Matter Review 7994</strong>
-      </a>
-      <a class="source-card" href="https://www.texastribune.org/2024/06/18/texas-ethics-commission-influencers-political-ads/" target="_blank" rel="noopener">
-        <span>📰</span> <strong>Texas Tribune Influencer Review</strong>
-      </a>
-      <a class="source-card" href="https://www.calcalistech.com/ctechnews/article/sykzpeqqp" target="_blank" rel="noopener">
-        <span>📊</span> <strong>CTech Humanz Dataset</strong>
-      </a>
-      <a class="source-card" href="https://www.fec.gov/help-candidates-and-committees/partnership-llc-contributions/" target="_blank" rel="noopener">
-        <span>📑</span> <strong>FEC LLC Contribution Guidelines</strong>
-      </a>
-      <a class="source-card" href="https://www.ftc.gov/business-guidance/resources/ftcs-endorsement-guides-what-people-are-asking" target="_blank" rel="noopener">
-        <span>🏛️</span> <strong>FTC Material Connection FAQ</strong>
-      </a>
-    </div>
-  </section>
-
-  <footer style="margin-top: 50px; padding-top: 20px; border-top: 1px solid var(--border-subtle); font-size: 0.8rem; color: var(--text-dim); text-align: center;">
-    Rendered with modern semantic web technologies (CSS Grid, `:has()` conditional queries, and accessible tokenization). Redesigned for information clarity.
-  </footer>
-</div>
-
-</body>
-</html>
+<div class="top-rule"></div>
+<header class="masthead" id="top"><div class="noise" aria-hidden="true"></div>
+ <div class="wrapper">
+  <div class="topbar">
+   <div class="brand"><span class="brand-mark" aria-hidden="true"><span></span></span><span class="brand-name">SIGNAL / RESEARCH</span><span class="brand-tag">EVIDENCE BRIEFING</span></div>
+   <div class="top-actions"><button class="action" id="copyBrief" type="button" title="Copy concise briefing summary">Copy summary</button><button class="action" id="printBrief" type="button">Print / PDF</button></div>
+  </div>
+  <div class="hero">
+   <div class="eyebrow">Influence operations / information integrity</div>
+   <h1>Follow the money.<br><em>Trace the message.</em></h1>
+   <p class="lead">An evidence-led examination of political funding, disclosed foreign influence activity, social-platform narratives, and the ways search and AI systems may amplify unreliable information.</p>
+   <div class="hero-actions"><a class="action primary" href="#findings">Explore findings ↗</a><a class="action" href="#sources">Review sources ↗</a></div>
+   <div class="hero-note">Research snapshot: <strong>27 October 2026</strong> <span aria-hidden="true"> · </span> Scope: <strong>United States / Israel-related examples</strong> <span aria-hidden="true"> · </span> Sources and confidence levels shown below</div>
+  </div>
+  <div class="stats" aria-label="Briefing snapshot">
+   <div class="stat"><span class="stat-val">$5.0M</span><span class="stat-name">Extremity Care contribution reported for MAGA Inc., 2025</span></div>
+   <div class="stat"><span class="stat-val">#7652</span><span class="stat-name">DOJ FARA registration for Bridges Partners LLC</span></div>
+   <div class="stat"><span class="stat-val">NIS 545M</span><span class="stat-name">Reported 2025 Israeli public-diplomacy budget increase</span></div>
+   <div class="stat"><span class="stat-val">4 levels</span><span class="stat-name">Filing · reported · unverified · technical model</span></div>
+  </div>
+ </div>
+</header>
+<div class="wrapper layout">
+<aside class="side" aria-label="Briefing navigation"><div class="side-inner">
+ <p class="side-label">Contents</p>
+ <nav id="sectionNav">
+  <a href="#overview"><span class="num">00</span>Overview</a>
+  <a href="#findings"><span class="num">01</span>Funding trail</a>
+  <a href="#foreign"><span class="num">02</span>Foreign influence</a>
+  <a href="#algorithm"><span class="num">03</span>AI &amp; retrieval</a>
+  <a href="#oversight"><span class="num">04</span>Legal scope</a>
+  <a href="#sources"><span class="num">05</span>Source library</a>
+ </nav>
+ <div class="side-bottom"><strong>Evidence standard</strong>A disclosed payment, registration, or campaign is not by itself proof of illegal activity, covert coordination, or demonstrated AI manipulation.</div>
+</div></aside>
+<main id="main">
+<section class="section" id="overview">
+ <div class="section-heading"><span class="section-num">00 /</span><h2>What the evidence shows</h2></div>
+ <p class="intro">The distinction is not whether influence exists—it does—but what each available record actually proves. This briefing distinguishes documented government filings from secondary reporting, unresolved allegations, and hypothetical technical mechanisms.</p>
+ <div class="assessment">
+  <article><div class="subtle-label">Documented disclosure</div><h3>Foreign-principal registration is public record</h3><p>The U.S. Department of Justice lists <strong>Bridges Partners LLC</strong> as FARA registrant <strong>#7652</strong> with filings naming the Government of Israel through Havas Media Group Germany. The listing documents a registered relationship, not a determination that a crime occurred. <a href="#src-fara">Source [S1]</a></p></article>
+  <article><div class="subtle-label">Open verification gap</div><h3>AI-output manipulation requires direct testing</h3><p>Search-index flooding and retrieval contamination are plausible mechanisms. The supplied material does not demonstrate that a particular network of websites successfully altered a named AI system's answers.</p></article>
+ </div>
+ <div class="method-strip"><strong>How to read the labels:</strong> <span class="type filing">Official filing</span> A government record substantiates the stated filing or outcome. <span class="type reported">Reported</span> A named publication reports the fact. <span class="type unverified">Unverified</span> A specific claim lacks corroboration. <span class="type model">Technical model</span> A possible mechanism, not an observed incident.</div>
+</section>
+<section class="section" id="findings">
+ <div class="section-heading"><span class="section-num">01 /</span><h2>Domestic funding trail</h2></div>
+ <p class="intro">Three transactions drawn from the original briefing, now separated by the strength of their supporting records. Use the controls to filter the four cards in this section; amounts are historical, not current fundraising totals.</p>
+ <div class="toolbar" aria-label="Filter evidence cards">
+  <div class="filter-group" role="group" aria-label="Evidence type"><button class="filter-btn" type="button" aria-pressed="true" data-filter="all">All findings</button><button class="filter-btn" type="button" aria-pressed="false" data-filter="filing">Official filings</button><button class="filter-btn" type="button" aria-pressed="false" data-filter="reported">Reported</button><button class="filter-btn" type="button" aria-pressed="false" data-filter="unverified">Unverified</button></div>
+  <label class="search-wrap"><svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><circle cx="11" cy="11" r="7"/><path d="m20 20-4-4"/></svg><input id="findingSearch" type="search" placeholder="Search funding findings…" aria-label="Search domestic funding findings"></label>
+ </div>
+ <div class="result-count" id="resultCount" aria-live="polite"></div>
+ <div class="grid" id="evidenceGrid">
+  <article class="evidence" data-category="reported" data-search="extremity care maga inc 5 million FEC 2025 contribution">
+   <div class="evidence-top"><span class="type reported">Reported / FEC analysis</span><span class="evidence-id">E–01</span></div><div class="big">$5,000,000</div><h3>Extremity Care → MAGA Inc.</h3><p>Public Citizen's analysis of an FEC disclosure identifies a $5 million contribution from Extremity Care to MAGA Inc. in 2025.</p><div class="card-note">A contribution alone does not establish an unlawful exchange or preferential policy treatment.</div><div class="card-links"><a href="#src-publiccitizen">Reporting [S3] ↗</a></div>
+  </article>
+  <article class="evidence" data-category="filing" data-search="ml organization make america great again again pulte 500000 mur 7994 disposition 2021 attribution">
+   <div class="evidence-top"><span class="type filing">Official FEC case</span><span class="evidence-id">E–02</span></div><div class="big">$500,000</div><h3>ML Organization → MAGA Again!</h3><p>FEC MUR #7994 concerns a 2021 contribution by ML Organization LLC. The Commission found no reason to believe the named parties violated the ban on contributions in another's name.</p><div class="card-note">The FEC did find a reporting-attribution issue involving the recipient committee; it was resolved by conciliation without a civil penalty.</div><div class="card-links"><a href="#src-fec">FEC case [S2] ↗</a></div>
+  </article>
+  <article class="evidence" data-category="reported" data-search="defend texas liberty influencable influenceable texas 18000 paxton political posts">
+   <div class="evidence-top"><span class="type reported">Reported / state records</span><span class="evidence-id">E–03</span></div><div class="big">$18,000</div><h3>Defend Texas Liberty → Influencable LLC</h3><p>The Texas Tribune reported a PAC payment to an entity recorded as “Influencable LLC” and documented recruitment efforts involving paid political social posts.</p><div class="card-note">The published report says the recorded entity name appears to be a misspelling; it does not establish that this payment funded each individual post.</div><div class="card-links"><a href="#src-texas">Reporting [S4] ↗</a></div>
+  </article>
+  <article class="evidence" data-category="unverified" data-search="direct causation illegal coordination buying social outcomes attribution proof">
+   <div class="evidence-top"><span class="type unverified">Not established</span><span class="evidence-id">E–04</span></div><div class="big">≠ proof</div><h3>Payment is not proof of outcome</h3><p>Whether a contribution or expenditure caused a particular policy decision, influenced an individual post, or violated a law requires a separate evidentiary chain.</p><div class="card-note">Useful next records: transaction-level filings, contracts, communications, deliverables, and relevant enforcement findings.</div>
+  </article>
+ </div>
+ <div id="emptyResults" data-empty hidden>No results match this filter and search. Try “All findings” or clear the search.</div>
+</section>
+<section class="section" id="foreign">
+ <div class="section-heading"><span class="section-num">02 /</span><h2>Foreign influence &amp; public diplomacy</h2></div>
+ <p class="intro">Registered foreign-principal activity, a historical social-platform analysis, and a public budget figure are different kinds of evidence. They should not be combined into a single causal claim.</p>
+ <div class="grid">
+  <article class="evidence" data-category="filing" data-search="bridges partners 7652 esther project havas government israel fara sep 2025 oct 2026">
+   <div class="evidence-top"><span class="type filing">DOJ / FARA record</span><span class="evidence-id">E–05</span></div><div class="big">#7652</div><h3>Bridges Partners LLC / “Esther Project”</h3><p>DOJ's FARA registry lists Bridges Partners and records a foreign principal identified as the Government of Israel through Havas Media Group Germany. The filing index includes entries through October 19, 2026. Reporting on accompanying contracts describes an influencer program budget of up to $900,000.</p><div class="card-note">Budgeted campaign payments should be distinguished from amounts actually received and disbursed. Per-post price estimates are not a fixed mandatory rate established by the registry.</div><div class="card-links"><a href="#src-fara">DOJ registry [S1] ↗</a><a href="#src-forward">Context [S5] ↗</a></div>
+  </article>
+  <article class="evidence" data-category="reported" data-search="545 million shekels nis israel public diplomacy 2025 budget project 545 government">
+   <div class="evidence-top"><span class="type reported">Reported budget</span><span class="evidence-id">E–06</span></div><div class="big">NIS 545M</div><h3>2025 foreign-ministry budget increase</h3><p>The Times of Israel reported a 545 million <strong>shekel</strong> increase for international public diplomacy, described as approximately <strong>US$149 million</strong> at the time.</p><div class="card-note">Critical distinction: 545 million shekels is <strong>not</strong> US$545 million. A public budget allocation does not prove a particular website or AI campaign.</div><div class="card-links"><a href="#src-budget">Budget reporting [S6] ↗</a></div>
+  </article>
+ </div>
+ <div class="split" style="margin-top:14px">
+  <div class="chart-card"><h3>Historical tagged-activity comparison</h3><p class="chart-subtitle">Humanz analysis, reported by CTech on 9 November 2023 · TikTok and Instagram</p>
+   <div class="bar-row"><div class="bar-label"><span>Pro-Palestinian tags</span><span>109.61B · 93.7%</span></div><div class="track" role="img" aria-label="Reported pro-Palestinian tagged activity: 93.7 percent"><div class="bar p"></div></div></div>
+   <div class="bar-row"><div class="bar-label"><span>Pro-Israeli tags</span><span>7.39B · 6.3%</span></div><div class="track" role="img" aria-label="Reported pro-Israeli tagged activity: 6.3 percent"><div class="bar i"></div></div></div>
+   <p class="caption">The article calls these “posts,” but its underlying measurement methodology and units are not independently audited here. Treat these as <strong>figures reported by CTech about a private Humanz analysis</strong>, not independently verified impression or post counts. <a href="#src-humanz">[S7]</a></p>
+  </div>
+  <div class="insight-card"><div class="subtle-label">Interpretation guardrails</div><h3>What the comparison cannot tell us</h3><ul><li><strong>Not a census:</strong> hashtag matching does not represent every user's position or all content about the conflict.</li><li><strong>Not proof of sponsorship:</strong> content volume alone cannot determine whether accounts received payment.</li><li><strong>Not a 2026 trend:</strong> the cited measurement concerns late 2023, not the current balance of online discussion.</li><li><strong>Methodology matters:</strong> definitions, collection period, duplicate handling, reach and selection rules are essential for valid comparison.</li></ul></div>
+ </div>
+</section>
+<section class="section" id="algorithm">
+ <div class="section-heading"><span class="section-num">03 /</span><h2>AI retrieval &amp; narrative contamination</h2></div>
+ <p class="intro">Search ranking, external webpages, and retrieval-augmented generation (RAG) can carry manipulated information into an AI response. The workflow below is a <strong>threat model</strong>, not a claim that any named deployment has been technically proven to operate this way.</p>
+ <div class="flag"><span class="symbol" aria-hidden="true">⚠</span><div><strong>Claim requiring corroboration: “11 synthetic domains”</strong><p>The source briefing alleged that 11 coordinated authoritative-looking domains were used in a “Project 545” operation. The supplied material did not identify a primary audit, a domain inventory, or repeatable tests proving this assertion. The separate NIS 545M public budget should not be treated as corroboration of that domain count.</p></div></div>
+ <div style="margin-top:26px" class="subtle-label">Interactive model / select a stage</div>
+ <div class="pipeline" role="group" aria-label="Threat model stages">
+  <button class="step" type="button" data-stage="0" aria-pressed="true"><span class="stepnum">01</span><strong>Publish</strong><small>Seed plausible content</small></button>
+  <button class="step" type="button" data-stage="1" aria-pressed="false"><span class="stepnum">02</span><strong>Index</strong><small>Enter search results</small></button>
+  <button class="step" type="button" data-stage="2" aria-pressed="false"><span class="stepnum">03</span><strong>Retrieve</strong><small>Select supporting chunks</small></button>
+  <button class="step" type="button" data-stage="3" aria-pressed="false"><span class="stepnum">04</span><strong>Synthesize</strong><small>Generate an answer</small></button>
+ </div>
+ <div class="detail-panel" id="stageDetails" aria-live="polite"><h3>01 — Publish: create a false source of apparent authority</h3><p>An operator could publish fabricated articles or misleading citations on websites designed to look credible.</p><div class="risk"><strong>Validation:</strong> archive the page, identify ownership, examine publication history, and trace the cited primary evidence.</div></div>
+ <div style="margin-top:25px" class="subtle-label">Controls that reduce source-poisoning risk</div>
+ <div class="technical-grid">
+  <article class="tech-panel"><h3>01. Provenance checks</h3><p>Trace claims to original documents and assess ownership, revision history, publication dates, and independent verification.</p></article>
+  <article class="tech-panel"><h3>02. Source diversity</h3><p>Detect mirrors and linked domains; avoid counting repetitions of the same unsupported claim as independent corroboration.</p></article>
+  <article class="tech-panel"><h3>03. Retrieval audits</h3><p>Record retrieved URLs and document versions; test answer sensitivity, citations, and behavior when questionable sources are removed.</p></article>
+ </div>
+ <details class="disclosure"><summary>What would prove an AI manipulation incident?</summary><div><p>A meaningful technical finding needs more than screenshots of a chatbot response. A reproducible investigation would ideally contain:</p><ol><li>The exact alleged source pages, URLs and archived versions.</li><li>Evidence of shared ownership, coordination or fabricated sourcing, if claimed.</li><li>Documented queries, model or search-system versions, timestamps and retrieval traces where available.</li><li>Before/after tests or controlled comparisons showing that those sources caused a measurable output change.</li><li>Alternative explanations assessed, including ordinary news coverage and independent source convergence.</li></ol></div></details>
+</section>
+<section class="section" id="oversight">
+ <div class="section-heading"><span class="section-num">04 /</span><h2>Regulatory boundaries</h2></div>
+ <p class="intro">Different legal frameworks govern different kinds of activity. Disclosure rules depend on who paid, what was communicated, the nature of the activity, and the applicable exceptions.</p>
+ <div class="Twrap"><table><thead><tr><th scope="col">Authority</th><th scope="col">Generally covers</th><th scope="col">Important limitation</th></tr></thead><tbody>
+  <tr><td>DOJ / FARA</td><td>Covered agency activity for foreign principals, including certain political activities and public relations.</td><td>Registration duties have statutory definitions, timing requirements, and exemptions; registration is not a finding of wrongdoing.</td></tr>
+  <tr><td>FEC</td><td>Federal elections, political committee funding, reporting and relevant spending or coordination rules.</td><td>Not every discussion of politics or foreign policy is a federal campaign-finance matter.</td></tr>
+  <tr><td>FTC</td><td>Commercial endorsements, deceptive advertising, and material connections in covered marketing.</td><td>Endorsement Guides are not a blanket disclosure regime for every political opinion.</td></tr>
+  <tr><td>State ethics agencies</td><td>Political advertising and campaign disclosures under each state's laws.</td><td>Definitions and enforcement powers differ across states and activities.</td></tr>
+ </tbody></table></div>
+ <details class="disclosure"><summary>How to interpret an FEC enforcement disposition</summary><div><p>A complaint is an allegation, not a finding. In MUR #7994 the Commission distinguished between the allegation of a contribution in another person's name, for which it found no reason to believe a violation occurred, and a reporting-attribution issue involving the recipient committee. See the Commission's disposition rather than relying on the complaint alone. <a href="#src-fec">[S2]</a></p></div></details>
+</section>
+<section class="section" id="sources">
+ <div class="section-heading"><span class="section-num">05 /</span><h2>Sources &amp; verification trail</h2></div>
+ <p class="intro">Direct links are grouped by provenance. Government filings are primary records; reporting and independent analyses provide context but should not be promoted to the same evidentiary level automatically.</p>
+ <div class="sources-list">
+  <a class="source" id="src-fara" target="_blank" rel="noopener noreferrer" href="https://efile.fara.gov/ords/fara/f?p=1381:200:::NO::P200_REG_NUMBER:7652"><small>PRIMARY RECORD · S1</small><strong>DOJ FARA — Bridges Partners LLC, registration #7652</strong><span class="out">Open official filing index ↗</span></a>
+  <a class="source" id="src-fec" target="_blank" rel="noopener noreferrer" href="https://www.fec.gov/data/legal/matter-under-review/7994/"><small>PRIMARY RECORD · S2</small><strong>FEC MUR #7994 — case disposition and documents</strong><span class="out">Open FEC case ↗</span></a>
+  <a class="source" id="src-publiccitizen" target="_blank" rel="noopener noreferrer" href="https://www.citizen.org/news/icymi-nyt-echoes-public-citizen-findings-that-trump-delayed-a-medicare-price-change-following-health-companys-5-million-donation/"><small>SECONDARY ANALYSIS · S3</small><strong>Public Citizen — Extremity Care / MAGA Inc. contribution</strong><span class="out">Read contribution analysis ↗</span></a>
+  <a class="source" id="src-texas" target="_blank" rel="noopener noreferrer" href="https://www.texastribune.org/2024/03/28/texas-ethics-political-disclosure-social-media-influenceable/"><small>NEWS REPORTING · S4</small><strong>The Texas Tribune — political influencer payments</strong><span class="out">Read reporting ↗</span></a>
+  <a class="source" id="src-forward" target="_blank" rel="noopener noreferrer" href="https://forward.com/fast-forward/773059/pro-israel-influencers-esther-project/"><small>NEWS / DOCUMENT ANALYSIS · S5</small><strong>The Forward — Bridges Partners / Esther Project documents</strong><span class="out">Read reporting ↗</span></a>
+  <a class="source" id="src-budget" target="_blank" rel="noopener noreferrer" href="https://www.timesofisrael.com/liveblog_entry/massive-public-diplomacy-budget-boost-approved-for-foreign-ministry/"><small>NEWS REPORTING · S6</small><strong>The Times of Israel — NIS 545M budget increase</strong><span class="out">Read budget report ↗</span></a>
+  <a class="source" id="src-humanz" target="_blank" rel="noopener noreferrer" href="https://www.calcalistech.com/ctechnews/article/sykzpeqqp"><small>REPORTED PRIVATE STUDY · S7</small><strong>CTech — Humanz historical social-tag analysis</strong><span class="out">Read 2023 analysis ↗</span></a>
+  <a class="source" target="_blank" rel="noopener noreferrer" href="https://www.fec.gov/help-candidates-and-committees/partnership-llc-contributions/"><small>OFFICIAL GUIDANCE · S8</small><strong>FEC — LLC contribution reporting and attribution</strong><span class="out">Read FEC guidance ↗</span></a>
+  <a class="source" target="_blank" rel="noopener noreferrer" href="https://www.ftc.gov/business-guidance/resources/ftcs-endorsement-guides-what-people-are-asking"><small>OFFICIAL GUIDANCE · S9</small><strong>FTC — Endorsement Guides questions and answers</strong><span class="out">Read FTC guidance ↗</span></a>
+ </div>
+ <details class="disclosure"><summary>Research methodology and caveats</summary><div><p>This is a curated, topic-specific briefing—not a complete audit of political spending, a legal opinion, or a determination of what any individual AI provider ingested. It preserves the original submitted topics, corrects the reported 545-million currency confusion, distinguishes the FEC decision from allegations in the case, and identifies where the reported social metrics lack independently verified methodology.</p><p>Publication dates vary by source. Percentages in the Humanz comparison were calculated from the cited values and should not be extrapolated into a present-day trend. Archived records and direct transaction-level PDFs remain the ideal next level of verification.</p></div></details>
+</section>
+</main></div>
+<footer class="wrapper"><span>SIGNAL / RESEARCH · Independent evidence review · 27 Oct 2026</span><span>This report distinguishes documented records, reporting, and analytical hypotheses. <a href="#top">Back to top ↑</a></span></footer>
+<div id="toast" role="status" aria-live="polite" hidden></div>
+<script>
+(()=>{
+  'use strict';
+  const $=s=>document.querySelector(s), $$=s=>Array.from(document.querySelectorAll(s));
+  const buttons=$$('.filter-btn'), cards=$$('#findings .evidence'), search=$('#findingSearch'), counter=$('#resultCount'), empty=$('#emptyResults');
+  let filter='all';
+  function applyFilter(){
+    const q=search.value.trim().toLocaleLowerCase();let shown=0;
+    cards.forEach(card=>{
+      const matchType=filter==='all'||card.dataset.category===filter;
+      const matchSearch=!q||((card.dataset.search||'')+' '+card.textContent).toLocaleLowerCase().includes(q);
+      card.hidden=!(matchType&&matchSearch);if(!card.hidden)shown++;
+    });
+    counter.innerHTML='<b>'+shown+'</b> of <b>'+cards.length+'</b> findings visible';
+    empty.hidden=shown!==0;
+  }
+  buttons.forEach(button=>button.addEventListener('click',()=>{
+    filter=button.dataset.filter;
+    buttons.forEach(b=>b.setAttribute('aria-pressed',String(b===button)));
+    applyFilter();
+  }));
+  search.addEventListener('input',applyFilter);applyFilter();
+  const stages=[
+    {title:'01 — Publish: create a false source of apparent authority',description:'An operator could publish fabricated articles or misleading citations on websites designed to look credible.',check:'Archive the page, identify ownership, examine publication history, and trace the cited primary evidence.'},
+    {title:'02 — Index: make the source discoverable',description:'Search engines may crawl a new website. Technical SEO, cross-linking, or repeated claims can improve discoverability, but indexing and ranking are not guaranteed.',check:'Inspect search results over time, backlinks and domain relationships; verify whether the page was actually indexed.'},
+    {title:'03 — Retrieve: select material for an AI response',description:'A search-connected assistant or RAG system may retrieve passages relevant to a prompt. Retrieval varies by system, query, ranking and source trust.',check:'Capture citations and retrieved passages where possible, and compare output with suspicious sources excluded.'},
+    {title:'04 — Synthesize: repeat or resist an unsupported claim',description:'A generated answer could paraphrase dubious source material as fact. Other systems may reject it, express uncertainty, or cite independent evidence.',check:'Run controlled prompts, trace cited sources, and repeat across versions and dates before attributing causation.'}
+  ];
+  const stageButtons=$$('.step'), stageDetails=$('#stageDetails');
+  stageButtons.forEach(button=>button.addEventListener('click',()=>{
+    stageButtons.forEach(b=>b.setAttribute('aria-pressed',String(b===button)));
+    const s=stages[Number(button.dataset.stage)];
+    stageDetails.replaceChildren();
+    const title=document.createElement('h3');title.textContent=s.title;
+    const desc=document.createElement('p');desc.textContent=s.description;
+    const risk=document.createElement('div');risk.className='risk';
+    const strong=document.createElement('strong');strong.textContent='Validation: ';
+    risk.append(strong,document.createTextNode(s.check));
+    stageDetails.append(title,desc,risk);
+  }));
+  const toast=$('#toast');let toastTimer;
+  function notify(msg){toast.textContent=msg;toast.hidden=false;clearTimeout(toastTimer);toastTimer=setTimeout(()=>toast.hidden=true,2600)}
+  $('#copyBrief').addEventListener('click',async()=>{
+    const summary=`INFLUENCE & INFORMATION INTEGRITY — RESEARCH SNAPSHOT (27 October 2026)\n\nDOJ FARA #7652: Bridges Partners LLC is registered with filings identifying the Government of Israel through Havas Media Group Germany.\nFEC MUR #7994: $500,000 ML Organization contribution; no reason to believe the contribution-in-another-name allegation, but a recipient committee attribution-reporting issue resulted in conciliation without a civil penalty.\nExtremity Care: Public Citizen reports a $5M 2025 MAGA Inc contribution.\nTexas: Texas Tribune reported a $18,000 Defend Texas Liberty payment to “Influencable LLC.”\nBudget correction: 545 million SHEKELS (approximately US$149M at the time), not US$545 million.\nHumanz: CTech reported a 2023 hashtag study, but the underlying methodology is not independently audited here.\nAI narrative contamination: a feasible threat model; a specific 11-domain operation and resulting model bias have not been demonstrated by the supplied evidence.\n\nPrimary sources:\nhttps://efile.fara.gov/ords/fara/f?p=1381:200:::NO::P200_REG_NUMBER:7652\nhttps://www.fec.gov/data/legal/matter-under-review/7994/`;
+    try{
+      if(navigator.clipboard&&window.isSecureContext){await navigator.clipboard.writeText(summary);notify('Summary copied to clipboard');}
+      else{const t=document.createElement('textarea');t.value=summary;t.style.cssText='position:fixed;left:-9999px;top:-9999px';document.body.append(t);t.select();const ok=document.execCommand('copy');t.remove();notify(ok?'Summary copied to clipboard':'Copy unavailable; use your browser’s selection tools');}
+    }catch(e){notify('Browser blocked clipboard access');}
+  });
+  $('#printBrief').addEventListener('click',()=>window.print());
+  window.addEventListener('keydown',e=>{if((e.ctrlKey||e.metaKey)&&e.key.toLowerCase()==='k'){e.preventDefault();search.focus();search.select();}});
+  const navLinks=$$('#sectionNav a');
+  if('IntersectionObserver' in window){const observer=new IntersectionObserver(entries=>{entries.forEach(entry=>{if(entry.isIntersecting){navLinks.forEach(a=>{const active=a.hash==='#'+entry.target.id;a.classList.toggle('active',active);if(active)a.setAttribute('aria-current','location');else a.removeAttribute('aria-current');});}})},{rootMargin:'-12% 0px -72% 0px',threshold:0});$$('main .section').forEach(s=>observer.observe(s));}
+})();
+</script>
+</body></html>
