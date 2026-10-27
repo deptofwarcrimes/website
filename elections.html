@@ -1,0 +1,1489 @@
+<!DOCTYPE html>
+<html lang="en" class="dark">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Election Desk // Command Center - Midterm Balance of Power</title>
+  <!-- Tailwind CSS CDN -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <!-- Font Awesome Icons -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <!-- Fonts: Inter & JetBrains Mono for command center feel -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=JetBrains+Mono:wght@400;500;600;700&display=swap" rel="stylesheet">
+
+  <script>
+    tailwind.config = {
+      darkMode: 'class',
+      theme: {
+        extend: {
+          fontFamily: {
+            sans: ['Inter', 'sans-serif'],
+            mono: ['JetBrains Mono', 'monospace'],
+          },
+          colors: {
+            command: {
+              base: '#090d14',
+              surface: '#0f1726',
+              elevated: '#151f33',
+              card: '#182338',
+              border: '#1e2d47',
+              borderLight: '#2a3d60',
+              accent: '#38bdf8'
+            },
+            dem: {
+              DEFAULT: '#2563eb',
+              bright: '#3b82f6',
+              glow: '#60a5fa',
+              subtle: '#172554',
+              badge: '#1e3a8a'
+            },
+            gop: {
+              DEFAULT: '#dc2626',
+              bright: '#ef4444',
+              glow: '#f87171',
+              subtle: '#450a0a',
+              badge: '#7f1d1d'
+            },
+            toss: {
+              DEFAULT: '#475569',
+              light: '#64748b'
+            }
+          }
+        }
+      }
+    }
+  </script>
+
+  <style>
+    /* Neon Glow & Depth Accents */
+    .glow-dem {
+      box-shadow: 0 0 15px -2px rgba(59, 130, 246, 0.45);
+    }
+    .glow-gop {
+      box-shadow: 0 0 15px -2px rgba(239, 68, 68, 0.45);
+    }
+    .glow-cyan {
+      box-shadow: 0 0 14px -2px rgba(56, 189, 248, 0.4);
+    }
+    .text-glow-dem {
+      text-shadow: 0 0 10px rgba(96, 165, 250, 0.6);
+    }
+    .text-glow-gop {
+      text-shadow: 0 0 10px rgba(248, 113, 113, 0.6);
+    }
+
+    /* News ticker animation */
+    @keyframes ticker {
+      0% { transform: translate3d(0, 0, 0); }
+      100% { transform: translate3d(-50%, 0, 0); }
+    }
+    .ticker-content {
+      display: inline-flex;
+      white-space: nowrap;
+      animation: ticker 42s linear infinite;
+    }
+    .ticker-content:hover {
+      animation-play-state: paused;
+    }
+
+    /* Radar radar pulse indicator */
+    .pulse-ping {
+      position: relative;
+    }
+    .pulse-ping::before {
+      content: '';
+      position: absolute;
+      top: 0; left: 0; right: 0; bottom: 0;
+      border-radius: 9999px;
+      background-color: #ef4444;
+      animation: ping 1.5s cubic-bezier(0, 0, 0.2, 1) infinite;
+    }
+    @keyframes ping {
+      75%, 100% {
+        transform: scale(2.4);
+        opacity: 0;
+      }
+    }
+
+    /* Custom dark scrollbars */
+    ::-webkit-scrollbar {
+      width: 7px;
+      height: 7px;
+    }
+    ::-webkit-scrollbar-track {
+      background: #090d14;
+    }
+    ::-webkit-scrollbar-thumb {
+      background: #1e2d47;
+      border-radius: 4px;
+    }
+    ::-webkit-scrollbar-thumb:hover {
+      background: #2a3d60;
+    }
+  </style>
+</head>
+
+<body class="bg-[#090d14] text-slate-100 antialiased min-h-screen flex flex-col font-sans selection:bg-blue-600 selection:text-white">
+
+  <!-- TOP BROADCAST COMMAND BAR -->
+  <header class="bg-[#0c121d]/90 backdrop-blur-md border-b border-[#1e2d47] sticky top-0 z-50 shadow-2xl">
+    <!-- Meta System Bar -->
+    <div class="max-w-[1440px] mx-auto px-4 sm:px-6 lg:px-8 py-2 flex flex-wrap items-center justify-between text-xs border-b border-[#182338]">
+      <div class="flex items-center gap-3">
+        <span class="inline-flex items-center gap-2 font-mono font-bold text-rose-400 bg-rose-950/60 border border-rose-800/80 px-2.5 py-0.5 rounded-full text-[11px] shadow-sm">
+          <span class="relative flex h-2 w-2">
+            <span class="pulse-ping absolute inline-flex h-full w-full rounded-full bg-rose-500 opacity-75"></span>
+            <span class="relative inline-flex rounded-full h-2 w-2 bg-rose-500"></span>
+          </span>
+          ELECTION DESK LIVE
+        </span>
+        <span class="text-slate-600">|</span>
+        <span class="text-slate-400 font-mono text-[11px] flex items-center gap-1.5">
+          <i class="fa-solid fa-satellite-dish text-sky-400"></i>
+          <span>FEED: DECISION DESK NET</span>
+        </span>
+        <span class="text-slate-600 hidden sm:inline">|</span>
+        <span id="currentTimeString" class="text-slate-300 font-mono text-[11px] hidden sm:inline">2026 MIDTERM HQ</span>
+      </div>
+
+      <!-- Quick Action What-If Presets -->
+      <div class="flex items-center gap-2 mt-2 sm:mt-0 flex-wrap">
+        <span class="text-[11px] font-mono uppercase text-slate-400 mr-1 hidden lg:inline">What-If Scenarios:</span>
+        <button onclick="scenarioSweep('Dem')" class="px-2.5 py-1 text-[11px] font-semibold rounded-md bg-blue-950/70 hover:bg-blue-900 border border-blue-700/60 text-blue-300 transition flex items-center gap-1.5 shadow-sm">
+          <i class="fa-solid fa-angles-left text-blue-400"></i> All Toss-ups &rarr; Dem
+        </button>
+        <button onclick="scenarioSweep('GOP')" class="px-2.5 py-1 text-[11px] font-semibold rounded-md bg-red-950/70 hover:bg-red-900 border border-red-700/60 text-red-300 transition flex items-center gap-1.5 shadow-sm">
+          All Toss-ups &rarr; GOP <i class="fa-solid fa-angles-right text-red-400"></i>
+        </button>
+        <button onclick="resetAllRaces()" class="px-2.5 py-1 text-[11px] font-semibold rounded-md bg-slate-800 hover:bg-slate-700 border border-slate-700 text-slate-200 transition flex items-center gap-1.5">
+          <i class="fa-solid fa-arrow-rotate-left"></i> Reset
+        </button>
+        <button onclick="exportSummary()" class="px-2.5 py-1 text-[11px] font-semibold rounded-md bg-sky-950/70 hover:bg-sky-900 border border-sky-600/60 text-sky-300 transition flex items-center gap-1.5 shadow-sm">
+          <i class="fa-solid fa-file-arrow-down"></i> Export Report
+        </button>
+      </div>
+    </div>
+
+    <!-- Main Branding & Metrics Hub -->
+    <div class="max-w-[1440px] mx-auto px-4 sm:px-6 lg:px-8 py-3.5 flex flex-col md:flex-row md:items-center md:justify-between gap-4">
+      <div class="flex items-center gap-3">
+        <div class="w-10 h-10 rounded-lg bg-gradient-to-br from-blue-600 via-slate-900 to-red-600 border border-slate-700 flex items-center justify-center text-white text-lg font-black shadow-lg">
+          <i class="fa-solid fa-shield-halved"></i>
+        </div>
+        <div>
+          <div class="flex items-center gap-2">
+            <h1 class="text-xl sm:text-2xl font-black tracking-tight text-white uppercase font-sans">
+              Decision<span class="text-sky-400">Command</span> <span class="text-slate-400 font-light">// MIDTERMS</span>
+            </h1>
+            <span class="text-[10px] font-mono uppercase bg-slate-800/90 text-sky-400 border border-sky-500/30 px-2 py-0.5 rounded tracking-widest font-bold">119th Congress</span>
+          </div>
+          <p class="text-xs text-slate-400">Real-time legislative majority simulation &amp; battleground intelligence</p>
+        </div>
+      </div>
+
+      <!-- Quick Ticker KPI Stats -->
+      <div class="grid grid-cols-2 sm:grid-cols-4 gap-2 text-xs">
+        <div class="bg-[#121b2b] border border-[#1e2d47] rounded-lg p-2.5">
+          <span class="text-slate-400 text-[10px] uppercase font-mono block">Active Toss-ups</span>
+          <span id="statTossups" class="text-lg font-mono font-bold text-amber-400">0</span>
+        </div>
+        <div class="bg-[#121b2b] border border-[#1e2d47] rounded-lg p-2.5">
+          <span class="text-slate-400 text-[10px] uppercase font-mono block">Seats Flipped</span>
+          <span id="statFlips" class="text-lg font-mono font-bold text-purple-400">0</span>
+        </div>
+        <div class="bg-[#121b2b] border border-[#1e2d47] rounded-lg p-2.5">
+          <span class="text-slate-400 text-[10px] uppercase font-mono block">Net Chamber Shift</span>
+          <span id="statNetShift" class="text-lg font-mono font-bold text-slate-200">Even</span>
+        </div>
+        <div class="bg-[#121b2b] border border-[#1e2d47] rounded-lg p-2.5">
+          <span class="text-slate-400 text-[10px] uppercase font-mono block">Est. Uncounted</span>
+          <span class="text-lg font-mono font-bold text-sky-400">~3.2M</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- LIVE STREAMING TICKER -->
+    <div class="bg-[#070b12] border-t border-[#182338] text-xs py-1.5 px-4 overflow-hidden relative flex items-center shadow-inner">
+      <div class="bg-gradient-to-r from-rose-700 to-rose-600 text-white font-extrabold uppercase px-2 py-0.5 rounded text-[10px] tracking-wider z-10 shrink-0 mr-3 flex items-center gap-1.5 shadow-md">
+        <span class="w-1.5 h-1.5 rounded-full bg-white animate-pulse"></span> ALERT DESK
+      </div>
+      <div class="overflow-hidden w-full relative">
+        <div id="breakingTicker" class="ticker-content text-slate-300 font-mono text-[11px]">
+          <!-- Injected via JavaScript -->
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <!-- MAIN BODY -->
+  <main class="max-w-[1440px] mx-auto px-4 sm:px-6 lg:px-8 py-6 w-full flex-1 space-y-7">
+
+    <!-- NATIONAL BALANCE OF POWER BARS SECTION -->
+    <section aria-labelledby="balance-heading" class="space-y-3">
+      <div class="flex items-center justify-between">
+        <h2 id="balance-heading" class="text-base sm:text-lg font-bold uppercase tracking-wider text-slate-200 flex items-center gap-2">
+          <i class="fa-solid fa-chart-simple text-sky-400"></i> National Balance of Power
+        </h2>
+        <div class="flex items-center gap-3 text-xs font-mono">
+          <span class="flex items-center gap-1.5"><span class="w-2.5 h-2.5 rounded-sm bg-blue-500 shadow-sm shadow-blue-500/50"></span> DEM</span>
+          <span class="flex items-center gap-1.5"><span class="w-2.5 h-2.5 rounded-sm bg-slate-600"></span> UNCALLED</span>
+          <span class="flex items-center gap-1.5"><span class="w-2.5 h-2.5 rounded-sm bg-red-500 shadow-sm shadow-red-500/50"></span> GOP</span>
+          <span class="flex items-center gap-1.5"><span class="w-2.5 h-2.5 rounded-sm bg-amber-500"></span> IND</span>
+        </div>
+      </div>
+
+      <div class="grid grid-cols-1 lg:grid-cols-3 gap-5">
+
+        <!-- 1. SENATE GAUGE CARD -->
+        <div class="bg-[#121a2a] border border-[#1e2d47] rounded-xl p-5 shadow-xl relative overflow-hidden flex flex-col justify-between">
+          <div class="absolute top-0 right-0 w-32 h-32 bg-blue-500/5 rounded-full blur-2xl pointer-events-none"></div>
+
+          <div>
+            <div class="flex items-center justify-between border-b border-[#1e2d47] pb-2.5">
+              <span class="text-sm font-bold text-slate-100 flex items-center gap-2">
+                <i class="fa-solid fa-building-columns text-sky-400"></i> U.S. SENATE
+              </span>
+              <span class="text-[11px] font-mono font-semibold px-2 py-0.5 rounded bg-[#18243b] text-slate-300 border border-[#273859]">
+                51 to Control &bull; 100 Seats
+              </span>
+            </div>
+
+            <!-- Numbers Display -->
+            <div class="flex items-baseline justify-between mt-4">
+              <div class="text-left">
+                <div class="flex items-baseline gap-1">
+                  <span id="senateDemCount" class="text-4xl font-mono font-black text-blue-400 text-glow-dem">48</span>
+                  <span class="text-xs font-bold text-blue-300 uppercase">Dem</span>
+                </div>
+                <span id="senateDemNeeded" class="text-[11px] text-slate-400 font-mono">Need 3 more</span>
+              </div>
+
+              <div class="text-center">
+                <span id="senateTossCount" class="text-xl font-mono font-bold text-slate-400 bg-[#19243a] px-2.5 py-0.5 rounded border border-[#253655]">3</span>
+                <span class="text-[10px] uppercase font-mono block text-slate-400 mt-1">Remaining</span>
+              </div>
+
+              <div class="text-right">
+                <div class="flex items-baseline justify-end gap-1">
+                  <span id="senateGopCount" class="text-4xl font-mono font-black text-red-400 text-glow-gop">49</span>
+                  <span class="text-xs font-bold text-red-300 uppercase">GOP</span>
+                </div>
+                <span id="senateGopNeeded" class="text-[11px] text-slate-400 font-mono">Need 2 more</span>
+              </div>
+            </div>
+
+            <!-- Stacked Bar with 51 Seat Target Line -->
+            <div class="relative w-full bg-[#0a0e17] h-6 rounded-lg overflow-hidden flex my-4 border border-[#1e2d47] shadow-inner">
+              <!-- Center Threshold Marker at 51% -->
+              <div class="absolute left-[51%] top-0 bottom-0 w-[2px] bg-amber-400 z-20 shadow-[0_0_8px_rgba(251,191,36,0.8)]" title="Majority Threshold: 51"></div>
+              <div id="senateDemBar" class="bg-gradient-to-r from-blue-700 to-blue-500 h-full flex items-center justify-center text-xs font-mono font-bold text-white transition-all duration-500" style="width: 48%;">48</div>
+              <div id="senateTossBar" class="bg-[#24334f] h-full flex items-center justify-center text-xs font-mono font-bold text-slate-300 transition-all duration-500" style="width: 3%;">3</div>
+              <div id="senateGopBar" class="bg-gradient-to-l from-red-700 to-red-500 h-full flex items-center justify-center text-xs font-mono font-bold text-white transition-all duration-500" style="width: 49%;">49</div>
+            </div>
+          </div>
+
+          <div class="pt-3 border-t border-[#1a263d] flex items-center justify-between text-xs">
+            <span class="text-slate-400 font-mono">Majority Target: 51</span>
+            <span id="senateStatusBadge" class="font-mono text-[11px] font-bold px-2 py-0.5 rounded bg-amber-950/70 border border-amber-600/60 text-amber-300">
+              TOO CLOSE TO CALL
+            </span>
+          </div>
+        </div>
+
+        <!-- 2. HOUSE GAUGE CARD -->
+        <div class="bg-[#121a2a] border border-[#1e2d47] rounded-xl p-5 shadow-xl relative overflow-hidden flex flex-col justify-between">
+          <div class="absolute top-0 right-0 w-32 h-32 bg-red-500/5 rounded-full blur-2xl pointer-events-none"></div>
+
+          <div>
+            <div class="flex items-center justify-between border-b border-[#1e2d47] pb-2.5">
+              <span class="text-sm font-bold text-slate-100 flex items-center gap-2">
+                <i class="fa-solid fa-landmark text-sky-400"></i> U.S. HOUSE OF REPS
+              </span>
+              <span class="text-[11px] font-mono font-semibold px-2 py-0.5 rounded bg-[#18243b] text-slate-300 border border-[#273859]">
+                218 to Win &bull; 435 Seats
+              </span>
+            </div>
+
+            <!-- Numbers Display -->
+            <div class="flex items-baseline justify-between mt-4">
+              <div class="text-left">
+                <div class="flex items-baseline gap-1">
+                  <span id="houseDemCount" class="text-4xl font-mono font-black text-blue-400 text-glow-dem">209</span>
+                  <span class="text-xs font-bold text-blue-300 uppercase">Dem</span>
+                </div>
+                <span id="houseDemNeeded" class="text-[11px] text-slate-400 font-mono">Need 9 more</span>
+              </div>
+
+              <div class="text-center">
+                <span id="houseTossCount" class="text-xl font-mono font-bold text-slate-400 bg-[#19243a] px-2.5 py-0.5 rounded border border-[#253655]">12</span>
+                <span class="text-[10px] uppercase font-mono block text-slate-400 mt-1">Uncalled</span>
+              </div>
+
+              <div class="text-right">
+                <div class="flex items-baseline justify-end gap-1">
+                  <span id="houseGopCount" class="text-4xl font-mono font-black text-red-400 text-glow-gop">214</span>
+                  <span class="text-xs font-bold text-red-300 uppercase">GOP</span>
+                </div>
+                <span id="houseGopNeeded" class="text-[11px] text-slate-400 font-mono">Need 4 more</span>
+              </div>
+            </div>
+
+            <!-- Stacked Bar with 218 Seat Target Line (218 / 435 = ~50.1%) -->
+            <div class="relative w-full bg-[#0a0e17] h-6 rounded-lg overflow-hidden flex my-4 border border-[#1e2d47] shadow-inner">
+              <div class="absolute left-[50.1%] top-0 bottom-0 w-[2px] bg-amber-400 z-20 shadow-[0_0_8px_rgba(251,191,36,0.8)]" title="Majority Threshold: 218"></div>
+              <div id="houseDemBar" class="bg-gradient-to-r from-blue-700 to-blue-500 h-full flex items-center justify-center text-xs font-mono font-bold text-white transition-all duration-500" style="width: 48%;">209</div>
+              <div id="houseTossBar" class="bg-[#24334f] h-full flex items-center justify-center text-xs font-mono font-bold text-slate-300 transition-all duration-500" style="width: 3%;">12</div>
+              <div id="houseGopBar" class="bg-gradient-to-l from-red-700 to-red-500 h-full flex items-center justify-center text-xs font-mono font-bold text-white transition-all duration-500" style="width: 49%;">214</div>
+            </div>
+          </div>
+
+          <div class="pt-3 border-t border-[#1a263d] flex items-center justify-between text-xs">
+            <span class="text-slate-400 font-mono">Majority Target: 218</span>
+            <span id="houseStatusBadge" class="font-mono text-[11px] font-bold px-2 py-0.5 rounded bg-red-950/70 border border-red-700/60 text-red-300">
+              GOP LEAN (+5 Margin)
+            </span>
+          </div>
+        </div>
+
+        <!-- 3. GOVERNORSHIPS GAUGE CARD -->
+        <div class="bg-[#121a2a] border border-[#1e2d47] rounded-xl p-5 shadow-xl relative overflow-hidden flex flex-col justify-between">
+          <div class="absolute top-0 right-0 w-32 h-32 bg-sky-500/5 rounded-full blur-2xl pointer-events-none"></div>
+
+          <div>
+            <div class="flex items-center justify-between border-b border-[#1e2d47] pb-2.5">
+              <span class="text-sm font-bold text-slate-100 flex items-center gap-2">
+                <i class="fa-solid fa-flag-usa text-sky-400"></i> GOVERNORSHIPS
+              </span>
+              <span class="text-[11px] font-mono font-semibold px-2 py-0.5 rounded bg-[#18243b] text-slate-300 border border-[#273859]">
+                36 Contested &bull; 50 States
+              </span>
+            </div>
+
+            <!-- Numbers Display -->
+            <div class="flex items-baseline justify-between mt-4">
+              <div class="text-left">
+                <div class="flex items-baseline gap-1">
+                  <span id="govDemCount" class="text-4xl font-mono font-black text-blue-400 text-glow-dem">23</span>
+                  <span class="text-xs font-bold text-blue-300 uppercase">Dem</span>
+                </div>
+                <span class="text-[11px] text-slate-400 font-mono">Holds secured</span>
+              </div>
+
+              <div class="text-center">
+                <span id="govTossCount" class="text-xl font-mono font-bold text-slate-400 bg-[#19243a] px-2.5 py-0.5 rounded border border-[#253655]">2</span>
+                <span class="text-[10px] uppercase font-mono block text-slate-400 mt-1">Pending</span>
+              </div>
+
+              <div class="text-right">
+                <div class="flex items-baseline justify-end gap-1">
+                  <span id="govGopCount" class="text-4xl font-mono font-black text-red-400 text-glow-gop">25</span>
+                  <span class="text-xs font-bold text-red-300 uppercase">GOP</span>
+                </div>
+                <span class="text-[11px] text-slate-400 font-mono">Holds secured</span>
+              </div>
+            </div>
+
+            <!-- Stacked Bar with 25 line -->
+            <div class="relative w-full bg-[#0a0e17] h-6 rounded-lg overflow-hidden flex my-4 border border-[#1e2d47] shadow-inner">
+              <div class="absolute left-1/2 top-0 bottom-0 w-[2px] bg-amber-400 z-20 shadow-[0_0_8px_rgba(251,191,36,0.8)]" title="Even Split: 25"></div>
+              <div id="govDemBar" class="bg-gradient-to-r from-blue-700 to-blue-500 h-full flex items-center justify-center text-xs font-mono font-bold text-white transition-all duration-500" style="width: 46%;">23</div>
+              <div id="govTossBar" class="bg-[#24334f] h-full flex items-center justify-center text-xs font-mono font-bold text-slate-300 transition-all duration-500" style="width: 4%;">2</div>
+              <div id="govGopBar" class="bg-gradient-to-l from-red-700 to-red-500 h-full flex items-center justify-center text-xs font-mono font-bold text-white transition-all duration-500" style="width: 50%;">25</div>
+            </div>
+          </div>
+
+          <div class="pt-3 border-t border-[#1a263d] flex items-center justify-between text-xs">
+            <span class="text-slate-400 font-mono">50 Total States</span>
+            <span id="govStatusBadge" class="font-mono text-[11px] font-bold px-2 py-0.5 rounded bg-blue-950/70 border border-blue-700/60 text-blue-300">
+              DEM CRITICAL HOLDS
+            </span>
+          </div>
+        </div>
+
+      </div>
+    </section>
+
+    <!-- INTERACTIVE CONTROL DESK & FILTER TOOLBAR -->
+    <section class="space-y-4">
+      <div class="bg-[#101726] p-4 rounded-xl border border-[#1e2d47] shadow-xl flex flex-col lg:flex-row lg:items-center justify-between gap-4">
+
+        <!-- Filters (Chamber & Status) -->
+        <div class="flex flex-wrap items-center gap-2">
+          <!-- Chamber Filter -->
+          <div class="inline-flex rounded-lg border border-[#223352] p-1 bg-[#0a0f18] text-xs font-mono">
+            <button onclick="setChamberFilter('all')" class="chamber-tab px-3 py-1.5 rounded bg-blue-600 text-white font-bold shadow-md" data-filter="all">ALL</button>
+            <button onclick="setChamberFilter('Senate')" class="chamber-tab px-3 py-1.5 rounded text-slate-400 hover:text-white transition" data-filter="Senate">SENATE</button>
+            <button onclick="setChamberFilter('House')" class="chamber-tab px-3 py-1.5 rounded text-slate-400 hover:text-white transition" data-filter="House">HOUSE</button>
+            <button onclick="setChamberFilter('Governor')" class="chamber-tab px-3 py-1.5 rounded text-slate-400 hover:text-white transition" data-filter="Governor">GOVERNORS</button>
+          </div>
+
+          <!-- Status Filter -->
+          <div class="inline-flex rounded-lg border border-[#223352] p-1 bg-[#0a0f18] text-xs font-mono">
+            <button onclick="setStatusFilter('all')" class="status-tab px-3 py-1.5 rounded bg-[#1c2940] text-sky-300 font-bold" data-filter="all">ALL RACES</button>
+            <button onclick="setStatusFilter('battleground')" class="status-tab px-3 py-1.5 rounded text-slate-400 hover:text-white transition" data-filter="battleground">BATTLEGROUNDS</button>
+            <button onclick="setStatusFilter('flipped')" class="status-tab px-3 py-1.5 rounded text-slate-400 hover:text-white transition" data-filter="flipped">FLIPPED</button>
+            <button onclick="setStatusFilter('uncalled')" class="status-tab px-3 py-1.5 rounded text-slate-400 hover:text-white transition" data-filter="uncalled">UNCALLED</button>
+          </div>
+        </div>
+
+        <!-- Search Bar & View Mode Toggle -->
+        <div class="flex items-center gap-3">
+          <div class="relative w-full sm:w-64">
+            <i class="fa-solid fa-magnifying-glass absolute left-3 top-2.5 text-xs text-slate-500"></i>
+            <input type="text" id="searchInput" oninput="handleSearch(this.value)" placeholder="Search state, candidate, district..." class="w-full text-xs pl-8 pr-3 py-2 bg-[#090d14] border border-[#223352] rounded-lg text-slate-200 placeholder-slate-500 focus:outline-none focus:border-sky-500 focus:ring-1 focus:ring-sky-500 transition font-sans">
+          </div>
+
+          <div class="flex border border-[#223352] rounded-lg p-1 bg-[#0a0f18] text-xs">
+            <button onclick="setViewMode('grid')" id="gridBtn" class="p-1.5 rounded bg-[#1c2940] text-sky-400 font-bold" title="Grid View">
+              <i class="fa-solid fa-table-cells-large"></i>
+            </button>
+            <button onclick="setViewMode('table')" id="tableBtn" class="p-1.5 rounded text-slate-400 hover:text-white transition" title="Data Table View">
+              <i class="fa-solid fa-table-list"></i>
+            </button>
+          </div>
+        </div>
+
+      </div>
+
+      <!-- RACE CARDS GRID VIEW -->
+      <div id="racesGridView" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4">
+        <!-- Injected via JavaScript -->
+      </div>
+
+      <!-- RACE DATA TABLE VIEW (HIDDEN BY DEFAULT) -->
+      <div id="racesTableView" class="hidden bg-[#101726] rounded-xl border border-[#1e2d47] overflow-hidden shadow-2xl">
+        <div class="overflow-x-auto">
+          <table class="w-full text-left text-xs">
+            <thead class="bg-[#090e17] text-slate-400 font-mono text-[11px] uppercase tracking-wider border-b border-[#1e2d47]">
+              <tr>
+                <th class="py-3 px-4">Race / District</th>
+                <th class="py-3 px-4">Chamber</th>
+                <th class="py-3 px-4">Democratic Candidate</th>
+                <th class="py-3 px-4">Republican Candidate</th>
+                <th class="py-3 px-4 text-center">In %</th>
+                <th class="py-3 px-4">Net Spread</th>
+                <th class="py-3 px-4">Projected Winner</th>
+                <th class="py-3 px-4 text-right">Simulation</th>
+              </tr>
+            </thead>
+            <tbody id="racesTableBody" class="divide-y divide-[#182338]">
+              <!-- Injected via JS -->
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+      <!-- NO RESULTS NOTIFICATION -->
+      <div id="noResultsMsg" class="hidden text-center py-16 bg-[#101726] rounded-xl border border-[#1e2d47]">
+        <i class="fa-solid fa-satellite text-4xl text-slate-600 mb-3 animate-bounce"></i>
+        <h4 class="text-base font-mono font-bold text-slate-300 uppercase">No matching election targets found</h4>
+        <p class="text-xs text-slate-500 mt-1">Adjust your search parameters or reset filtering options.</p>
+        <button onclick="resetFilters()" class="mt-4 px-4 py-1.5 text-xs font-mono font-bold bg-blue-600 hover:bg-blue-500 text-white rounded-lg transition">
+          Clear Active Filters
+        </button>
+      </div>
+    </section>
+
+  </main>
+
+  <!-- MODAL: ADJUST / SIMULATE RACE DATA -->
+  <div id="raceModal" class="fixed inset-0 bg-black/80 backdrop-blur-sm z-50 flex items-center justify-center p-4 hidden">
+    <div class="bg-[#101726] border border-[#223352] rounded-2xl max-w-lg w-full overflow-hidden shadow-2xl animate-in fade-in zoom-in-95 duration-150">
+      <div class="px-6 py-4 bg-[#0a0f18] text-white flex items-center justify-between border-b border-[#1e2d47]">
+        <div>
+          <span id="modalChamberTag" class="text-[10px] font-mono font-bold uppercase px-2 py-0.5 rounded bg-blue-900 border border-blue-700 text-blue-200">SENATE</span>
+          <h3 id="modalRaceTitle" class="text-base font-bold font-sans mt-1 text-slate-100">Pennsylvania Senate Simulation</h3>
+        </div>
+        <button onclick="closeModal()" class="text-slate-400 hover:text-white text-lg p-1">
+          <i class="fa-solid fa-xmark"></i>
+        </button>
+      </div>
+
+      <form id="editRaceForm" onsubmit="saveRaceDetails(event)" class="p-6 space-y-4">
+        <input type="hidden" id="modalRaceId">
+
+        <div class="grid grid-cols-2 gap-3 text-xs bg-[#0b101a] p-3 rounded-lg border border-[#1a2538] font-mono">
+          <div>
+            <span class="text-slate-500 block">Baseline Control:</span>
+            <span id="modalPreviousParty" class="font-bold text-slate-200">Democrat</span>
+          </div>
+          <div>
+            <span class="text-slate-500 block">Seat Classification:</span>
+            <span id="modalImportance" class="font-bold text-amber-400">Battleground</span>
+          </div>
+        </div>
+
+        <div class="space-y-3">
+          <h4 class="text-xs font-mono font-bold uppercase tracking-wider text-sky-400">Tweak Vote Margins</h4>
+
+          <div class="grid grid-cols-2 gap-3">
+            <div class="space-y-1">
+              <label id="modalDemLabel" class="text-xs font-medium text-blue-400">Democrat %</label>
+              <input type="number" step="0.1" min="0" max="100" id="modalDemPct" class="w-full text-xs font-mono p-2 bg-[#0a0f18] border border-blue-900/60 rounded text-slate-100 focus:border-blue-500 outline-none">
+            </div>
+            <div class="space-y-1">
+              <label id="modalGopLabel" class="text-xs font-medium text-red-400">Republican %</label>
+              <input type="number" step="0.1" min="0" max="100" id="modalGopPct" class="w-full text-xs font-mono p-2 bg-[#0a0f18] border border-red-900/60 rounded text-slate-100 focus:border-red-500 outline-none">
+            </div>
+          </div>
+
+          <div class="space-y-1">
+            <label class="text-xs font-medium text-slate-300">Precincts Reporting (%)</label>
+            <input type="number" step="1" min="0" max="100" id="modalReporting" class="w-full text-xs font-mono p-2 bg-[#0a0f18] border border-[#223352] rounded text-slate-100 focus:border-sky-500 outline-none">
+          </div>
+
+          <div class="space-y-1">
+            <label class="text-xs font-medium text-slate-300">Projected Outcome Call</label>
+            <select id="modalCallStatus" class="w-full text-xs font-mono p-2 bg-[#0a0f18] border border-[#223352] rounded text-slate-100 focus:border-sky-500 outline-none">
+              <option value="Uncalled">Too Close to Call / In Progress</option>
+              <option value="Dem">Called: Democrat Projected Winner</option>
+              <option value="GOP">Called: Republican Projected Winner</option>
+            </select>
+          </div>
+        </div>
+
+        <div class="pt-4 border-t border-[#1a2538] flex items-center justify-end gap-2">
+          <button type="button" onclick="closeModal()" class="px-3 py-1.5 text-xs font-mono text-slate-400 hover:text-white rounded">
+            Cancel
+          </button>
+          <button type="submit" class="px-4 py-1.5 text-xs font-mono font-bold bg-sky-600 hover:bg-sky-500 text-white rounded-lg shadow-lg shadow-sky-600/30 transition">
+            Recalculate Model
+          </button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <!-- MODAL: EXPORT SUMMARY -->
+  <div id="exportModal" class="fixed inset-0 bg-black/85 backdrop-blur-sm z-50 flex items-center justify-center p-4 hidden">
+    <div class="bg-[#101726] border border-[#223352] rounded-2xl max-w-xl w-full p-6 shadow-2xl">
+      <div class="flex items-center justify-between mb-4 border-b border-[#1e2d47] pb-3">
+        <h3 class="font-mono font-bold text-base text-slate-100 flex items-center gap-2">
+          <i class="fa-solid fa-terminal text-sky-400"></i> ELECTION DESK DISPATCH REPORT
+        </h3>
+        <button onclick="document.getElementById('exportModal').classList.add('hidden')" class="text-slate-400 hover:text-white">
+          <i class="fa-solid fa-xmark"></i>
+        </button>
+      </div>
+      <p class="text-xs text-slate-400 mb-2">Simulated chamber balance and called race outcomes snapshot:</p>
+      <textarea id="exportText" rows="12" readonly class="w-full text-xs font-mono bg-[#090e17] p-3 border border-[#1e2d47] rounded-lg text-slate-300 focus:outline-none"></textarea>
+      
+      <div class="mt-4 flex items-center justify-end gap-2">
+        <button onclick="copyExportText()" id="copyExportBtn" class="px-4 py-1.5 bg-sky-600 text-white rounded-lg text-xs font-mono font-bold hover:bg-sky-500 transition flex items-center gap-1.5 shadow-md shadow-sky-600/40">
+          <i class="fa-regular fa-copy"></i> Copy to Clipboard
+        </button>
+        <button onclick="document.getElementById('exportModal').classList.add('hidden')" class="px-3 py-1.5 text-xs font-mono text-slate-400 hover:text-white">
+          Close
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- FLOATING COMMAND TOAST -->
+  <div id="toast" class="fixed bottom-6 right-6 bg-[#0a0f18] text-white border border-[#223352] px-4 py-3 rounded-xl shadow-2xl text-xs font-mono flex items-center gap-2.5 transform transition-all duration-300 translate-y-24 opacity-0 pointer-events-none z-50">
+    <i class="fa-solid fa-microchip text-sky-400"></i>
+    <span id="toastMsg">Telemetry updated</span>
+  </div>
+
+  <!-- SCRIPT LOGIC -->
+  <script>
+    // INITIAL BASELINE RACES DATA (Key Battlegrounds)
+    const initialRaces = [
+      // SENATE
+      {
+        id: "sen-pa",
+        state: "Pennsylvania",
+        chamber: "Senate",
+        district: "Statewide",
+        demCandidate: "Bob Casey Jr.",
+        gopCandidate: "Dave McCormick",
+        demPct: 49.6,
+        gopPct: 48.9,
+        demVotes: 3345210,
+        gopVotes: 3298105,
+        reporting: 98,
+        called: "Uncalled",
+        previousParty: "Dem",
+        isBattleground: true
+      },
+      {
+        id: "sen-az",
+        state: "Arizona",
+        chamber: "Senate",
+        district: "Statewide",
+        demCandidate: "Ruben Gallego",
+        gopCandidate: "Kari Lake",
+        demPct: 50.4,
+        gopPct: 47.9,
+        demVotes: 1675840,
+        gopVotes: 1592730,
+        reporting: 92,
+        called: "Dem",
+        previousParty: "Ind",
+        isBattleground: true
+      },
+      {
+        id: "sen-nv",
+        state: "Nevada",
+        chamber: "Senate",
+        district: "Statewide",
+        demCandidate: "Jacky Rosen",
+        gopCandidate: "Sam Brown",
+        demPct: 49.8,
+        gopPct: 48.2,
+        demVotes: 689400,
+        gopVotes: 667230,
+        reporting: 94,
+        called: "Dem",
+        previousParty: "Dem",
+        isBattleground: true
+      },
+      {
+        id: "sen-mt",
+        state: "Montana",
+        chamber: "Senate",
+        district: "Statewide",
+        demCandidate: "Jon Tester",
+        gopCandidate: "Tim Sheehy",
+        demPct: 47.1,
+        gopPct: 51.4,
+        demVotes: 260300,
+        gopVotes: 284100,
+        reporting: 97,
+        called: "GOP",
+        previousParty: "Dem",
+        isBattleground: true
+      },
+      {
+        id: "sen-oh",
+        state: "Ohio",
+        chamber: "Senate",
+        district: "Statewide",
+        demCandidate: "Sherrod Brown",
+        gopCandidate: "Bernie Moreno",
+        demPct: 48.0,
+        gopPct: 50.5,
+        demVotes: 2640000,
+        gopVotes: 2777500,
+        reporting: 99,
+        called: "GOP",
+        previousParty: "Dem",
+        isBattleground: true
+      },
+      {
+        id: "sen-wi",
+        state: "Wisconsin",
+        chamber: "Senate",
+        district: "Statewide",
+        demCandidate: "Tammy Baldwin",
+        gopCandidate: "Eric Hovde",
+        demPct: 49.7,
+        gopPct: 48.9,
+        demVotes: 1672400,
+        gopVotes: 1645480,
+        reporting: 96,
+        called: "Dem",
+        previousParty: "Dem",
+        isBattleground: true
+      },
+      {
+        id: "sen-mi",
+        state: "Michigan",
+        chamber: "Senate",
+        district: "Statewide",
+        demCandidate: "Elissa Slotkin",
+        gopCandidate: "Mike Rogers",
+        demPct: 49.3,
+        gopPct: 48.6,
+        demVotes: 2730100,
+        gopVotes: 2691300,
+        reporting: 95,
+        called: "Dem",
+        previousParty: "Dem",
+        isBattleground: true
+      },
+      {
+        id: "sen-tx",
+        state: "Texas",
+        chamber: "Senate",
+        district: "Statewide",
+        demCandidate: "Colin Allred",
+        gopCandidate: "Ted Cruz",
+        demPct: 45.2,
+        gopPct: 53.1,
+        demVotes: 5100000,
+        gopVotes: 5991000,
+        reporting: 99,
+        called: "GOP",
+        previousParty: "GOP",
+        isBattleground: false
+      },
+
+      // HOUSE KEY BATTLEGROUNDS
+      {
+        id: "house-ny17",
+        state: "New York",
+        chamber: "House",
+        district: "NY-17",
+        demCandidate: "Mondaire Jones",
+        gopCandidate: "Mike Lawler",
+        demPct: 47.9,
+        gopPct: 51.3,
+        demVotes: 154200,
+        gopVotes: 165150,
+        reporting: 98,
+        called: "GOP",
+        previousParty: "GOP",
+        isBattleground: true
+      },
+      {
+        id: "house-ca13",
+        state: "California",
+        chamber: "House",
+        district: "CA-13",
+        demCandidate: "Adam Gray",
+        gopCandidate: "John Duarte",
+        demPct: 49.9,
+        gopPct: 50.1,
+        demVotes: 98400,
+        gopVotes: 98820,
+        reporting: 84,
+        called: "Uncalled",
+        previousParty: "GOP",
+        isBattleground: true
+      },
+      {
+        id: "house-ca27",
+        state: "California",
+        chamber: "House",
+        district: "CA-27",
+        demCandidate: "George Whitesides",
+        gopCandidate: "Mike Garcia",
+        demPct: 51.2,
+        gopPct: 48.8,
+        demVotes: 142300,
+        gopVotes: 135600,
+        reporting: 86,
+        called: "Dem",
+        previousParty: "GOP",
+        isBattleground: true
+      },
+      {
+        id: "house-ca45",
+        state: "California",
+        chamber: "House",
+        district: "CA-45",
+        demCandidate: "Derek Tran",
+        gopCandidate: "Michelle Steel",
+        demPct: 50.2,
+        gopPct: 49.8,
+        demVotes: 152100,
+        gopVotes: 150880,
+        reporting: 88,
+        called: "Uncalled",
+        previousParty: "GOP",
+        isBattleground: true
+      },
+      {
+        id: "house-mi07",
+        state: "Michigan",
+        chamber: "House",
+        district: "MI-07",
+        demCandidate: "Curtis Hertel",
+        gopCandidate: "Tom Barrett",
+        demPct: 48.1,
+        gopPct: 50.6,
+        demVotes: 189300,
+        gopVotes: 199140,
+        reporting: 97,
+        called: "GOP",
+        previousParty: "Dem",
+        isBattleground: true
+      },
+      {
+        id: "house-va02",
+        state: "Virginia",
+        chamber: "House",
+        district: "VA-02",
+        demCandidate: "Missy Cotter Smasal",
+        gopCandidate: "Jen Kiggans",
+        demPct: 47.8,
+        gopPct: 52.0,
+        demVotes: 172900,
+        gopVotes: 188100,
+        reporting: 99,
+        called: "GOP",
+        previousParty: "GOP",
+        isBattleground: true
+      },
+
+      // GOVERNOR KEY RACES
+      {
+        id: "gov-az",
+        state: "Arizona",
+        chamber: "Governor",
+        district: "Statewide",
+        demCandidate: "Katie Hobbs",
+        gopCandidate: "Matt Salmon",
+        demPct: 50.5,
+        gopPct: 49.1,
+        demVotes: 1620100,
+        gopVotes: 1575200,
+        reporting: 95,
+        called: "Dem",
+        previousParty: "Dem",
+        isBattleground: true
+      },
+      {
+        id: "gov-ga",
+        state: "Georgia",
+        chamber: "Governor",
+        district: "Statewide",
+        demCandidate: "Stacey Abrams",
+        gopCandidate: "Brian Kemp",
+        demPct: 46.8,
+        gopPct: 52.4,
+        demVotes: 1820400,
+        gopVotes: 2038400,
+        reporting: 99,
+        called: "GOP",
+        previousParty: "GOP",
+        isBattleground: false
+      },
+      {
+        id: "gov-pa",
+        state: "Pennsylvania",
+        chamber: "Governor",
+        district: "Statewide",
+        demCandidate: "Josh Shapiro",
+        gopCandidate: "Doug Mastriano",
+        demPct: 54.2,
+        gopPct: 43.8,
+        demVotes: 3650200,
+        gopVotes: 2950100,
+        reporting: 99,
+        called: "Dem",
+        previousParty: "Dem",
+        isBattleground: false
+      },
+      {
+        id: "gov-wi",
+        state: "Wisconsin",
+        chamber: "Governor",
+        district: "Statewide",
+        demCandidate: "Tony Evers",
+        gopCandidate: "Tim Michels",
+        demPct: 50.2,
+        gopPct: 48.7,
+        demVotes: 1682300,
+        gopVotes: 1632000,
+        reporting: 96,
+        called: "Dem",
+        previousParty: "Dem",
+        isBattleground: true
+      }
+    ];
+
+    // BASELINE SEAT ALLOCATIONS FOR UNCONTESTED SEATS
+    const BASE_SENATE_SAFE = { dem: 44, gop: 47 };
+    const BASE_HOUSE_SAFE   = { dem: 206, gop: 211 };
+    const BASE_GOV_SAFE     = { dem: 20, gop: 23 };
+
+    // APP STATE
+    let races = JSON.parse(JSON.stringify(initialRaces));
+    let chamberFilter = 'all';
+    let statusFilter = 'all';
+    let searchQuery = '';
+    let viewMode = 'grid'; // 'grid' | 'table'
+
+    // LIVE TICKER HEADLINES
+    const tickerItems = [
+      "DECISION DESK CALL: GOP flips Montana Senate seat; Sheehy holds lead over incumbent Tester.",
+      "VOTE COUNT UPDATE: Pennsylvania Senate margin narrows to 0.7% with 98% in.",
+      "HOUSE OF REPRESENTATIVES: CA-13 & CA-45 remain in hand-count status in Central Valley.",
+      "CHAMBER LEAN: House majority path hinges on 3 remaining uncalled California and New York seats.",
+      "KEY GOVERNOR RACE: Democratic incumbent Tony Evers holds Wisconsin gubernatorial seat by 1.5 pts."
+    ];
+
+    window.onload = function() {
+      renderTicker();
+      updateDashboard();
+      updateClock();
+      setInterval(updateClock, 30000);
+    };
+
+    function updateClock() {
+      const now = new Date();
+      document.getElementById('currentTimeString').innerText = 'DESK TIME: ' + now.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit', second: '2-digit' }) + ' EDT';
+    }
+
+    function renderTicker() {
+      const tickerElem = document.getElementById('breakingTicker');
+      const doubled = [...tickerItems, ...tickerItems];
+      tickerElem.innerHTML = doubled.map(t => `
+        <span class="inline-flex items-center mx-6">
+          <i class="fa-solid fa-bolt text-rose-500 mr-2 text-[9px]"></i> ${t}
+        </span>
+      `).join('');
+    }
+
+    // CALCULATE NATIONAL BALANCE
+    function calculateBalanceOfPower() {
+      let senDem = BASE_SENATE_SAFE.dem;
+      let senGop = BASE_SENATE_SAFE.gop;
+      let senToss = 0;
+
+      let houseDem = BASE_HOUSE_SAFE.dem;
+      let houseGop = BASE_HOUSE_SAFE.gop;
+      let houseToss = 0;
+
+      let govDem = BASE_GOV_SAFE.dem;
+      let govGop = BASE_GOV_SAFE.gop;
+      let govToss = 0;
+
+      let tossupCount = 0;
+      let flipCount = 0;
+      let netShift = 0; // Positive = GOP gain, Negative = Dem gain
+
+      races.forEach(r => {
+        if (r.called === 'Uncalled') {
+          tossupCount++;
+        } else if (r.called !== r.previousParty) {
+          flipCount++;
+          if (r.called === 'GOP' && r.previousParty === 'Dem') netShift++;
+          else if (r.called === 'Dem' && r.previousParty === 'GOP') netShift--;
+        }
+
+        if (r.chamber === 'Senate') {
+          if (r.called === 'Dem') senDem++;
+          else if (r.called === 'GOP') senGop++;
+          else senToss++;
+        } else if (r.chamber === 'House') {
+          if (r.called === 'Dem') houseDem++;
+          else if (r.called === 'GOP') houseGop++;
+          else houseToss++;
+        } else if (r.chamber === 'Governor') {
+          if (r.called === 'Dem') govDem++;
+          else if (r.called === 'GOP') govGop++;
+          else govToss++;
+        }
+      });
+
+      // Quick KPI stats
+      document.getElementById('statTossups').innerText = tossupCount;
+      document.getElementById('statFlips').innerText = flipCount;
+      document.getElementById('statNetShift').innerText = netShift > 0 ? `+${netShift} GOP` : netShift < 0 ? `+${Math.abs(netShift)} DEM` : 'Even';
+
+      // Update DOM: SENATE
+      document.getElementById('senateDemCount').innerText = senDem;
+      document.getElementById('senateGopCount').innerText = senGop;
+      document.getElementById('senateTossCount').innerText = senToss;
+
+      document.getElementById('senateDemBar').style.width = senDem + '%';
+      document.getElementById('senateDemBar').innerText = senDem;
+      document.getElementById('senateGopBar').style.width = senGop + '%';
+      document.getElementById('senateGopBar').innerText = senGop;
+      document.getElementById('senateTossBar').style.width = senToss + '%';
+      document.getElementById('senateTossBar').innerText = senToss > 0 ? senToss : '';
+
+      const senDemNeed = Math.max(0, 51 - senDem);
+      const senGopNeed = Math.max(0, 51 - senGop);
+      document.getElementById('senateDemNeeded').innerText = senDem >= 51 ? "MAJORITY WON" : `Need ${senDemNeed} more`;
+      document.getElementById('senateGopNeeded').innerText = senGop >= 51 ? "MAJORITY WON" : `Need ${senGopNeed} more`;
+
+      const senBadge = document.getElementById('senateStatusBadge');
+      if (senDem >= 51) {
+        senBadge.className = 'font-mono text-[11px] font-bold px-2 py-0.5 rounded bg-blue-950/80 border border-blue-500 text-blue-300';
+        senBadge.innerText = 'DEMOCRATIC MAJORITY';
+      } else if (senGop >= 51) {
+        senBadge.className = 'font-mono text-[11px] font-bold px-2 py-0.5 rounded bg-red-950/80 border border-red-500 text-red-300';
+        senBadge.innerText = 'REPUBLICAN MAJORITY';
+      } else {
+        senBadge.className = 'font-mono text-[11px] font-bold px-2 py-0.5 rounded bg-amber-950/70 border border-amber-600/60 text-amber-300';
+        senBadge.innerText = 'TOO CLOSE TO CALL';
+      }
+
+      // Update DOM: HOUSE
+      document.getElementById('houseDemCount').innerText = houseDem;
+      document.getElementById('houseGopCount').innerText = houseGop;
+      document.getElementById('houseTossCount').innerText = houseToss;
+
+      const houseDemPct = ((houseDem / 435) * 100).toFixed(1);
+      const houseGopPct = ((houseGop / 435) * 100).toFixed(1);
+      const houseTossPct = ((houseToss / 435) * 100).toFixed(1);
+
+      document.getElementById('houseDemBar').style.width = houseDemPct + '%';
+      document.getElementById('houseDemBar').innerText = houseDem;
+      document.getElementById('houseGopBar').style.width = houseGopPct + '%';
+      document.getElementById('houseGopBar').innerText = houseGop;
+      document.getElementById('houseTossBar').style.width = houseTossPct + '%';
+      document.getElementById('houseTossBar').innerText = houseToss > 0 ? houseToss : '';
+
+      const houseDemNeed = Math.max(0, 218 - houseDem);
+      const houseGopNeed = Math.max(0, 218 - houseGop);
+      document.getElementById('houseDemNeeded').innerText = houseDem >= 218 ? "MAJORITY WON" : `Need ${houseDemNeed} more`;
+      document.getElementById('houseGopNeeded').innerText = houseGop >= 218 ? "MAJORITY WON" : `Need ${houseGopNeed} more`;
+
+      const houseBadge = document.getElementById('houseStatusBadge');
+      if (houseDem >= 218) {
+        houseBadge.className = 'font-mono text-[11px] font-bold px-2 py-0.5 rounded bg-blue-950/80 border border-blue-500 text-blue-300';
+        houseBadge.innerText = 'DEMOCRATIC CONTROL';
+      } else if (houseGop >= 218) {
+        houseBadge.className = 'font-mono text-[11px] font-bold px-2 py-0.5 rounded bg-red-950/80 border border-red-500 text-red-300';
+        houseBadge.innerText = 'REPUBLICAN CONTROL';
+      } else {
+        houseBadge.className = 'font-mono text-[11px] font-bold px-2 py-0.5 rounded bg-red-950/70 border border-red-700/60 text-red-300';
+        houseBadge.innerText = 'GOP LEAN (+5 Margin)';
+      }
+
+      // Update DOM: GOVERNORS
+      document.getElementById('govDemCount').innerText = govDem;
+      document.getElementById('govGopCount').innerText = govGop;
+      document.getElementById('govTossCount').innerText = govToss;
+
+      const govDemPct = ((govDem / 50) * 100).toFixed(1);
+      const govGopPct = ((govGop / 50) * 100).toFixed(1);
+      const govTossPct = ((govToss / 50) * 100).toFixed(1);
+
+      document.getElementById('govDemBar').style.width = govDemPct + '%';
+      document.getElementById('govDemBar').innerText = govDem;
+      document.getElementById('govGopBar').style.width = govGopPct + '%';
+      document.getElementById('govGopBar').innerText = govGop;
+      document.getElementById('govTossBar').style.width = govTossPct + '%';
+      document.getElementById('govTossBar').innerText = govToss > 0 ? govToss : '';
+    }
+
+    // FILTER LOGIC
+    function getFilteredRaces() {
+      return races.filter(race => {
+        if (chamberFilter !== 'all' && race.chamber !== chamberFilter) return false;
+
+        if (statusFilter === 'battleground' && !race.isBattleground) return false;
+        if (statusFilter === 'flipped') {
+          if (race.called === 'Uncalled' || race.called === race.previousParty) return false;
+        }
+        if (statusFilter === 'uncalled' && race.called !== 'Uncalled') return false;
+
+        if (searchQuery.trim() !== '') {
+          const q = searchQuery.toLowerCase();
+          const mState = race.state.toLowerCase().includes(q);
+          const mDist = race.district.toLowerCase().includes(q);
+          const mDem = race.demCandidate.toLowerCase().includes(q);
+          const mGop = race.gopCandidate.toLowerCase().includes(q);
+          if (!mState && !mDist && !mDem && !mGop) return false;
+        }
+
+        return true;
+      });
+    }
+
+    function renderRaces() {
+      const filtered = getFilteredRaces();
+      const gridContainer = document.getElementById('racesGridView');
+      const tableBody = document.getElementById('racesTableBody');
+      const noResultsMsg = document.getElementById('noResultsMsg');
+
+      if (filtered.length === 0) {
+        gridContainer.classList.add('hidden');
+        document.getElementById('racesTableView').classList.add('hidden');
+        noResultsMsg.classList.remove('hidden');
+        return;
+      }
+
+      noResultsMsg.classList.add('hidden');
+
+      if (viewMode === 'grid') {
+        gridContainer.classList.remove('hidden');
+        document.getElementById('racesTableView').classList.add('hidden');
+        gridContainer.innerHTML = filtered.map(race => generateRaceCardHTML(race)).join('');
+      } else {
+        gridContainer.classList.add('hidden');
+        document.getElementById('racesTableView').classList.remove('hidden');
+        tableBody.innerHTML = filtered.map(race => generateRaceTableRowHTML(race)).join('');
+      }
+    }
+
+    // CARD HTML BUILDER
+    function generateRaceCardHTML(race) {
+      const isFlipped = race.called !== 'Uncalled' && race.called !== race.previousParty;
+      const isCalled = race.called !== 'Uncalled';
+      const spread = (Math.abs(race.demPct - race.gopPct)).toFixed(1);
+
+      let statusBadge = '';
+      if (!isCalled) {
+        statusBadge = `<span class="bg-amber-950/70 text-amber-300 border border-amber-600/60 font-mono text-[10px] font-bold px-2 py-0.5 rounded tracking-wider">TOO CLOSE TO CALL</span>`;
+      } else if (race.called === 'Dem') {
+        statusBadge = `<span class="bg-blue-950/80 text-blue-300 border border-blue-600 font-mono text-[10px] font-bold px-2 py-0.5 rounded tracking-wider"><i class="fa-solid fa-check text-sky-400 mr-1"></i>CALLED DEM</span>`;
+      } else if (race.called === 'GOP') {
+        statusBadge = `<span class="bg-red-950/80 text-red-300 border border-red-600 font-mono text-[10px] font-bold px-2 py-0.5 rounded tracking-wider"><i class="fa-solid fa-check text-rose-400 mr-1"></i>CALLED GOP</span>`;
+      }
+
+      const flipBadge = isFlipped ? 
+        `<span class="bg-purple-950/90 text-purple-300 border border-purple-500 text-[10px] font-mono font-black px-1.5 py-0.5 rounded uppercase tracking-wider ml-1 shadow-[0_0_10px_rgba(168,85,247,0.3)]"><i class="fa-solid fa-bolt mr-0.5"></i> FLIP</span>` : '';
+
+      return `
+        <div class="bg-[#121927] rounded-xl border ${isFlipped ? 'border-purple-500/80 ring-1 ring-purple-500/40 shadow-purple-950/30' : 'border-[#1e2d47]'} p-4 flex flex-col justify-between shadow-lg hover:border-[#2a3d60] transition group">
+          <div>
+            <!-- Card Header -->
+            <div class="flex items-center justify-between text-xs mb-3">
+              <div>
+                <span class="font-bold text-slate-100 text-sm group-hover:text-sky-300 transition">${race.state}</span>
+                <span class="text-slate-400 font-mono text-xs block">${race.district}</span>
+              </div>
+              <div class="flex items-center flex-wrap justify-end gap-1">
+                ${statusBadge}
+                ${flipBadge}
+              </div>
+            </div>
+
+            <!-- Candidate Progress Bars -->
+            <div class="space-y-2.5 mt-2">
+              <!-- Dem -->
+              <div>
+                <div class="flex items-center justify-between text-xs mb-1">
+                  <span class="font-medium text-slate-200 flex items-center gap-1.5">
+                    <span class="w-2 h-2 rounded-full bg-blue-500 shadow-sm shadow-blue-500/80"></span>
+                    <span class="${race.called === 'Dem' ? 'font-bold text-blue-400' : ''}">${race.demCandidate}</span>
+                    <span class="text-[10px] font-mono text-blue-400">(D)</span>
+                  </span>
+                  <span class="font-mono font-bold text-blue-400 text-xs">${race.demPct.toFixed(1)}%</span>
+                </div>
+                <div class="w-full bg-[#0a0f18] h-2.5 rounded-full overflow-hidden border border-[#1e2d47]">
+                  <div class="bg-gradient-to-r from-blue-700 to-blue-500 h-full rounded-full transition-all duration-300 ${race.called === 'Dem' ? 'glow-dem' : ''}" style="width: ${race.demPct}%"></div>
+                </div>
+              </div>
+
+              <!-- GOP -->
+              <div>
+                <div class="flex items-center justify-between text-xs mb-1">
+                  <span class="font-medium text-slate-200 flex items-center gap-1.5">
+                    <span class="w-2 h-2 rounded-full bg-red-500 shadow-sm shadow-red-500/80"></span>
+                    <span class="${race.called === 'GOP' ? 'font-bold text-red-400' : ''}">${race.gopCandidate}</span>
+                    <span class="text-[10px] font-mono text-red-400">(R)</span>
+                  </span>
+                  <span class="font-mono font-bold text-red-400 text-xs">${race.gopPct.toFixed(1)}%</span>
+                </div>
+                <div class="w-full bg-[#0a0f18] h-2.5 rounded-full overflow-hidden border border-[#1e2d47]">
+                  <div class="bg-gradient-to-r from-red-700 to-red-500 h-full rounded-full transition-all duration-300 ${race.called === 'GOP' ? 'glow-gop' : ''}" style="width: ${race.gopPct}%"></div>
+                </div>
+              </div>
+            </div>
+
+            <!-- Reporting & Spread Stats -->
+            <div class="grid grid-cols-2 gap-2 text-[11px] font-mono text-slate-400 mt-3 pt-2.5 border-t border-[#182338]">
+              <div>
+                <span class="text-slate-500 block text-[9px] uppercase">Precincts</span>
+                <span class="text-slate-300 font-semibold">${race.reporting}% IN</span>
+              </div>
+              <div class="text-right">
+                <span class="text-slate-500 block text-[9px] uppercase">Spread</span>
+                <span class="text-sky-400 font-semibold">${spread} pts</span>
+              </div>
+            </div>
+          </div>
+
+          <!-- Bottom Actions -->
+          <div class="mt-4 pt-2.5 border-t border-[#182338] flex items-center justify-between">
+            <span class="text-[10px] font-mono text-slate-500 uppercase">Hold: ${race.previousParty}</span>
+            <div class="flex items-center gap-1.5">
+              <button onclick="quickToggleWinner('${race.id}')" class="px-2 py-1 text-[11px] font-mono font-semibold rounded bg-[#18243a] hover:bg-[#223352] text-slate-200 border border-[#273859] transition" title="Cycle outcomes (Dem -> GOP -> Uncalled)">
+                <i class="fa-solid fa-repeat text-sky-400 mr-1"></i> Flip
+              </button>
+              <button onclick="openEditModal('${race.id}')" class="px-2 py-1 text-[11px] font-mono font-semibold rounded bg-sky-950/80 hover:bg-sky-900 text-sky-300 border border-sky-600/60 transition">
+                <i class="fa-solid fa-sliders mr-1"></i> Adjust
+              </button>
+            </div>
+          </div>
+        </div>
+      `;
+    }
+
+    // TABLE ROW BUILDER
+    function generateRaceTableRowHTML(race) {
+      const isFlipped = race.called !== 'Uncalled' && race.called !== race.previousParty;
+      const spread = (Math.abs(race.demPct - race.gopPct)).toFixed(1);
+
+      let callBadge = '';
+      if (race.called === 'Dem') {
+        callBadge = `<span class="inline-flex items-center gap-1 font-mono font-bold text-blue-300 bg-blue-950/80 px-2 py-0.5 rounded border border-blue-600"><i class="fa-solid fa-check text-sky-400"></i> ${race.demCandidate}</span>`;
+      } else if (race.called === 'GOP') {
+        callBadge = `<span class="inline-flex items-center gap-1 font-mono font-bold text-red-300 bg-red-950/80 px-2 py-0.5 rounded border border-red-600"><i class="fa-solid fa-check text-rose-400"></i> ${race.gopCandidate}</span>`;
+      } else {
+        callBadge = `<span class="font-mono text-slate-400 bg-[#162033] px-2 py-0.5 rounded border border-[#253655]">Too Close to Call</span>`;
+      }
+
+      return `
+        <tr class="hover:bg-[#151f33] transition text-slate-200 font-sans ${isFlipped ? 'bg-purple-950/20' : ''}">
+          <td class="py-3 px-4 font-semibold">
+            <div class="flex items-center gap-1.5">
+              <span>${race.state}</span>
+              <span class="text-slate-400 font-mono text-[11px]">(${race.district})</span>
+              ${isFlipped ? '<span class="text-[9px] font-mono bg-purple-600 text-white font-black px-1.5 py-0.2 rounded">FLIP</span>' : ''}
+            </div>
+          </td>
+          <td class="py-3 px-4 font-mono text-[11px] text-slate-400 uppercase">
+            ${race.chamber}
+          </td>
+          <td class="py-3 px-4">
+            <span class="${race.called === 'Dem' ? 'font-bold text-blue-400' : 'text-slate-300'}">${race.demCandidate}</span>
+            <span class="text-blue-400 font-mono ml-1 font-bold">${race.demPct.toFixed(1)}%</span>
+          </td>
+          <td class="py-3 px-4">
+            <span class="${race.called === 'GOP' ? 'font-bold text-red-400' : 'text-slate-300'}">${race.gopCandidate}</span>
+            <span class="text-red-400 font-mono ml-1 font-bold">${race.gopPct.toFixed(1)}%</span>
+          </td>
+          <td class="py-3 px-4 text-center font-mono text-slate-300">
+            ${race.reporting}%
+          </td>
+          <td class="py-3 px-4 font-mono text-sky-400">
+            +${spread}%
+          </td>
+          <td class="py-3 px-4">
+            ${callBadge}
+          </td>
+          <td class="py-3 px-4 text-right">
+            <button onclick="quickToggleWinner('${race.id}')" class="text-sky-400 hover:text-sky-300 font-mono text-xs mr-3">
+              Flip
+            </button>
+            <button onclick="openEditModal('${race.id}')" class="text-slate-400 hover:text-white font-mono text-xs">
+              Adjust
+            </button>
+          </td>
+        </tr>
+      `;
+    }
+
+    // CYCLE WINNER SIMULATION
+    function quickToggleWinner(raceId) {
+      const race = races.find(r => r.id === raceId);
+      if (!race) return;
+
+      if (race.called === 'Uncalled') {
+        race.called = 'Dem';
+        race.demPct = 51.2;
+        race.gopPct = 48.8;
+      } else if (race.called === 'Dem') {
+        race.called = 'GOP';
+        race.demPct = 48.5;
+        race.gopPct = 51.5;
+      } else {
+        race.called = 'Uncalled';
+        race.demPct = 49.8;
+        race.gopPct = 49.7;
+      }
+
+      updateDashboard();
+      showToast(`${race.state} (${race.chamber}) toggled to: ${race.called}`);
+    }
+
+    // BATCH SWEEP SCENARIOS
+    function scenarioSweep(party) {
+      races.forEach(r => {
+        if (r.called === 'Uncalled') {
+          r.called = party;
+          if (party === 'Dem') {
+            r.demPct = 50.8;
+            r.gopPct = 49.2;
+          } else {
+            r.gopPct = 50.8;
+            r.demPct = 49.2;
+          }
+        }
+      });
+      updateDashboard();
+      showToast(`Batch Projection Applied: All uncalled seats &rarr; ${party}`);
+    }
+
+    // MODAL OPERATIONS
+    function openEditModal(raceId) {
+      const race = races.find(r => r.id === raceId);
+      if (!race) return;
+
+      document.getElementById('modalRaceId').value = race.id;
+      document.getElementById('modalChamberTag').innerText = race.chamber.toUpperCase();
+      document.getElementById('modalRaceTitle').innerText = `${race.state} - ${race.district} (${race.chamber})`;
+      document.getElementById('modalPreviousParty').innerText = `${race.previousParty} Incumbent Baseline`;
+      document.getElementById('modalImportance').innerText = race.isBattleground ? "Crucial Battleground" : "Standard Contested";
+
+      document.getElementById('modalDemLabel').innerText = `${race.demCandidate} (D) %`;
+      document.getElementById('modalGopLabel').innerText = `${race.gopCandidate} (R) %`;
+
+      document.getElementById('modalDemPct').value = race.demPct;
+      document.getElementById('modalGopPct').value = race.gopPct;
+      document.getElementById('modalReporting').value = race.reporting;
+      document.getElementById('modalCallStatus').value = race.called;
+
+      document.getElementById('raceModal').classList.remove('hidden');
+    }
+
+    function closeModal() {
+      document.getElementById('raceModal').classList.add('hidden');
+    }
+
+    function saveRaceDetails(e) {
+      e.preventDefault();
+      const raceId = document.getElementById('modalRaceId').value;
+      const race = races.find(r => r.id === raceId);
+      if (!race) return;
+
+      race.demPct = parseFloat(document.getElementById('modalDemPct').value) || 0;
+      race.gopPct = parseFloat(document.getElementById('modalGopPct').value) || 0;
+      race.reporting = parseInt(document.getElementById('modalReporting').value, 10) || 0;
+      race.called = document.getElementById('modalCallStatus').value;
+
+      closeModal();
+      updateDashboard();
+      showToast(`Simulated parameters locked for ${race.state}`);
+    }
+
+    // FILTER HANDLERS
+    function setChamberFilter(ch) {
+      chamberFilter = ch;
+      document.querySelectorAll('.chamber-tab').forEach(b => {
+        if (b.getAttribute('data-filter') === ch) {
+          b.className = 'chamber-tab px-3 py-1.5 rounded bg-blue-600 text-white font-bold shadow-md';
+        } else {
+          b.className = 'chamber-tab px-3 py-1.5 rounded text-slate-400 hover:text-white transition';
+        }
+      });
+      renderRaces();
+    }
+
+    function setStatusFilter(st) {
+      statusFilter = st;
+      document.querySelectorAll('.status-tab').forEach(b => {
+        if (b.getAttribute('data-filter') === st) {
+          b.className = 'status-tab px-3 py-1.5 rounded bg-[#1c2940] text-sky-300 font-bold';
+        } else {
+          b.className = 'status-tab px-3 py-1.5 rounded text-slate-400 hover:text-white transition';
+        }
+      });
+      renderRaces();
+    }
+
+    function handleSearch(val) {
+      searchQuery = val;
+      renderRaces();
+    }
+
+    function setViewMode(mode) {
+      viewMode = mode;
+      const gBtn = document.getElementById('gridBtn');
+      const tBtn = document.getElementById('tableBtn');
+
+      if (mode === 'grid') {
+        gBtn.className = 'p-1.5 rounded bg-[#1c2940] text-sky-400 font-bold';
+        tBtn.className = 'p-1.5 rounded text-slate-400 hover:text-white transition';
+      } else {
+        tBtn.className = 'p-1.5 rounded bg-[#1c2940] text-sky-400 font-bold';
+        gBtn.className = 'p-1.5 rounded text-slate-400 hover:text-white transition';
+      }
+      renderRaces();
+    }
+
+    function resetFilters() {
+      chamberFilter = 'all';
+      statusFilter = 'all';
+      searchQuery = '';
+      document.getElementById('searchInput').value = '';
+      setChamberFilter('all');
+      setStatusFilter('all');
+    }
+
+    function resetAllRaces() {
+      races = JSON.parse(JSON.stringify(initialRaces));
+      resetFilters();
+      updateDashboard();
+      showToast("All projections reset to Decision Desk baseline");
+    }
+
+    // EXPORT REPORT
+    function exportSummary() {
+      let senDem = BASE_SENATE_SAFE.dem;
+      let senGop = BASE_SENATE_SAFE.gop;
+      let houseDem = BASE_HOUSE_SAFE.dem;
+      let houseGop = BASE_HOUSE_SAFE.gop;
+      let govDem = BASE_GOV_SAFE.dem;
+      let govGop = BASE_GOV_SAFE.gop;
+
+      races.forEach(r => {
+        if (r.chamber === 'Senate') {
+          if (r.called === 'Dem') senDem++;
+          else if (r.called === 'GOP') senGop++;
+        } else if (r.chamber === 'House') {
+          if (r.called === 'Dem') houseDem++;
+          else if (r.called === 'GOP') houseGop++;
+        } else if (r.chamber === 'Governor') {
+          if (r.called === 'Dem') govDem++;
+          else if (r.called === 'GOP') govGop++;
+        }
+      });
+
+      const flipped = races.filter(r => r.called !== 'Uncalled' && r.called !== r.previousParty);
+
+      let text = `===========================================================\n`;
+      text += `DECISION COMMAND CENTER // 119TH CONGRESS MIDTERM DISPATCH\n`;
+      text += `TIMESTAMP: ${new Date().toUTCString()}\n`;
+      text += `===========================================================\n\n`;
+
+      text += `[BALANCE OF POWER OVERVIEW]\n`;
+      text += `• U.S. SENATE (51 Threshold):\n`;
+      text += `  Democrats: ${senDem} | Republicans: ${senGop} | Uncalled: ${100 - (senDem + senGop)}\n`;
+      text += `  Status: ${senDem >= 51 ? 'DEMOCRAT MAJORITY' : senGop >= 51 ? 'REPUBLICAN MAJORITY' : 'CONTESTED / DEAD HEAT'}\n\n`;
+
+      text += `• U.S. HOUSE OF REPRESENTATIVES (218 Threshold):\n`;
+      text += `  Democrats: ${houseDem} | Republicans: ${houseGop} | Uncalled: ${435 - (houseDem + houseGop)}\n`;
+      text += `  Status: ${houseDem >= 218 ? 'DEMOCRAT CONTROL' : houseGop >= 218 ? 'REPUBLICAN CONTROL' : 'GOP LEAN'}\n\n`;
+
+      text += `• GOVERNORSHIPS (50 States):\n`;
+      text += `  Democratic States: ${govDem} | Republican States: ${govGop}\n\n`;
+
+      text += `[SEATS FLIPPED: ${flipped.length}]\n`;
+      flipped.forEach(f => {
+        text += `  * ${f.state} (${f.chamber} ${f.district}): ${f.previousParty} -> ${f.called} (D: ${f.demPct.toFixed(1)}%, R: ${f.gopPct.toFixed(1)}%)\n`;
+      });
+
+      text += `\n[KEY BATTLEGROUND STATE CALLS]\n`;
+      races.filter(r => r.isBattleground).forEach(b => {
+        text += `  * ${b.state.padEnd(14)} [${b.chamber.padEnd(8)}]: Call = ${b.called.padEnd(8)} | D: ${b.demCandidate} (${b.demPct.toFixed(1)}%) vs R: ${b.gopCandidate} (${b.gopPct.toFixed(1)}%) [${b.reporting}% in]\n`;
+      });
+
+      text += `\n===========================================================`;
+
+      document.getElementById('exportText').value = text;
+      document.getElementById('exportModal').classList.remove('hidden');
+    }
+
+    function copyExportText() {
+      const area = document.getElementById('exportText');
+      area.select();
+      document.execCommand('copy');
+      const btn = document.getElementById('copyExportBtn');
+      const prevHTML = btn.innerHTML;
+      btn.innerHTML = `<i class="fa-solid fa-check"></i> Report Copied`;
+      setTimeout(() => {
+        btn.innerHTML = prevHTML;
+      }, 2000);
+      showToast("Dispatch report copied to clipboard");
+    }
+
+    // TOAST
+    function showToast(msg) {
+      const toast = document.getElementById('toast');
+      document.getElementById('toastMsg').innerText = msg;
+      toast.classList.remove('translate-y-24', 'opacity-0', 'pointer-events-none');
+      setTimeout(() => {
+        toast.classList.add('translate-y-24', 'opacity-0', 'pointer-events-none');
+      }, 2800);
+    }
+
+    // REFRESH ALL
+    function updateDashboard() {
+      calculateBalanceOfPower();
+      renderRaces();
+    }
+  </script>
+</body>
+</html>
