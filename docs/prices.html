@@ -1,179 +1,163 @@
 <!doctype html>
-<html lang="en">
+<html lang="en" class="dark">
 <head>
   <meta charset="utf-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>U.S. Price Trends</title>
-  <style>
-    @import url('https://fonts.googleapis.com/css2?family=DM+Mono:ital,wght@0,400;0,500;1,400&family=DM+Sans:wght@400;500;600;700&family=Manrope:wght@600;700;800&display=swap');
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>U.S. Price Trends — BLS Macro Terminal</title>
+  <!-- Tailwind CSS -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <!-- Google Fonts: Inter, Space Grotesk, JetBrains Mono -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:ital,wght@0,400;0,500;0,600;0,700;1,400&family=Space+Grotesk:wght@600;700;800&display=swap" rel="stylesheet">
 
+  <script>
+    tailwind.config = {
+      darkMode: 'class',
+      theme: {
+        extend: {
+          fontFamily: {
+            sans: ['Inter', 'system-ui', 'sans-serif'],
+            display: ['Space Grotesk', 'Inter', 'sans-serif'],
+            mono: ['JetBrains Mono', 'monospace'],
+          }
+        }
+      }
+    }
+  </script>
+
+  <style>
     :root {
       color-scheme: dark;
-      --font-body: "DM Sans", "Segoe UI Variable", "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
-      --font-display: "Manrope", "DM Sans", "Segoe UI Variable", "Segoe UI", sans-serif;
-      --font-mono: "DM Mono", "SFMono-Regular", Consolas, monospace;
+      --bg-base: oklch(12% 0.025 265);
+      --bg-surface: oklch(17% 0.03 265 / 0.72);
+      --bg-elevated: oklch(21% 0.035 265 / 0.85);
+      --border-subtle: oklch(35% 0.04 265 / 0.35);
+      --border-bright: oklch(65% 0.18 280 / 0.55);
 
-      --bg: #090c1a;
-      --surface: #1d2233;
-      --surface-soft: #2d3347;
-      --text: #f5f7fb;
-      --muted: #9aa8c3;
-      --border: rgba(128, 151, 219, .22);
+      /* OKLCH High-Contrast Neon Commodity Tokens */
+      --gas: #f43f5e;
+      --gas-oklch: oklch(65% 0.24 18);
+      --bread: #38bdf8;
+      --bread-oklch: oklch(75% 0.16 235);
+      --eggs: #fbbf24;
+      --eggs-oklch: oklch(82% 0.18 82);
+      --beef: #a855f7;
+      --beef-oklch: oklch(66% 0.23 305);
 
-      --gas: #e042f2;
-      --bread: #4f82ff;
-      --eggs: #8ca4ff;
-      --beef: #b8c1e8;
-
-      --good: #7ae79a;
-      --bad: #f8749d;
-      --accent: #ce23e9;
-      --accent-soft: rgba(206, 35, 233, .14);
-      --shadow: 0 20px 50px rgba(0, 0, 0, .45);
+      --accent-primary: oklch(68% 0.25 315);
+      --accent-secondary: oklch(70% 0.19 245);
     }
 
-    * { box-sizing: border-box; }
-    html { -webkit-font-smoothing: antialiased; text-rendering: optimizeLegibility; }
+    * {
+      box-sizing: border-box;
+      scrollbar-width: thin;
+      scrollbar-color: rgba(148, 163, 184, 0.25) rgba(15, 23, 42, 0.4);
+    }
+
+    html {
+      -webkit-font-smoothing: antialiased;
+      text-rendering: optimizeLegibility;
+      background-color: #060813;
+      color: #f8fafc;
+    }
 
     body {
       margin: 0;
       min-height: 100vh;
-      font-family: var(--font-body);
-      font-size: 16px;
-      line-height: 1.55;
-      color: var(--text);
+      overflow-x: hidden;
       background:
-        radial-gradient(circle at 10% -6%, rgba(206, 35, 233, .16), transparent 30%),
-        radial-gradient(circle at 92% 12%, rgba(79, 130, 255, .15), transparent 32%),
-        linear-gradient(180deg, #060914 0%, #121626 100%);
+        radial-gradient(circle at 12% -8%, oklch(62% 0.25 320 / 0.15), transparent 36%),
+        radial-gradient(circle at 88% 6%, oklch(68% 0.2 240 / 0.14), transparent 38%),
+        radial-gradient(circle at 50% 95%, oklch(60% 0.2 290 / 0.09), transparent 45%),
+        linear-gradient(180deg, #050711 0%, #0b1021 55%, #070a16 100%);
     }
 
-    .wrap {
-      width: min(1180px, calc(100% - 36px));
-      margin: 0 auto;
-      padding: 38px 0 54px;
+    /* Subtle SVG Film Grain Overlay */
+    .noise-overlay {
+      position: fixed;
+      inset: 0;
+      pointer-events: none;
+      z-index: 40;
+      opacity: 0.028;
+      background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)'/%3E%3C/svg%3E");
     }
 
-    header {
-      display: grid;
-      grid-template-columns: minmax(0, 1fr) auto;
-      gap: 24px;
-      align-items: end;
-      margin-bottom: 22px;
+    /* Cursor-Tracking Spotlight Surface */
+    .spotlight-card {
+      position: relative;
+      background: linear-gradient(180deg, rgba(26, 32, 53, 0.72) 0%, rgba(14, 18, 32, 0.88) 100%);
+      border: 1px solid rgba(128, 151, 219, 0.18);
+      box-shadow: 0 20px 50px -12px rgba(0, 0, 0, 0.6), inset 0 1px 0 0 rgba(255, 255, 255, 0.07);
+      backdrop-filter: blur(16px);
+      -webkit-backdrop-filter: blur(16px);
+      transition: transform 0.22s cubic-bezier(0.2, 0.8, 0.2, 1), border-color 0.22s ease, box-shadow 0.22s ease, opacity 0.25s ease;
+      overflow: hidden;
     }
 
-    .eyebrow {
-      margin-bottom: 8px;
-      color: var(--accent);
-      font-family: var(--font-mono);
-      font-size: .74rem;
-      font-weight: 500;
-      letter-spacing: .15em;
-      text-transform: uppercase;
-      text-shadow: 0 0 16px rgba(206, 35, 233, .5);
+    .spotlight-card::before {
+      content: "";
+      position: absolute;
+      inset: 0;
+      border-radius: inherit;
+      background: radial-gradient(
+        550px circle at var(--mouse-x, -999px) var(--mouse-y, -999px),
+        rgba(255, 255, 255, 0.065),
+        transparent 45%
+      );
+      pointer-events: none;
+      z-index: 1;
     }
 
-    h1, h2, p { margin-top: 0; }
-
-    h1 {
-      max-width: 780px;
-      margin-bottom: 10px;
-      font-family: var(--font-display);
-      font-size: clamp(2.3rem, 4.6vw, 4rem);
-      line-height: 1.02;
-      font-weight: 800;
-      letter-spacing: -.045em;
+    .spotlight-card::after {
+      content: "";
+      position: absolute;
+      inset: 0;
+      border-radius: inherit;
+      padding: 1px;
+      background: radial-gradient(
+        380px circle at var(--mouse-x, -999px) var(--mouse-y, -999px),
+        rgba(232, 121, 249, 0.55),
+        rgba(56, 189, 248, 0.2) 40%,
+        transparent 65%
+      );
+      -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+      -webkit-mask-composite: xor;
+      mask-composite: exclude;
+      pointer-events: none;
+      z-index: 2;
     }
 
-    .subtitle {
-      max-width: 780px;
-      margin-bottom: 0;
-      color: var(--muted);
-      font-size: 1rem;
-      line-height: 1.6;
+    .card-interactive:hover {
+      transform: translateY(-3px);
+      border-color: rgba(217, 70, 239, 0.45);
+      box-shadow: 0 24px 48px -12px rgba(0, 0, 0, 0.75), 0 0 25px rgba(217, 70, 239, 0.14);
     }
 
-    .updated {
-      padding: 6px 0;
-      color: var(--muted);
-      font-family: var(--font-mono);
-      font-size: .76rem;
-      line-height: 1.55;
-      text-align: right;
+    .card-interactive.active-filter {
+      border-color: #e879f9;
+      background: linear-gradient(180deg, rgba(58, 34, 82, 0.82) 0%, rgba(21, 20, 42, 0.94) 100%);
+      box-shadow: 0 0 0 1px #e879f9, 0 18px 40px -10px rgba(217, 70, 239, 0.32);
     }
 
-    /* Interactive Timeline Simulation Controller */
-    .sim-bar {
-      margin-bottom: 20px;
-      padding: 16px 20px;
-      border-radius: 16px;
-      border: 1px solid rgba(206, 35, 233, .28);
-      background: linear-gradient(180deg, rgba(32, 37, 56, .85), rgba(18, 22, 36, .92));
-      box-shadow: 0 12px 30px rgba(0,0,0,0.35);
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      gap: 18px;
-      flex-wrap: wrap;
+    .chart-box.dimmed {
+      opacity: 0.26;
+      filter: grayscale(55%) contrast(0.9);
+      transform: scale(0.99);
     }
 
-    .sim-controls {
-      display: flex;
-      align-items: center;
-      gap: 10px;
+    .chart-box.focused {
+      border-color: #e879f9;
+      box-shadow: 0 0 32px rgba(217, 70, 239, 0.22);
     }
 
-    .btn {
-      display: inline-flex;
-      align-items: center;
-      gap: 6px;
-      padding: 7px 15px;
-      border-radius: 999px;
-      border: 1px solid rgba(130, 155, 235, 0.3);
-      background: rgba(255, 255, 255, 0.05);
-      color: var(--text);
-      font-family: var(--font-mono);
-      font-size: 0.76rem;
-      font-weight: 500;
-      cursor: pointer;
-      transition: all .18s ease;
-      user-select: none;
-    }
-
-    .btn:hover {
-      background: rgba(255, 255, 255, 0.12);
-      border-color: rgba(206, 35, 233, .6);
-      transform: translateY(-1px);
-    }
-
-    .btn-play {
-      background: linear-gradient(135deg, #ce23e9, #8c25f4);
-      border: none;
-      color: #fff;
-      font-weight: 600;
-      box-shadow: 0 0 18px rgba(206, 35, 233, .42);
-    }
-
-    .btn-play:hover {
-      background: linear-gradient(135deg, #e33cfd, #9c3bf7);
-      box-shadow: 0 0 24px rgba(206, 35, 233, .65);
-    }
-
-    .sim-timeline {
-      flex: 1;
-      display: flex;
-      align-items: center;
-      gap: 14px;
-      min-width: 260px;
-    }
-
+    /* Custom Range Slider */
     .sim-slider {
-      flex: 1;
       -webkit-appearance: none;
       appearance: none;
       height: 6px;
       border-radius: 999px;
-      background: rgba(255, 255, 255, 0.14);
+      background: rgba(255, 255, 255, 0.12);
       outline: none;
       cursor: pointer;
     }
@@ -181,891 +165,1504 @@
     .sim-slider::-webkit-slider-thumb {
       -webkit-appearance: none;
       appearance: none;
-      width: 16px;
-      height: 16px;
+      width: 18px;
+      height: 18px;
       border-radius: 50%;
-      background: #f758ff;
-      border: 2px solid #fff;
-      box-shadow: 0 0 10px #f758ff;
-      cursor: pointer;
-      transition: transform .12s ease;
+      background: #e879f9;
+      border: 2.5px solid #ffffff;
+      box-shadow: 0 0 14px #e879f9;
+      cursor: grab;
+      transition: transform 0.15s ease, box-shadow 0.15s ease;
     }
 
-    .sim-slider::-webkit-slider-thumb:hover { transform: scale(1.2); }
-
-    .sim-date-badge {
-      font-family: var(--font-mono);
-      font-size: 0.8rem;
-      padding: 4px 10px;
-      border-radius: 8px;
-      background: rgba(0, 0, 0, 0.35);
-      border: 1px solid rgba(255, 255, 255, 0.12);
-      color: #f758ff;
-      font-weight: 600;
-      letter-spacing: .03em;
-      min-width: 95px;
-      text-align: center;
+    .sim-slider::-webkit-slider-thumb:hover {
+      transform: scale(1.22);
+      box-shadow: 0 0 20px #f0abfc;
     }
 
-    /* Horizon Selector Bar */
-    .toolbar {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      margin-bottom: 20px;
-      gap: 16px;
-      flex-wrap: wrap;
+    .sim-slider::-webkit-slider-thumb:active {
+      cursor: grabbing;
+      transform: scale(1.1);
     }
 
-    .pill-group {
-      display: inline-flex;
-      background: rgba(14, 18, 30, 0.7);
-      padding: 4px;
-      border-radius: 999px;
-      border: 1px solid var(--border);
+    /* SVG Styling & Animations */
+    .grid-line {
+      stroke: rgba(148, 163, 184, 0.12);
+      stroke-width: 1;
     }
 
-    .pill-btn {
-      background: transparent;
-      border: none;
-      color: var(--muted);
-      font-family: var(--font-mono);
-      font-size: 0.74rem;
-      font-weight: 500;
-      padding: 5px 14px;
-      border-radius: 999px;
-      cursor: pointer;
-      transition: all .18s ease;
+    .zero-line {
+      stroke: rgba(248, 250, 252, 0.32);
+      stroke-width: 1.2;
+      stroke-dasharray: 4 4;
     }
 
-    .pill-btn:hover { color: #fff; }
-    .pill-btn.active {
-      background: var(--accent);
-      color: #fff;
-      box-shadow: 0 0 12px rgba(206, 35, 233, .45);
-    }
-
-    .filter-hint {
-      font-size: 0.76rem;
-      color: var(--muted);
-      font-family: var(--font-mono);
-    }
-
-    /* Cards */
-    .cards {
-      display: grid;
-      grid-template-columns: repeat(4, minmax(0, 1fr));
-      gap: 16px;
-      margin: 0 0 20px;
-    }
-
-    .card, .panel {
-      border: 1px solid var(--border);
-      background: linear-gradient(180deg, rgba(39, 44, 62, 0.75), rgba(22, 26, 40, 0.88));
-      box-shadow: var(--shadow);
-      backdrop-filter: blur(14px);
-      -webkit-backdrop-filter: blur(14px);
-    }
-
-    .card {
-      min-height: 174px;
-      padding: 18px 20px;
-      border-radius: 16px;
-      cursor: pointer;
+    .axis-label {
+      fill: #94a3b8;
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 10px;
       user-select: none;
-      position: relative;
-      overflow: hidden;
-      transition: border-color .2s ease, transform .2s ease, box-shadow .2s ease;
     }
 
-    .card::before {
-      content: "";
-      position: absolute;
-      inset: 0 0 auto 0;
-      height: 1px;
-      background: linear-gradient(90deg, transparent, rgba(206, 35, 233, .5), transparent);
-    }
-
-    .card:hover {
-      transform: translateY(-4px);
-      border-color: rgba(206, 35, 233, .6);
-      box-shadow: 0 16px 36px rgba(0,0,0,0.4), 0 0 20px rgba(206, 35, 233, 0.16);
-    }
-
-    .card.active-filter {
-      border-color: var(--accent);
-      background: linear-gradient(180deg, rgba(62, 45, 82, 0.88), rgba(29, 28, 48, 0.94));
-      box-shadow: 0 0 0 1px var(--accent), 0 12px 30px rgba(206, 35, 233, .3);
-    }
-
-    .card-top, .meta, .chart-head {
-      display: flex;
-      justify-content: space-between;
-      gap: 12px;
-    }
-
-    .card-top { align-items: center; }
-
-    .label {
-      color: #f5f7fb;
-      font-family: var(--font-display);
-      font-size: .88rem;
-      font-weight: 700;
-    }
-
-    .unit { color: var(--muted); font-size: .7rem; font-weight: 500; }
-
-    .value {
-      margin-top: 10px;
-      font-family: var(--font-display);
-      font-size: 2.2rem;
-      line-height: 1.05;
-      font-weight: 800;
-      letter-spacing: -.035em;
-      font-variant-numeric: tabular-nums;
-      transition: color .2s ease;
-    }
-
-    .meta {
-      align-items: baseline;
-      margin-top: 7px;
-      color: var(--muted);
-      font-size: .74rem;
-    }
-
-    .delta { font-weight: 650; white-space: nowrap; font-family: var(--font-mono); }
-    .delta.up { color: var(--bad); }
-    .delta.down { color: var(--good); }
-    .swatch { width: 10px; height: 10px; flex: 0 0 auto; border-radius: 50%; box-shadow: 0 0 8px currentColor; }
-
-    /* Panels & Charts */
-    .panel {
-      margin-top: 20px;
-      padding: 24px;
-      border-radius: 18px;
-    }
-
-    .panel h2 {
-      margin-bottom: 5px;
-      font-family: var(--font-display);
-      font-size: 1.15rem;
-      font-weight: 750;
-      letter-spacing: -.015em;
-    }
-
-    .panel-copy {
-      margin-bottom: 18px;
-      color: var(--muted);
-      font-size: .88rem;
-    }
-
-    .charts {
-      display: grid;
-      grid-template-columns: repeat(2, minmax(0, 1fr));
-      gap: 18px;
-    }
-
-    .chart-box {
-      position: relative;
-      padding: 18px 16px 12px;
-      border: 1px solid rgba(113, 144, 243, .22);
-      border-radius: 14px;
-      background: rgba(7, 11, 22, 0.45);
-      transition: border-color .2s ease, opacity .2s ease;
-      overflow: hidden;
-    }
-
-    .chart-box.dimmed { opacity: 0.35; filter: grayscale(40%); }
-    .chart-box.focused { border-color: var(--accent); box-shadow: 0 0 22px rgba(206, 35, 233, .22); }
-
-    .chart-head { align-items: baseline; margin-bottom: 6px; }
-
-    .chart-title {
-      font-family: var(--font-display);
-      font-size: .92rem;
-      font-weight: 700;
-    }
-
-    .chart-val-preview {
-      font-family: var(--font-mono);
-      font-size: 0.84rem;
-      font-weight: 700;
-      color: #fff;
-    }
-
-    .chart-range {
-      color: var(--muted);
-      font-size: .72rem;
-      font-variant-numeric: tabular-nums;
-      font-family: var(--font-mono);
-    }
-
-    svg { width: 100%; height: 215px; display: block; overflow: visible; }
-    .grid-line { stroke: rgba(134, 156, 230, .14); stroke-width: 1; }
-    .axis-label { fill: #8292b8; font-family: var(--font-mono); font-size: 10px; }
-
-    /* SVG Animated Lines & Glows */
-    .line {
+    .line-series {
       fill: none;
-      stroke-width: 2.8;
+      stroke-width: 2.75;
       stroke-linecap: round;
       stroke-linejoin: round;
-      filter: drop-shadow(0 0 5px rgba(0, 0, 0, .5));
+      filter: drop-shadow(0 2px 6px rgba(0, 0, 0, 0.6));
+      transition: opacity 0.25s ease, stroke-width 0.2s ease;
     }
 
-    /* Entrance Draw-in animation class */
     .line-draw {
-      animation: drawLine 1.35s cubic-bezier(0.25, 1, 0.5, 1) forwards;
+      animation: drawLine 1.1s cubic-bezier(0.22, 1, 0.36, 1) forwards;
     }
 
     @keyframes drawLine {
-      to {
-        stroke-dashoffset: 0;
-      }
+      to { stroke-dashoffset: 0; }
     }
 
-    .area-fill {
-      opacity: 0.14;
-      pointer-events: none;
-      transition: opacity .3s ease;
-    }
-
-    .dot {
-      stroke: #121626;
-      stroke-width: 2;
-      cursor: pointer;
-      transition: r .16s ease, transform .16s ease;
-    }
-
-    .dot:hover, .dot.active {
-      r: 6.5;
-    }
-
-    /* Pulsing Glow Ring on Latest Observation */
     .pulse-ring {
       fill: none;
-      stroke-width: 1.5;
+      stroke-width: 1.6;
       animation: pulseAnim 2.2s ease-out infinite;
       pointer-events: none;
     }
 
     @keyframes pulseAnim {
-      0% { r: 4px; opacity: 1; stroke-width: 2; }
-      100% { r: 15px; opacity: 0; stroke-width: 0.2; }
+      0% { r: 3.5px; opacity: 0.95; stroke-width: 2px; }
+      100% { r: 16px; opacity: 0; stroke-width: 0.2px; }
     }
 
-    /* Dynamic Playhead Tracer */
     .playhead-cursor {
-      stroke: rgba(255, 255, 255, 0.4);
-      stroke-width: 1;
-      stroke-dasharray: 2 2;
+      stroke: rgba(248, 250, 252, 0.55);
+      stroke-width: 1.2;
+      stroke-dasharray: 3 3;
       pointer-events: none;
-      opacity: 0;
-      transition: opacity .2s ease;
     }
 
     .playhead-tracer-glow {
       pointer-events: none;
       filter: drop-shadow(0 0 8px currentColor);
-      opacity: 0;
-      transition: opacity .2s ease;
+      transition: r 0.15s ease;
     }
 
-    .missing-note { min-height: 1.1em; margin-top: 5px; color: var(--muted); font-size: .7rem; font-family: var(--font-mono); }
-
-    /* Tooltip */
-    #chart-tooltip {
-      position: fixed;
+    .missing-band {
+      fill: url(#missingHatch);
+      opacity: 0.45;
       pointer-events: none;
-      background: rgba(16, 20, 32, 0.96);
-      border: 1px solid var(--accent);
-      box-shadow: 0 10px 28px rgba(0,0,0,0.6);
-      border-radius: 8px;
-      padding: 6px 11px;
-      font-size: 0.75rem;
-      font-family: var(--font-mono);
-      color: #fff;
-      z-index: 100;
-      display: none;
-      transform: translate(-50%, -125%);
-      white-space: nowrap;
     }
 
-    /* Table */
-    .table-wrap {
-      overflow-x: auto;
-      border: 1px solid var(--border);
-      border-radius: 13px;
-      background: rgba(0, 0, 0, .22);
-      max-height: 480px;
+    /* Table Highlight */
+    tbody tr.highlighted {
+      background: rgba(217, 70, 239, 0.16) !important;
+    }
+    tbody tr.highlighted td:first-child {
+      color: #f0abfc;
+      font-weight: 700;
+      box-shadow: inset 3px 0 0 #e879f9;
     }
 
-    table { width: 100%; min-width: 760px; border-collapse: separate; border-spacing: 0; }
-    th, td { padding: 11px 15px; border-bottom: 1px solid rgba(148, 163, 184, .1); text-align: right; font-variant-numeric: tabular-nums; }
-    th:first-child, td:first-child { text-align: left; }
-    th {
-      position: sticky; top: 0; z-index: 2;
-      color: #f5f7fb; background: #1f2334;
-      font-size: .72rem; font-weight: 700; letter-spacing: .06em; text-transform: uppercase;
-    }
-    td { color: #f0f3fb; font-size: .86rem; }
-    tbody tr:nth-child(even) { background: rgba(97, 109, 179, .05); }
-    tbody tr { cursor: pointer; transition: background .15s ease; }
-    tbody tr:hover, tbody tr.highlighted { background: rgba(31, 81, 241, .25) !important; }
-    tbody tr.highlighted td:first-child { color: var(--accent); font-weight: 700; box-shadow: inset 3px 0 0 var(--accent); }
-    .na { color: #6a748c; }
-
-    /* Notes */
-    .notes {
-      display: grid;
-      grid-template-columns: minmax(0, 1.25fr) minmax(280px, .75fr);
-      gap: 28px;
-    }
-
-    .callout {
-      padding: 4px 0 4px 16px;
-      border-left: 3px solid var(--accent);
-      color: var(--muted);
-      font-size: .86rem;
-      line-height: 1.7;
-    }
-
-    .callout strong, .notes > div > strong { color: #f5f7fb; font-weight: 650; }
-    .source-list { margin: 0; padding-left: 18px; color: var(--muted); font-size: .78rem; line-height: 1.8; }
-    a { color: #9eb9ff; text-decoration: none; }
-    a:hover { color: #edb5ff; text-decoration: underline; }
-
-    footer {
-      margin-top: 32px;
-      color: #8c98af;
-      font-size: .72rem;
-      text-align: center;
-      font-family: var(--font-mono);
-    }
-
-    @media (max-width: 900px) {
-      .wrap { width: min(100% - 24px, 1180px); }
-      header { grid-template-columns: 1fr; }
-      .updated { text-align: left; }
-      .cards { grid-template-columns: repeat(2, minmax(0, 1fr)); }
-      .charts, .notes { grid-template-columns: 1fr; }
-    }
-
-    @media (max-width: 560px) {
-      .cards { grid-template-columns: 1fr; }
-      .toolbar { flex-direction: column; align-items: flex-start; }
-      .sim-bar { flex-direction: column; align-items: stretch; }
+    /* View Transition API smoothing */
+    ::view-transition-old(root),
+    ::view-transition-new(root) {
+      animation-duration: 0.22s;
     }
   </style>
 </head>
-<body>
-  <div id="chart-tooltip"></div>
-  <main class="wrap">
-    <header>
+<body class="selection:bg-fuchsia-500/30 selection:text-fuchsia-200">
+  <!-- Subtle Animated Film Grain -->
+  <div class="noise-overlay"></div>
+
+  <!-- Shared SVG Defs (Hatch pattern for Oct 2025 federal collection gap) -->
+  <svg width="0" height="0" class="absolute pointer-events-none">
+    <defs>
+      <pattern id="missingHatch" width="6" height="6" patternTransform="rotate(45 0 0)" patternUnits="userSpaceOnUse">
+        <line x1="0" y1="0" x2="0" y2="6" stroke="#94a3b8" stroke-width="1.2" stroke-opacity="0.35" />
+      </pattern>
+    </defs>
+  </svg>
+
+  <!-- Floating Cross-Commodity HUD Tooltip -->
+  <div id="chart-tooltip" class="fixed pointer-events-none z-50 hidden bg-slate-950/95 border border-fuchsia-500/50 rounded-xl p-3 shadow-2xl backdrop-blur-xl text-xs font-mono min-w-[235px] transition-opacity duration-75"></div>
+
+  <!-- Toast Notification -->
+  <div id="toast" class="fixed bottom-5 right-5 z-50 translate-y-12 opacity-0 pointer-events-none transition-all duration-300 bg-slate-900/95 border border-emerald-500/50 text-emerald-300 px-4 py-2.5 rounded-xl shadow-2xl font-mono text-xs flex items-center gap-2.5">
+    <span class="w-2 h-2 rounded-full bg-emerald-400 animate-ping"></span>
+    <span id="toastMsg">Exported CSV</span>
+  </div>
+
+  <main class="max-w-[1280px] mx-auto px-4 sm:px-6 lg:px-8 py-7 sm:py-10 relative z-10">
+
+    <!-- Top Institutional Header Bar -->
+    <header class="flex flex-col lg:flex-row lg:items-end justify-between gap-6 mb-6 pb-5 border-b border-slate-800/80">
       <div>
-        <div class="eyebrow">U.S. City Average · BLS Average Price Data</div>
-        <h1>U.S. Price Trends</h1>
-        <p class="subtitle">Dynamic two-year retail price timeline for regular unleaded gasoline, pan white bread, Grade A large eggs, and 100% ground beef (Oct. 2024 through Sep. 2026).</p>
+        <div class="inline-flex items-center gap-2 px-2.5 py-1 rounded-full bg-fuchsia-500/10 border border-fuchsia-500/30 text-fuchsia-300 font-mono text-[11px] uppercase tracking-widest mb-3">
+          <span class="w-2 h-2 rounded-full bg-fuchsia-400 animate-pulse"></span>
+          U.S. City Average · BLS Average Price Terminal
+        </div>
+        <h1 class="font-display text-3xl sm:text-5xl font-extrabold tracking-tight text-white leading-[1.03]">
+          U.S. Staple Price <span class="bg-gradient-to-r from-fuchsia-400 via-sky-400 to-amber-300 bg-clip-text text-transparent">Dynamics</span>
+        </h1>
+        <p class="mt-2.5 text-slate-400 text-sm sm:text-base max-w-2xl leading-relaxed">
+          High-precision 24-month retail price telemetry for regular unleaded gasoline, pan white bread, Grade A large eggs, and 100% ground beef (<span class="text-slate-200 font-mono text-xs">Oct 2024 – Sep 2026</span>).
+        </p>
       </div>
-      <div class="updated">
-        Data verified: BLS Consumer Price Index Release<br>
-        Published through: <strong>Sep. 2026</strong> · Release Date: Oct. 14, 2026
+
+      <div class="flex flex-col sm:flex-row lg:flex-col items-start sm:items-center lg:items-end justify-between gap-3">
+        <div class="flex flex-wrap items-center gap-2">
+          <button onclick="toggleBasketDrawer()" id="basketToggleBtn" class="inline-flex items-center gap-2 px-3.5 py-2 rounded-xl bg-fuchsia-500/15 hover:bg-fuchsia-500/25 border border-fuchsia-500/40 text-fuchsia-200 font-mono text-xs font-medium transition-all shadow-lg shadow-fuchsia-950/30 cursor-pointer">
+            <svg class="w-4 h-4 text-fuchsia-400" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+              <path stroke-linecap="round" stroke-linejoin="round" d="M3 3h2l.4 2M7 13h10l4-8H5.4M7 13L5.4 5M7 13l-2.293 2.293c-.63.63-.184 1.707.707 1.707H17m0 0a2 2 0 100 4 2 2 0 000-4zm-8 2a2 2 0 11-4 0 2 2 0 014 0z" />
+            </svg>
+            <span>Household Basket Simulator</span>
+          </button>
+
+          <button onclick="exportActiveCSV()" class="inline-flex items-center gap-1.5 px-3.5 py-2 rounded-xl bg-slate-800/80 hover:bg-slate-700/80 border border-slate-700 text-slate-200 font-mono text-xs font-medium transition-all cursor-pointer" title="Shortcut: Press C">
+            <svg class="w-3.5 h-3.5 text-sky-400" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+              <path stroke-linecap="round" stroke-linejoin="round" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4" />
+            </svg>
+            <span>Export CSV</span>
+          </button>
+        </div>
+
+        <div class="font-mono text-[11px] text-slate-400 text-left lg:text-right leading-relaxed">
+          Verified: <span class="text-slate-200">BLS CPI Average Price Release</span><br>
+          Published through <strong class="text-fuchsia-300">Sep 2026</strong> · Release: Oct 14, 2026
+        </div>
       </div>
     </header>
 
-    <!-- Interactive Simulation & Playback Bar -->
-    <div class="sim-bar" aria-label="Interactive timeline simulator">
-      <div class="sim-controls">
-        <button id="playBtn" class="btn btn-play" onclick="togglePlaySimulation()">
-          <span id="playIcon">▶</span> Play Timeline
-        </button>
-        <button class="btn" onclick="resetSimulation()">↺ Reset</button>
+    <!-- Collapsible Personal Household Basket Calculator Drawer -->
+    <section id="basketDrawer" class="hidden mb-6 spotlight-card rounded-2xl p-5 sm:p-6 border-fuchsia-500/40">
+      <div class="flex flex-col lg:flex-row lg:items-center justify-between gap-4 pb-4 mb-5 border-b border-slate-800/80">
+        <div>
+          <div class="flex items-center gap-2">
+            <span class="px-2 py-0.5 rounded bg-fuchsia-500/20 text-fuchsia-300 font-mono text-[10px] uppercase font-semibold">Interactive Micro-Model</span>
+            <h2 class="font-display text-lg font-bold text-white">Personal Household Staple Basket Calculator</h2>
+          </div>
+          <p class="text-xs text-slate-400 mt-1">Configure your household's monthly consumption quantities below to calculate personalized expenditure impact across the active timeline.</p>
+        </div>
+        <div class="flex items-center gap-2">
+          <button onclick="resetBasketDefaults()" class="px-2.5 py-1 rounded-lg bg-slate-800 hover:bg-slate-700 text-slate-300 font-mono text-xs transition cursor-pointer">Reset Defaults</button>
+          <button onclick="toggleBasketDrawer()" class="p-1.5 rounded-lg bg-slate-800/80 hover:bg-slate-700 text-slate-400 hover:text-white transition cursor-pointer" aria-label="Close calculator">✕</button>
+        </div>
       </div>
-      <div class="sim-timeline">
-        <input type="range" id="simSlider" class="sim-slider" min="0" max="23" value="23" step="0.05" oninput="onSliderScrub(this.value)">
-        <div class="sim-date-badge" id="simDateBadge">Sep 2026</div>
+
+      <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 mb-5">
+        <!-- Gas Slider -->
+        <div class="bg-slate-950/55 border border-slate-800/80 rounded-xl p-3.5">
+          <div class="flex justify-between items-center text-xs mb-2">
+            <span class="font-semibold text-rose-400 flex items-center gap-1.5"><span class="w-2 h-2 rounded-full bg-rose-500"></span>Gasoline</span>
+            <span class="font-mono text-white font-bold"><span id="qty-val-gas">40</span> gal/mo</span>
+          </div>
+          <input type="range" id="qty-gas" min="0" max="150" step="5" value="40" oninput="updateBasketCalculation()" class="sim-slider w-full" />
+          <div class="flex justify-between text-[10px] font-mono text-slate-500 mt-1"><span>0 gal</span><span>75 gal</span><span>150 gal</span></div>
+        </div>
+
+        <!-- Bread Slider -->
+        <div class="bg-slate-950/55 border border-slate-800/80 rounded-xl p-3.5">
+          <div class="flex justify-between items-center text-xs mb-2">
+            <span class="font-semibold text-sky-400 flex items-center gap-1.5"><span class="w-2 h-2 rounded-full bg-sky-400"></span>White Bread</span>
+            <span class="font-mono text-white font-bold"><span id="qty-val-bread">4</span> lbs/mo</span>
+          </div>
+          <input type="range" id="qty-bread" min="0" max="20" step="1" value="4" oninput="updateBasketCalculation()" class="sim-slider w-full" />
+          <div class="flex justify-between text-[10px] font-mono text-slate-500 mt-1"><span>0 lb</span><span>10 lbs</span><span>20 lbs</span></div>
+        </div>
+
+        <!-- Eggs Slider -->
+        <div class="bg-slate-950/55 border border-slate-800/80 rounded-xl p-3.5">
+          <div class="flex justify-between items-center text-xs mb-2">
+            <span class="font-semibold text-amber-400 flex items-center gap-1.5"><span class="w-2 h-2 rounded-full bg-amber-400"></span>Grade A Eggs</span>
+            <span class="font-mono text-white font-bold"><span id="qty-val-eggs">3</span> doz/mo</span>
+          </div>
+          <input type="range" id="qty-eggs" min="0" max="15" step="1" value="3" oninput="updateBasketCalculation()" class="sim-slider w-full" />
+          <div class="flex justify-between text-[10px] font-mono text-slate-500 mt-1"><span>0 doz</span><span>7 doz</span><span>15 doz</span></div>
+        </div>
+
+        <!-- Beef Slider -->
+        <div class="bg-slate-950/55 border border-slate-800/80 rounded-xl p-3.5">
+          <div class="flex justify-between items-center text-xs mb-2">
+            <span class="font-semibold text-purple-400 flex items-center gap-1.5"><span class="w-2 h-2 rounded-full bg-purple-400"></span>Ground Beef</span>
+            <span class="font-mono text-white font-bold"><span id="qty-val-beef">6</span> lbs/mo</span>
+          </div>
+          <input type="range" id="qty-beef" min="0" max="30" step="1" value="6" oninput="updateBasketCalculation()" class="sim-slider w-full" />
+          <div class="flex justify-between text-[10px] font-mono text-slate-500 mt-1"><span>0 lb</span><span>15 lbs</span><span>30 lbs</span></div>
+        </div>
       </div>
-    </div>
 
-    <!-- Horizon Range Filter Bar -->
-    <div class="toolbar">
-      <div class="pill-group" role="group" aria-label="Time Horizon Range">
-        <button class="pill-btn active" onclick="setHorizon(24, this)">24 Months (Full)</button>
-        <button class="pill-btn" onclick="setHorizon(12, this)">1 Year (LTM)</button>
-        <button class="pill-btn" onclick="setHorizon(6, this)">6 Months</button>
+      <!-- Basket KPI Output Row -->
+      <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3.5">
+        <div class="bg-slate-900/80 border border-slate-800 rounded-xl p-3.5">
+          <div class="text-[11px] font-mono text-slate-400 uppercase">Start of Window Basket</div>
+          <div class="text-2xl font-display font-extrabold text-white mt-0.5" id="basketStartCost">$186.99</div>
+          <div class="text-[11px] font-mono text-slate-400 mt-0.5" id="basketStartLabel">Oct 2024 baseline</div>
+        </div>
+        <div class="bg-slate-900/80 border border-slate-800 rounded-xl p-3.5">
+          <div class="text-[11px] font-mono text-slate-400 uppercase">Playhead / Active Month</div>
+          <div class="text-2xl font-display font-extrabold text-fuchsia-300 mt-0.5" id="basketActiveCost">$234.17</div>
+          <div class="text-[11px] font-mono text-slate-400 mt-0.5" id="basketActiveLabel">Sep 2026 selected</div>
+        </div>
+        <div class="bg-slate-900/80 border border-slate-800 rounded-xl p-3.5">
+          <div class="text-[11px] font-mono text-slate-400 uppercase">Monthly Budget Delta</div>
+          <div class="text-2xl font-display font-extrabold mt-0.5" id="basketDeltaCost">+$47.18</div>
+          <div class="text-[11px] font-mono text-slate-400 mt-0.5" id="basketDeltaPct">+25.2% vs baseline</div>
+        </div>
+        <div class="bg-slate-900/80 border border-slate-800 rounded-xl p-3.5">
+          <div class="text-[11px] font-mono text-slate-400 uppercase">Est. Annualized Run-Rate</div>
+          <div class="text-2xl font-display font-extrabold text-sky-300 mt-0.5" id="basketAnnualCost">$2,810/yr</div>
+          <div class="text-[11px] font-mono text-slate-400 mt-0.5" id="basketPeakNote">Window avg: $204.12/mo</div>
+        </div>
       </div>
-      <div class="filter-hint">Tip: Click any summary card to isolate that series</div>
-    </div>
-
-    <section class="cards" id="summaryCards" aria-label="Price summaries"></section>
-
-    <section class="panel">
-      <h2>Monthly price history</h2>
-      <p class="panel-copy">Curves draw dynamically upon load. Use the simulation playhead above or scrub across any chart to inspect synchronous price changes across all staples.</p>
-      <div class="charts" id="charts"></div>
     </section>
 
-    <section class="panel">
-      <h2>Monthly data series</h2>
-      <p class="panel-copy">Hover over any row to highlight the corresponding monthly marker in each commodity chart.</p>
-      <div class="table-wrap">
-        <table>
+    <!-- Interactive Simulation & Playback Controller Bar -->
+    <div class="spotlight-card rounded-2xl p-4 sm:px-5 mb-5 border-fuchsia-500/30 flex flex-col md:flex-row items-stretch md:items-center justify-between gap-4" aria-label="Interactive timeline simulator">
+      <div class="flex flex-wrap items-center gap-2">
+        <button id="playBtn" onclick="togglePlaySimulation()" class="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-gradient-to-r from-fuchsia-600 to-purple-600 hover:from-fuchsia-500 hover:to-purple-500 text-white font-mono text-xs font-semibold shadow-lg shadow-fuchsia-600/30 transition cursor-pointer">
+          <span id="playIcon">▶</span>
+          <span id="playText">Play Timeline</span>
+        </button>
+
+        <button onclick="resetSimulation()" class="px-3 py-2 rounded-full bg-slate-800/90 hover:bg-slate-700 border border-slate-700 text-slate-200 font-mono text-xs transition cursor-pointer" title="Reset to start of window">
+          ↺ Reset
+        </button>
+
+        <!-- Speed Multiplier Pill -->
+        <div class="inline-flex items-center bg-slate-950/80 border border-slate-800 rounded-full p-0.5 font-mono text-[11px]">
+          <button onclick="setPlaySpeed(0.5, this)" class="speed-btn px-2.5 py-1 rounded-full text-slate-400 hover:text-white transition cursor-pointer">0.5×</button>
+          <button onclick="setPlaySpeed(1, this)" class="speed-btn px-2.5 py-1 rounded-full bg-slate-800 text-fuchsia-300 font-semibold transition cursor-pointer">1×</button>
+          <button onclick="setPlaySpeed(2, this)" class="speed-btn px-2.5 py-1 rounded-full text-slate-400 hover:text-white transition cursor-pointer">2×</button>
+        </div>
+      </div>
+
+      <div class="flex-1 flex items-center gap-3.5 min-w-[240px]">
+        <button onclick="stepMonth(-1)" class="p-1.5 rounded-lg bg-slate-800/70 hover:bg-slate-700 text-slate-300 font-mono text-xs cursor-pointer" title="Step back 1 month (Left Arrow)">◀</button>
+        <input type="range" id="simSlider" class="sim-slider flex-1" min="0" max="23" value="23" step="0.05" oninput="onSliderScrub(this.value)" aria-label="Scrub timeline">
+        <button onclick="stepMonth(1)" class="p-1.5 rounded-lg bg-slate-800/70 hover:bg-slate-700 text-slate-300 font-mono text-xs cursor-pointer" title="Step forward 1 month (Right Arrow)">▶</button>
+        <div id="simDateBadge" class="font-mono text-xs font-bold px-3 py-1.5 rounded-lg bg-slate-950/90 border border-fuchsia-500/40 text-fuchsia-300 min-w-[100px] text-center shadow-inner">
+          Sep 2026
+        </div>
+      </div>
+    </div>
+
+    <!-- Multi-Dimensional Control Toolbar: Horizon + Normalization Mode + View Layout -->
+    <div class="flex flex-col lg:flex-row lg:items-center justify-between gap-3.5 mb-5">
+      <div class="flex flex-wrap items-center gap-2.5">
+        <!-- Horizon Selector -->
+        <div class="inline-flex items-center bg-slate-950/80 p-1 rounded-xl border border-slate-800/90" role="group" aria-label="Time Horizon">
+          <button class="horizon-btn px-3 py-1.5 rounded-lg font-mono text-xs font-medium bg-fuchsia-600 text-white shadow-md shadow-fuchsia-600/30 transition cursor-pointer" onclick="setHorizon(24, this)">24M (Full)</button>
+          <button class="horizon-btn px-3 py-1.5 rounded-lg font-mono text-xs font-medium text-slate-400 hover:text-white transition cursor-pointer" onclick="setHorizon(12, this)">12M (LTM)</button>
+          <button class="horizon-btn px-3 py-1.5 rounded-lg font-mono text-xs font-medium text-slate-400 hover:text-white transition cursor-pointer" onclick="setHorizon(6, this)">6M</button>
+        </div>
+
+        <!-- Normalization Mode Toggle -->
+        <div class="inline-flex items-center bg-slate-950/80 p-1 rounded-xl border border-slate-800/90" role="group" aria-label="Data Normalization Mode">
+          <button class="norm-btn px-3 py-1.5 rounded-lg font-mono text-xs font-medium bg-sky-500/20 text-sky-300 border border-sky-500/40 transition cursor-pointer" onclick="setNormMode('raw', this)">$ USD (Raw)</button>
+          <button class="norm-btn px-3 py-1.5 rounded-lg font-mono text-xs font-medium text-slate-400 hover:text-white border border-transparent transition cursor-pointer" onclick="setNormMode('pct', this)">Indexed (% Δ)</button>
+          <button class="norm-btn px-3 py-1.5 rounded-lg font-mono text-xs font-medium text-slate-400 hover:text-white border border-transparent transition cursor-pointer" onclick="setNormMode('zscore', this)">Z-Score (σ)</button>
+        </div>
+
+        <!-- Layout Mode Toggle: 2x2 Grid vs Unified Multi-Series Overlay -->
+        <div class="inline-flex items-center bg-slate-950/80 p-1 rounded-xl border border-slate-800/90" role="group" aria-label="Chart Layout Mode">
+          <button id="layoutGridBtn" class="px-3 py-1.5 rounded-lg font-mono text-xs font-medium bg-slate-800 text-white transition cursor-pointer" onclick="setLayoutMode('grid')">2×2 Grid</button>
+          <button id="layoutOverlayBtn" class="px-3 py-1.5 rounded-lg font-mono text-xs font-medium text-slate-400 hover:text-white transition cursor-pointer" onclick="setLayoutMode('overlay')">Unified Overlay</button>
+        </div>
+      </div>
+
+      <div class="font-mono text-[11px] text-slate-400 flex items-center gap-3">
+        <span><kbd class="px-1.5 py-0.5 rounded bg-slate-800 text-slate-300 border border-slate-700">Space</kbd> Play</span>
+        <span><kbd class="px-1.5 py-0.5 rounded bg-slate-800 text-slate-300 border border-slate-700">←/→</kbd> Step</span>
+        <span><kbd class="px-1.5 py-0.5 rounded bg-slate-800 text-slate-300 border border-slate-700">1-4</kbd> Isolate</span>
+      </div>
+    </div>
+
+    <!-- 4 Bento Summary Cards with Sparklines & Range Bars -->
+    <section class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 mb-6" id="summaryCards" aria-label="Commodity price summaries"></section>
+
+    <!-- Primary Chart Visualization Panel -->
+    <section class="spotlight-card rounded-2xl p-5 sm:p-6 mb-6">
+      <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-2 mb-4">
+        <div>
+          <div class="flex items-center gap-2.5">
+            <h2 class="font-display text-lg sm:text-xl font-bold text-white" id="chartPanelTitle">Monthly Price Telemetry</h2>
+            <span id="normBadge" class="px-2 py-0.5 rounded bg-sky-500/15 border border-sky-500/30 text-sky-300 font-mono text-[11px]">Absolute $ USD</span>
+          </div>
+          <p class="text-xs sm:text-sm text-slate-400 mt-0.5">
+            Drag or hover directly across any chart canvas to scrub the synchronized crosshair across all series. Shaded hatch marks the Oct 2025 federal collection hiatus.
+          </p>
+        </div>
+        <div id="activeFilterBadge" class="hidden">
+          <button onclick="toggleFilter(activeFilter)" class="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-fuchsia-500/20 border border-fuchsia-500/40 text-fuchsia-300 font-mono text-xs cursor-pointer hover:bg-fuchsia-500/30">
+            <span>Isolated Filter Active</span>
+            <span>✕</span>
+          </button>
+        </div>
+      </div>
+
+      <!-- Dynamic Container: either 2x2 Bento Grid or Single Unified Multi-Series Canvas -->
+      <div id="chartsContainer"></div>
+    </section>
+
+    <!-- Monthly Data Series Table with Heat-tinted MoM Deltas -->
+    <section class="spotlight-card rounded-2xl p-5 sm:p-6 mb-6">
+      <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-2 mb-4">
+        <div>
+          <h2 class="font-display text-lg sm:text-xl font-bold text-white">Tabular Historical Matrix</h2>
+          <p class="text-xs sm:text-sm text-slate-400 mt-0.5">
+            Click or hover any monthly row to lock the playhead. Inline badges indicate month-over-month (<span class="font-mono text-xs text-slate-300">MoM %</span>) price velocity.
+          </p>
+        </div>
+        <div class="font-mono text-xs text-slate-400">
+          Showing <span id="tableCountBadge" class="text-white font-semibold">24</span> monthly intervals
+        </div>
+      </div>
+
+      <div class="overflow-x-auto rounded-xl border border-slate-800/90 bg-slate-950/60 max-h-[460px]">
+        <table class="w-full min-w-[760px] border-collapse text-right font-mono text-xs">
           <thead>
-            <tr>
-              <th>Month</th>
-              <th>Gasoline<br><span class="unit">$/gal</span></th>
-              <th>White bread<br><span class="unit">$/lb</span></th>
-              <th>Eggs<br><span class="unit">$/dozen</span></th>
-              <th>Ground beef<br><span class="unit">$/lb</span></th>
+            <tr class="sticky top-0 z-20 bg-slate-900/95 backdrop-blur border-b border-slate-800 text-slate-300 uppercase tracking-wider text-[11px]">
+              <th class="py-3 px-4 text-left">Month</th>
+              <th class="py-3 px-4"><span class="inline-block w-2 h-2 rounded-full bg-rose-500 mr-1.5"></span>Gasoline <span class="text-slate-500 font-normal">($/gal)</span></th>
+              <th class="py-3 px-4"><span class="inline-block w-2 h-2 rounded-full bg-sky-400 mr-1.5"></span>White Bread <span class="text-slate-500 font-normal">($/lb)</span></th>
+              <th class="py-3 px-4"><span class="inline-block w-2 h-2 rounded-full bg-amber-400 mr-1.5"></span>Eggs <span class="text-slate-500 font-normal">($/doz)</span></th>
+              <th class="py-3 px-4"><span class="inline-block w-2 h-2 rounded-full bg-purple-400 mr-1.5"></span>Ground Beef <span class="text-slate-500 font-normal">($/lb)</span></th>
+              <th class="py-3 px-4 text-fuchsia-300">Personal Basket</th>
             </tr>
           </thead>
-          <tbody id="priceTable"></tbody>
+          <tbody id="priceTable" class="divide-y divide-slate-800/60"></tbody>
         </table>
       </div>
     </section>
 
-    <section class="panel notes">
-      <div class="callout">
-        <strong>Reading the numbers:</strong> Summary cards reflect the arithmetic mean of published prices over the active window. October 2025 is missing for white bread, eggs, and ground beef due to federal survey collection suspension; food series compute their averages using only valid published observations without interpolating synthetic points.
+    <!-- Methodology & Official FRED Series Attribution -->
+    <section class="spotlight-card rounded-2xl p-5 sm:p-6 grid grid-cols-1 lg:grid-cols-12 gap-6 items-start">
+      <div class="lg:col-span-7 border-l-2 border-fuchsia-500 pl-4 text-xs sm:text-sm text-slate-300 leading-relaxed space-y-2">
+        <div class="font-display font-bold text-white text-base">Statistical Methodology & Data Integrity</div>
+        <p class="text-slate-400">
+          Summary cards display the arithmetic mean, standard deviation (<span class="font-mono text-slate-200">σ</span>), and min-max price distribution across the active time horizon.
+          <strong>October 2025</strong> is omitted for white bread, Grade A large eggs, and ground beef due to a temporary federal survey collection suspension; all statistical moments and percentage deltas use strictly published BLS observations without synthetic interpolation.
+        </p>
       </div>
-      <div>
-        <strong style="display:block;margin-bottom:6px;">Source series (FRED / BLS)</strong>
-        <ul class="source-list">
-          <li><a href="https://fred.stlouisfed.org/series/APU000074714" target="_blank" rel="noopener">APU000074714</a> — regular gasoline</li>
-          <li><a href="https://fred.stlouisfed.org/series/APU0000702111" target="_blank" rel="noopener">APU0000702111</a> — white bread</li>
-          <li><a href="https://fred.stlouisfed.org/series/APU0000708111" target="_blank" rel="noopener">APU0000708111</a> — Grade A large eggs</li>
-          <li><a href="https://fred.stlouisfed.org/series/APU0000703112" target="_blank" rel="noopener">APU0000703112</a> — 100% ground beef</li>
+      <div class="lg:col-span-5 bg-slate-950/60 border border-slate-800/80 rounded-xl p-4">
+        <div class="font-mono text-xs font-semibold text-white uppercase tracking-wider mb-2.5 flex items-center justify-between">
+          <span>Primary FRED / BLS Series</span>
+          <span class="text-[10px] text-emerald-400 bg-emerald-500/10 px-2 py-0.5 rounded border border-emerald-500/30">Verified Active</span>
+        </div>
+        <ul class="space-y-1.5 font-mono text-xs text-slate-400">
+          <li class="flex items-center justify-between">
+            <span class="flex items-center gap-2"><span class="w-2 h-2 rounded-full bg-rose-500"></span>Regular Unleaded Gasoline</span>
+            <a href="https://fred.stlouisfed.org/series/APU000074714" target="_blank" rel="noopener" class="text-sky-400 hover:text-fuchsia-300 underline">APU000074714 ↗</a>
+          </li>
+          <li class="flex items-center justify-between">
+            <span class="flex items-center gap-2"><span class="w-2 h-2 rounded-full bg-sky-400"></span>Pan White Bread</span>
+            <a href="https://fred.stlouisfed.org/series/APU0000702111" target="_blank" rel="noopener" class="text-sky-400 hover:text-fuchsia-300 underline">APU0000702111 ↗</a>
+          </li>
+          <li class="flex items-center justify-between">
+            <span class="flex items-center gap-2"><span class="w-2 h-2 rounded-full bg-amber-400"></span>Grade A Large Eggs</span>
+            <a href="https://fred.stlouisfed.org/series/APU0000708111" target="_blank" rel="noopener" class="text-sky-400 hover:text-fuchsia-300 underline">APU0000708111 ↗</a>
+          </li>
+          <li class="flex items-center justify-between">
+            <span class="flex items-center gap-2"><span class="w-2 h-2 rounded-full bg-purple-400"></span>100% Ground Beef</span>
+            <a href="https://fred.stlouisfed.org/series/APU0000703112" target="_blank" rel="noopener" class="text-sky-400 hover:text-fuchsia-300 underline">APU0000703112 ↗</a>
+          </li>
         </ul>
       </div>
     </section>
 
-    <footer>Source: U.S. Bureau of Labor Statistics (BLS) Consumer Price Index (CPI) Average Price Program, via FRED. September 2026 data official. Next release scheduled for mid-November 2026.</footer>
+    <footer class="mt-8 text-center font-mono text-[11px] text-slate-500">
+      Source: U.S. Bureau of Labor Statistics (BLS) Consumer Price Index Average Price Data via Federal Reserve Economic Data (FRED). September 2026 official release.
+    </footer>
   </main>
 
-<script>
-// 24-month rolling window (Oct. 2024 through Sep. 2026)
-const fullMonths = [
-  "2024-10","2024-11","2024-12",
-  "2025-01","2025-02","2025-03","2025-04","2025-05","2025-06",
-  "2025-07","2025-08","2025-09","2025-10","2025-11","2025-12",
-  "2026-01","2026-02","2026-03","2026-04","2026-05","2026-06",
-  "2026-07","2026-08","2026-09"
-];
+  <script>
+    // ============================================================================
+    // 1. EXACT PRESERVED BLS DATASET (Oct 2024 – Sep 2026)
+    // ============================================================================
+    const fullMonths = [
+      "2024-10","2024-11","2024-12",
+      "2025-01","2025-02","2025-03","2025-04","2025-05","2025-06",
+      "2025-07","2025-08","2025-09","2025-10","2025-11","2025-12",
+      "2026-01","2026-02","2026-03","2026-04","2026-05","2026-06",
+      "2026-07","2026-08","2026-09"
+    ];
 
-const seriesData = [
-  {
-    key: "gas", name: "Gasoline", unit: "per gallon", color: "var(--gas)", hex: "#e042f2",
-    values: [3.279,3.181,3.145,3.211,3.261,3.232,3.330,3.306,3.306,3.285,3.295,3.339,3.239,3.228,3.050,2.961,3.065,3.843,4.263,4.651,4.195,4.094,4.200,4.482]
-  },
-  {
-    key: "bread", name: "White bread", unit: "per pound", color: "var(--bread)", hex: "#4f82ff",
-    values: [1.937,1.916,1.912,1.925,1.925,1.880,1.913,1.876,1.864,1.851,1.841,1.867,null,1.790,1.833,1.843,1.850,1.808,1.869,1.830,1.814,1.820,1.823,1.830]
-  },
-  {
-    key: "eggs", name: "Eggs", unit: "per dozen", color: "var(--eggs)", hex: "#8ca4ff",
-    values: [3.370,3.649,4.146,4.953,5.897,6.227,5.122,4.548,3.775,3.599,3.587,3.488,null,2.860,2.712,2.577,2.500,2.348,2.250,2.191,2.141,2.189,2.272,2.272]
-  },
-  {
-    key: "beef", name: "Ground beef", unit: "per pound", color: "var(--beef)", hex: "#b8c1e8",
-    values: [5.588,5.628,5.605,5.545,5.625,5.790,5.801,5.981,6.120,6.254,6.318,6.323,null,6.540,6.687,6.752,6.739,6.701,6.899,6.745,6.825,6.885,6.923,6.792]
-  }
-];
+    const seriesData = [
+      {
+        key: "gas",
+        name: "Gasoline",
+        unit: "per gallon",
+        shortUnit: "$/gal",
+        color: "var(--gas)",
+        hex: "#f43f5e",
+        badgeBg: "rgba(244, 63, 94, 0.15)",
+        values: [3.279,3.181,3.145,3.211,3.261,3.232,3.330,3.306,3.306,3.285,3.295,3.339,3.239,3.228,3.050,2.961,3.065,3.843,4.263,4.651,4.195,4.094,4.200,4.482]
+      },
+      {
+        key: "bread",
+        name: "White bread",
+        unit: "per pound",
+        shortUnit: "$/lb",
+        color: "var(--bread)",
+        hex: "#38bdf8",
+        badgeBg: "rgba(56, 189, 248, 0.15)",
+        values: [1.937,1.916,1.912,1.925,1.925,1.880,1.913,1.876,1.864,1.851,1.841,1.867,null,1.790,1.833,1.843,1.850,1.808,1.869,1.830,1.814,1.820,1.823,1.830]
+      },
+      {
+        key: "eggs",
+        name: "Eggs",
+        unit: "per dozen",
+        shortUnit: "$/doz",
+        color: "var(--eggs)",
+        hex: "#fbbf24",
+        badgeBg: "rgba(251, 191, 36, 0.15)",
+        values: [3.370,3.649,4.146,4.953,5.897,6.227,5.122,4.548,3.775,3.599,3.587,3.488,null,2.860,2.712,2.577,2.500,2.348,2.250,2.191,2.141,2.189,2.272,2.272]
+      },
+      {
+        key: "beef",
+        name: "Ground beef",
+        unit: "per pound",
+        shortUnit: "$/lb",
+        color: "var(--beef)",
+        hex: "#a855f7",
+        badgeBg: "rgba(168, 85, 247, 0.15)",
+        values: [5.588,5.628,5.605,5.545,5.625,5.790,5.801,5.981,6.120,6.254,6.318,6.323,null,6.540,6.687,6.752,6.739,6.701,6.899,6.745,6.825,6.885,6.923,6.792]
+      }
+    ];
 
-let activeHorizon = 24;
-let activeFilter = null;
-let isPlaying = false;
-let animRaf = null;
-let currentProgress = 23; // Fractional index in active horizon
+    // ============================================================================
+    // 2. APPLICATION STATE & FORMATTERS
+    // ============================================================================
+    let activeHorizon = 24;
+    let activeFilter = null;
+    let normMode = "raw";       // 'raw' | 'pct' | 'zscore'
+    let layoutMode = "grid";    // 'grid' | 'overlay'
+    let isPlaying = false;
+    let playSpeed = 1;
+    let animRaf = null;
+    let currentProgress = 23;   // Fractional index inside active slice
+    let isDraggingChart = false;
 
-const tooltip = document.getElementById("chart-tooltip");
-const simSlider = document.getElementById("simSlider");
-const simDateBadge = document.getElementById("simDateBadge");
-const playBtn = document.getElementById("playBtn");
-const playIcon = document.getElementById("playIcon");
+    const basketQuantities = { gas: 40, bread: 4, eggs: 3, beef: 6 };
 
-const money = n => `$${n.toFixed(2)}`;
-const money3 = n => `$${n.toFixed(3)}`;
-const monthLabel = m => new Date(`${m}-01T00:00:00`).toLocaleDateString("en-US", {month:"short", year:"numeric"});
-const mean = arr => {
-  const clean = arr.filter(v => v !== null && v !== undefined);
-  return clean.length ? clean.reduce((a,b)=>a+b,0) / clean.length : 0;
-};
+    const tooltip = document.getElementById("chart-tooltip");
+    const simSlider = document.getElementById("simSlider");
+    const simDateBadge = document.getElementById("simDateBadge");
+    const playBtn = document.getElementById("playBtn");
+    const playIcon = document.getElementById("playIcon");
+    const playText = document.getElementById("playText");
 
-function getActiveSlice() {
-  const start = fullMonths.length - activeHorizon;
-  return {
-    months: fullMonths.slice(start),
-    series: seriesData.map(s => ({
-      ...s,
-      values: s.values.slice(start)
-    }))
-  };
-}
+    const money = n => `$${n.toFixed(2)}`;
+    const money3 = n => `$${n.toFixed(3)}`;
+    const monthLabel = m => new Date(`${m}-01T00:00:00`).toLocaleDateString("en-US", { month: "short", year: "numeric" });
 
-function setHorizon(monthsCount, el) {
-  stopSimulation();
-  activeHorizon = monthsCount;
-  currentProgress = monthsCount - 1;
-  simSlider.max = monthsCount - 1;
-  simSlider.value = currentProgress;
-  
-  document.querySelectorAll('.pill-group .pill-btn').forEach(b => b.classList.remove('active'));
-  el.classList.add('active');
-  renderAll(true);
-}
-
-function toggleFilter(key) {
-  activeFilter = activeFilter === key ? null : key;
-  renderCards();
-  applyFilterToCharts();
-}
-
-function applyFilterToCharts() {
-  document.querySelectorAll('.chart-box').forEach(box => {
-    const key = box.dataset.key;
-    if (!activeFilter) {
-      box.classList.remove('dimmed', 'focused');
-    } else if (activeFilter === key) {
-      box.classList.remove('dimmed');
-      box.classList.add('focused');
-    } else {
-      box.classList.remove('focused');
-      box.classList.add('dimmed');
+    function computeStats(arr) {
+      const clean = arr.filter(v => v !== null && v !== undefined);
+      if (!clean.length) return { mean: 0, std: 1, min: 0, max: 0, first: 0, last: 0, count: 0 };
+      const mean = clean.reduce((a, b) => a + b, 0) / clean.length;
+      const variance = clean.reduce((acc, v) => acc + Math.pow(v - mean, 2), 0) / clean.length;
+      const std = Math.sqrt(variance) || 1;
+      return {
+        mean,
+        std,
+        min: Math.min(...clean),
+        max: Math.max(...clean),
+        first: clean[0],
+        last: clean[clean.length - 1],
+        count: clean.length
+      };
     }
-  });
-}
 
-function renderCards() {
-  const { series, months } = getActiveSlice();
-  const host = document.getElementById("summaryCards");
-  host.innerHTML = series.map(s => {
-    const clean = s.values.filter(v => v !== null);
-    const first = clean[0] || 0;
-    const last = clean[clean.length - 1] || 0;
-    const change = first ? (last / first - 1) * 100 : 0;
-    const cls = change >= 0 ? "up" : "down";
-    const arrow = change >= 0 ? "▲" : "▼";
-    const isSelected = activeFilter === s.key ? " active-filter" : "";
+    function transformValue(val, stats, mode = normMode) {
+      if (val === null || val === undefined) return null;
+      if (mode === "raw") return val;
+      if (mode === "pct") return stats.first ? ((val / stats.first) - 1) * 100 : 0;
+      if (mode === "zscore") return (val - stats.mean) / stats.std;
+      return val;
+    }
 
-    return `
-      <article class="card${isSelected}" onclick="toggleFilter('${s.key}')">
-        <div class="card-top">
-          <div class="label">${s.name}</div>
-          <div class="swatch" style="background:${s.color}; color:${s.color};"></div>
-        </div>
-        <div class="value" id="card-val-${s.key}">${money(mean(s.values))}</div>
-        <div class="meta">
-          <span>${activeHorizon}-mo avg · ${s.unit}</span>
-          <span>${clean.length} obs.</span>
-        </div>
-        <div class="meta">
-          <span>Latest ${money(last)}</span>
-          <span class="delta ${cls}">${arrow} ${Math.abs(change).toFixed(1)}% vs ${monthLabel(months[0])}</span>
-        </div>
-      </article>`;
-  }).join("");
-}
+    function formatTransformed(val, mode = normMode, decimals = 2) {
+      if (val === null || val === undefined) return "—";
+      if (mode === "raw") return `$${val.toFixed(decimals)}`;
+      if (mode === "pct") return `${val >= 0 ? "+" : ""}${val.toFixed(1)}%`;
+      if (mode === "zscore") return `${val >= 0 ? "+" : ""}${val.toFixed(2)}σ`;
+      return val.toFixed(2);
+    }
 
-function buildPathSegments(values, x, y) {
-  const segments = [];
-  let current = [];
-  values.forEach((v,i) => {
-    if (v === null) {
+    function getActiveSlice() {
+      const start = fullMonths.length - activeHorizon;
+      const months = fullMonths.slice(start);
+      const series = seriesData.map(s => {
+        const rawSlice = s.values.slice(start);
+        const stats = computeStats(rawSlice);
+        const transformedValues = rawSlice.map(v => transformValue(v, stats, normMode));
+        return {
+          ...s,
+          rawValues: rawSlice,
+          values: transformedValues,
+          stats
+        };
+      });
+      return { months, series };
+    }
+
+    // Smooth View Transition Wrapper
+    function runWithTransition(fn) {
+      if (document.startViewTransition) {
+        document.startViewTransition(() => fn());
+      } else {
+        fn();
+      }
+    }
+
+    // ============================================================================
+    // 3. CONTROLS & MODE SWITCHERS
+    // ============================================================================
+    function setHorizon(monthsCount, btnEl) {
+      stopSimulation();
+      runWithTransition(() => {
+        activeHorizon = monthsCount;
+        currentProgress = monthsCount - 1;
+        simSlider.max = monthsCount - 1;
+        simSlider.value = currentProgress;
+
+        document.querySelectorAll('.horizon-btn').forEach(b => {
+          b.className = "horizon-btn px-3 py-1.5 rounded-lg font-mono text-xs font-medium text-slate-400 hover:text-white transition cursor-pointer";
+        });
+        btnEl.className = "horizon-btn px-3 py-1.5 rounded-lg font-mono text-xs font-medium bg-fuchsia-600 text-white shadow-md shadow-fuchsia-600/30 transition cursor-pointer";
+
+        renderAll(true);
+      });
+    }
+
+    function setNormMode(mode, btnEl) {
+      runWithTransition(() => {
+        normMode = mode;
+        document.querySelectorAll('.norm-btn').forEach(b => {
+          b.className = "norm-btn px-3 py-1.5 rounded-lg font-mono text-xs font-medium text-slate-400 hover:text-white border border-transparent transition cursor-pointer";
+        });
+        btnEl.className = "norm-btn px-3 py-1.5 rounded-lg font-mono text-xs font-medium bg-sky-500/20 text-sky-300 border border-sky-500/40 transition cursor-pointer";
+
+        const badge = document.getElementById("normBadge");
+        if (mode === "raw") badge.textContent = "Absolute $ USD";
+        if (mode === "pct") badge.textContent = "Indexed (% Change vs Start)";
+        if (mode === "zscore") badge.textContent = "Standardized Z-Score (σ)";
+
+        renderAll(true);
+      });
+    }
+
+    function setLayoutMode(mode) {
+      if (layoutMode === mode) return;
+      runWithTransition(() => {
+        layoutMode = mode;
+        const gridBtn = document.getElementById("layoutGridBtn");
+        const overBtn = document.getElementById("layoutOverlayBtn");
+        if (mode === "grid") {
+          gridBtn.className = "px-3 py-1.5 rounded-lg font-mono text-xs font-medium bg-slate-800 text-white transition cursor-pointer";
+          overBtn.className = "px-3 py-1.5 rounded-lg font-mono text-xs font-medium text-slate-400 hover:text-white transition cursor-pointer";
+        } else {
+          overBtn.className = "px-3 py-1.5 rounded-lg font-mono text-xs font-medium bg-slate-800 text-white transition cursor-pointer";
+          gridBtn.className = "px-3 py-1.5 rounded-lg font-mono text-xs font-medium text-slate-400 hover:text-white transition cursor-pointer";
+          if (normMode === "raw") {
+            // Auto-hint or keep raw, both work cleanly
+          }
+        }
+        renderCharts(true);
+      });
+    }
+
+    function setPlaySpeed(speed, btnEl) {
+      playSpeed = speed;
+      document.querySelectorAll('.speed-btn').forEach(b => {
+        b.className = "speed-btn px-2.5 py-1 rounded-full text-slate-400 hover:text-white transition cursor-pointer";
+      });
+      btnEl.className = "speed-btn px-2.5 py-1 rounded-full bg-slate-800 text-fuchsia-300 font-semibold transition cursor-pointer";
+    }
+
+    function toggleFilter(key) {
+      runWithTransition(() => {
+        activeFilter = activeFilter === key ? null : key;
+        const badge = document.getElementById("activeFilterBadge");
+        if (activeFilter) {
+          badge.classList.remove("hidden");
+        } else {
+          badge.classList.add("hidden");
+        }
+        renderCards();
+        applyFilterToCharts();
+      });
+    }
+
+    function applyFilterToCharts() {
+      document.querySelectorAll('.chart-box').forEach(box => {
+        const key = box.dataset.key;
+        if (!key) return;
+        if (!activeFilter) {
+          box.classList.remove('dimmed', 'focused');
+        } else if (activeFilter === key) {
+          box.classList.remove('dimmed');
+          box.classList.add('focused');
+        } else {
+          box.classList.remove('focused');
+          box.classList.add('dimmed');
+        }
+      });
+
+      // Also handle unified overlay lines if active
+      document.querySelectorAll('.overlay-series-group').forEach(grp => {
+        const key = grp.dataset.key;
+        if (!activeFilter || activeFilter === key) {
+          grp.style.opacity = "1";
+        } else {
+          grp.style.opacity = "0.16";
+        }
+      });
+    }
+
+    // ============================================================================
+    // 4. BENTO SUMMARY CARDS WITH SPARKLINES & MIN-MAX RANGE BARS
+    // ============================================================================
+    function buildMiniSparkline(rawValues, hex) {
+      const W = 110, H = 28;
+      const clean = rawValues.filter(v => v !== null);
+      const min = Math.min(...clean);
+      const max = Math.max(...clean);
+      const span = (max - min) || 1;
+      const x = i => (i / (rawValues.length - 1)) * W;
+      const y = v => H - 3 - ((v - min) / span) * (H - 6);
+
+      const segments = [];
+      let cur = [];
+      rawValues.forEach((v, i) => {
+        if (v === null) {
+          if (cur.length) segments.push(cur);
+          cur = [];
+        } else {
+          cur.push(`${cur.length ? 'L' : 'M'}${x(i).toFixed(1)},${y(v).toFixed(1)}`);
+        }
+      });
+      if (cur.length) segments.push(cur);
+
+      return `
+        <svg viewBox="0 0 ${W} ${H}" class="w-24 h-7 overflow-visible">
+          ${segments.map(seg => `<path d="${seg.join(' ')}" fill="none" stroke="${hex}" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" />`).join('')}
+        </svg>
+      `;
+    }
+
+    function renderCards() {
+      const { series, months } = getActiveSlice();
+      const host = document.getElementById("summaryCards");
+
+      host.innerHTML = series.map((s, idx) => {
+        const { mean, std, min, max, first, last, count } = s.stats;
+        const changePct = first ? ((last / first) - 1) * 100 : 0;
+        const isUp = changePct >= 0;
+        const badgeColor = isUp
+          ? "text-rose-300 bg-rose-500/15 border-rose-500/30"
+          : "text-emerald-300 bg-emerald-500/15 border-emerald-500/30";
+        const arrow = isUp ? "▲" : "▼";
+        const isSelected = activeFilter === s.key ? " active-filter" : "";
+
+        // Position of latest price within [min, max]
+        const rangeRatio = max > min ? Math.max(0, Math.min(100, ((last - min) / (max - min)) * 100)) : 50;
+
+        // Primary displayed metric depends on normMode
+        let primaryDisplay = money(mean);
+        let primarySub = `${activeHorizon}M Mean (${s.shortUnit})`;
+        if (normMode === "pct") {
+          primaryDisplay = `${changePct >= 0 ? "+" : ""}${changePct.toFixed(1)}%`;
+          primarySub = `Window Δ vs ${monthLabel(months[0])}`;
+        } else if (normMode === "zscore") {
+          const latestZ = (last - mean) / std;
+          primaryDisplay = `${latestZ >= 0 ? "+" : ""}${latestZ.toFixed(2)}σ`;
+          primarySub = `Latest Z (σ = $${std.toFixed(2)})`;
+        }
+
+        return `
+          <article class="spotlight-card card-interactive rounded-2xl p-4 sm:p-5 cursor-pointer select-none${isSelected}" onclick="toggleFilter('${s.key}')">
+            <div class="flex items-center justify-between gap-2">
+              <div class="flex items-center gap-2">
+                <span class="w-2.5 h-2.5 rounded-full" style="background:${s.hex}; box-shadow: 0 0 10px ${s.hex};"></span>
+                <span class="font-display font-bold text-sm text-white">${s.name}</span>
+                <span class="font-mono text-[10px] text-slate-500 border border-slate-800 rounded px-1">${idx + 1}</span>
+              </div>
+              <span class="px-2 py-0.5 rounded-full border font-mono text-[11px] font-semibold ${badgeColor}">
+                ${arrow} ${Math.abs(changePct).toFixed(1)}%
+              </span>
+            </div>
+
+            <div class="mt-3 flex items-end justify-between gap-2">
+              <div>
+                <div class="font-display text-3xl font-extrabold tracking-tight text-white tabular-nums" id="card-val-${s.key}">
+                  ${primaryDisplay}
+                </div>
+                <div class="font-mono text-[11px] text-slate-400 mt-0.5">${primarySub}</div>
+              </div>
+              <div class="flex flex-col items-end">
+                ${buildMiniSparkline(s.rawValues, s.hex)}
+                <span class="font-mono text-[10px] text-slate-500 mt-0.5">σ $${std.toFixed(2)} · ${count} obs</span>
+              </div>
+            </div>
+
+            <!-- Min / Max Range Distribution Bar -->
+            <div class="mt-3.5 pt-3 border-t border-slate-800/80">
+              <div class="flex justify-between items-center font-mono text-[10px] text-slate-400 mb-1">
+                <span>Low ${money(min)}</span>
+                <span class="text-slate-200 font-semibold" id="card-live-${s.key}">Latest ${money(last)}</span>
+                <span>High ${money(max)}</span>
+              </div>
+              <div class="w-full h-1.5 bg-slate-900 rounded-full overflow-hidden relative border border-slate-800">
+                <div class="h-full rounded-full transition-all duration-300" style="width:${rangeRatio}%; background:${s.hex};"></div>
+              </div>
+            </div>
+          </article>
+        `;
+      }).join("");
+
+      attachSpotlightListeners();
+    }
+
+    // ============================================================================
+    // 5. SVG CHART ENGINE (2x2 Bento Grid & Unified Multi-Series Overlay)
+    // ============================================================================
+    function buildPathSegments(values, x, y) {
+      const segments = [];
+      let current = [];
+      values.forEach((v, i) => {
+        if (v === null || v === undefined) {
+          if (current.length) segments.push(current);
+          current = [];
+        } else {
+          current.push([x(i), y(v)]);
+        }
+      });
       if (current.length) segments.push(current);
-      current = [];
-    } else {
-      current.push([x(i), y(v)]);
+      return segments.map(seg => seg.map((p, j) => `${j ? 'L' : 'M'}${p[0].toFixed(2)},${p[1].toFixed(2)}`).join(' '));
     }
-  });
-  if (current.length) segments.push(current);
-  return segments.map(seg => seg.map((p,j) => `${j ? 'L':'M'}${p[0].toFixed(2)},${p[1].toFixed(2)}`).join(' '));
-}
 
-function buildAreaPath(values, x, y, baseY) {
-  const cleanIndices = values.map((v, i) => v !== null ? i : null).filter(i => i !== null);
-  if (cleanIndices.length === 0) return '';
-  const firstIdx = cleanIndices[0];
-  const lastIdx = cleanIndices[cleanIndices.length - 1];
-  
-  let d = `M${x(firstIdx).toFixed(2)},${baseY.toFixed(2)} `;
-  values.forEach((v, i) => {
-    if (v !== null) d += `L${x(i).toFixed(2)},${y(v).toFixed(2)} `;
-  });
-  d += `L${x(lastIdx).toFixed(2)},${baseY.toFixed(2)} Z`;
-  return d;
-}
+    function buildAreaPathSegments(values, x, y, baseY) {
+      const segments = [];
+      let current = [];
+      values.forEach((v, i) => {
+        if (v === null || v === undefined) {
+          if (current.length) segments.push(current);
+          current = [];
+        } else {
+          current.push({ idx: i, px: x(i), py: y(v) });
+        }
+      });
+      if (current.length) segments.push(current);
 
-function renderChart(s, months) {
-  const W = 520, H = 210, pad = {l:46, r:14, t:16, b:30};
-  const clean = s.values.filter(v => v !== null);
-  let min = Math.min(...clean), max = Math.max(...clean);
-  const span = max - min || 1;
-  min -= span * .15; max += span * .15;
+      return segments.map(seg => {
+        const first = seg[0];
+        const last = seg[seg.length - 1];
+        let d = `M${first.px.toFixed(2)},${baseY.toFixed(2)} `;
+        seg.forEach(pt => { d += `L${pt.px.toFixed(2)},${pt.py.toFixed(2)} `; });
+        d += `L${last.px.toFixed(2)},${baseY.toFixed(2)} Z`;
+        return d;
+      }).join(' ');
+    }
 
-  const x = i => pad.l + i * (W - pad.l - pad.r) / (months.length - 1);
-  const y = v => pad.t + (max - v) * (H - pad.t - pad.b) / (max - min);
+    function renderIndividualChart(s, months) {
+      const W = 540, H = 220, pad = { l: 52, r: 16, t: 18, b: 30 };
+      const clean = s.values.filter(v => v !== null);
+      let min = Math.min(...clean), max = Math.max(...clean);
+      const span = (max - min) || 1;
+      min -= span * 0.16;
+      max += span * 0.16;
 
-  const ticks = [0, .5, 1].map(t => max - t*(max-min));
-  const segments = buildPathSegments(s.values, x, y);
-  const areaD = buildAreaPath(s.values, x, y, H - pad.b);
+      const x = i => pad.l + i * (W - pad.l - pad.r) / (months.length - 1);
+      const y = v => pad.t + (max - v) * (H - pad.t - pad.b) / (max - min);
 
-  const yGrid = ticks.map(v => `
-    <line class="grid-line" x1="${pad.l}" x2="${W-pad.r}" y1="${y(v)}" y2="${y(v)}"></line>
-    <text class="axis-label" x="${pad.l-7}" y="${y(v)+3}" text-anchor="end">$${v.toFixed(2)}</text>`).join('');
+      const ticks = [0, 0.5, 1].map(t => max - t * (max - min));
+      const segments = buildPathSegments(s.values, x, y);
+      const areaD = buildAreaPathSegments(s.values, x, y, H - pad.b);
 
-  const step = Math.max(1, Math.floor(months.length / 4));
-  const tickIndices = [0, step, step * 2, step * 3, months.length - 1].filter((v,i,a) => a.indexOf(v)===i && v < months.length);
-  const xTicks = tickIndices.map(i => `
-    <text class="axis-label" x="${x(i)}" y="${H-8}" text-anchor="middle">${monthLabel(months[i]).split(' ')[0]} '${months[i].slice(2,4)}</text>`).join('');
+      const yGrid = ticks.map(v => `
+        <line class="grid-line" x1="${pad.l}" x2="${W - pad.r}" y1="${y(v)}" y2="${y(v)}"></line>
+        <text class="axis-label" x="${pad.l - 8}" y="${y(v) + 3}" text-anchor="end">${formatTransformed(v, normMode, 2)}</text>
+      `).join('');
 
-  // Find last valid point for pulse ring
-  let lastValidIdx = s.values.length - 1;
-  while (lastValidIdx >= 0 && s.values[lastValidIdx] === null) lastValidIdx--;
-  const pulseX = lastValidIdx >= 0 ? x(lastValidIdx) : 0;
-  const pulseY = lastValidIdx >= 0 ? y(s.values[lastValidIdx]) : 0;
+      // Zero reference line for % or Z-score modes
+      const zeroLine = (normMode !== "raw" && min < 0 && max > 0)
+        ? `<line class="zero-line" x1="${pad.l}" x2="${W - pad.r}" y1="${y(0)}" y2="${y(0)}"></line>`
+        : '';
 
-  const dots = s.values.map((v,i) => v === null ? '' : `
-    <circle class="dot dot-${s.key}" data-index="${i}" data-series="${s.key}" data-val="${v}" data-month="${months[i]}" cx="${x(i)}" cy="${y(v)}" r="3.2" fill="${s.color}">
-    </circle>`).join('');
+      // Missing data band (Oct 2025)
+      const nullIdx = s.values.findIndex(v => v === null);
+      const stepW = (W - pad.l - pad.r) / (months.length - 1);
+      const missingBand = nullIdx >= 0 ? `
+        <rect class="missing-band" x="${x(nullIdx) - stepW * 0.45}" y="${pad.t}" width="${stepW * 0.9}" height="${H - pad.t - pad.b}" rx="3" />
+      ` : '';
 
-  const missing = s.values.some(v => v === null) ? "Note: Oct. 2025 omitted (no BLS survey release)" : "";
+      const step = Math.max(1, Math.floor(months.length / 4));
+      const tickIndices = [0, step, step * 2, step * 3, months.length - 1].filter((v, i, a) => a.indexOf(v) === i && v < months.length);
+      const xTicks = tickIndices.map(i => `
+        <text class="axis-label" x="${x(i)}" y="${H - 8}" text-anchor="middle">${monthLabel(months[i]).split(' ')[0]} '${months[i].slice(2, 4)}</text>
+      `).join('');
 
-  return `
-    <div class="chart-box" data-key="${s.key}">
-      <div class="chart-head">
-        <span class="chart-title">${s.name}</span>
-        <div>
-          <span class="chart-val-preview" id="preview-${s.key}">${money(clean[clean.length-1])}</span>
-          <span class="chart-range">(${money(Math.min(...clean))} – ${money(Math.max(...clean))})</span>
+      let lastValidIdx = s.values.length - 1;
+      while (lastValidIdx >= 0 && s.values[lastValidIdx] === null) lastValidIdx--;
+      const pulseX = lastValidIdx >= 0 ? x(lastValidIdx) : 0;
+      const pulseY = lastValidIdx >= 0 ? y(s.values[lastValidIdx]) : 0;
+
+      const dots = s.values.map((v, i) => v === null ? '' : `
+        <circle class="dot dot-${s.key}" data-index="${i}" data-series="${s.key}" cx="${x(i)}" cy="${y(v)}" r="3.2" fill="${s.hex}" stroke="#0b1021" stroke-width="1.8"></circle>
+      `).join('');
+
+      const missingText = nullIdx >= 0 ? "Oct 2025: Federal survey hiatus (uninterpolated)" : "Complete 100% monthly series";
+
+      return `
+        <div class="chart-box spotlight-card rounded-xl p-4 border border-slate-800/90 transition-all" data-key="${s.key}">
+          <div class="flex items-baseline justify-between gap-2 mb-2">
+            <div class="flex items-center gap-2">
+              <span class="w-2.5 h-2.5 rounded-full" style="background:${s.hex};"></span>
+              <span class="font-display font-bold text-sm text-white">${s.name}</span>
+              <span class="font-mono text-[11px] text-slate-400">${s.shortUnit}</span>
+            </div>
+            <div class="flex items-baseline gap-2 font-mono">
+              <span class="text-sm font-bold text-white tabular-nums" id="preview-${s.key}">${formatTransformed(clean[clean.length - 1], normMode, 3)}</span>
+              <span class="text-[11px] text-slate-400">(${formatTransformed(Math.min(...clean), normMode, 2)} – ${formatTransformed(Math.max(...clean), normMode, 2)})</span>
+            </div>
+          </div>
+
+          <svg id="svg-${s.key}" viewBox="0 0 ${W} ${H}" class="w-full h-[215px] block overflow-visible cursor-crosshair select-none interactive-svg" data-key="${s.key}">
+            <defs>
+              <linearGradient id="grad-${s.key}" x1="0" y1="0" x2="0" y2="1">
+                <stop offset="0%" stop-color="${s.hex}" stop-opacity="0.34"/>
+                <stop offset="100%" stop-color="${s.hex}" stop-opacity="0.0"/>
+              </linearGradient>
+            </defs>
+            ${missingBand}
+            ${yGrid}
+            ${zeroLine}
+            ${xTicks}
+            <path d="${areaD}" fill="url(#grad-${s.key})" class="pointer-events-none"></path>
+            ${segments.map(d => `<path class="line-series line-draw" d="${d}" stroke="${s.hex}"></path>`).join('')}
+            ${dots}
+            <circle class="pulse-ring" cx="${pulseX}" cy="${pulseY}" stroke="${s.hex}"></circle>
+            <line class="playhead-cursor" id="cursor-${s.key}" x1="${pulseX}" x2="${pulseX}" y1="${pad.t}" y2="${H - pad.b}"></line>
+            <circle class="playhead-tracer-glow" id="tracer-${s.key}" cx="${pulseX}" cy="${pulseY}" r="5.5" fill="${s.hex}" stroke="#fff" stroke-width="1.5" style="color:${s.hex};"></circle>
+          </svg>
+
+          <div class="mt-1.5 flex items-center justify-between font-mono text-[10px] text-slate-400">
+            <span>${missingText}</span>
+            <span class="text-slate-500">Mean: ${money(s.stats.mean)}</span>
+          </div>
         </div>
-      </div>
-      <svg id="svg-${s.key}" viewBox="0 0 ${W} ${H}" role="img" data-key="${s.key}">
-        <defs>
-          <linearGradient id="grad-${s.key}" x1="0" y1="0" x2="0" y2="1">
-            <stop offset="0%" stop-color="${s.hex}" stop-opacity="0.38"/>
-            <stop offset="100%" stop-color="${s.hex}" stop-opacity="0.0"/>
-          </linearGradient>
-        </defs>
-        ${yGrid}
-        ${xTicks}
-        <path class="area-fill" d="${areaD}" fill="url(#grad-${s.key})"></path>
-        ${segments.map(d => `<path class="line line-draw" d="${d}" stroke="${s.color}"></path>`).join('')}
-        ${dots}
-        
-        <!-- Pulsing Ring on latest point -->
-        <circle class="pulse-ring" cx="${pulseX}" cy="${pulseY}" stroke="${s.color}"></circle>
-
-        <!-- Moving Simulation Playhead Elements -->
-        <line class="playhead-cursor" id="cursor-${s.key}" x1="${pulseX}" x2="${pulseX}" y1="${pad.t}" y2="${H - pad.b}"></line>
-        <circle class="playhead-tracer-glow" id="tracer-${s.key}" cx="${pulseX}" cy="${pulseY}" r="5" fill="${s.color}" style="color:${s.hex};"></circle>
-      </svg>
-      <div class="missing-note">${missing}</div>
-    </div>`;
-}
-
-function setupLineDrawAnimations() {
-  document.querySelectorAll('svg path.line-draw').forEach(path => {
-    const length = path.getTotalLength();
-    path.style.strokeDasharray = length;
-    path.style.strokeDashoffset = length;
-    // Trigger reflow to restart CSS animation cleanly
-    path.getBoundingClientRect();
-  });
-}
-
-function renderCharts(triggerAnimation = true) {
-  const { series, months } = getActiveSlice();
-  document.getElementById("charts").innerHTML = series.map(s => renderChart(s, months)).join("");
-  
-  if (triggerAnimation) {
-    setupLineDrawAnimations();
-  }
-  attachChartEvents();
-  applyFilterToCharts();
-  updateSimulationView(currentProgress);
-}
-
-function renderTable() {
-  const { series, months } = getActiveSlice();
-  const tbody = document.getElementById("priceTable");
-  tbody.innerHTML = months.map((m, i) => {
-    const vals = series.map(s => s.values[i]);
-    return `<tr data-index="${i}" onmouseenter="highlightTableRow(${i})" onmouseleave="clearHighlight()">
-      <td><strong>${monthLabel(m)}</strong></td>
-      ${vals.map(v => v === null ? '<td class="na">—</td>' : `<td>${money(v)}</td>`).join('')}
-    </tr>`;
-  }).reverse().join('');
-}
-
-function attachChartEvents() {
-  document.querySelectorAll('.dot').forEach(dot => {
-    dot.addEventListener('mouseenter', e => {
-      const idx = e.target.dataset.index;
-      const val = parseFloat(e.target.dataset.val);
-      const m = e.target.dataset.month;
-      tooltip.innerHTML = `<strong>${monthLabel(m)}</strong>: $${val.toFixed(3)}`;
-      tooltip.style.display = 'block';
-      highlightTableRow(idx);
-    });
-
-    dot.addEventListener('mousemove', e => {
-      tooltip.style.left = `${e.clientX}px`;
-      tooltip.style.top = `${e.clientY - 12}px`;
-    });
-
-    dot.addEventListener('mouseleave', () => {
-      tooltip.style.display = 'none';
-      clearHighlight();
-    });
-  });
-}
-
-function highlightTableRow(index) {
-  document.querySelectorAll('tbody tr').forEach(tr => {
-    tr.classList.toggle('highlighted', tr.dataset.index == index);
-  });
-  document.querySelectorAll('.dot').forEach(d => {
-    d.classList.toggle('active', d.dataset.index == index);
-  });
-}
-
-function clearHighlight() {
-  document.querySelectorAll('tbody tr').forEach(tr => tr.classList.remove('highlighted'));
-  document.querySelectorAll('.dot').forEach(d => d.classList.remove('active'));
-}
-
-/* Timeline Simulation Engine */
-function updateSimulationView(progressIdx) {
-  const { series, months } = getActiveSlice();
-  const clampedIdx = Math.max(0, Math.min(progressIdx, months.length - 1));
-  const floorIdx = Math.floor(clampedIdx);
-  const ceilIdx = Math.min(months.length - 1, Math.ceil(clampedIdx));
-  const fraction = clampedIdx - floorIdx;
-
-  // Update slider badge
-  const displayMonth = months[Math.round(clampedIdx)];
-  simDateBadge.textContent = monthLabel(displayMonth);
-
-  const W = 520, H = 210, pad = {l:46, r:14, t:16, b:30};
-  const getX = i => pad.l + i * (W - pad.l - pad.r) / (months.length - 1);
-
-  series.forEach(s => {
-    const clean = s.values.filter(v => v !== null);
-    let min = Math.min(...clean), max = Math.max(...clean);
-    const span = max - min || 1;
-    min -= span * .15; max += span * .15;
-    const getY = v => pad.t + (max - v) * (H - pad.t - pad.b) / (max - min);
-
-    const v1 = s.values[floorIdx];
-    const v2 = s.values[ceilIdx];
-    
-    let interpVal = null;
-    if (v1 !== null && v2 !== null) {
-      interpVal = v1 + (v2 - v1) * fraction;
-    } else if (v1 !== null) {
-      interpVal = v1;
-    } else if (v2 !== null) {
-      interpVal = v2;
+      `;
     }
 
-    const cursorEl = document.getElementById(`cursor-${s.key}`);
-    const tracerEl = document.getElementById(`tracer-${s.key}`);
-    const previewEl = document.getElementById(`preview-${s.key}`);
+    function renderUnifiedOverlayChart(series, months) {
+      const W = 1080, H = 380, pad = { l: 60, r: 24, t: 22, b: 36 };
+      const allClean = series.flatMap(s => s.values.filter(v => v !== null));
+      let min = Math.min(...allClean), max = Math.max(...allClean);
+      const span = (max - min) || 1;
+      min -= span * 0.12;
+      max += span * 0.12;
 
-    const curX = getX(clampedIdx);
+      const x = i => pad.l + i * (W - pad.l - pad.r) / (months.length - 1);
+      const y = v => pad.t + (max - v) * (H - pad.t - pad.b) / (max - min);
 
-    if (cursorEl) {
-      cursorEl.setAttribute('x1', curX);
-      cursorEl.setAttribute('x2', curX);
-      cursorEl.style.opacity = '1';
+      const ticks = [0, 0.25, 0.5, 0.75, 1].map(t => max - t * (max - min));
+      const yGrid = ticks.map(v => `
+        <line class="grid-line" x1="${pad.l}" x2="${W - pad.r}" y1="${y(v)}" y2="${y(v)}"></line>
+        <text class="axis-label" x="${pad.l - 10}" y="${y(v) + 3}" text-anchor="end">${formatTransformed(v, normMode, 2)}</text>
+      `).join('');
+
+      const zeroLine = (normMode !== "raw" && min < 0 && max > 0)
+        ? `<line class="zero-line" x1="${pad.l}" x2="${W - pad.r}" y1="${y(0)}" y2="${y(0)}"></line>`
+        : '';
+
+      const octIdx = months.indexOf("2025-10");
+      const stepW = (W - pad.l - pad.r) / (months.length - 1);
+      const missingBand = octIdx >= 0 ? `
+        <rect class="missing-band" x="${x(octIdx) - stepW * 0.45}" y="${pad.t}" width="${stepW * 0.9}" height="${H - pad.t - pad.b}" rx="4" />
+      ` : '';
+
+      const step = Math.max(1, Math.floor(months.length / 6));
+      const tickIndices = [];
+      for (let i = 0; i < months.length; i += step) tickIndices.push(i);
+      if (tickIndices[tickIndices.length - 1] !== months.length - 1) tickIndices.push(months.length - 1);
+
+      const xTicks = tickIndices.map(i => `
+        <text class="axis-label" x="${x(i)}" y="${H - 10}" text-anchor="middle">${monthLabel(months[i])}</text>
+      `).join('');
+
+      const seriesGroups = series.map(s => {
+        const segments = buildPathSegments(s.values, x, y);
+        const dots = s.values.map((v, i) => v === null ? '' : `
+          <circle class="dot dot-${s.key}" data-index="${i}" data-series="${s.key}" cx="${x(i)}" cy="${y(v)}" r="3.5" fill="${s.hex}" stroke="#0b1021" stroke-width="1.5"></circle>
+        `).join('');
+        const lastVal = s.values[s.values.length - 1];
+        return `
+          <g class="overlay-series-group transition-opacity duration-200" data-key="${s.key}">
+            ${segments.map(d => `<path class="line-series line-draw" d="${d}" stroke="${s.hex}" stroke-width="3"></path>`).join('')}
+            ${dots}
+            <circle class="playhead-tracer-glow" id="tracer-${s.key}" cx="${x(months.length - 1)}" cy="${y(lastVal || 0)}" r="6" fill="${s.hex}" stroke="#fff" stroke-width="1.8" style="color:${s.hex};"></circle>
+          </g>
+        `;
+      }).join('');
+
+      return `
+        <div class="spotlight-card rounded-xl p-4 sm:p-5 border border-slate-800/90">
+          <div class="flex flex-wrap items-center justify-between gap-4 mb-3">
+            <div class="flex flex-wrap items-center gap-4">
+              ${series.map(s => `
+                <button onclick="toggleFilter('${s.key}')" class="inline-flex items-center gap-2 px-2.5 py-1 rounded-lg bg-slate-900/90 border border-slate-800 hover:border-slate-600 font-mono text-xs cursor-pointer transition">
+                  <span class="w-2.5 h-2.5 rounded-full" style="background:${s.hex};"></span>
+                  <span class="text-slate-200 font-semibold">${s.name}:</span>
+                  <span class="text-white font-bold" id="preview-${s.key}">${formatTransformed(s.values[s.values.length - 1], normMode, 3)}</span>
+                </button>
+              `).join('')}
+            </div>
+            <div class="font-mono text-[11px] text-slate-400">
+              Superimposed Multi-Commodity Canvas
+            </div>
+          </div>
+
+          <svg id="svg-overlay" viewBox="0 0 ${W} ${H}" class="w-full h-[350px] block overflow-visible cursor-crosshair select-none interactive-svg" data-overlay="true">
+            ${missingBand}
+            ${yGrid}
+            ${zeroLine}
+            ${xTicks}
+            <line class="playhead-cursor" id="cursor-overlay" x1="${x(months.length - 1)}" x2="${x(months.length - 1)}" y1="${pad.t}" y2="${H - pad.b}"></line>
+            ${seriesGroups}
+          </svg>
+        </div>
+      `;
     }
 
-    if (tracerEl && interpVal !== null) {
-      const curY = getY(interpVal);
-      tracerEl.setAttribute('cx', curX);
-      tracerEl.setAttribute('cy', curY);
-      tracerEl.style.opacity = '1';
-    } else if (tracerEl) {
-      tracerEl.style.opacity = '0';
+    function setupLineDrawAnimations() {
+      document.querySelectorAll('svg path.line-draw').forEach(path => {
+        const length = path.getTotalLength();
+        path.style.strokeDasharray = length;
+        path.style.strokeDashoffset = length;
+        path.getBoundingClientRect();
+      });
     }
 
-    if (previewEl && interpVal !== null) {
-      previewEl.textContent = money3(interpVal);
+    function renderCharts(triggerAnimation = true) {
+      const { series, months } = getActiveSlice();
+      const container = document.getElementById("chartsContainer");
+
+      if (layoutMode === "grid") {
+        container.className = "grid grid-cols-1 lg:grid-cols-2 gap-4";
+        container.innerHTML = series.map(s => renderIndividualChart(s, months)).join("");
+      } else {
+        container.className = "block";
+        container.innerHTML = renderUnifiedOverlayChart(series, months);
+      }
+
+      if (triggerAnimation) {
+        setupLineDrawAnimations();
+      }
+      attachChartScrubEvents();
+      applyFilterToCharts();
+      attachSpotlightListeners();
+      updateSimulationView(currentProgress);
     }
-  });
 
-  highlightTableRow(Math.round(clampedIdx));
-}
+    // ============================================================================
+    // 6. DIRECT SVG CROSSHAIR SCRUBBING & HUD TOOLTIP
+    // ============================================================================
+    function attachChartScrubEvents() {
+      const svgs = document.querySelectorAll('.interactive-svg');
+      svgs.forEach(svg => {
+        const isOverlay = svg.dataset.overlay === "true";
+        const W = isOverlay ? 1080 : 540;
+        const padL = isOverlay ? 60 : 52;
+        const padR = isOverlay ? 24 : 16;
 
-function onSliderScrub(val) {
-  stopSimulation();
-  currentProgress = parseFloat(val);
-  updateSimulationView(currentProgress);
-}
+        function getIndexFromClientX(clientX) {
+          const { months } = getActiveSlice();
+          const rect = svg.getBoundingClientRect();
+          const relX = ((clientX - rect.left) / rect.width) * W;
+          const clampedX = Math.max(padL, Math.min(W - padR, relX));
+          const ratio = (clampedX - padL) / (W - padL - padR);
+          return ratio * (months.length - 1);
+        }
 
-function togglePlaySimulation() {
-  if (isPlaying) {
-    stopSimulation();
-  } else {
-    startSimulation();
-  }
-}
+        svg.addEventListener('pointerdown', e => {
+          stopSimulation();
+          isDraggingChart = true;
+          currentProgress = getIndexFromClientX(e.clientX);
+          simSlider.value = currentProgress;
+          updateSimulationView(currentProgress);
+          showCrossCommodityTooltip(e.clientX, e.clientY, Math.round(currentProgress));
+        });
 
-function startSimulation() {
-  const { months } = getActiveSlice();
-  if (currentProgress >= months.length - 1) {
-    currentProgress = 0;
-  }
-  isPlaying = true;
-  playIcon.textContent = "❚❚";
-  playBtn.innerHTML = `<span>❚❚</span> Pause`;
+        svg.addEventListener('pointermove', e => {
+          const hoverIdx = getIndexFromClientX(e.clientX);
+          if (isDraggingChart) {
+            currentProgress = hoverIdx;
+            simSlider.value = currentProgress;
+            updateSimulationView(currentProgress);
+          } else if (!isPlaying) {
+            currentProgress = hoverIdx;
+            simSlider.value = currentProgress;
+            updateSimulationView(currentProgress);
+          }
+          showCrossCommodityTooltip(e.clientX, e.clientY, Math.round(hoverIdx));
+        });
 
-  let lastTime = performance.now();
-  const speed = 0.0035; // timeline progression units per ms (~6-7 seconds full pass)
+        svg.addEventListener('pointerleave', () => {
+          isDraggingChart = false;
+          tooltip.classList.add('hidden');
+        });
+      });
 
-  function step(now) {
-    const dt = now - lastTime;
-    lastTime = now;
-    currentProgress += dt * speed;
+      window.addEventListener('pointerup', () => {
+        isDraggingChart = false;
+      });
+    }
 
-    if (currentProgress >= months.length - 1) {
-      currentProgress = months.length - 1;
+    function showCrossCommodityTooltip(clientX, clientY, monthIdx) {
+      const { series, months } = getActiveSlice();
+      const m = months[monthIdx];
+      if (!m) return;
+
+      const rowsHtml = series.map(s => {
+        const rawV = s.rawValues[monthIdx];
+        const normV = s.values[monthIdx];
+        const valStr = rawV === null ? '<span class="text-slate-500">Hiatus</span>' : money3(rawV);
+        const normStr = (normMode !== "raw" && normV !== null)
+          ? `<span class="text-slate-400 ml-1">(${formatTransformed(normV, normMode, 1)})</span>`
+          : '';
+        return `
+          <div class="flex items-center justify-between gap-4 py-0.5">
+            <span class="flex items-center gap-1.5 text-slate-300">
+              <span class="w-2 h-2 rounded-full" style="background:${s.hex};"></span>
+              ${s.name}
+            </span>
+            <span class="font-bold text-white">${valStr}${normStr}</span>
+          </div>
+        `;
+      }).join('');
+
+      const basketVal = computeMonthlyBasketCost(series, monthIdx);
+
+      tooltip.innerHTML = `
+        <div class="flex items-center justify-between border-b border-slate-800 pb-1.5 mb-1.5">
+          <span class="font-bold text-fuchsia-300">${monthLabel(m)}</span>
+          <span class="text-[10px] text-slate-400">Obs #${monthIdx + 1}/${months.length}</span>
+        </div>
+        <div class="space-y-0.5">${rowsHtml}</div>
+        <div class="mt-2 pt-1.5 border-t border-slate-800 flex items-center justify-between text-[11px]">
+          <span class="text-slate-400">Personal Basket:</span>
+          <span class="font-bold text-fuchsia-300">${money(basketVal)}/mo</span>
+        </div>
+      `;
+
+      tooltip.classList.remove('hidden');
+      const pad = 16;
+      const tipRect = tooltip.getBoundingClientRect();
+      let left = clientX + pad;
+      let top = clientY - tipRect.height - pad;
+      if (left + tipRect.width > window.innerWidth - 12) left = clientX - tipRect.width - pad;
+      if (top < 12) top = clientY + pad;
+
+      tooltip.style.left = `${left}px`;
+      tooltip.style.top = `${top}px`;
+    }
+
+    // ============================================================================
+    // 7. TABULAR HISTORICAL MATRIX WITH MoM VELOCITY DELTAS
+    // ============================================================================
+    function renderTable() {
+      const { series, months } = getActiveSlice();
+      document.getElementById("tableCountBadge").textContent = months.length;
+      const tbody = document.getElementById("priceTable");
+
+      const rows = months.map((m, i) => {
+        const cells = series.map(s => {
+          const rawV = s.rawValues[i];
+          if (rawV === null) {
+            return `<td class="py-2.5 px-4 text-slate-500 italic">Hiatus</td>`;
+          }
+          // Find previous non-null observation for MoM % delta
+          let prevIdx = i - 1;
+          while (prevIdx >= 0 && s.rawValues[prevIdx] === null) prevIdx--;
+          let momBadge = "";
+          if (prevIdx >= 0) {
+            const prevV = s.rawValues[prevIdx];
+            const mom = ((rawV / prevV) - 1) * 100;
+            if (Math.abs(mom) >= 0.05) {
+              const momCls = mom > 0 ? "text-rose-400" : "text-emerald-400";
+              momBadge = `<span class="ml-1.5 text-[10px] ${momCls}">${mom > 0 ? "+" : ""}${mom.toFixed(1)}%</span>`;
+            }
+          }
+          const primaryText = normMode === "raw" ? money3(rawV) : formatTransformed(s.values[i], normMode, 2);
+          return `<td class="py-2.5 px-4 text-slate-200 tabular-nums">${primaryText}${momBadge}</td>`;
+        }).join('');
+
+        const basketCost = computeMonthlyBasketCost(series, i);
+
+        return `
+          <tr data-index="${i}" onclick="lockMonthFromTable(${i})" onmouseenter="highlightTableRow(${i})" class="hover:bg-slate-800/50 transition-colors cursor-pointer">
+            <td class="py-2.5 px-4 text-left font-semibold text-white whitespace-nowrap">${monthLabel(m)}</td>
+            ${cells}
+            <td class="py-2.5 px-4 font-bold text-fuchsia-300 tabular-nums">${money(basketCost)}</td>
+          </tr>
+        `;
+      });
+
+      tbody.innerHTML = rows.reverse().join('');
+    }
+
+    function lockMonthFromTable(idx) {
+      stopSimulation();
+      currentProgress = idx;
+      simSlider.value = idx;
+      updateSimulationView(idx);
+    }
+
+    function highlightTableRow(index) {
+      document.querySelectorAll('#priceTable tr').forEach(tr => {
+        tr.classList.toggle('highlighted', Number(tr.dataset.index) === Number(index));
+      });
+      document.querySelectorAll('.dot').forEach(d => {
+        const isMatch = Number(d.dataset.index) === Number(index);
+        d.setAttribute('r', isMatch ? '6' : '3.2');
+      });
+    }
+
+    // ============================================================================
+    // 8. PERSONAL HOUSEHOLD BASKET INFLATION CALCULATOR
+    // ============================================================================
+    function toggleBasketDrawer() {
+      const drawer = document.getElementById("basketDrawer");
+      drawer.classList.toggle("hidden");
+      updateBasketCalculation();
+    }
+
+    function resetBasketDefaults() {
+      document.getElementById("qty-gas").value = 40;
+      document.getElementById("qty-bread").value = 4;
+      document.getElementById("qty-eggs").value = 3;
+      document.getElementById("qty-beef").value = 6;
+      updateBasketCalculation();
+    }
+
+    function computeMonthlyBasketCost(series, monthIdx) {
+      let total = 0;
+      series.forEach(s => {
+        const qty = basketQuantities[s.key] || 0;
+        let v = s.rawValues[monthIdx];
+        // If Oct 2025 is missing, use nearest prior published price for household expenditure continuity
+        if (v === null && monthIdx > 0) v = s.rawValues[monthIdx - 1];
+        if (v !== null) total += v * qty;
+      });
+      return total;
+    }
+
+    function updateBasketCalculation() {
+      basketQuantities.gas = parseFloat(document.getElementById("qty-gas").value) || 0;
+      basketQuantities.bread = parseFloat(document.getElementById("qty-bread").value) || 0;
+      basketQuantities.eggs = parseFloat(document.getElementById("qty-eggs").value) || 0;
+      basketQuantities.beef = parseFloat(document.getElementById("qty-beef").value) || 0;
+
+      document.getElementById("qty-val-gas").textContent = basketQuantities.gas;
+      document.getElementById("qty-val-bread").textContent = basketQuantities.bread;
+      document.getElementById("qty-val-eggs").textContent = basketQuantities.eggs;
+      document.getElementById("qty-val-beef").textContent = basketQuantities.beef;
+
+      const { series, months } = getActiveSlice();
+      const activeIdx = Math.round(Math.max(0, Math.min(currentProgress, months.length - 1)));
+
+      const startCost = computeMonthlyBasketCost(series, 0);
+      const activeCost = computeMonthlyBasketCost(series, activeIdx);
+      const deltaCost = activeCost - startCost;
+      const deltaPct = startCost ? (deltaCost / startCost) * 100 : 0;
+
+      const allMonthlyCosts = months.map((_, idx) => computeMonthlyBasketCost(series, idx));
+      const avgMonthly = allMonthlyCosts.reduce((a, b) => a + b, 0) / allMonthlyCosts.length;
+
+      document.getElementById("basketStartCost").textContent = money(startCost);
+      document.getElementById("basketStartLabel").textContent = `${monthLabel(months[0])} baseline`;
+
+      document.getElementById("basketActiveCost").textContent = money(activeCost);
+      document.getElementById("basketActiveLabel").textContent = `${monthLabel(months[activeIdx])} playhead`;
+
+      const deltaEl = document.getElementById("basketDeltaCost");
+      deltaEl.textContent = `${deltaCost >= 0 ? "+" : "-"}${money(Math.abs(deltaCost))}`;
+      deltaEl.className = `text-2xl font-display font-extrabold mt-0.5 ${deltaCost >= 0 ? "text-rose-400" : "text-emerald-400"}`;
+
+      document.getElementById("basketDeltaPct").textContent = `${deltaPct >= 0 ? "+" : ""}${deltaPct.toFixed(1)}% vs ${monthLabel(months[0])}`;
+      document.getElementById("basketAnnualCost").textContent = `$${Math.round(activeCost * 12).toLocaleString()}/yr`;
+      document.getElementById("basketPeakNote").textContent = `Window avg: ${money(avgMonthly)}/mo`;
+
+      renderTable();
+    }
+
+    // ============================================================================
+    // 9. TIMELINE SIMULATION & PLAYHEAD ENGINE
+    // ============================================================================
+    function updateSimulationView(progressIdx) {
+      const { series, months } = getActiveSlice();
+      const clampedIdx = Math.max(0, Math.min(progressIdx, months.length - 1));
+      const floorIdx = Math.floor(clampedIdx);
+      const ceilIdx = Math.min(months.length - 1, Math.ceil(clampedIdx));
+      const fraction = clampedIdx - floorIdx;
+      const roundedIdx = Math.round(clampedIdx);
+
+      simDateBadge.textContent = monthLabel(months[roundedIdx]);
+
+      if (layoutMode === "grid") {
+        const W = 540, H = 220, pad = { l: 52, r: 16, t: 18, b: 30 };
+        const getX = i => pad.l + i * (W - pad.l - pad.r) / (months.length - 1);
+        const curX = getX(clampedIdx);
+
+        series.forEach(s => {
+          const clean = s.values.filter(v => v !== null);
+          let min = Math.min(...clean), max = Math.max(...clean);
+          const span = (max - min) || 1;
+          min -= span * 0.16;
+          max += span * 0.16;
+          const getY = v => pad.t + (max - v) * (H - pad.t - pad.b) / (max - min);
+
+          const v1 = s.values[floorIdx];
+          const v2 = s.values[ceilIdx];
+          let interpVal = null;
+          if (v1 !== null && v2 !== null) interpVal = v1 + (v2 - v1) * fraction;
+          else if (v1 !== null) interpVal = v1;
+          else if (v2 !== null) interpVal = v2;
+
+          const cursorEl = document.getElementById(`cursor-${s.key}`);
+          const tracerEl = document.getElementById(`tracer-${s.key}`);
+          const previewEl = document.getElementById(`preview-${s.key}`);
+
+          if (cursorEl) {
+            cursorEl.setAttribute('x1', curX);
+            cursorEl.setAttribute('x2', curX);
+          }
+
+          if (tracerEl && interpVal !== null) {
+            tracerEl.setAttribute('cx', curX);
+            tracerEl.setAttribute('cy', getY(interpVal));
+            tracerEl.style.opacity = '1';
+          } else if (tracerEl) {
+            tracerEl.style.opacity = '0';
+          }
+
+          if (previewEl && interpVal !== null) {
+            previewEl.textContent = formatTransformed(interpVal, normMode, 3);
+          }
+        });
+      } else {
+        // Unified Overlay Playhead
+        const W = 1080, H = 380, pad = { l: 60, r: 24, t: 22, b: 36 };
+        const allClean = series.flatMap(s => s.values.filter(v => v !== null));
+        let min = Math.min(...allClean), max = Math.max(...allClean);
+        const span = (max - min) || 1;
+        min -= span * 0.12;
+        max += span * 0.12;
+
+        const getX = i => pad.l + i * (W - pad.l - pad.r) / (months.length - 1);
+        const getY = v => pad.t + (max - v) * (H - pad.t - pad.b) / (max - min);
+        const curX = getX(clampedIdx);
+
+        const overlayCursor = document.getElementById("cursor-overlay");
+        if (overlayCursor) {
+          overlayCursor.setAttribute('x1', curX);
+          overlayCursor.setAttribute('x2', curX);
+        }
+
+        series.forEach(s => {
+          const v1 = s.values[floorIdx];
+          const v2 = s.values[ceilIdx];
+          let interpVal = null;
+          if (v1 !== null && v2 !== null) interpVal = v1 + (v2 - v1) * fraction;
+          else if (v1 !== null) interpVal = v1;
+          else if (v2 !== null) interpVal = v2;
+
+          const tracerEl = document.getElementById(`tracer-${s.key}`);
+          const previewEl = document.getElementById(`preview-${s.key}`);
+
+          if (tracerEl && interpVal !== null) {
+            tracerEl.setAttribute('cx', curX);
+            tracerEl.setAttribute('cy', getY(interpVal));
+            tracerEl.style.opacity = '1';
+          } else if (tracerEl) {
+            tracerEl.style.opacity = '0';
+          }
+
+          if (previewEl && interpVal !== null) {
+            previewEl.textContent = formatTransformed(interpVal, normMode, 3);
+          }
+        });
+      }
+
+      // Sync card live price label
+      series.forEach(s => {
+        const rawV = s.rawValues[roundedIdx];
+        const cardLive = document.getElementById(`card-live-${s.key}`);
+        if (cardLive) {
+          cardLive.textContent = rawV !== null ? `${monthLabel(months[roundedIdx])}: ${money(rawV)}` : `${monthLabel(months[roundedIdx])}: Hiatus`;
+        }
+      });
+
+      highlightTableRow(roundedIdx);
+
+      // Keep basket drawer synced if open
+      const drawer = document.getElementById("basketDrawer");
+      if (drawer && !drawer.classList.contains("hidden")) {
+        const activeCost = computeMonthlyBasketCost(series, roundedIdx);
+        const startCost = computeMonthlyBasketCost(series, 0);
+        const deltaCost = activeCost - startCost;
+        const deltaPct = startCost ? (deltaCost / startCost) * 100 : 0;
+        document.getElementById("basketActiveCost").textContent = money(activeCost);
+        document.getElementById("basketActiveLabel").textContent = `${monthLabel(months[roundedIdx])} playhead`;
+        const deltaEl = document.getElementById("basketDeltaCost");
+        deltaEl.textContent = `${deltaCost >= 0 ? "+" : "-"}${money(Math.abs(deltaCost))}`;
+        deltaEl.className = `text-2xl font-display font-extrabold mt-0.5 ${deltaCost >= 0 ? "text-rose-400" : "text-emerald-400"}`;
+        document.getElementById("basketDeltaPct").textContent = `${deltaPct >= 0 ? "+" : ""}${deltaPct.toFixed(1)}% vs ${monthLabel(months[0])}`;
+        document.getElementById("basketAnnualCost").textContent = `$${Math.round(activeCost * 12).toLocaleString()}/yr`;
+      }
+    }
+
+    function onSliderScrub(val) {
+      stopSimulation();
+      currentProgress = parseFloat(val);
+      updateSimulationView(currentProgress);
+    }
+
+    function stepMonth(dir) {
+      stopSimulation();
+      const { months } = getActiveSlice();
+      currentProgress = Math.max(0, Math.min(months.length - 1, Math.round(currentProgress) + dir));
       simSlider.value = currentProgress;
       updateSimulationView(currentProgress);
-      stopSimulation();
-      return;
     }
 
-    simSlider.value = currentProgress;
-    updateSimulationView(currentProgress);
-    animRaf = requestAnimationFrame(step);
-  }
+    function togglePlaySimulation() {
+      if (isPlaying) stopSimulation();
+      else startSimulation();
+    }
 
-  animRaf = requestAnimationFrame(step);
-}
+    function startSimulation() {
+      const { months } = getActiveSlice();
+      if (currentProgress >= months.length - 1) currentProgress = 0;
+      isPlaying = true;
+      playIcon.textContent = "❚❚";
+      playText.textContent = "Pause";
 
-function stopSimulation() {
-  isPlaying = false;
-  if (animRaf) cancelAnimationFrame(animRaf);
-  playIcon.textContent = "▶";
-  playBtn.innerHTML = `<span>▶</span> Play Timeline`;
-}
+      let lastTime = performance.now();
+      const baseRate = 0.0036;
 
-function resetSimulation() {
-  stopSimulation();
-  currentProgress = 0;
-  simSlider.value = 0;
-  updateSimulationView(0);
-}
+      function step(now) {
+        const dt = now - lastTime;
+        lastTime = now;
+        currentProgress += dt * baseRate * playSpeed;
 
-function renderAll(triggerAnim = true) {
-  renderCards();
-  renderCharts(triggerAnim);
-  renderTable();
-}
+        if (currentProgress >= months.length - 1) {
+          currentProgress = months.length - 1;
+          simSlider.value = currentProgress;
+          updateSimulationView(currentProgress);
+          stopSimulation();
+          return;
+        }
 
-// Initial Launch
-renderAll(true);
-</script>
+        simSlider.value = currentProgress;
+        updateSimulationView(currentProgress);
+        animRaf = requestAnimationFrame(step);
+      }
+
+      animRaf = requestAnimationFrame(step);
+    }
+
+    function stopSimulation() {
+      isPlaying = false;
+      if (animRaf) cancelAnimationFrame(animRaf);
+      playIcon.textContent = "▶";
+      playText.textContent = "Play Timeline";
+    }
+
+    function resetSimulation() {
+      stopSimulation();
+      currentProgress = 0;
+      simSlider.value = 0;
+      updateSimulationView(0);
+    }
+
+    // ============================================================================
+    // 10. CSV EXPORT & KEYBOARD TELEMETRY SHORTCUTS
+    // ============================================================================
+    function showToast(msg) {
+      const toast = document.getElementById("toast");
+      document.getElementById("toastMsg").textContent = msg;
+      toast.classList.remove("translate-y-12", "opacity-0");
+      setTimeout(() => {
+        toast.classList.add("translate-y-12", "opacity-0");
+      }, 2600);
+    }
+
+    function exportActiveCSV() {
+      const { series, months } = getActiveSlice();
+      const headers = ["Month", "Gasoline ($/gal)", "White Bread ($/lb)", "Grade A Eggs ($/doz)", "Ground Beef ($/lb)", "Personal Basket ($/mo)"];
+      const rows = months.map((m, i) => {
+        const vals = series.map(s => s.rawValues[i] !== null ? s.rawValues[i].toFixed(3) : "");
+        const basket = computeMonthlyBasketCost(series, i).toFixed(2);
+        return [m, ...vals, basket].join(",");
+      });
+      const csvContent = "data:text/csv;charset=utf-8," + [headers.join(","), ...rows].join("\n");
+      const encodedUri = encodeURI(csvContent);
+      const link = document.createElement("a");
+      link.setAttribute("href", encodedUri);
+      link.setAttribute("download", `us_bls_price_trends_${activeHorizon}m.csv`);
+      document.body.appendChild(link);
+      link.click();
+      document.body.removeChild(link);
+      showToast(`Exported ${months.length}-month BLS dataset to CSV`);
+    }
+
+    // Spotlight Cursor Tracking
+    function attachSpotlightListeners() {
+      document.querySelectorAll('.spotlight-card').forEach(card => {
+        card.onmousemove = e => {
+          const rect = card.getBoundingClientRect();
+          card.style.setProperty('--mouse-x', `${e.clientX - rect.left}px`);
+          card.style.setProperty('--mouse-y', `${e.clientY - rect.top}px`);
+        };
+      });
+    }
+
+    // Global Keyboard Shortcuts
+    window.addEventListener('keydown', e => {
+      if (['INPUT', 'TEXTAREA'].includes(document.activeElement?.tagName)) return;
+      if (e.code === 'Space') {
+        e.preventDefault();
+        togglePlaySimulation();
+      } else if (e.code === 'ArrowLeft') {
+        e.preventDefault();
+        stepMonth(-1);
+      } else if (e.code === 'ArrowRight') {
+        e.preventDefault();
+        stepMonth(1);
+      } else if (e.key === '1') {
+        toggleFilter('gas');
+      } else if (e.key === '2') {
+        toggleFilter('bread');
+      } else if (e.key === '3') {
+        toggleFilter('eggs');
+      } else if (e.key === '4') {
+        toggleFilter('beef');
+      } else if (e.key.toLowerCase() === 'c') {
+        exportActiveCSV();
+      }
+    });
+
+    function renderAll(triggerAnim = true) {
+      renderCards();
+      renderCharts(triggerAnim);
+      updateBasketCalculation();
+    }
+
+    // Initial Launch
+    window.onload = function () {
+      renderAll(true);
+    };
+  </script>
 </body>
 </html>
