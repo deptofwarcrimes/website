@@ -1,0 +1,1020 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <!-- Chosen Palette: Midnight Slate & Crimson Accounting (Dark slate background #090d16, dark zinc cards #1e293b / #0f172a, slate text #f8fafc / #cbd5e1, primary accents #ef4444 & #f87171, secondary cyan/amber #38bdf8 / #f59e0b) -->
+    <!-- Application Structure Plan: The application uses a task-oriented four-tab architecture tailored for rigorous analytical synthesis in dark mode:
+            1. Executive Dashboard: Immediate macro-level clarity via KPI metrics cards, cumulative proportion donut chart, and longitudinal mortality rate trajectory.
+            2. Custodial Mortality Explorer: Deep dive into the 22-year JAMA longitudinal dataset, 2025–2026 detention surge analysis, and an interactive case-by-case filterable log with dynamic modal drill-downs.
+            3. Field Operations & Lethal Force: Detailed analysis of officer-involved shootings (2015-2021 audit vs 2025-2026 surge), pursuit fatalities, operational circumstances breakdown, and an interactive field encounter tracker.
+            4. Systemic Drivers & Policy Audit: Qualitative and quantitative accounting of clinical neglect (95% preventability study), documentation falsification (61%), Camp East Montana facility deep-dive, and regulatory policy timeline changes.
+          This dark-themed non-linear structure optimizes readability and visual comfort during deep analytical research. -->
+    <!-- Visualization & Content Choices:
+            - Cumulative Mortality Breakdown -> Donut Chart (Chart.js) -> Dark-mode tooltips & contrast rings -> Canvas rendering
+            - Longitudinal Custodial Trajectory -> Dual-axis Line/Bar Chart (Chart.js) -> Styled gridlines & custom axis labels -> Canvas rendering
+            - Primary Causes of Custodial Death -> Horizontal Stacked/Grouped Bar Chart (Chart.js) -> Interactive cause filter -> Canvas rendering
+            - Preventability & Documentation Audit -> Structured KPI Cards & Dark High-Contrast Callouts -> Canvas rendering
+            - Dynamic Searchable Logs -> Dark Responsive HTML Tables with JS filtering, pagination, and detail modals -> Vanilla JS
+            - NO SVG graphics used. NO Mermaid JS used. All visuals rely on Tailwind CSS, Unicode styling, and Canvas. -->
+    <!-- CONFIRMATION: NO SVG graphics used. NO Mermaid JS used. -->
+
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ICE-Attributable Mortality: Epidemiological & Operational Accounting (2003–2026)</title>
+
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+
+    <!-- Chart.js CDN -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+    <style>
+        .chart-container {
+            position: relative;
+            width: 100%;
+            max-width: 650px;
+            margin-left: auto;
+            margin-right: auto;
+            height: 320px;
+            max-height: 400px;
+        }
+        @media (min-width: 768px) {
+            .chart-container {
+                height: 360px;
+            }
+        }
+        .modal-backdrop {
+            background-color: rgba(2, 6, 23, 0.85);
+            backdrop-filter: blur(4px);
+        }
+        /* Custom dark scrollbar for tables */
+        .custom-scrollbar::-webkit-scrollbar {
+            height: 6px;
+            width: 6px;
+        }
+        .custom-scrollbar::-webkit-scrollbar-track {
+            background: #0f172a;
+        }
+        .custom-scrollbar::-webkit-scrollbar-thumb {
+            background: #334155;
+            border-radius: 3px;
+        }
+        .custom-scrollbar::-webkit-scrollbar-thumb:hover {
+            background: #475569;
+        }
+    </style>
+</head>
+<body class="bg-slate-950 text-slate-100 font-sans antialiased min-h-screen flex flex-col">
+
+    <!-- TOP HEADER / BANNER -->
+    <header class="bg-slate-900/90 border-b border-slate-800 sticky top-0 z-30 backdrop-blur-md shadow-lg">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-4">
+            <div class="flex flex-col md:flex-row md:items-center md:justify-between gap-4">
+                <div>
+                    <div class="flex items-center gap-2">
+                        <span class="inline-block w-3 h-3 rounded-full bg-red-500 animate-pulse"></span>
+                        <span class="text-xs font-semibold uppercase tracking-wider text-slate-400">Epidemiological & Operational Accounting Report</span>
+                    </div>
+                    <h1 class="text-xl sm:text-2xl font-bold tracking-tight text-white mt-1">
+                        Mortality Attributable to U.S. Immigration and Customs Enforcement
+                    </h1>
+                    <p class="text-xs sm:text-sm text-slate-400 mt-0.5">
+                        Documented Timeframe: October 2003 – October 2026 | Verified Baseline: <span class="text-red-400 font-bold">324 to 333+ Fatalities</span>
+                    </p>
+                </div>
+                <!-- Quick Metric Badge -->
+                <div class="flex items-center gap-3 bg-slate-950/80 border border-slate-800 rounded-lg p-3 self-start md:self-auto">
+                    <div class="text-center px-2">
+                        <div class="text-xs text-slate-400 font-medium">Cumulative Minimum</div>
+                        <div class="text-xl font-extrabold text-red-500">324 – 333+</div>
+                    </div>
+                    <div class="h-8 w-px bg-slate-800"></div>
+                    <div class="text-center px-2">
+                        <div class="text-xs text-slate-400 font-medium">Custodial / Field</div>
+                        <div class="text-sm font-bold text-slate-200">293 / 40+</div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- NAVIGATION TABS -->
+            <nav class="flex space-x-1 sm:space-x-4 mt-4 border-t border-slate-800 pt-3 overflow-x-auto custom-scrollbar text-xs sm:text-sm font-medium">
+                <button id="tab-btn-executive" onclick="switchTab('executive')" class="tab-btn px-3 py-2 rounded-md transition-colors bg-red-700 text-white font-semibold flex items-center gap-1.5 whitespace-nowrap">
+                    <span>&#x1F4CA;</span> Executive Dashboard
+                </button>
+                <button id="tab-btn-custodial" onclick="switchTab('custodial')" class="tab-btn px-3 py-2 rounded-md transition-colors text-slate-400 hover:text-white hover:bg-slate-800 flex items-center gap-1.5 whitespace-nowrap">
+                    <span>&#x1F3E5;</span> Custodial Deaths (2003–2026)
+                </button>
+                <button id="tab-btn-field" onclick="switchTab('field')" class="tab-btn px-3 py-2 rounded-md transition-colors text-slate-400 hover:text-white hover:bg-slate-800 flex items-center gap-1.5 whitespace-nowrap">
+                    <span>&#x1F6A8;</span> Field Fatalities & Agent Force
+                </button>
+                <button id="tab-btn-systemic" onclick="switchTab('systemic')" class="tab-btn px-3 py-2 rounded-md transition-colors text-slate-400 hover:text-white hover:bg-slate-800 flex items-center gap-1.5 whitespace-nowrap">
+                    <span>&#x26A0;</span> Systemic Drivers & Policy
+                </button>
+            </nav>
+        </div>
+    </header>
+
+    <!-- MAIN CONTENT CONTAINER -->
+    <main class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6 flex-grow w-full">
+
+        <!-- ================================================================================= -->
+        <!-- TAB 1: EXECUTIVE DASHBOARD -->
+        <!-- ================================================================================= -->
+        <div id="tab-executive" class="tab-content space-y-6">
+            
+            <!-- Section Intro -->
+            <div class="bg-slate-900 p-5 rounded-xl border border-slate-800 shadow-sm">
+                <h2 class="text-lg font-bold text-white mb-2 flex items-center gap-2">
+                    <span class="text-red-500">&#x25FC;</span> Macro Mortality Synthesis & Ledger Baseline
+                </h2>
+                <p class="text-sm text-slate-300 leading-relaxed">
+                    This section provides a high-level operational accounting of all human life lost directly attributable to U.S. Immigration and Customs Enforcement (ICE) operations since its creation in 2003 through October 2026. Mortality is divided into two distinct operational spheres: civil detention custodial deaths and field force fatalities (firearms discharges, high-speed vehicle pursuits, and foot chases). Data is synthesized from longitudinal epidemiological studies (such as the 2026 <em>JAMA</em> study), FOIA releases, congressional oversight records, and civil rights databases.
+                </p>
+            </div>
+
+            <!-- Metric Summary Cards -->
+            <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+                <div class="bg-slate-900 p-4 rounded-xl border border-slate-800 shadow-sm border-l-4 border-l-red-600">
+                    <div class="text-xs font-semibold text-slate-400 uppercase tracking-wide">Total Cumulative Baseline</div>
+                    <div class="text-3xl font-extrabold text-white mt-1">324 – 333+</div>
+                    <div class="text-xs text-slate-400 mt-1">Empirical floor across all ICE domains (2003–2026)</div>
+                </div>
+                <div class="bg-slate-900 p-4 rounded-xl border border-slate-800 shadow-sm border-l-4 border-l-amber-500">
+                    <div class="text-xs font-semibold text-slate-400 uppercase tracking-wide">Custodial Detention Deaths</div>
+                    <div class="text-3xl font-extrabold text-amber-400 mt-1">289 – 293+</div>
+                    <div class="text-xs text-slate-400 mt-1">272 (JAMA 2003–Jan 2026) + 21+ post-study surge</div>
+                </div>
+                <div class="bg-slate-900 p-4 rounded-xl border border-slate-800 shadow-sm border-l-4 border-l-blue-500">
+                    <div class="text-xs font-semibold text-slate-400 uppercase tracking-wide">Field Encounter Fatalities</div>
+                    <div class="text-3xl font-extrabold text-blue-400 mt-1">35 – 40+</div>
+                    <div class="text-xs text-slate-400 mt-1">29+ shootings (2015–26) + 11+ pursuit/chase deaths</div>
+                </div>
+                <div class="bg-slate-900 p-4 rounded-xl border border-slate-800 shadow-sm border-l-4 border-l-rose-500">
+                    <div class="text-xs font-semibold text-slate-400 uppercase tracking-wide">2025–2026 Custodial Surge</div>
+                    <div class="text-3xl font-extrabold text-rose-400 mt-1">+140%</div>
+                    <div class="text-xs text-slate-400 mt-1">Annual mortality rate surge reaching 8.4 per 10k</div>
+                </div>
+            </div>
+
+            <!-- Charts Grid Row 1 -->
+            <div class="grid grid-cols-1 lg:grid-cols-12 gap-6">
+                <!-- Donut Chart: Categorical Breakdown -->
+                <div class="lg:col-span-5 bg-slate-900 p-5 rounded-xl border border-slate-800 shadow-sm flex flex-col justify-between">
+                    <div>
+                        <h3 class="text-base font-bold text-white mb-1">Mortality Domain Share</h3>
+                        <p class="text-xs text-slate-400 mb-4">Distribution of verified deaths between civil detention and field enforcement operations.</p>
+                        <div class="chart-container">
+                            <canvas id="cumulativeDonutChart"></canvas>
+                        </div>
+                    </div>
+                    <div class="mt-4 pt-3 border-t border-slate-800 text-xs text-slate-300 bg-slate-950/60 p-3 rounded-lg border border-slate-800">
+                        <span class="font-semibold text-red-400">Key Context:</span> Over 88% of documented fatalities occur in civil detention facilities. However, field fatalities have surged dramatically during 2025–2026 tactical enforcement surges.
+                    </div>
+                </div>
+
+                <!-- Combo Chart: Longitudinal Trajectory -->
+                <div class="lg:col-span-7 bg-slate-900 p-5 rounded-xl border border-slate-800 shadow-sm flex flex-col justify-between">
+                    <div>
+                        <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between mb-2">
+                            <h3 class="text-base font-bold text-white">22-Year Custodial Mortality Rate & Trajectory</h3>
+                            <span class="text-xs font-semibold bg-slate-800 text-slate-300 px-2 py-1 rounded border border-slate-700 mt-1 sm:mt-0">Rate per 100,000 Person-Years</span>
+                        </div>
+                        <p class="text-xs text-slate-400 mb-4">Tracking rate shifts from FY2004 peak, FY2023 historical low (13.0), to 2025–2026 surge (84.0 equivalent).</p>
+                        <div class="chart-container">
+                            <canvas id="longitudinalChart"></canvas>
+                        </div>
+                    </div>
+                    <div class="mt-4 pt-3 border-t border-slate-800 text-xs text-slate-300 bg-slate-950/60 p-3 rounded-lg border border-slate-800">
+                        <span class="font-semibold text-amber-400">U-Shaped Trend:</span> After reaching a low in FY2023, the mortality rate accelerated by 140% in 2025–2026 as detention populations peaked above 71,000 detainees, exceeding the rate recorded during the 2020 COVID-19 pandemic peak.
+                    </div>
+                </div>
+            </div>
+
+            <!-- Table: Cumulative Mortality Ledger Summary -->
+            <div class="bg-slate-900 p-5 rounded-xl border border-slate-800 shadow-sm">
+                <h3 class="text-base font-bold text-white mb-3">Cumulative Mortality Ledger Summary</h3>
+                <div class="overflow-x-auto custom-scrollbar">
+                    <table class="w-full text-left text-xs sm:text-sm border-collapse">
+                        <thead>
+                            <tr class="bg-slate-800/90 text-slate-300 uppercase font-semibold border-b border-slate-700">
+                                <th class="p-3">Mortality Category</th>
+                                <th class="p-3">Documented Timeframe</th>
+                                <th class="p-3 text-center">Verified Toll</th>
+                                <th class="p-3">Primary Mechanisms & Epidemiological Context</th>
+                                <th class="p-3">Primary Empirical Sources</th>
+                            </tr>
+                        </thead>
+                        <tbody class="divide-y divide-slate-800 text-slate-300">
+                            <tr class="hover:bg-slate-800/50 transition-colors">
+                                <td class="p-3 font-semibold text-white">In-Custody Deaths (JAMA Baseline)</td>
+                                <td class="p-3 whitespace-nowrap">Oct 2003 – Jan 19, 2026</td>
+                                <td class="p-3 text-center font-bold text-slate-100 bg-slate-950/60">272</td>
+                                <td class="p-3">48.9% undetermined/other, 20.6% cardiovascular, 15.4% infectious, 8.5% suicide across 731,361 person-years</td>
+                                <td class="p-3 italic text-xs text-slate-400">JAMA Longitudinal Study (Basu et al., May 2026); ICE FOIA</td>
+                            </tr>
+                            <tr class="hover:bg-slate-800/50 transition-colors">
+                                <td class="p-3 font-semibold text-white">In-Custody Deaths (2026 Post-Study)</td>
+                                <td class="p-3 whitespace-nowrap">Jan 20, 2026 – Aug 1, 2026</td>
+                                <td class="p-3 text-center font-bold text-slate-100 bg-slate-950/60">17 – 21+</td>
+                                <td class="p-3">Rapid detention expansion (>71,000 peak); spike in untreated chronic conditions, suicides, restraint homicide</td>
+                                <td class="p-3 italic text-xs text-slate-400">AILA Death Tracker; U.S. Senate Oversight; HRW/PHR Audit</td>
+                            </tr>
+                            <tr class="hover:bg-slate-800/50 transition-colors bg-red-950/30 border-l-2 border-l-red-600">
+                                <td class="p-3 font-bold text-red-300">Total Documented In-Custody</td>
+                                <td class="p-3 whitespace-nowrap font-semibold">2003 – Aug 2026</td>
+                                <td class="p-3 text-center font-extrabold text-red-400 bg-red-950/60">289 – 293+</td>
+                                <td class="p-3 text-slate-200">Excludes detainees released in terminal condition shortly before death to evade reporting</td>
+                                <td class="p-3 italic text-xs text-red-300">Aggregated FOIA, JAMA, AILA, Congressional Records</td>
+                            </tr>
+                            <tr class="hover:bg-slate-800/50 transition-colors">
+                                <td class="p-3 font-semibold text-white">Field Shootings (Historical Audit)</td>
+                                <td class="p-3 whitespace-nowrap">Jan 2015 – Dec 2021</td>
+                                <td class="p-3 text-center font-bold text-slate-100 bg-slate-950/60">23</td>
+                                <td class="p-3">Derived from 59 total ICE officer shootings (HSI & ERO); 11 off-duty shootings; >25% unarmed victims</td>
+                                <td class="p-3 italic text-xs text-slate-400">The Trace, Business Insider & Type Investigations Audit</td>
+                            </tr>
+                            <tr class="hover:bg-slate-800/50 transition-colors">
+                                <td class="p-3 font-semibold text-white">Field Shootings (Enforcement Surge)</td>
+                                <td class="p-3 whitespace-nowrap">Jan 2025 – Oct 2026</td>
+                                <td class="p-3 text-center font-bold text-slate-100 bg-slate-950/60">6+</td>
+                                <td class="p-3">Part of 43 federal immigration agent shootings (11 total DHS shooting deaths); vehicle stops & raids</td>
+                                <td class="p-3 italic text-xs text-slate-400">Southern Border Communities Coalition (SBCC); Court Records</td>
+                            </tr>
+                            <tr class="hover:bg-slate-800/50 transition-colors">
+                                <td class="p-3 font-semibold text-white">Field Pursuits & Chases</td>
+                                <td class="p-3 whitespace-nowrap">Jul 2025 – Sep 2026</td>
+                                <td class="p-3 text-center font-bold text-slate-100 bg-slate-950/60">5+</td>
+                                <td class="p-3">Fatal falls during workplace raids, highway foot chase strikes, high-speed vehicle pursuit collisions</td>
+                                <td class="p-3 italic text-xs text-slate-400">SBCC Fatal Encounters Database; Incident Logs</td>
+                            </tr>
+                            <tr class="hover:bg-slate-800/50 transition-colors">
+                                <td class="p-3 font-semibold text-white">Pre-2015 / Unredacted Field Force</td>
+                                <td class="p-3 whitespace-nowrap">2003–2014 & 2022–2024</td>
+                                <td class="p-3 text-center font-bold text-slate-100 bg-slate-950/60">1+</td>
+                                <td class="p-3">Includes 2010 beating/tasing death of Anastasio Hernández Rojas; ICE retains locked logs for other years</td>
+                                <td class="p-3 italic text-xs text-slate-400">Inter-American Commission on Human Rights</td>
+                            </tr>
+                            <tr class="bg-slate-950 text-white font-bold border-t-2 border-slate-700">
+                                <td class="p-3 text-white">Cumulative Minimum ICE Mortality</td>
+                                <td class="p-3 whitespace-nowrap text-slate-400">2003 – Oct 2026</td>
+                                <td class="p-3 text-center font-extrabold text-red-400 text-base bg-slate-900 border border-slate-800">324 – 333+</td>
+                                <td class="p-3 text-slate-200">Conservative empirical floor combining civil detention and lethal field operations</td>
+                                <td class="p-3 italic text-xs text-slate-400">Composite Synthesis of Federal and Legal Records</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+
+        <!-- ================================================================================= -->
+        <!-- TAB 2: CUSTODIAL MORTALITY EXPLORER -->
+        <!-- ================================================================================= -->
+        <div id="tab-custodial" class="tab-content hidden space-y-6">
+            
+            <!-- Intro Paragraph -->
+            <div class="bg-slate-900 p-5 rounded-xl border border-slate-800 shadow-sm">
+                <h2 class="text-lg font-bold text-white mb-2 flex items-center gap-2">
+                    <span class="text-amber-400">&#x25FC;</span> In-Custody Detention Mortality Deep Dive (2003–2026)
+                </h2>
+                <p class="text-sm text-slate-300 leading-relaxed">
+                    Civil immigration detention is legally non-punitive, intended only to preserve administrative availability for removal. However, ICE relies heavily on private contractors and county jails where severe medical understaffing and systemic delays produce preventable fatalities. This section breaks down the 22-year longitudinal epidemiological baseline published in <em>JAMA</em> alongside the acute 2025–2026 detention expansion, providing an interactive, case-level log of documented custodial deaths.
+                </p>
+            </div>
+
+            <!-- JAMA Grid Analysis & Causes Chart -->
+            <div class="grid grid-cols-1 lg:grid-cols-12 gap-6">
+                <!-- Causes Chart -->
+                <div class="lg:col-span-5 bg-slate-900 p-5 rounded-xl border border-slate-800 shadow-sm flex flex-col justify-between">
+                    <div>
+                        <h3 class="text-base font-bold text-white mb-1">Causes of Custodial Death (JAMA 22-Year Baseline)</h3>
+                        <p class="text-xs text-slate-400 mb-4">Breakdown of primary causes across 272 recorded deaths (2003–Jan 2026).</p>
+                        <div class="chart-container">
+                            <canvas id="custodialCausesChart"></canvas>
+                        </div>
+                    </div>
+                    <div class="mt-4 pt-3 border-t border-slate-800 text-xs text-slate-300 bg-slate-950/60 p-3 rounded-lg border border-slate-800">
+                        <span class="font-semibold text-amber-400">Diagnostic Opacity:</span> Nearly 49% of all 22-year deaths are classified as "other/undetermined" due to delayed autopsy disclosures. When scrutiny increased (2017–2020), undetermined cases fell to 18.2%, exposing high shares of infectious disease (31.8%) and suicide (22.7%).
+                    </div>
+                </div>
+
+                <!-- Demographic & Operational Key Facts -->
+                <div class="lg:col-span-7 bg-slate-900 p-5 rounded-xl border border-slate-800 shadow-sm space-y-4">
+                    <h3 class="text-base font-bold text-white border-b border-slate-800 pb-2">JAMA Cohort Demographic & Clinical Profile</h3>
+                    
+                    <div class="grid grid-cols-2 sm:grid-cols-3 gap-3">
+                        <div class="bg-slate-950/60 p-3 rounded-lg border border-slate-800 text-center">
+                            <div class="text-xs text-slate-400">Median Age at Death</div>
+                            <div class="text-xl font-bold text-slate-100 mt-0.5">45.0 yrs</div>
+                            <div class="text-[10px] text-slate-500">(IQR: 34.0 – 55.0)</div>
+                        </div>
+                        <div class="bg-slate-950/60 p-3 rounded-lg border border-slate-800 text-center">
+                            <div class="text-xs text-slate-400">Sex Ratio</div>
+                            <div class="text-xl font-bold text-slate-100 mt-0.5">91.5% M</div>
+                            <div class="text-[10px] text-slate-500">249 Male / 23 Female</div>
+                        </div>
+                        <div class="bg-slate-950/60 p-3 rounded-lg border border-slate-800 text-center col-span-2 sm:col-span-1">
+                            <div class="text-xs text-slate-400">Hospitalized at Death</div>
+                            <div class="text-xl font-bold text-red-400 mt-0.5">12.9%</div>
+                            <div class="text-[10px] text-slate-500">87.1% die inside facilities</div>
+                        </div>
+                    </div>
+
+                    <!-- JAMA Multi-Year Table -->
+                    <div class="overflow-x-auto custom-scrollbar pt-2">
+                        <table class="w-full text-left text-xs border-collapse">
+                            <thead>
+                                <tr class="bg-slate-800/80 text-slate-300 font-semibold border-b border-slate-700">
+                                    <th class="p-2">Period</th>
+                                    <th class="p-2 text-center">Deaths</th>
+                                    <th class="p-2 text-center">Person-Years</th>
+                                    <th class="p-2 text-center">Rate / 100k</th>
+                                    <th class="p-2">Top Cause Category</th>
+                                </tr>
+                            </thead>
+                            <tbody class="divide-y divide-slate-800 text-slate-300">
+                                <tr class="hover:bg-slate-800/40">
+                                    <td class="p-2 font-medium text-white">FY 2004–2008</td>
+                                    <td class="p-2 text-center font-bold">91</td>
+                                    <td class="p-2 text-center">125,054</td>
+                                    <td class="p-2 text-center text-red-400 font-bold">72.8</td>
+                                    <td class="p-2">Other/Undetermined (60.4%) / Cardio (22.0%)</td>
+                                </tr>
+                                <tr class="hover:bg-slate-800/40">
+                                    <td class="p-2 font-medium text-white">FY 2009–2012</td>
+                                    <td class="p-2 text-center font-bold">40</td>
+                                    <td class="p-2 text-center">132,294</td>
+                                    <td class="p-2 text-center text-slate-300">30.2</td>
+                                    <td class="p-2">Other/Undetermined (57.5%) / Cardio (20.0%)</td>
+                                </tr>
+                                <tr class="hover:bg-slate-800/40">
+                                    <td class="p-2 font-medium text-white">FY 2013–2016</td>
+                                    <td class="p-2 text-center font-bold">32</td>
+                                    <td class="p-2 text-center">135,782</td>
+                                    <td class="p-2 text-center text-slate-300">23.6</td>
+                                    <td class="p-2">Other/Undetermined (46.9%) / Cardio (18.8%)</td>
+                                </tr>
+                                <tr class="hover:bg-slate-800/40">
+                                    <td class="p-2 font-medium text-white">FY 2017–2020</td>
+                                    <td class="p-2 text-center font-bold">44</td>
+                                    <td class="p-2 text-center">158,227</td>
+                                    <td class="p-2 text-center text-amber-400 font-bold">27.8</td>
+                                    <td class="p-2">Infectious incl. COVID (31.8%) / Suicide (22.7%)</td>
+                                </tr>
+                                <tr class="hover:bg-slate-800/40">
+                                    <td class="p-2 font-medium text-white">FY 2021–Jan 2026</td>
+                                    <td class="p-2 text-center font-bold">65</td>
+                                    <td class="p-2 text-center">180,004</td>
+                                    <td class="p-2 text-center text-red-400 font-bold">36.1</td>
+                                    <td class="p-2">Other/Undetermined (49.2%) / Cardio (18.5%)</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Interactive Database: 2024–2026 Custodial Fatalities -->
+            <div class="bg-slate-900 p-5 rounded-xl border border-slate-800 shadow-sm space-y-4">
+                <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3">
+                    <div>
+                        <h3 class="text-base font-bold text-white">Recent Custodial Death Database (2024–2026)</h3>
+                        <p class="text-xs text-slate-400">Interactive record of individual documented deaths during the recent enforcement surge.</p>
+                    </div>
+                    <!-- Controls -->
+                    <div class="flex flex-wrap items-center gap-2">
+                        <input type="text" id="custodialSearch" oninput="filterCustodialTable()" placeholder="Search name, facility, state..." class="text-xs bg-slate-950 border border-slate-700 text-slate-100 rounded-md px-3 py-1.5 focus:outline-none focus:ring-2 focus:ring-amber-500 w-48 sm:w-56 placeholder-slate-500">
+                        <select id="custodialNationalityFilter" onchange="filterCustodialTable()" class="text-xs bg-slate-950 border border-slate-700 text-slate-100 rounded-md px-2 py-1.5 focus:outline-none focus:ring-2 focus:ring-amber-500">
+                            <option value="ALL">All Nationalities</option>
+                            <option value="Mexico">Mexico</option>
+                            <option value="Honduras">Honduras</option>
+                            <option value="Cuba">Cuba</option>
+                            <option value="Haiti">Haiti</option>
+                            <option value="Vietnam">Vietnam</option>
+                            <option value="Other">Other</option>
+                        </select>
+                    </div>
+                </div>
+
+                <!-- Table -->
+                <div class="overflow-x-auto custom-scrollbar">
+                    <table class="w-full text-left text-xs border-collapse">
+                        <thead>
+                            <tr class="bg-slate-800/90 text-slate-300 font-semibold uppercase border-b border-slate-700">
+                                <th class="p-2.5">Date</th>
+                                <th class="p-2.5">Name</th>
+                                <th class="p-2.5">Age / Sex</th>
+                                <th class="p-2.5">Nationality</th>
+                                <th class="p-2.5">Facility / Location</th>
+                                <th class="p-2.5">State</th>
+                                <th class="p-2.5 text-center">Action</th>
+                            </tr>
+                        </thead>
+                        <tbody id="custodialTableBody" class="divide-y divide-slate-800 text-slate-300">
+                            <!-- Populated dynamically via JS -->
+                        </tbody>
+                    </table>
+                </div>
+                <div id="custodialTablePagination" class="text-xs text-slate-400 flex justify-between items-center pt-2">
+                    <span id="custodialCountText">Showing entries...</span>
+                </div>
+            </div>
+        </div>
+
+        <!-- ================================================================================= -->
+        <!-- TAB 3: FIELD FATALITIES & OPERATIONS -->
+        <!-- ================================================================================= -->
+        <div id="tab-field" class="tab-content hidden space-y-6">
+            
+            <!-- Intro Paragraph -->
+            <div class="bg-slate-900 p-5 rounded-xl border border-slate-800 shadow-sm">
+                <h2 class="text-lg font-bold text-white mb-2 flex items-center gap-2">
+                    <span class="text-blue-400">&#x25FC;</span> Field Operations & Officer Lethal Force Accounting
+                </h2>
+                <p class="text-sm text-slate-300 leading-relaxed">
+                    Unlike municipal police departments, ICE operates with minimal public firearms discharge disclosures, keeping shooting registries heavily redacted. Reconstructed records from investigative audits (2015–2021) and real-time tracking of the 2025–2026 interior enforcement surge reveal that ICE agents frequently employ firearms in high-density public areas—during traffic stops, vehicle pursuits, residential raids, and off-duty encounters—resulting in severe civilian mortality.
+                </p>
+            </div>
+
+            <!-- Grid Audit Comparison & Chart -->
+            <div class="grid grid-cols-1 lg:grid-cols-12 gap-6">
+                <!-- Circumstances Chart -->
+                <div class="lg:col-span-5 bg-slate-900 p-5 rounded-xl border border-slate-800 shadow-sm flex flex-col justify-between">
+                    <div>
+                        <h3 class="text-base font-bold text-white mb-1">2015–2021 Shooting Operational Context</h3>
+                        <p class="text-xs text-slate-400 mb-4">Distribution of settings across 59 documented ICE officer firearms discharges.</p>
+                        <div class="chart-container">
+                            <canvas id="fieldCircumstancesChart"></canvas>
+                        </div>
+                    </div>
+                    <div class="mt-4 pt-3 border-t border-slate-800 text-xs text-slate-300 bg-slate-950/60 p-3 rounded-lg border border-slate-800">
+                        <span class="font-semibold text-blue-400">Public Hazard:</span> Over 74% of officer shootings occurred in public intersections, parking lots, or involved moving vehicles, endangering bystanders and non-targets.
+                    </div>
+                </div>
+
+                <!-- Stat Cards & Key Findings -->
+                <div class="lg:col-span-7 bg-slate-900 p-5 rounded-xl border border-slate-800 shadow-sm space-y-4">
+                    <h3 class="text-base font-bold text-white border-b border-slate-800 pb-2">Historical Audit & Surge Key Findings</h3>
+                    
+                    <div class="grid grid-cols-1 sm:grid-cols-3 gap-3">
+                        <div class="bg-slate-950/60 p-3 rounded-lg border border-slate-800">
+                            <div class="text-xs text-slate-400">Unarmed Victims (2015-21)</div>
+                            <div class="text-xl font-bold text-red-400 mt-1">&gt; 25%</div>
+                            <div class="text-[10px] text-slate-500">At least 15 unarmed individuals shot</div>
+                        </div>
+                        <div class="bg-slate-950/60 p-3 rounded-lg border border-slate-800">
+                            <div class="text-xs text-slate-400">Off-Duty Shootings</div>
+                            <div class="text-xl font-bold text-blue-400 mt-1">18.6%</div>
+                            <div class="text-[10px] text-slate-500">11 of 59 historical shootings committed off-duty</div>
+                        </div>
+                        <div class="bg-slate-950/60 p-3 rounded-lg border border-slate-800">
+                            <div class="text-xs text-slate-400">Criminal Indictments</div>
+                            <div class="text-xl font-bold text-slate-200 mt-1">ZERO</div>
+                            <div class="text-[10px] text-slate-500">0 ICE agents criminally charged in 59 shootings</div>
+                        </div>
+                    </div>
+
+                    <div class="space-y-2 text-xs text-slate-300 leading-relaxed bg-slate-950/60 p-3.5 rounded-lg border border-slate-800">
+                        <p><strong class="text-white">Vehicle Stop Weaponization:</strong> Nearly every fatal shooting during 2025–2026 (e.g., Silverio Villegas González, Renée Good, Ruben Ray Martinez, Lorenzo Salgado Araujo) occurred when agents initiated traffic stops and claimed the driver "weaponized" their vehicle. Independent video analysis repeatedly contradicted these claims.</p>
+                        <p><strong class="text-white">Collateral Civilian Mortality:</strong> The 2025–2026 enforcement surge caused the deaths of U.S. citizens (Keith Porter Jr., Renée Good, Ruben Ray Martinez, Dr. Linda Davis, Alex Pretti) and non-target bystanders through aggressive vehicle pursuits and joint tactical operations.</p>
+                        <p><strong class="text-white">Empirical Threat Contrast:</strong> Zero ICE officers have ever been killed by an undocumented immigrant in the agency's history. 75% of line-of-duty deaths resulted from COVID-19 and 9/11-related illnesses.</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Interactive Table: Field Encounter Log (2025–2026) -->
+            <div class="bg-slate-900 p-5 rounded-xl border border-slate-800 shadow-sm space-y-4">
+                <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3">
+                    <div>
+                        <h3 class="text-base font-bold text-white">Field Fatalities Encounter Log (July 2025 – Sept 2026)</h3>
+                        <p class="text-xs text-slate-400">Verified fatalities resulting from firearms discharges, high-speed vehicle pursuits, and foot chases.</p>
+                    </div>
+                    <input type="text" id="fieldSearch" oninput="filterFieldTable()" placeholder="Search victim, location, agency..." class="text-xs bg-slate-950 border border-slate-700 text-slate-100 rounded-md px-3 py-1.5 focus:outline-none focus:ring-2 focus:ring-blue-500 w-56 placeholder-slate-500">
+                </div>
+
+                <div class="overflow-x-auto custom-scrollbar">
+                    <table class="w-full text-left text-xs border-collapse">
+                        <thead>
+                            <tr class="bg-slate-800/90 text-slate-300 font-semibold uppercase border-b border-slate-700">
+                                <th class="p-2.5">Date</th>
+                                <th class="p-2.5">Victim Name</th>
+                                <th class="p-2.5">Age / Status</th>
+                                <th class="p-2.5">Location</th>
+                                <th class="p-2.5">Agency / Unit</th>
+                                <th class="p-2.5">Mechanism</th>
+                                <th class="p-2.5 text-center">Details</th>
+                            </tr>
+                        </thead>
+                        <tbody id="fieldTableBody" class="divide-y divide-slate-800 text-slate-300">
+                            <!-- Populated dynamically via JS -->
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+
+        <!-- ================================================================================= -->
+        <!-- TAB 4: SYSTEMIC DRIVERS & POLICY AUDIT -->
+        <!-- ================================================================================= -->
+        <div id="tab-systemic" class="tab-content hidden space-y-6">
+            
+            <!-- Intro Paragraph -->
+            <div class="bg-slate-900 p-5 rounded-xl border border-slate-800 shadow-sm">
+                <h2 class="text-lg font-bold text-white mb-2 flex items-center gap-2">
+                    <span class="text-red-500">&#x25FC;</span> Systemic Mechanisms driving Preventable Deaths & Oversight Evasion
+                </h2>
+                <p class="text-sm text-slate-300 leading-relaxed">
+                    Independent medical audits by the ACLU, Physicians for Human Rights, and the Government Accountability Office (GAO) demonstrate that custodial deaths are overwhelmingly preventable results of systemic clinical neglect, falsified records, and lack of contractor accountability. Furthermore, recent administrative policy shifts—such as rescinding 30-day post-release mortality tracking and shortening academy training—have deliberately weakened institutional oversight.
+                </p>
+            </div>
+
+            <!-- Grid 2x2: Key Systemic Pillars -->
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                
+                <!-- Pillar 1: Preventability Audit -->
+                <div class="bg-slate-900 p-5 rounded-xl border border-slate-800 shadow-sm flex flex-col justify-between">
+                    <div>
+                        <div class="flex items-center justify-between mb-2">
+                            <h3 class="text-base font-bold text-white">Preventability & Clinical Quality Audit</h3>
+                            <span class="text-xs bg-red-950 text-red-400 border border-red-800 font-bold px-2 py-0.5 rounded">ACLU / PHR Report</span>
+                        </div>
+                        <p class="text-xs text-slate-400 mb-4">Independent medical panel review of 52 custodial deaths (2017–2024).</p>
+
+                        <div class="grid grid-cols-2 gap-4 mb-4">
+                            <div class="bg-red-950/40 p-4 rounded-lg border border-red-800/60 text-center">
+                                <div class="text-3xl font-black text-red-400">95%</div>
+                                <div class="text-xs font-semibold text-red-200 mt-1">Preventable or Possibly Preventable</div>
+                                <div class="text-[10px] text-red-300 mt-0.5">Had standard medical care been provided</div>
+                            </div>
+                            <div class="bg-amber-950/40 p-4 rounded-lg border border-amber-800/60 text-center">
+                                <div class="text-3xl font-black text-amber-400">61%</div>
+                                <div class="text-xs font-semibold text-amber-200 mt-1">Falsified or Inadequate Records</div>
+                                <div class="text-[10px] text-amber-300 mt-0.5">Facility staff omitted or forged documentation</div>
+                            </div>
+                        </div>
+                        
+                        <ul class="text-xs text-slate-300 space-y-1.5 list-disc pl-4">
+                            <li><strong class="text-white">Chronic Care Disruption:</strong> Immediate confiscation/interruption of vital hypertension, diabetes, and HIV medications upon intake.</li>
+                            <li><strong class="text-white">Punitive Mental Health Mismanagement:</strong> Placing suicidal or distressed detainees into solitary confinement ("segregation") rather than providing psychiatric care.</li>
+                        </ul>
+                    </div>
+                </div>
+
+                <!-- Pillar 2: Camp East Montana Case Study -->
+                <div class="bg-slate-900 p-5 rounded-xl border border-slate-800 shadow-sm border-l-4 border-l-red-600">
+                    <h3 class="text-base font-bold text-white mb-1">Facility Case Study: Camp East Montana</h3>
+                    <p class="text-xs text-slate-400 mb-3">Hardened tent complex at Fort Bliss, TX (Opened Aug 2025 - ICE's largest facility).</p>
+                    
+                    <div class="space-y-2.5 text-xs text-slate-300">
+                        <div class="bg-slate-950/60 p-2.5 rounded border border-slate-800">
+                            <span class="font-bold text-slate-100">GAO-26-108886 Audit Findings:</span> Billion-dollar contract awarded to inexperienced private vendor that drafted its own standards. Tuberculosis patients placed in general population; lost loaded firearm in dorm.
+                        </div>
+                        <div class="bg-red-950/40 p-2.5 rounded border border-red-800/60">
+                            <span class="font-bold text-red-300">Custodial Homicide of Geraldo Lunas Campos (Jan 3, 2026):</span> Detainee pleaded for psychiatric meds for months; held down by guards during altercation while crying "I can't breathe." Medical examiner ruled death a <strong>homicide by neck and torso compression</strong>.
+                        </div>
+                        <div class="bg-slate-950/60 p-2.5 rounded border border-slate-800">
+                            <span class="font-bold text-slate-100">Evidence Destruction & Retaliation:</span> Vendor failed to report use-of-force; video evidence went missing; ICE served two detained eyewitnesses with immediate deportation notices.
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Pillar 3: Administrative Evasion & Reporting Repeals -->
+                <div class="bg-slate-900 p-5 rounded-xl border border-slate-800 shadow-sm">
+                    <h3 class="text-base font-bold text-white mb-2">Policy Timelines & Reporting Evasion Mechanisms</h3>
+                    <div class="space-y-3 text-xs text-slate-300">
+                        <div class="border-l-2 border-red-500 pl-3 py-1">
+                            <div class="font-bold text-white">June 2, 2026 – Repeal of 30-Day Post-Release Death Tracking</div>
+                            <p class="mt-0.5 text-slate-400">ICE abruptly rescinded its 2021 directive requiring investigation and public reporting of detainees who die within 30 days of release. Historically, ICE released brain-dead or terminally ill detainees to hospitals immediately before death to keep numbers off official ledgers.</p>
+                        </div>
+                        <div class="border-l-2 border-amber-500 pl-3 py-1">
+                            <div class="font-bold text-white">Civil Rights Oversight Closure</div>
+                            <p class="mt-0.5 text-slate-400">DHS closed internal civil rights offices responsible for investigating detention abuses and truncated public death announcements to exclude clinical details.</p>
+                        </div>
+                        <div class="border-l-2 border-blue-500 pl-3 py-1">
+                            <div class="font-bold text-white">Zero Contract Financial Penalties</div>
+                            <p class="mt-0.5 text-slate-400">Despite statutory rules prohibiting funds for facilities failing two consecutive inspections, no facility has ever lost a contract. ICE penalized vendors only 3 times in 7 years—and expanded their contracts immediately after.</p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Pillar 4: Field Operations Policy & Training Changes -->
+                <div class="bg-slate-900 p-5 rounded-xl border border-slate-800 shadow-sm">
+                    <h3 class="text-base font-bold text-white mb-2">Field Tactics & Training Deregulation</h3>
+                    <div class="space-y-3 text-xs text-slate-300">
+                        <div class="bg-slate-950/60 p-3 rounded-lg border border-slate-800">
+                            <div class="font-bold text-white mb-1">Shortened Academy Training Regimen</div>
+                            <p class="text-slate-400">To meet aggressive enforcement quotas in 2025, ICE reduced its officer academy training timeline from 72 days down to just 6–8 weeks—a policy forced into partial reversal in June 2026 following public fatalities in Minneapolis.</p>
+                        </div>
+                        <div class="bg-slate-950/60 p-3 rounded-lg border border-slate-800">
+                            <div class="font-bold text-white mb-1">October 1, 2026 High-Speed Pursuit Restriction</div>
+                            <p class="text-slate-400">Following a wave of fatal pursuit collisions (including the death of Savannah teacher Dr. Linda Davis) and over a dozen officer shootings, ICE ERO issued updated guidance banning high-speed car chases and restricting traffic stops.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </main>
+
+    <!-- FOOTER -->
+    <footer class="bg-slate-950 text-slate-400 text-xs py-6 border-t border-slate-800 mt-8">
+        <div class="max-w-7xl mx-auto px-4 text-center sm:flex sm:justify-between sm:text-left">
+            <div>
+                <p class="font-semibold text-slate-300">Epidemiological and Operational Accounting of Mortality Attributable to ICE</p>
+                <p class="mt-0.5 text-slate-500">Source Report Data Synthesis (2003–2026) | JAMA, FOIA, ACLU, SBCC, HRW & Congressional Records</p>
+            </div>
+            <div class="mt-4 sm:mt-0 text-slate-500">
+                <p>Single-Page Interactive Application</p>
+            </div>
+        </div>
+    </footer>
+
+    <!-- MODAL FOR DETAIL VIEW -->
+    <div id="detailModal" class="fixed inset-0 z-50 hidden flex items-center justify-center p-4 modal-backdrop">
+        <div class="bg-slate-900 rounded-xl shadow-2xl max-w-lg w-full p-6 border border-slate-800 relative max-h-[90vh] overflow-y-auto">
+            <button onclick="closeModal()" class="absolute top-4 right-4 text-slate-400 hover:text-white text-xl font-bold transition-colors">&times;</button>
+            <div id="modalContent">
+                <!-- Content inserted via JS -->
+            </div>
+        </div>
+    </div>
+
+    <!-- JAVASCRIPT LOGIC -->
+    <script>
+        // Global Chart Defaults for Dark Theme
+        Chart.defaults.color = '#94a3b8';
+        Chart.defaults.borderColor = '#334155';
+
+        // Data Arrays
+        const custodialData = [
+            { date: "10/27/2024", name: "Jose Manuel Sanchez-Castro", age: "26 / M", nat: "Mexico", facility: "Northwest ICE Processing Center", state: "WA", details: "Died in custody inside facility." },
+            { date: "11/07/2024", name: "Pankaj Karan Singh Kataria", age: "60 / M", nat: "India", facility: "In transit to Prairieland Detention Ctr", state: "TX", details: "Lost consciousness during transport; died at Bedford hospital." },
+            { date: "12/18/2024", name: "Ramesh Amechand", age: "60 / M", nat: "Guyana", facility: "Miami Detention / Larkin Hospital", state: "FL", details: "Died at Larkin Community Hospital Palm Springs campus." },
+            { date: "01/23/2025", name: "Genry Donaldo Ruiz-Guillen", age: "29 / M", nat: "Honduras", facility: "Krome North Service Processing Ctr", state: "FL", details: "87 days in custody; cardiopulmonary arrest with hyperosmolarity, hypernatremia, and rhabdomyolysis." },
+            { date: "01/29/2025", name: "Serawit Gezahegn Dejene", age: "45 / M", nat: "Ethiopia", facility: "Eloy Detention Center", state: "AZ", details: "162 days in custody; multiple infections in setting of untreated HIV/AIDS." },
+            { date: "02/20/2025", name: "Maksym Chernyak", age: "44 / M", nat: "Ukraine", facility: "Krome North Service Processing Ctr", state: "FL", details: "19 days in custody; hemorrhagic stroke leading to brain death." },
+            { date: "02/23/2025", name: "Juan Alexis Tineo-Martinez", age: "44 / M", nat: "Dominican Rep.", facility: "Centro Medico Hospital", state: "PR", details: "3 days in custody; cause of death unannounced/unknown." },
+            { date: "04/08/2025", name: "Brayan Rayo-Garzon", age: "27 / M", nat: "Colombia", facility: "Phelps County Jail (Rolla)", state: "MO", details: "15 days in custody; suspected suicide by hanging alongside acute respiratory failure. Mental health clinic appointment rescheduled twice prior to death." },
+            { date: "04/16/2025", name: "Nhon Ngoc Nguyen", age: "55 / M", nat: "Vietnam", facility: "El Paso Service Processing Ctr", state: "TX", details: "52 days in custody; end-stage dementia and acute-on-chronic respiratory failure." },
+            { date: "04/25/2025", name: "Marie Ange Blaise", age: "44 / F", nat: "Haiti", facility: "Broward Transitional Center", state: "FL", details: "71 days in custody; cardiopulmonary arrest of unclear etiology inside facility." },
+            { date: "05/05/2025", name: "Abelardo Avelleneda-Delgado", age: "68 / M", nat: "Mexico", facility: "Transit: Lowndes County to Stewart", state: "GA", details: "1 day in custody; died in transit between facilities." },
+            { date: "06/07/2025", name: "Jesus Molina-Veya", age: "45 / M", nat: "Mexico", facility: "Stewart Detention Center", state: "GA", details: "24 days in custody; found unresponsive in cell; suicide by hanging." },
+            { date: "06/23/2025", name: "Johnny Noviello", age: "49 / M", nat: "Canada", facility: "Federal Detention Center, Miami", state: "FL", details: "40 days in custody; cardiopulmonary arrest of unclear etiology." },
+            { date: "06/26/2025", name: "Isidro Perez", age: "75 / M", nat: "Cuba", facility: "Krome North Service Processing Ctr", state: "FL", details: "21 days in custody; suspected acute myocardial infarction after reporting chest pains." },
+            { date: "07/19/2025", name: "Tien Xuan Phan", age: "55 / M", nat: "Vietnam", facility: "Karnes County ICE Processing Ctr", state: "TX", details: "48 days in custody; suspected hemorrhagic stroke secondary to uncontrolled hypertension and diabetes." },
+            { date: "08/05/2025", name: "Chaofeng Ge", age: "32 / M", nat: "China", facility: "Moshannon Valley ICE Processing Ctr", state: "PA", details: "6 days in custody; suicide by hanging inside facility." },
+            { date: "08/31/2025", name: "Lorenzo Antonio Batrez Vargas", age: "32 / M", nat: "Mexico", facility: "Central Arizona Florence Complex", state: "AZ", details: "30 days in custody; acute respiratory failure secondary to COVID pneumonia and uncontrolled diabetes." },
+            { date: "09/08/2025", name: "Oscar Rascon Duarte", age: "58 / M", nat: "Mexico", facility: "Eloy Detention Center", state: "AZ", details: "246 days in custody; respiratory failure secondary to end-stage Alzheimer's disease." },
+            { date: "01/03/2026", name: "Geraldo Lunas Campos", age: "55 / M", nat: "Foreign Nat.", facility: "Camp East Montana (Fort Bliss)", state: "TX", details: "RULED A HOMICIDE by medical examiner due to neck and torso compression during struggle with security staff after repeated pleas for psychiatric medication." },
+            { date: "01/05/2026", name: "Luis Gustavo Núñez Caceras", age: "42 / M", nat: "Honduras", facility: "Montgomery Processing Center", state: "TX", details: "Died from complications due to heart failure." },
+            { date: "01/14/2026", name: "Victor Manuel Diaz", age: "36 / M", nat: "Nicaragua", facility: "Camp East Montana (Fort Bliss)", state: "TX", details: "Arrested in Minnesota a week earlier; found in windowless cell with pants tied around neck; presumed suicide." },
+            { date: "02/16/2026", name: "Jairo Garcia-Hernandez", age: "27 / M", nat: "Guatemala", facility: "Krome Service Processing Ctr", state: "FL", details: "Died at Larkin Community Hospital in Miami." },
+            { date: "02/16/2026", name: "Lorth Sim", age: "59 / M", nat: "Cambodia", facility: "Miami Correctional Facility", state: "IN", details: "Lawful permanent resident since 1986; died inside facility." },
+            { date: "02/27/2026", name: "Alberto Gutierrez-Reyes", age: "48 / M", nat: "Mexico", facility: "Adelanto ICE Processing Center", state: "CA", details: "Died at Victor Valley Global Medical Center." },
+            { date: "03/01/2026", name: "Pejman Karshenas Najafabadi", age: "59 / M", nat: "Iran", facility: "Louisiana ICE Processing Ctr (Angola)", state: "LA", details: "Died at Merit Health Hospital in Natchez, MS." },
+            { date: "03/02/2026", name: "Emmanuel Cleeford Damas", age: "56 / M", nat: "Haiti", facility: "Florence Detention Center", state: "AZ", details: "Died at Scottsdale Osbourn Medical Center." },
+            { date: "03/14/2026", name: "Mohammad Nazeer Paktiawal", age: "41 / M", nat: "Afghanistan", facility: "Dallas Custody / Parkland Hospital", state: "TX", details: "Former Afghan military ally who fought alongside U.S. forces; died less than 24 hours after detention with no known pre-existing conditions." },
+            { date: "03/16/2026", name: "Royer Perez-Jimenez", age: "19 / M", nat: "Mexico", facility: "Glades County Detention Center", state: "FL", details: "Presumed suicide per ICE; family disputed claim, noting arrest stemmed from limited English proficiency." },
+            { date: "03/25/2026", name: "Jose Guadalupe Ramos-Solano", age: "52 / M", nat: "Mexico", facility: "Adelanto ICE Processing Center", state: "CA", details: "Found unconscious and unresponsive at facility; died at hospital." },
+            { date: "04/01/2026", name: "Tuan Van Bui", age: "55 / M", nat: "Vietnam", facility: "Miami Correctional Center", state: "IN", details: "Died in ICE custody at facility." },
+            { date: "04/11/2026", name: "Alejandro Cabrera Clemente", age: "49 / M", nat: "Mexico", facility: "Winn Correctional Center", state: "LA", details: "Found unresponsive in cell." },
+            { date: "04/12/2026", name: "Aled Damien Carbonell-Betancourt", age: "27 / M", nat: "Cuba", facility: "Miami Federal Detention Center", state: "FL", details: "Presumed suicide in custody." },
+            { date: "04/28/2026", name: "Denny Adan Gonzalez", age: "33 / M", nat: "Cuba", facility: "Stewart Detention Center", state: "GA", details: "Presumed suicide in custody." },
+            { date: "06/04/2026", name: "Mamuka Artmeladze", age: "43 / M", nat: "Georgia", facility: "Winn Correctional Center", state: "LA", details: "Detained since Feb 2026; 2nd death at Winn in under two months." },
+            { date: "06/19/2026", name: "Felix Alcorta-Rodriguez", age: "63 / M", nat: "Mexico", facility: "Webb County Detention Center", state: "TX", details: "Died in custody at facility." },
+            { date: "06/24/2026", name: "Adrian Andreas Florian", age: "85 / M", nat: "Germany", facility: "Port Isabel Service Processing Ctr", state: "TX", details: "Hospitalized at Valley Baptist Medical Center since Nov 2025; died after prolonged care." },
+            { date: "07/13/2026", name: "Jesus Manuel Arenas-Silva", age: "45 / M", nat: "Venezuela", facility: "Transfer: Irwin to Folkston", state: "GA", details: "Died in ICE custody while being transferred between Georgia detention centers." },
+            { date: "08/01/2026", name: "Edwin Lopez-Cornejo", age: "41 / M", nat: "El Salvador", facility: "Delaney Hall Facility", state: "NJ", details: "Died in custody at University Hospital in Newark." }
+        ];
+
+        const fieldData = [
+            { date: "07/10/2025", name: "Jaime Alanis Garcia", status: "Adult M / Migrant Worker", loc: "Camarillo, CA", agency: "ICE & CBP (Joint Raid)", mech: "Fatal Fall During Chase", details: "Chased by agents during an enforcement raid at Glass House Farms; fell 30 feet from a building to his death." },
+            { date: "09/12/2025", name: "Silverio Villegas González", status: "38 / Mexican Nat.", loc: "Franklin Park, IL", agency: "ICE", mech: "Fatal Shooting", details: "Shot and killed by an ICE agent while attempting to drive away from a routine vehicle stop." },
+            { date: "10/23/2025", name: "Josué Castro Rivera", status: "Adult M / Immigrant", loc: "Norfolk, VA", agency: "ICE", mech: "Fatal Chase", details: "Exited a vehicle and fled on foot after ICE stopped the car; died during the ensuing pursuit." },
+            { date: "12/31/2025", name: "Keith Porter Jr.", status: "43 / U.S. Citizen", loc: "Northridge, CA", agency: "ICE (Off-Duty)", mech: "Fatal Shooting", details: "Black father of two firing celebratory New Year's shots into the air; shot and killed by off-duty officer using an ICE authorized firearm." },
+            { date: "01/07/2026", name: "Renée Nicole Good", status: "Adult F / U.S. Citizen", loc: "Minneapolis, MN", agency: "ICE (Operation Metro Surge)", mech: "Fatal Shooting", details: "Stopped in SUV on Portland Ave; as she reversed and turned forward away from an agent, masked ICE agent fired 3 shots, killing her." },
+            { date: "01/24/2026", name: "Alex Pretti", status: "Adult M / U.S. Citizen (VA Nurse)", loc: "Minneapolis, MN", agency: "CBP / USBP (Metro Surge)", mech: "Fatal Shooting", details: "Observing and recording enforcement on phone; pepper-sprayed, wrestled to ground by multiple agents, and shot ~10 times." },
+            { date: "02/16/2026", name: "Dr. Linda Davis", status: "Adult F / U.S. Citizen (Teacher)", loc: "Savannah, GA", agency: "ICE", mech: "Vehicular Pursuit Crash", details: "Innocent bystander and local teacher killed when a motorist fleeing an ICE stop crashed into her vehicle." },
+            { date: "06/27/2026", name: "Ruben Ray Martinez", status: "Adult M / U.S. Citizen", loc: "South Padre Island, TX", agency: "ICE", mech: "Fatal Shooting", details: "Navigating around a roadway accident; ICE agents ordered him to stop and repeatedly shot and killed him after car allegedly bumped an officer's legs." },
+            { date: "07/07/2026", name: "Lorenzo Salgado Araujo", status: "Adult M / Mexican Nat.", loc: "Houston, TX", agency: "ICE", mech: "Fatal Shooting", details: "Pulled over during targeted operation; shot in abdomen and killed. ICE claimed he tried to ram agents, disputed by 3 witnesses." },
+            { date: "07/13/2026", name: "Joan Sebastian Guerrero", status: "26 / Colombian Nat.", loc: "Biddeford, ME", agency: "ICE", mech: "Fatal Shooting", details: "NOT THE TARGET of an ICE residential operation; fatally shot by an ICE agent while attempting to flee scene in vehicle." },
+            { date: "07/14/2026", name: "Unidentified Male", status: "Adult Male", loc: "St. Augustine, FL", agency: "ICE", mech: "Highway Foot Chase Strike", details: "Exited vehicle at gas station when ICE arrived and fled on foot across a busy roadway, where he was fatally struck by a tractor-trailer." },
+            { date: "09/20/2026", name: "Mario David Coronado Juárez", status: "Adult Male", loc: "Grand Rapids, MI", agency: "ICE", mech: "Vehicular Pursuit Crash", details: "ICE attempted vehicle stop; NOT THE TARGET ICE was seeking; fled at high speed and died in resulting crash." }
+        ];
+
+        // Global Chart References
+        let cumulativeDonutChart, longitudinalChart, custodialCausesChart, fieldCircumstancesChart;
+
+        // Initialize Charts on Page Load
+        window.addEventListener('DOMContentLoaded', () => {
+            initCumulativeDonut();
+            initLongitudinalChart();
+            initCustodialCausesChart();
+            initFieldCircumstancesChart();
+            renderCustodialTable(custodialData);
+            renderFieldTable(fieldData);
+        });
+
+        // Tab Switching Logic
+        function switchTab(tabKey) {
+            document.querySelectorAll('.tab-content').forEach(el => el.classList.add('hidden'));
+            document.querySelectorAll('.tab-btn').forEach(btn => {
+                btn.classList.remove('bg-red-700', 'text-white', 'font-semibold');
+                btn.classList.add('text-slate-400', 'hover:text-white', 'hover:bg-slate-800');
+            });
+
+            const activeTab = document.getElementById(`tab-${tabKey}`);
+            const activeBtn = document.getElementById(`tab-btn-${tabKey}`);
+            
+            if (activeTab) activeTab.classList.remove('hidden');
+            if (activeBtn) {
+                activeBtn.classList.add('bg-red-700', 'text-white', 'font-semibold');
+                activeBtn.classList.remove('text-slate-400', 'hover:text-white', 'hover:bg-slate-800');
+            }
+        }
+
+        // Chart 1: Cumulative Mortality Donut Chart
+        function initCumulativeDonut() {
+            const ctx = document.getElementById('cumulativeDonutChart').getContext('2d');
+            cumulativeDonutChart = new Chart(ctx, {
+                type: 'doughnut',
+                data: {
+                    labels: ['Custodial Detention Deaths', 'Field Firearms Discharge Fatalities', 'Field Pursuits & Tactical Chases'],
+                    datasets: [{
+                        data: [291, 29, 11],
+                        backgroundColor: ['#ef4444', '#3b82f6', '#f59e0b'],
+                        borderWidth: 2,
+                        borderColor: '#0f172a'
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: {
+                        legend: { position: 'bottom', labels: { boxWidth: 12, font: { size: 11 }, color: '#cbd5e1' } },
+                        tooltip: {
+                            callbacks: {
+                                label: function(context) {
+                                    return ` ${context.label}: ${context.raw} deaths (~${Math.round(context.raw/331*100)}%)`;
+                                }
+                            }
+                        }
+                    }
+                }
+            });
+        }
+
+        // Chart 2: Longitudinal Custodial Mortality Rate Chart
+        function initLongitudinalChart() {
+            const ctx = document.getElementById('longitudinalChart').getContext('2d');
+            longitudinalChart = new Chart(ctx, {
+                type: 'line',
+                data: {
+                    labels: ['FY04-08', 'FY09-12', 'FY13-16', 'FY17-20 (COVID)', 'FY21-23 Low', 'FY24 Surge', 'FY25-26 Peak'],
+                    datasets: [
+                        {
+                            label: 'Mortality Rate (per 100k Person-Years)',
+                            data: [72.8, 30.2, 23.6, 27.8, 13.0, 31.8, 84.0],
+                            borderColor: '#f87171',
+                            backgroundColor: 'rgba(248, 113, 113, 0.15)',
+                            fill: true,
+                            tension: 0.3,
+                            pointRadius: 5,
+                            pointHoverRadius: 7,
+                            yAxisID: 'y'
+                        },
+                        {
+                            label: 'Period Total Custodial Deaths',
+                            data: [91, 40, 32, 44, 7, 12, 54],
+                            type: 'bar',
+                            backgroundColor: 'rgba(148, 163, 184, 0.25)',
+                            borderColor: '#94a3b8',
+                            borderWidth: 1,
+                            yAxisID: 'y1'
+                        }
+                    ]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    interaction: { mode: 'index', intersect: false },
+                    scales: {
+                        y: {
+                            type: 'linear',
+                            position: 'left',
+                            title: { display: true, text: 'Rate per 100k Person-Years', font: { size: 11 }, color: '#94a3b8' },
+                            grid: { color: '#334155' },
+                            ticks: { color: '#cbd5e1' }
+                        },
+                        y1: {
+                            type: 'linear',
+                            position: 'right',
+                            title: { display: true, text: 'Total Period Deaths', font: { size: 11 }, color: '#94a3b8' },
+                            grid: { drawOnChartArea: false },
+                            ticks: { color: '#cbd5e1' }
+                        },
+                        x: {
+                            grid: { display: false },
+                            ticks: { color: '#cbd5e1' }
+                        }
+                    },
+                    plugins: {
+                        legend: { position: 'bottom', labels: { boxWidth: 12, font: { size: 11 }, color: '#cbd5e1' } }
+                    }
+                }
+            });
+        }
+
+        // Chart 3: JAMA Causes Chart
+        function initCustodialCausesChart() {
+            const ctx = document.getElementById('custodialCausesChart').getContext('2d');
+            custodialCausesChart = new Chart(ctx, {
+                type: 'bar',
+                data: {
+                    labels: ['Undetermined / Other', 'Cardiovascular', 'Infectious (incl. COVID)', 'Suicide', 'Neurologic'],
+                    datasets: [{
+                        label: '22-Year Total Deaths (JAMA Baseline)',
+                        data: [133, 56, 42, 23, 18],
+                        backgroundColor: ['#94a3b8', '#f87171', '#38bdf8', '#fbbf24', '#a78bfa'],
+                        borderRadius: 4
+                    }]
+                },
+                options: {
+                    indexAxis: 'y',
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: {
+                        legend: { display: false },
+                        tooltip: {
+                            callbacks: {
+                                label: (ctx) => ` ${ctx.raw} deaths (${(ctx.raw/272*100).toFixed(1)}%)`
+                            }
+                        }
+                    },
+                    scales: {
+                        x: { grid: { color: '#334155' }, ticks: { color: '#cbd5e1' } },
+                        y: { grid: { display: false }, ticks: { color: '#cbd5e1' } }
+                    }
+                }
+            });
+        }
+
+        // Chart 4: Field Circumstances Chart
+        function initFieldCircumstancesChart() {
+            const ctx = document.getElementById('fieldCircumstancesChart').getContext('2d');
+            fieldCircumstancesChart = new Chart(ctx, {
+                type: 'pie',
+                data: {
+                    labels: ['Vehicle Stops / Pursuits', 'Public Intersections / Streets', 'Off-Duty Officer Incidents', 'Commercial Parking Lots', 'Residential / Other'],
+                    datasets: [{
+                        data: [20, 15, 11, 9, 4],
+                        backgroundColor: ['#3b82f6', '#38bdf8', '#8b5cf6', '#ec4899', '#64748b'],
+                        borderWidth: 2,
+                        borderColor: '#0f172a'
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: {
+                        legend: { position: 'bottom', labels: { boxWidth: 10, font: { size: 10 }, color: '#cbd5e1' } }
+                    }
+                }
+            });
+        }
+
+        // Render Custodial Table
+        function renderCustodialTable(data) {
+            const tbody = document.getElementById('custodialTableBody');
+            tbody.innerHTML = '';
+            
+            data.forEach((row) => {
+                const tr = document.createElement('tr');
+                tr.className = 'hover:bg-slate-800/50 transition-colors border-b border-slate-800';
+                tr.innerHTML = `
+                    <td class="p-2.5 font-medium whitespace-nowrap text-slate-300">${row.date}</td>
+                    <td class="p-2.5 font-semibold text-white">${row.name}</td>
+                    <td class="p-2.5 whitespace-nowrap text-slate-400">${row.age}</td>
+                    <td class="p-2.5 whitespace-nowrap"><span class="px-2 py-0.5 rounded text-[10px] font-semibold bg-slate-800 text-slate-300 border border-slate-700">${row.nat}</span></td>
+                    <td class="p-2.5 text-slate-400">${row.facility}</td>
+                    <td class="p-2.5 font-bold text-slate-300">${row.state}</td>
+                    <td class="p-2.5 text-center">
+                        <button onclick='openDetailModal(${JSON.stringify(row)}, "custodial")' class="px-2.5 py-1 bg-amber-600 hover:bg-amber-500 text-white rounded text-[11px] font-semibold transition-colors">Details</button>
+                    </td>
+                `;
+                tbody.appendChild(tr);
+            });
+
+            document.getElementById('custodialCountText').innerText = `Showing ${data.length} documented custodial death records`;
+        }
+
+        // Filter Custodial Table
+        function filterCustodialTable() {
+            const query = document.getElementById('custodialSearch').value.toLowerCase();
+            const natFilter = document.getElementById('custodialNationalityFilter').value;
+
+            const filtered = custodialData.filter(item => {
+                const matchesSearch = item.name.toLowerCase().includes(query) ||
+                                      item.facility.toLowerCase().includes(query) ||
+                                      item.state.toLowerCase().includes(query) ||
+                                      item.nat.toLowerCase().includes(query);
+                
+                const matchesNat = natFilter === 'ALL' || 
+                                   (natFilter === 'Other' ? !['Mexico','Honduras','Cuba','Haiti','Vietnam'].includes(item.nat) : item.nat === natFilter);
+
+                return matchesSearch && matchesNat;
+            });
+
+            renderCustodialTable(filtered);
+        }
+
+        // Render Field Table
+        function renderFieldTable(data) {
+            const tbody = document.getElementById('fieldTableBody');
+            tbody.innerHTML = '';
+
+            data.forEach((row) => {
+                const tr = document.createElement('tr');
+                tr.className = 'hover:bg-slate-800/50 transition-colors border-b border-slate-800';
+                tr.innerHTML = `
+                    <td class="p-2.5 font-medium whitespace-nowrap text-slate-300">${row.date}</td>
+                    <td class="p-2.5 font-semibold text-white">${row.name}</td>
+                    <td class="p-2.5 whitespace-nowrap text-slate-400">${row.status}</td>
+                    <td class="p-2.5 text-slate-300 font-medium">${row.loc}</td>
+                    <td class="p-2.5 whitespace-nowrap"><span class="px-2 py-0.5 rounded text-[10px] font-semibold bg-blue-950/80 text-blue-300 border border-blue-800">${row.agency}</span></td>
+                    <td class="p-2.5 font-semibold text-red-400">${row.mech}</td>
+                    <td class="p-2.5 text-center">
+                        <button onclick='openDetailModal(${JSON.stringify(row)}, "field")' class="px-2.5 py-1 bg-blue-600 hover:bg-blue-500 text-white rounded text-[11px] font-semibold transition-colors">Details</button>
+                    </td>
+                `;
+                tbody.appendChild(tr);
+            });
+        }
+
+        // Filter Field Table
+        function filterFieldTable() {
+            const query = document.getElementById('fieldSearch').value.toLowerCase();
+            const filtered = fieldData.filter(item => {
+                return item.name.toLowerCase().includes(query) ||
+                       item.loc.toLowerCase().includes(query) ||
+                       item.agency.toLowerCase().includes(query) ||
+                       item.mech.toLowerCase().includes(query);
+            });
+            renderFieldTable(filtered);
+        }
+
+        // Detail Modal Handling
+        function openDetailModal(obj, type) {
+            const modal = document.getElementById('detailModal');
+            const content = document.getElementById('modalContent');
+
+            if (type === 'custodial') {
+                content.innerHTML = `
+                    <div class="border-b border-slate-800 pb-3 mb-4">
+                        <span class="text-xs font-bold text-amber-400 uppercase tracking-wider">Custodial Death Case File</span>
+                        <h3 class="text-lg font-bold text-white mt-0.5">${obj.name}</h3>
+                        <p class="text-xs text-slate-400">Date of Death: ${obj.date} | ${obj.facility} (${obj.state})</p>
+                    </div>
+                    <div class="space-y-3 text-xs text-slate-300">
+                        <div class="grid grid-cols-2 gap-2 bg-slate-950/60 p-2.5 rounded border border-slate-800">
+                            <div><strong class="text-white">Age / Sex:</strong> ${obj.age}</div>
+                            <div><strong class="text-white">Nationality:</strong> ${obj.nat}</div>
+                        </div>
+                        <div>
+                            <strong class="text-white block mb-1">Clinical Context & Operational Circumstances:</strong>
+                            <p class="bg-amber-950/40 p-3 rounded border border-amber-800/60 leading-relaxed text-slate-200">${obj.details}</p>
+                        </div>
+                    </div>
+                `;
+            } else {
+                content.innerHTML = `
+                    <div class="border-b border-slate-800 pb-3 mb-4">
+                        <span class="text-xs font-bold text-blue-400 uppercase tracking-wider">Field Fatal Encounter Case File</span>
+                        <h3 class="text-lg font-bold text-white mt-0.5">${obj.name}</h3>
+                        <p class="text-xs text-slate-400">Incident Date: ${obj.date} | ${obj.loc}</p>
+                    </div>
+                    <div class="space-y-3 text-xs text-slate-300">
+                        <div class="grid grid-cols-2 gap-2 bg-slate-950/60 p-2.5 rounded border border-slate-800">
+                            <div><strong class="text-white">Status:</strong> ${obj.status}</div>
+                            <div><strong class="text-white">Agency Unit:</strong> ${obj.agency}</div>
+                        </div>
+                        <div>
+                            <strong class="text-white block mb-1">Mechanism:</strong>
+                            <span class="inline-block font-bold text-red-400 bg-red-950/60 px-2 py-0.5 rounded border border-red-800/80 mb-2">${obj.mech}</span>
+                        </div>
+                        <div>
+                            <strong class="text-white block mb-1">Operational Incident Summary:</strong>
+                            <p class="bg-blue-950/40 p-3 rounded border border-blue-800/60 leading-relaxed text-slate-200">${obj.details}</p>
+                        </div>
+                    </div>
+                `;
+            }
+
+            modal.classList.remove('hidden');
+        }
+
+        function closeModal() {
+            document.getElementById('detailModal').classList.add('hidden');
+        }
+    </script>
+</body>
+</html>
