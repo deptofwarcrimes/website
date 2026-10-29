@@ -1,0 +1,1071 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>U.S. Price Trends</title>
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=DM+Mono:ital,wght@0,400;0,500;1,400&family=DM+Sans:wght@400;500;600;700&family=Manrope:wght@600;700;800&display=swap');
+
+    :root {
+      color-scheme: dark;
+      --font-body: "DM Sans", "Segoe UI Variable", "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+      --font-display: "Manrope", "DM Sans", "Segoe UI Variable", "Segoe UI", sans-serif;
+      --font-mono: "DM Mono", "SFMono-Regular", Consolas, monospace;
+
+      --bg: #090c1a;
+      --surface: #1d2233;
+      --surface-soft: #2d3347;
+      --text: #f5f7fb;
+      --muted: #9aa8c3;
+      --border: rgba(128, 151, 219, .22);
+
+      --gas: #e042f2;
+      --bread: #4f82ff;
+      --eggs: #8ca4ff;
+      --beef: #b8c1e8;
+
+      --good: #7ae79a;
+      --bad: #f8749d;
+      --accent: #ce23e9;
+      --accent-soft: rgba(206, 35, 233, .14);
+      --shadow: 0 20px 50px rgba(0, 0, 0, .45);
+    }
+
+    * { box-sizing: border-box; }
+    html { -webkit-font-smoothing: antialiased; text-rendering: optimizeLegibility; }
+
+    body {
+      margin: 0;
+      min-height: 100vh;
+      font-family: var(--font-body);
+      font-size: 16px;
+      line-height: 1.55;
+      color: var(--text);
+      background:
+        radial-gradient(circle at 10% -6%, rgba(206, 35, 233, .16), transparent 30%),
+        radial-gradient(circle at 92% 12%, rgba(79, 130, 255, .15), transparent 32%),
+        linear-gradient(180deg, #060914 0%, #121626 100%);
+    }
+
+    .wrap {
+      width: min(1180px, calc(100% - 36px));
+      margin: 0 auto;
+      padding: 38px 0 54px;
+    }
+
+    header {
+      display: grid;
+      grid-template-columns: minmax(0, 1fr) auto;
+      gap: 24px;
+      align-items: end;
+      margin-bottom: 22px;
+    }
+
+    .eyebrow {
+      margin-bottom: 8px;
+      color: var(--accent);
+      font-family: var(--font-mono);
+      font-size: .74rem;
+      font-weight: 500;
+      letter-spacing: .15em;
+      text-transform: uppercase;
+      text-shadow: 0 0 16px rgba(206, 35, 233, .5);
+    }
+
+    h1, h2, p { margin-top: 0; }
+
+    h1 {
+      max-width: 780px;
+      margin-bottom: 10px;
+      font-family: var(--font-display);
+      font-size: clamp(2.3rem, 4.6vw, 4rem);
+      line-height: 1.02;
+      font-weight: 800;
+      letter-spacing: -.045em;
+    }
+
+    .subtitle {
+      max-width: 780px;
+      margin-bottom: 0;
+      color: var(--muted);
+      font-size: 1rem;
+      line-height: 1.6;
+    }
+
+    .updated {
+      padding: 6px 0;
+      color: var(--muted);
+      font-family: var(--font-mono);
+      font-size: .76rem;
+      line-height: 1.55;
+      text-align: right;
+    }
+
+    /* Interactive Timeline Simulation Controller */
+    .sim-bar {
+      margin-bottom: 20px;
+      padding: 16px 20px;
+      border-radius: 16px;
+      border: 1px solid rgba(206, 35, 233, .28);
+      background: linear-gradient(180deg, rgba(32, 37, 56, .85), rgba(18, 22, 36, .92));
+      box-shadow: 0 12px 30px rgba(0,0,0,0.35);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 18px;
+      flex-wrap: wrap;
+    }
+
+    .sim-controls {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      padding: 7px 15px;
+      border-radius: 999px;
+      border: 1px solid rgba(130, 155, 235, 0.3);
+      background: rgba(255, 255, 255, 0.05);
+      color: var(--text);
+      font-family: var(--font-mono);
+      font-size: 0.76rem;
+      font-weight: 500;
+      cursor: pointer;
+      transition: all .18s ease;
+      user-select: none;
+    }
+
+    .btn:hover {
+      background: rgba(255, 255, 255, 0.12);
+      border-color: rgba(206, 35, 233, .6);
+      transform: translateY(-1px);
+    }
+
+    .btn-play {
+      background: linear-gradient(135deg, #ce23e9, #8c25f4);
+      border: none;
+      color: #fff;
+      font-weight: 600;
+      box-shadow: 0 0 18px rgba(206, 35, 233, .42);
+    }
+
+    .btn-play:hover {
+      background: linear-gradient(135deg, #e33cfd, #9c3bf7);
+      box-shadow: 0 0 24px rgba(206, 35, 233, .65);
+    }
+
+    .sim-timeline {
+      flex: 1;
+      display: flex;
+      align-items: center;
+      gap: 14px;
+      min-width: 260px;
+    }
+
+    .sim-slider {
+      flex: 1;
+      -webkit-appearance: none;
+      appearance: none;
+      height: 6px;
+      border-radius: 999px;
+      background: rgba(255, 255, 255, 0.14);
+      outline: none;
+      cursor: pointer;
+    }
+
+    .sim-slider::-webkit-slider-thumb {
+      -webkit-appearance: none;
+      appearance: none;
+      width: 16px;
+      height: 16px;
+      border-radius: 50%;
+      background: #f758ff;
+      border: 2px solid #fff;
+      box-shadow: 0 0 10px #f758ff;
+      cursor: pointer;
+      transition: transform .12s ease;
+    }
+
+    .sim-slider::-webkit-slider-thumb:hover { transform: scale(1.2); }
+
+    .sim-date-badge {
+      font-family: var(--font-mono);
+      font-size: 0.8rem;
+      padding: 4px 10px;
+      border-radius: 8px;
+      background: rgba(0, 0, 0, 0.35);
+      border: 1px solid rgba(255, 255, 255, 0.12);
+      color: #f758ff;
+      font-weight: 600;
+      letter-spacing: .03em;
+      min-width: 95px;
+      text-align: center;
+    }
+
+    /* Horizon Selector Bar */
+    .toolbar {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 20px;
+      gap: 16px;
+      flex-wrap: wrap;
+    }
+
+    .pill-group {
+      display: inline-flex;
+      background: rgba(14, 18, 30, 0.7);
+      padding: 4px;
+      border-radius: 999px;
+      border: 1px solid var(--border);
+    }
+
+    .pill-btn {
+      background: transparent;
+      border: none;
+      color: var(--muted);
+      font-family: var(--font-mono);
+      font-size: 0.74rem;
+      font-weight: 500;
+      padding: 5px 14px;
+      border-radius: 999px;
+      cursor: pointer;
+      transition: all .18s ease;
+    }
+
+    .pill-btn:hover { color: #fff; }
+    .pill-btn.active {
+      background: var(--accent);
+      color: #fff;
+      box-shadow: 0 0 12px rgba(206, 35, 233, .45);
+    }
+
+    .filter-hint {
+      font-size: 0.76rem;
+      color: var(--muted);
+      font-family: var(--font-mono);
+    }
+
+    /* Cards */
+    .cards {
+      display: grid;
+      grid-template-columns: repeat(4, minmax(0, 1fr));
+      gap: 16px;
+      margin: 0 0 20px;
+    }
+
+    .card, .panel {
+      border: 1px solid var(--border);
+      background: linear-gradient(180deg, rgba(39, 44, 62, 0.75), rgba(22, 26, 40, 0.88));
+      box-shadow: var(--shadow);
+      backdrop-filter: blur(14px);
+      -webkit-backdrop-filter: blur(14px);
+    }
+
+    .card {
+      min-height: 174px;
+      padding: 18px 20px;
+      border-radius: 16px;
+      cursor: pointer;
+      user-select: none;
+      position: relative;
+      overflow: hidden;
+      transition: border-color .2s ease, transform .2s ease, box-shadow .2s ease;
+    }
+
+    .card::before {
+      content: "";
+      position: absolute;
+      inset: 0 0 auto 0;
+      height: 1px;
+      background: linear-gradient(90deg, transparent, rgba(206, 35, 233, .5), transparent);
+    }
+
+    .card:hover {
+      transform: translateY(-4px);
+      border-color: rgba(206, 35, 233, .6);
+      box-shadow: 0 16px 36px rgba(0,0,0,0.4), 0 0 20px rgba(206, 35, 233, 0.16);
+    }
+
+    .card.active-filter {
+      border-color: var(--accent);
+      background: linear-gradient(180deg, rgba(62, 45, 82, 0.88), rgba(29, 28, 48, 0.94));
+      box-shadow: 0 0 0 1px var(--accent), 0 12px 30px rgba(206, 35, 233, .3);
+    }
+
+    .card-top, .meta, .chart-head {
+      display: flex;
+      justify-content: space-between;
+      gap: 12px;
+    }
+
+    .card-top { align-items: center; }
+
+    .label {
+      color: #f5f7fb;
+      font-family: var(--font-display);
+      font-size: .88rem;
+      font-weight: 700;
+    }
+
+    .unit { color: var(--muted); font-size: .7rem; font-weight: 500; }
+
+    .value {
+      margin-top: 10px;
+      font-family: var(--font-display);
+      font-size: 2.2rem;
+      line-height: 1.05;
+      font-weight: 800;
+      letter-spacing: -.035em;
+      font-variant-numeric: tabular-nums;
+      transition: color .2s ease;
+    }
+
+    .meta {
+      align-items: baseline;
+      margin-top: 7px;
+      color: var(--muted);
+      font-size: .74rem;
+    }
+
+    .delta { font-weight: 650; white-space: nowrap; font-family: var(--font-mono); }
+    .delta.up { color: var(--bad); }
+    .delta.down { color: var(--good); }
+    .swatch { width: 10px; height: 10px; flex: 0 0 auto; border-radius: 50%; box-shadow: 0 0 8px currentColor; }
+
+    /* Panels & Charts */
+    .panel {
+      margin-top: 20px;
+      padding: 24px;
+      border-radius: 18px;
+    }
+
+    .panel h2 {
+      margin-bottom: 5px;
+      font-family: var(--font-display);
+      font-size: 1.15rem;
+      font-weight: 750;
+      letter-spacing: -.015em;
+    }
+
+    .panel-copy {
+      margin-bottom: 18px;
+      color: var(--muted);
+      font-size: .88rem;
+    }
+
+    .charts {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 18px;
+    }
+
+    .chart-box {
+      position: relative;
+      padding: 18px 16px 12px;
+      border: 1px solid rgba(113, 144, 243, .22);
+      border-radius: 14px;
+      background: rgba(7, 11, 22, 0.45);
+      transition: border-color .2s ease, opacity .2s ease;
+      overflow: hidden;
+    }
+
+    .chart-box.dimmed { opacity: 0.35; filter: grayscale(40%); }
+    .chart-box.focused { border-color: var(--accent); box-shadow: 0 0 22px rgba(206, 35, 233, .22); }
+
+    .chart-head { align-items: baseline; margin-bottom: 6px; }
+
+    .chart-title {
+      font-family: var(--font-display);
+      font-size: .92rem;
+      font-weight: 700;
+    }
+
+    .chart-val-preview {
+      font-family: var(--font-mono);
+      font-size: 0.84rem;
+      font-weight: 700;
+      color: #fff;
+    }
+
+    .chart-range {
+      color: var(--muted);
+      font-size: .72rem;
+      font-variant-numeric: tabular-nums;
+      font-family: var(--font-mono);
+    }
+
+    svg { width: 100%; height: 215px; display: block; overflow: visible; }
+    .grid-line { stroke: rgba(134, 156, 230, .14); stroke-width: 1; }
+    .axis-label { fill: #8292b8; font-family: var(--font-mono); font-size: 10px; }
+
+    /* SVG Animated Lines & Glows */
+    .line {
+      fill: none;
+      stroke-width: 2.8;
+      stroke-linecap: round;
+      stroke-linejoin: round;
+      filter: drop-shadow(0 0 5px rgba(0, 0, 0, .5));
+    }
+
+    /* Entrance Draw-in animation class */
+    .line-draw {
+      animation: drawLine 1.35s cubic-bezier(0.25, 1, 0.5, 1) forwards;
+    }
+
+    @keyframes drawLine {
+      to {
+        stroke-dashoffset: 0;
+      }
+    }
+
+    .area-fill {
+      opacity: 0.14;
+      pointer-events: none;
+      transition: opacity .3s ease;
+    }
+
+    .dot {
+      stroke: #121626;
+      stroke-width: 2;
+      cursor: pointer;
+      transition: r .16s ease, transform .16s ease;
+    }
+
+    .dot:hover, .dot.active {
+      r: 6.5;
+    }
+
+    /* Pulsing Glow Ring on Latest Observation */
+    .pulse-ring {
+      fill: none;
+      stroke-width: 1.5;
+      animation: pulseAnim 2.2s ease-out infinite;
+      pointer-events: none;
+    }
+
+    @keyframes pulseAnim {
+      0% { r: 4px; opacity: 1; stroke-width: 2; }
+      100% { r: 15px; opacity: 0; stroke-width: 0.2; }
+    }
+
+    /* Dynamic Playhead Tracer */
+    .playhead-cursor {
+      stroke: rgba(255, 255, 255, 0.4);
+      stroke-width: 1;
+      stroke-dasharray: 2 2;
+      pointer-events: none;
+      opacity: 0;
+      transition: opacity .2s ease;
+    }
+
+    .playhead-tracer-glow {
+      pointer-events: none;
+      filter: drop-shadow(0 0 8px currentColor);
+      opacity: 0;
+      transition: opacity .2s ease;
+    }
+
+    .missing-note { min-height: 1.1em; margin-top: 5px; color: var(--muted); font-size: .7rem; font-family: var(--font-mono); }
+
+    /* Tooltip */
+    #chart-tooltip {
+      position: fixed;
+      pointer-events: none;
+      background: rgba(16, 20, 32, 0.96);
+      border: 1px solid var(--accent);
+      box-shadow: 0 10px 28px rgba(0,0,0,0.6);
+      border-radius: 8px;
+      padding: 6px 11px;
+      font-size: 0.75rem;
+      font-family: var(--font-mono);
+      color: #fff;
+      z-index: 100;
+      display: none;
+      transform: translate(-50%, -125%);
+      white-space: nowrap;
+    }
+
+    /* Table */
+    .table-wrap {
+      overflow-x: auto;
+      border: 1px solid var(--border);
+      border-radius: 13px;
+      background: rgba(0, 0, 0, .22);
+      max-height: 480px;
+    }
+
+    table { width: 100%; min-width: 760px; border-collapse: separate; border-spacing: 0; }
+    th, td { padding: 11px 15px; border-bottom: 1px solid rgba(148, 163, 184, .1); text-align: right; font-variant-numeric: tabular-nums; }
+    th:first-child, td:first-child { text-align: left; }
+    th {
+      position: sticky; top: 0; z-index: 2;
+      color: #f5f7fb; background: #1f2334;
+      font-size: .72rem; font-weight: 700; letter-spacing: .06em; text-transform: uppercase;
+    }
+    td { color: #f0f3fb; font-size: .86rem; }
+    tbody tr:nth-child(even) { background: rgba(97, 109, 179, .05); }
+    tbody tr { cursor: pointer; transition: background .15s ease; }
+    tbody tr:hover, tbody tr.highlighted { background: rgba(31, 81, 241, .25) !important; }
+    tbody tr.highlighted td:first-child { color: var(--accent); font-weight: 700; box-shadow: inset 3px 0 0 var(--accent); }
+    .na { color: #6a748c; }
+
+    /* Notes */
+    .notes {
+      display: grid;
+      grid-template-columns: minmax(0, 1.25fr) minmax(280px, .75fr);
+      gap: 28px;
+    }
+
+    .callout {
+      padding: 4px 0 4px 16px;
+      border-left: 3px solid var(--accent);
+      color: var(--muted);
+      font-size: .86rem;
+      line-height: 1.7;
+    }
+
+    .callout strong, .notes > div > strong { color: #f5f7fb; font-weight: 650; }
+    .source-list { margin: 0; padding-left: 18px; color: var(--muted); font-size: .78rem; line-height: 1.8; }
+    a { color: #9eb9ff; text-decoration: none; }
+    a:hover { color: #edb5ff; text-decoration: underline; }
+
+    footer {
+      margin-top: 32px;
+      color: #8c98af;
+      font-size: .72rem;
+      text-align: center;
+      font-family: var(--font-mono);
+    }
+
+    @media (max-width: 900px) {
+      .wrap { width: min(100% - 24px, 1180px); }
+      header { grid-template-columns: 1fr; }
+      .updated { text-align: left; }
+      .cards { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+      .charts, .notes { grid-template-columns: 1fr; }
+    }
+
+    @media (max-width: 560px) {
+      .cards { grid-template-columns: 1fr; }
+      .toolbar { flex-direction: column; align-items: flex-start; }
+      .sim-bar { flex-direction: column; align-items: stretch; }
+    }
+  </style>
+</head>
+<body>
+  <div id="chart-tooltip"></div>
+  <main class="wrap">
+    <header>
+      <div>
+        <div class="eyebrow">U.S. City Average · BLS Average Price Data</div>
+        <h1>U.S. Price Trends</h1>
+        <p class="subtitle">Dynamic two-year retail price timeline for regular unleaded gasoline, pan white bread, Grade A large eggs, and 100% ground beef (Oct. 2024 through Sep. 2026).</p>
+      </div>
+      <div class="updated">
+        Data verified: BLS Consumer Price Index Release<br>
+        Published through: <strong>Sep. 2026</strong> · Release Date: Oct. 14, 2026
+      </div>
+    </header>
+
+    <!-- Interactive Simulation & Playback Bar -->
+    <div class="sim-bar" aria-label="Interactive timeline simulator">
+      <div class="sim-controls">
+        <button id="playBtn" class="btn btn-play" onclick="togglePlaySimulation()">
+          <span id="playIcon">▶</span> Play Timeline
+        </button>
+        <button class="btn" onclick="resetSimulation()">↺ Reset</button>
+      </div>
+      <div class="sim-timeline">
+        <input type="range" id="simSlider" class="sim-slider" min="0" max="23" value="23" step="0.05" oninput="onSliderScrub(this.value)">
+        <div class="sim-date-badge" id="simDateBadge">Sep 2026</div>
+      </div>
+    </div>
+
+    <!-- Horizon Range Filter Bar -->
+    <div class="toolbar">
+      <div class="pill-group" role="group" aria-label="Time Horizon Range">
+        <button class="pill-btn active" onclick="setHorizon(24, this)">24 Months (Full)</button>
+        <button class="pill-btn" onclick="setHorizon(12, this)">1 Year (LTM)</button>
+        <button class="pill-btn" onclick="setHorizon(6, this)">6 Months</button>
+      </div>
+      <div class="filter-hint">Tip: Click any summary card to isolate that series</div>
+    </div>
+
+    <section class="cards" id="summaryCards" aria-label="Price summaries"></section>
+
+    <section class="panel">
+      <h2>Monthly price history</h2>
+      <p class="panel-copy">Curves draw dynamically upon load. Use the simulation playhead above or scrub across any chart to inspect synchronous price changes across all staples.</p>
+      <div class="charts" id="charts"></div>
+    </section>
+
+    <section class="panel">
+      <h2>Monthly data series</h2>
+      <p class="panel-copy">Hover over any row to highlight the corresponding monthly marker in each commodity chart.</p>
+      <div class="table-wrap">
+        <table>
+          <thead>
+            <tr>
+              <th>Month</th>
+              <th>Gasoline<br><span class="unit">$/gal</span></th>
+              <th>White bread<br><span class="unit">$/lb</span></th>
+              <th>Eggs<br><span class="unit">$/dozen</span></th>
+              <th>Ground beef<br><span class="unit">$/lb</span></th>
+            </tr>
+          </thead>
+          <tbody id="priceTable"></tbody>
+        </table>
+      </div>
+    </section>
+
+    <section class="panel notes">
+      <div class="callout">
+        <strong>Reading the numbers:</strong> Summary cards reflect the arithmetic mean of published prices over the active window. October 2025 is missing for white bread, eggs, and ground beef due to federal survey collection suspension; food series compute their averages using only valid published observations without interpolating synthetic points.
+      </div>
+      <div>
+        <strong style="display:block;margin-bottom:6px;">Source series (FRED / BLS)</strong>
+        <ul class="source-list">
+          <li><a href="https://fred.stlouisfed.org/series/APU000074714" target="_blank" rel="noopener">APU000074714</a> — regular gasoline</li>
+          <li><a href="https://fred.stlouisfed.org/series/APU0000702111" target="_blank" rel="noopener">APU0000702111</a> — white bread</li>
+          <li><a href="https://fred.stlouisfed.org/series/APU0000708111" target="_blank" rel="noopener">APU0000708111</a> — Grade A large eggs</li>
+          <li><a href="https://fred.stlouisfed.org/series/APU0000703112" target="_blank" rel="noopener">APU0000703112</a> — 100% ground beef</li>
+        </ul>
+      </div>
+    </section>
+
+    <footer>Source: U.S. Bureau of Labor Statistics (BLS) Consumer Price Index (CPI) Average Price Program, via FRED. September 2026 data official. Next release scheduled for mid-November 2026.</footer>
+  </main>
+
+<script>
+// 24-month rolling window (Oct. 2024 through Sep. 2026)
+const fullMonths = [
+  "2024-10","2024-11","2024-12",
+  "2025-01","2025-02","2025-03","2025-04","2025-05","2025-06",
+  "2025-07","2025-08","2025-09","2025-10","2025-11","2025-12",
+  "2026-01","2026-02","2026-03","2026-04","2026-05","2026-06",
+  "2026-07","2026-08","2026-09"
+];
+
+const seriesData = [
+  {
+    key: "gas", name: "Gasoline", unit: "per gallon", color: "var(--gas)", hex: "#e042f2",
+    values: [3.279,3.181,3.145,3.211,3.261,3.232,3.330,3.306,3.306,3.285,3.295,3.339,3.239,3.228,3.050,2.961,3.065,3.843,4.263,4.651,4.195,4.094,4.200,4.482]
+  },
+  {
+    key: "bread", name: "White bread", unit: "per pound", color: "var(--bread)", hex: "#4f82ff",
+    values: [1.937,1.916,1.912,1.925,1.925,1.880,1.913,1.876,1.864,1.851,1.841,1.867,null,1.790,1.833,1.843,1.850,1.808,1.869,1.830,1.814,1.820,1.823,1.830]
+  },
+  {
+    key: "eggs", name: "Eggs", unit: "per dozen", color: "var(--eggs)", hex: "#8ca4ff",
+    values: [3.370,3.649,4.146,4.953,5.897,6.227,5.122,4.548,3.775,3.599,3.587,3.488,null,2.860,2.712,2.577,2.500,2.348,2.250,2.191,2.141,2.189,2.272,2.272]
+  },
+  {
+    key: "beef", name: "Ground beef", unit: "per pound", color: "var(--beef)", hex: "#b8c1e8",
+    values: [5.588,5.628,5.605,5.545,5.625,5.790,5.801,5.981,6.120,6.254,6.318,6.323,null,6.540,6.687,6.752,6.739,6.701,6.899,6.745,6.825,6.885,6.923,6.792]
+  }
+];
+
+let activeHorizon = 24;
+let activeFilter = null;
+let isPlaying = false;
+let animRaf = null;
+let currentProgress = 23; // Fractional index in active horizon
+
+const tooltip = document.getElementById("chart-tooltip");
+const simSlider = document.getElementById("simSlider");
+const simDateBadge = document.getElementById("simDateBadge");
+const playBtn = document.getElementById("playBtn");
+const playIcon = document.getElementById("playIcon");
+
+const money = n => `$${n.toFixed(2)}`;
+const money3 = n => `$${n.toFixed(3)}`;
+const monthLabel = m => new Date(`${m}-01T00:00:00`).toLocaleDateString("en-US", {month:"short", year:"numeric"});
+const mean = arr => {
+  const clean = arr.filter(v => v !== null && v !== undefined);
+  return clean.length ? clean.reduce((a,b)=>a+b,0) / clean.length : 0;
+};
+
+function getActiveSlice() {
+  const start = fullMonths.length - activeHorizon;
+  return {
+    months: fullMonths.slice(start),
+    series: seriesData.map(s => ({
+      ...s,
+      values: s.values.slice(start)
+    }))
+  };
+}
+
+function setHorizon(monthsCount, el) {
+  stopSimulation();
+  activeHorizon = monthsCount;
+  currentProgress = monthsCount - 1;
+  simSlider.max = monthsCount - 1;
+  simSlider.value = currentProgress;
+  
+  document.querySelectorAll('.pill-group .pill-btn').forEach(b => b.classList.remove('active'));
+  el.classList.add('active');
+  renderAll(true);
+}
+
+function toggleFilter(key) {
+  activeFilter = activeFilter === key ? null : key;
+  renderCards();
+  applyFilterToCharts();
+}
+
+function applyFilterToCharts() {
+  document.querySelectorAll('.chart-box').forEach(box => {
+    const key = box.dataset.key;
+    if (!activeFilter) {
+      box.classList.remove('dimmed', 'focused');
+    } else if (activeFilter === key) {
+      box.classList.remove('dimmed');
+      box.classList.add('focused');
+    } else {
+      box.classList.remove('focused');
+      box.classList.add('dimmed');
+    }
+  });
+}
+
+function renderCards() {
+  const { series, months } = getActiveSlice();
+  const host = document.getElementById("summaryCards");
+  host.innerHTML = series.map(s => {
+    const clean = s.values.filter(v => v !== null);
+    const first = clean[0] || 0;
+    const last = clean[clean.length - 1] || 0;
+    const change = first ? (last / first - 1) * 100 : 0;
+    const cls = change >= 0 ? "up" : "down";
+    const arrow = change >= 0 ? "▲" : "▼";
+    const isSelected = activeFilter === s.key ? " active-filter" : "";
+
+    return `
+      <article class="card${isSelected}" onclick="toggleFilter('${s.key}')">
+        <div class="card-top">
+          <div class="label">${s.name}</div>
+          <div class="swatch" style="background:${s.color}; color:${s.color};"></div>
+        </div>
+        <div class="value" id="card-val-${s.key}">${money(mean(s.values))}</div>
+        <div class="meta">
+          <span>${activeHorizon}-mo avg · ${s.unit}</span>
+          <span>${clean.length} obs.</span>
+        </div>
+        <div class="meta">
+          <span>Latest ${money(last)}</span>
+          <span class="delta ${cls}">${arrow} ${Math.abs(change).toFixed(1)}% vs ${monthLabel(months[0])}</span>
+        </div>
+      </article>`;
+  }).join("");
+}
+
+function buildPathSegments(values, x, y) {
+  const segments = [];
+  let current = [];
+  values.forEach((v,i) => {
+    if (v === null) {
+      if (current.length) segments.push(current);
+      current = [];
+    } else {
+      current.push([x(i), y(v)]);
+    }
+  });
+  if (current.length) segments.push(current);
+  return segments.map(seg => seg.map((p,j) => `${j ? 'L':'M'}${p[0].toFixed(2)},${p[1].toFixed(2)}`).join(' '));
+}
+
+function buildAreaPath(values, x, y, baseY) {
+  const cleanIndices = values.map((v, i) => v !== null ? i : null).filter(i => i !== null);
+  if (cleanIndices.length === 0) return '';
+  const firstIdx = cleanIndices[0];
+  const lastIdx = cleanIndices[cleanIndices.length - 1];
+  
+  let d = `M${x(firstIdx).toFixed(2)},${baseY.toFixed(2)} `;
+  values.forEach((v, i) => {
+    if (v !== null) d += `L${x(i).toFixed(2)},${y(v).toFixed(2)} `;
+  });
+  d += `L${x(lastIdx).toFixed(2)},${baseY.toFixed(2)} Z`;
+  return d;
+}
+
+function renderChart(s, months) {
+  const W = 520, H = 210, pad = {l:46, r:14, t:16, b:30};
+  const clean = s.values.filter(v => v !== null);
+  let min = Math.min(...clean), max = Math.max(...clean);
+  const span = max - min || 1;
+  min -= span * .15; max += span * .15;
+
+  const x = i => pad.l + i * (W - pad.l - pad.r) / (months.length - 1);
+  const y = v => pad.t + (max - v) * (H - pad.t - pad.b) / (max - min);
+
+  const ticks = [0, .5, 1].map(t => max - t*(max-min));
+  const segments = buildPathSegments(s.values, x, y);
+  const areaD = buildAreaPath(s.values, x, y, H - pad.b);
+
+  const yGrid = ticks.map(v => `
+    <line class="grid-line" x1="${pad.l}" x2="${W-pad.r}" y1="${y(v)}" y2="${y(v)}"></line>
+    <text class="axis-label" x="${pad.l-7}" y="${y(v)+3}" text-anchor="end">$${v.toFixed(2)}</text>`).join('');
+
+  const step = Math.max(1, Math.floor(months.length / 4));
+  const tickIndices = [0, step, step * 2, step * 3, months.length - 1].filter((v,i,a) => a.indexOf(v)===i && v < months.length);
+  const xTicks = tickIndices.map(i => `
+    <text class="axis-label" x="${x(i)}" y="${H-8}" text-anchor="middle">${monthLabel(months[i]).split(' ')[0]} '${months[i].slice(2,4)}</text>`).join('');
+
+  // Find last valid point for pulse ring
+  let lastValidIdx = s.values.length - 1;
+  while (lastValidIdx >= 0 && s.values[lastValidIdx] === null) lastValidIdx--;
+  const pulseX = lastValidIdx >= 0 ? x(lastValidIdx) : 0;
+  const pulseY = lastValidIdx >= 0 ? y(s.values[lastValidIdx]) : 0;
+
+  const dots = s.values.map((v,i) => v === null ? '' : `
+    <circle class="dot dot-${s.key}" data-index="${i}" data-series="${s.key}" data-val="${v}" data-month="${months[i]}" cx="${x(i)}" cy="${y(v)}" r="3.2" fill="${s.color}">
+    </circle>`).join('');
+
+  const missing = s.values.some(v => v === null) ? "Note: Oct. 2025 omitted (no BLS survey release)" : "";
+
+  return `
+    <div class="chart-box" data-key="${s.key}">
+      <div class="chart-head">
+        <span class="chart-title">${s.name}</span>
+        <div>
+          <span class="chart-val-preview" id="preview-${s.key}">${money(clean[clean.length-1])}</span>
+          <span class="chart-range">(${money(Math.min(...clean))} – ${money(Math.max(...clean))})</span>
+        </div>
+      </div>
+      <svg id="svg-${s.key}" viewBox="0 0 ${W} ${H}" role="img" data-key="${s.key}">
+        <defs>
+          <linearGradient id="grad-${s.key}" x1="0" y1="0" x2="0" y2="1">
+            <stop offset="0%" stop-color="${s.hex}" stop-opacity="0.38"/>
+            <stop offset="100%" stop-color="${s.hex}" stop-opacity="0.0"/>
+          </linearGradient>
+        </defs>
+        ${yGrid}
+        ${xTicks}
+        <path class="area-fill" d="${areaD}" fill="url(#grad-${s.key})"></path>
+        ${segments.map(d => `<path class="line line-draw" d="${d}" stroke="${s.color}"></path>`).join('')}
+        ${dots}
+        
+        <!-- Pulsing Ring on latest point -->
+        <circle class="pulse-ring" cx="${pulseX}" cy="${pulseY}" stroke="${s.color}"></circle>
+
+        <!-- Moving Simulation Playhead Elements -->
+        <line class="playhead-cursor" id="cursor-${s.key}" x1="${pulseX}" x2="${pulseX}" y1="${pad.t}" y2="${H - pad.b}"></line>
+        <circle class="playhead-tracer-glow" id="tracer-${s.key}" cx="${pulseX}" cy="${pulseY}" r="5" fill="${s.color}" style="color:${s.hex};"></circle>
+      </svg>
+      <div class="missing-note">${missing}</div>
+    </div>`;
+}
+
+function setupLineDrawAnimations() {
+  document.querySelectorAll('svg path.line-draw').forEach(path => {
+    const length = path.getTotalLength();
+    path.style.strokeDasharray = length;
+    path.style.strokeDashoffset = length;
+    // Trigger reflow to restart CSS animation cleanly
+    path.getBoundingClientRect();
+  });
+}
+
+function renderCharts(triggerAnimation = true) {
+  const { series, months } = getActiveSlice();
+  document.getElementById("charts").innerHTML = series.map(s => renderChart(s, months)).join("");
+  
+  if (triggerAnimation) {
+    setupLineDrawAnimations();
+  }
+  attachChartEvents();
+  applyFilterToCharts();
+  updateSimulationView(currentProgress);
+}
+
+function renderTable() {
+  const { series, months } = getActiveSlice();
+  const tbody = document.getElementById("priceTable");
+  tbody.innerHTML = months.map((m, i) => {
+    const vals = series.map(s => s.values[i]);
+    return `<tr data-index="${i}" onmouseenter="highlightTableRow(${i})" onmouseleave="clearHighlight()">
+      <td><strong>${monthLabel(m)}</strong></td>
+      ${vals.map(v => v === null ? '<td class="na">—</td>' : `<td>${money(v)}</td>`).join('')}
+    </tr>`;
+  }).reverse().join('');
+}
+
+function attachChartEvents() {
+  document.querySelectorAll('.dot').forEach(dot => {
+    dot.addEventListener('mouseenter', e => {
+      const idx = e.target.dataset.index;
+      const val = parseFloat(e.target.dataset.val);
+      const m = e.target.dataset.month;
+      tooltip.innerHTML = `<strong>${monthLabel(m)}</strong>: $${val.toFixed(3)}`;
+      tooltip.style.display = 'block';
+      highlightTableRow(idx);
+    });
+
+    dot.addEventListener('mousemove', e => {
+      tooltip.style.left = `${e.clientX}px`;
+      tooltip.style.top = `${e.clientY - 12}px`;
+    });
+
+    dot.addEventListener('mouseleave', () => {
+      tooltip.style.display = 'none';
+      clearHighlight();
+    });
+  });
+}
+
+function highlightTableRow(index) {
+  document.querySelectorAll('tbody tr').forEach(tr => {
+    tr.classList.toggle('highlighted', tr.dataset.index == index);
+  });
+  document.querySelectorAll('.dot').forEach(d => {
+    d.classList.toggle('active', d.dataset.index == index);
+  });
+}
+
+function clearHighlight() {
+  document.querySelectorAll('tbody tr').forEach(tr => tr.classList.remove('highlighted'));
+  document.querySelectorAll('.dot').forEach(d => d.classList.remove('active'));
+}
+
+/* Timeline Simulation Engine */
+function updateSimulationView(progressIdx) {
+  const { series, months } = getActiveSlice();
+  const clampedIdx = Math.max(0, Math.min(progressIdx, months.length - 1));
+  const floorIdx = Math.floor(clampedIdx);
+  const ceilIdx = Math.min(months.length - 1, Math.ceil(clampedIdx));
+  const fraction = clampedIdx - floorIdx;
+
+  // Update slider badge
+  const displayMonth = months[Math.round(clampedIdx)];
+  simDateBadge.textContent = monthLabel(displayMonth);
+
+  const W = 520, H = 210, pad = {l:46, r:14, t:16, b:30};
+  const getX = i => pad.l + i * (W - pad.l - pad.r) / (months.length - 1);
+
+  series.forEach(s => {
+    const clean = s.values.filter(v => v !== null);
+    let min = Math.min(...clean), max = Math.max(...clean);
+    const span = max - min || 1;
+    min -= span * .15; max += span * .15;
+    const getY = v => pad.t + (max - v) * (H - pad.t - pad.b) / (max - min);
+
+    const v1 = s.values[floorIdx];
+    const v2 = s.values[ceilIdx];
+    
+    let interpVal = null;
+    if (v1 !== null && v2 !== null) {
+      interpVal = v1 + (v2 - v1) * fraction;
+    } else if (v1 !== null) {
+      interpVal = v1;
+    } else if (v2 !== null) {
+      interpVal = v2;
+    }
+
+    const cursorEl = document.getElementById(`cursor-${s.key}`);
+    const tracerEl = document.getElementById(`tracer-${s.key}`);
+    const previewEl = document.getElementById(`preview-${s.key}`);
+
+    const curX = getX(clampedIdx);
+
+    if (cursorEl) {
+      cursorEl.setAttribute('x1', curX);
+      cursorEl.setAttribute('x2', curX);
+      cursorEl.style.opacity = '1';
+    }
+
+    if (tracerEl && interpVal !== null) {
+      const curY = getY(interpVal);
+      tracerEl.setAttribute('cx', curX);
+      tracerEl.setAttribute('cy', curY);
+      tracerEl.style.opacity = '1';
+    } else if (tracerEl) {
+      tracerEl.style.opacity = '0';
+    }
+
+    if (previewEl && interpVal !== null) {
+      previewEl.textContent = money3(interpVal);
+    }
+  });
+
+  highlightTableRow(Math.round(clampedIdx));
+}
+
+function onSliderScrub(val) {
+  stopSimulation();
+  currentProgress = parseFloat(val);
+  updateSimulationView(currentProgress);
+}
+
+function togglePlaySimulation() {
+  if (isPlaying) {
+    stopSimulation();
+  } else {
+    startSimulation();
+  }
+}
+
+function startSimulation() {
+  const { months } = getActiveSlice();
+  if (currentProgress >= months.length - 1) {
+    currentProgress = 0;
+  }
+  isPlaying = true;
+  playIcon.textContent = "❚❚";
+  playBtn.innerHTML = `<span>❚❚</span> Pause`;
+
+  let lastTime = performance.now();
+  const speed = 0.0035; // timeline progression units per ms (~6-7 seconds full pass)
+
+  function step(now) {
+    const dt = now - lastTime;
+    lastTime = now;
+    currentProgress += dt * speed;
+
+    if (currentProgress >= months.length - 1) {
+      currentProgress = months.length - 1;
+      simSlider.value = currentProgress;
+      updateSimulationView(currentProgress);
+      stopSimulation();
+      return;
+    }
+
+    simSlider.value = currentProgress;
+    updateSimulationView(currentProgress);
+    animRaf = requestAnimationFrame(step);
+  }
+
+  animRaf = requestAnimationFrame(step);
+}
+
+function stopSimulation() {
+  isPlaying = false;
+  if (animRaf) cancelAnimationFrame(animRaf);
+  playIcon.textContent = "▶";
+  playBtn.innerHTML = `<span>▶</span> Play Timeline`;
+}
+
+function resetSimulation() {
+  stopSimulation();
+  currentProgress = 0;
+  simSlider.value = 0;
+  updateSimulationView(0);
+}
+
+function renderAll(triggerAnim = true) {
+  renderCards();
+  renderCharts(triggerAnim);
+  renderTable();
+}
+
+// Initial Launch
+renderAll(true);
+</script>
+</body>
+</html>
