@@ -103,6 +103,13 @@
     .hover-tip{pointer-events:none;position:absolute;z-index:19;padding:9px 12px;background:#14243a;border:1px solid #4b7e96;border-radius:9px;box-shadow:0 14px 30px #0008;max-width:260px;display:none;transform:translate(14px,12px)}
     .hover-tip strong{display:block;font-size:12px;overflow-wrap:anywhere}
     .hover-tip span{font:500 10px var(--mono);color:#93b9c8;display:block;margin-top:4px}
+    .evidence-panel{padding:13px 14px;margin:12px 0;background:#0e2d2d;border:1px solid #286c60;border-radius:11px}
+    .evidence-panel[hidden]{display:none}
+    .evidence-tag{font:700 10px var(--mono);letter-spacing:1px;color:#78e8c4}
+    .evidence-date{font-size:11px;color:#a1babd;margin-top:7px}
+    .evidence-source{display:inline-block;margin-top:9px;font-size:12px;color:#79ddf9;font-weight:700;text-decoration:none;overflow-wrap:anywhere}
+    .evidence-source:hover{text-decoration:underline}
+    .evidence-panel p{font-size:10px;line-height:1.6;color:#95afb1;margin:9px 0 0}
     .inspector{position:absolute;top:14px;right:16px;bottom:92px;z-index:15;width:380px;max-width:calc(100% - 32px);display:flex;flex-direction:column;background:#0c1929f8;border:1px solid #344e66;border-radius:16px;box-shadow:0 24px 70px #0009;transform:translateX(calc(100% + 30px));opacity:0;visibility:hidden;transition:transform .26s ease,opacity .26s ease,visibility .26s;overflow:hidden;backdrop-filter:blur(18px)}
     .inspector.open{transform:translateX(0);opacity:1;visibility:visible}
     .inspector-header{padding:19px 19px 18px;border-bottom:1px solid #293d51;background:linear-gradient(125deg,#173249,#0f2031 60%,#0b1929)}
@@ -161,31 +168,31 @@
           <div class="side-head"><h2>Explore network</h2><span class="tiny-count" id="sidebar-total">97 entities</span></div>
           <div class="search-wrap"><span class="search-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="7"/><path d="m16 16 5 5"/></svg></span><input id="search" placeholder="Find entity, domain, IP..." aria-label="Search entities" autocomplete="off"><span class="keycap">/</span></div>
           <div class="section-header"><span class="sidebar-label">Investigation scope</span></div>
-          <div class="scope-grid" id="scopes"><button class="scope active" data-scope="all">All networks</button><button class="scope" data-scope="corporate">FARA + Corporate</button><button class="scope" data-scope="digital">CTX + Outreach</button><button class="scope" data-scope="tpusa">TPUSA Hosting</button></div>
+          <div class="scope-grid" id="scopes"><button class="scope active" data-scope="all">All networks</button><button class="scope" data-scope="corporate">FARA + Corporate</button><button class="scope" data-scope="digital">CTX + Outreach</button><button class="scope" data-scope="tpusa">TPUSA Hosting</button><button class="scope" data-scope="research">New domains (22)</button></div>
           <div class="side-section"><div class="section-header"><span class="sidebar-label">Clusters</span><button class="link-btn" id="clear-category">Show all</button></div><div class="category-list" id="category-list"></div></div>
           <div class="side-section" id="results-heading" style="display:none"><div class="section-header"><span class="sidebar-label">Matching entities</span><span class="tiny-count" id="match-count">0</span></div><div class="results" id="results"></div></div>
-          <div class="side-tip"><strong>Explore the relationships</strong><p>Select a node to inspect its recorded attributes and links. Shared IPs or hosting providers do not independently demonstrate ownership or coordination.</p></div>
+          <div class="side-tip"><strong>Explore the relationships</strong><p>Newly researched domains show source citations and review dates in the entity panel. Shared IPs or hosting providers alone do not prove ownership, funding or coordination.</p></div>
         </div>
-        <div class="sidebar-footer"><span class="live-dot"></span><span>LOCAL DATASET · INTERACTIVE VIEW</span></div>
+        <div class="sidebar-footer"><span class="live-dot"></span><span>PUBLIC-SOURCE EXPANSION · 29 OCT 2026</span></div>
       </aside>
       <main class="workspace" id="workspace">
         <canvas id="cv" aria-label="Interactive topology graph. Use search and category filters for keyboard navigation."></canvas>
         <div class="workspace-head">
-          <div class="workspace-title"><div class="eyebrow">Network overview / investigation workspace</div><h1>Follow the relationships.</h1><p>Explore entities, infrastructure, corporate ownership and documented link labels.</p></div>
+          <div class="workspace-title"><div class="eyebrow">Network overview / investigation workspace</div><h1>Follow the relationships.</h1><p>Explore the original topology alongside 22 newly sourced public websites and program domains.</p></div>
           <div class="mode-tools"><label for="connection-mode">LINK VISIBILITY</label><select id="connection-mode" aria-label="Choose link visibility"><option value="focus">Focused only</option><option value="explicit">Primary connections</option><option value="shared">Shared infrastructure</option><option value="none">Hidden</option></select></div>
         </div>
-        <div class="metrics"><div class="metric"><strong id="metric-entities">97</strong><span>Entities</span></div><div class="metric"><strong id="metric-hubs">12</strong><span>Clusters</span></div><div class="metric"><strong id="metric-links">0</strong><span>Explicit links</span></div><div class="metric"><strong id="metric-revealed" style="color:#6cdeec">0</strong><span>Traced</span></div></div>
+        <div class="metrics"><div class="metric"><strong id="metric-entities">119</strong><span>Entities</span></div><div class="metric"><strong id="metric-hubs">14</strong><span>Clusters</span></div><div class="metric"><strong id="metric-links">0</strong><span>Explicit links</span></div><div class="metric"><strong id="metric-revealed" style="color:#6cdeec">0</strong><span>Traced</span></div></div>
         <div class="canvas-commands"><button class="btn icon-only" title="Zoom out" id="zoom-out" aria-label="Zoom out">−</button><button class="btn" id="btn-fit" title="Fit all">Fit view</button><button class="btn icon-only" title="Zoom in" id="zoom-in" aria-label="Zoom in">+</button><span class="vertical-sep"></span><button class="btn" id="btn-step" title="Highlight next entity">Next <span style="color:#60b9d0">›</span></button></div>
         <div class="hover-tip" id="hover-tip"><strong id="hover-name"></strong><span id="hover-type"></span></div>
         <div class="toast" id="toast" role="status" aria-live="polite"></div>
         <section class="inspector" id="inspector" aria-label="Selected entity details">
           <div class="inspector-header"><div class="inspect-row"><div class="inspect-chip" id="d-cat-chip">ENTITY RECORD</div><button class="btn icon-only" id="close-inspector" aria-label="Close details" title="Close details">×</button></div><h2 id="d-dom"></h2><div id="d-ent"></div></div>
-          <div class="inspector-body"><p class="detail-label">Description / linkage</p><div id="d-rel" class="detail-value"></div><div class="detail-grid"><div class="detail-tile"><p class="detail-label">Classification</p><strong id="d-cat"></strong></div><div class="detail-tile"><p class="detail-label">Registration / network</p><strong id="d-fara"></strong></div></div><p class="detail-label">Additional metadata</p><div class="detail-value" id="d-aux"></div><div class="divider"></div><div class="edge-head"><span class="sidebar-label">Direct relationships</span><span id="d-count" class="edge-count"></span></div><div class="rel-list" id="d-edges"></div></div>
+          <div class="inspector-body"><p class="detail-label">Description / linkage</p><div id="d-rel" class="detail-value"></div><div class="detail-grid"><div class="detail-tile"><p class="detail-label">Classification</p><strong id="d-cat"></strong></div><div class="detail-tile"><p class="detail-label">Registration / network</p><strong id="d-fara"></strong></div></div><p class="detail-label">Additional metadata</p><div class="detail-value" id="d-aux"></div><div class="evidence-panel" id="d-evidence" hidden><div class="evidence-tag">PUBLIC-SOURCE VERIFIED</div><div class="evidence-date" id="d-date"></div><a id="d-source" class="evidence-source" href="#" target="_blank" rel="noopener noreferrer">Open cited source ↗</a><p>Source supports the described website association, not any unrelated funding, operational or ownership inference.</p></div><div class="divider"></div><div class="edge-head"><span class="sidebar-label">Direct relationships</span><span id="d-count" class="edge-count"></span></div><div class="rel-list" id="d-edges"></div></div>
           <div class="inspector-footer"><button class="btn btn-primary" id="d-btn">Highlight entity</button><button class="btn" id="copy-node">Copy details</button></div>
         </section>
       </main>
     </div>
-    <footer class="bottomline"><span><strong>RESEARCH NOTE</strong>  Dataset and relationship descriptions reproduced from supplied source; not independently verified. Shared infrastructure ≠ affiliation.</span><span class="kbd-help">DRAG to pan &nbsp;·&nbsp; SCROLL to zoom &nbsp;·&nbsp; / search &nbsp;·&nbsp; ESC close</span></footer>
+    <footer class="bottomline"><span><strong>RESEARCH NOTE</strong>  Original 97 records are user-supplied and not independently verified. 22 new domains include source URLs. Shared infrastructure ≠ affiliation.</span><span class="kbd-help">22 VERIFIED ADDITIONS &nbsp;·&nbsp; DRAG to pan &nbsp;·&nbsp; SCROLL to zoom &nbsp;·&nbsp; / search &nbsp;·&nbsp; ESC close</span></footer>
   </div>
 <script>
 'use strict';
@@ -207,7 +214,9 @@
       { id: "h_tpcf", n: "TPUSA Cloudflare & Spectrum",   c: "#f97316", x: 0, y: 0, r: 30 },
       { id: "h_tpgc", n: "TPUSA Google Cloud Ingress",    c: "#c084fc", x: 0, y: 0, r: 26 },
       { id: "h_tpaw", n: "TPUSA AWS & CloudFront",        c: "#f43f5e", x: 0, y: 0, r: 26 },
-      { id: "h_tpsp", n: "TPUSA Dedicated & Origin",      c: "#34d399", x: 0, y: 0, r: 26 }
+      { id: "h_tpsp", n: "TPUSA Dedicated & Origin",      c: "#34d399", x: 0, y: 0, r: 26 },
+      { id:"h_tppr", n:"TPUSA Official Sites & Programs", c:"#3bd4b3",x:0,y:0,r:28 },
+      { id:"h_agweb",n:"Agency & Corporate Websites",c:"#ffbe74",x:0,y:0,r:28 }
     ];
 
     const NODES = [
@@ -333,6 +342,29 @@
       { id: 95, d: "getmerch.tpusa.com",          h: "h_tpsp", c: "#34d399", cat: "E-Commerce Anycast", fara: "AS13335 · SHOPIFY", rel: "Shopify Merchant Anycast", e: "Shopify Merch Storefront", aux: "23.227.38.74", g: "misc_tenancy" },
       { id: 96, d: "join.tpusa.com",              h: "h_tpsp", c: "#34d399", cat: "Webflow Anycast",   fara: "AS393560 · WEBFLOW", rel: "Webflow Anycast Ingress", e: "Member Signup Pipeline", aux: "199.60.103.227", g: "misc_tenancy" },
       { id: 97, d: "forms.tpusa.com",             h: "h_tpsp", c: "#34d399", cat: "Dedicated Host",     fara: "AS3356 · LEVEL3/LUMEN", rel: "Dedicated Lumen Origin IP", e: "Lumen Direct Forms Host", aux: "8.233.166.209", g: "misc_tenancy" }
+      ,
+      {"id": 98, "d": "tpusa.com", "h": "h_tppr", "c": "#3bd4b3", "cat": "Organization website", "fara": "PUBLIC WEBSITE • VERIFIED SOURCE", "rel": "Primary Turning Point USA website; the existing dataset already contains its subdomains.", "e": "Turning Point USA", "aux": "Official primary domain", "src": "https://tpusa.com/", "srcType": "Official site", "verified": "2026-10-29", "evidence": "documented-web", "researched": true},
+      {"id": 99, "d": "tpaction.com", "h": "h_tppr", "c": "#3bd4b3", "cat": "Related organization", "fara": "PUBLIC WEBSITE • VERIFIED SOURCE", "rel": "Turning Point Action identifies itself as a separate 501(c)(4) organization; linked from TPUSA.", "e": "Turning Point Action", "aux": "Separate legal organization", "src": "https://www.tpaction.com/about", "srcType": "Official site", "verified": "2026-10-29", "evidence": "documented-web", "researched": true},
+      {"id": 100, "d": "tpusafaith.com", "h": "h_tppr", "c": "#3bd4b3", "cat": "Program website", "fara": "PUBLIC WEBSITE • VERIFIED SOURCE", "rel": "TPUSA Faith website describing its faith program and events.", "e": "TPUSA Faith", "aux": "TPUSA program", "src": "https://tpusafaith.com/", "srcType": "Official site", "verified": "2026-10-29", "evidence": "documented-web", "researched": true},
+      {"id": 101, "d": "turningpointed.com", "h": "h_tppr", "c": "#3bd4b3", "cat": "Education website", "fara": "PUBLIC WEBSITE • VERIFIED SOURCE", "rel": "The site explicitly describes Turning Point Education as a division of Turning Point USA.", "e": "Turning Point Education", "aux": "TPUSA education division", "src": "https://www.turningpointed.com/", "srcType": "Official site", "verified": "2026-10-29", "evidence": "documented-web", "researched": true},
+      {"id": 102, "d": "tpusarise.com", "h": "h_tppr", "c": "#3bd4b3", "cat": "Program website", "fara": "PUBLIC WEBSITE • VERIFIED SOURCE", "rel": "The program site expressly identifies itself as TPUSA RISE and links to tpusa.com.", "e": "TPUSA RISE", "aux": "TPUSA program", "src": "https://www.tpusarise.com/", "srcType": "Official site", "verified": "2026-10-29", "evidence": "documented-web", "researched": true},
+      {"id": 103, "d": "tpfaith.com", "h": "h_tppr", "c": "#3bd4b3", "cat": "Redirect domain", "fara": "PUBLIC WEBSITE • VERIFIED SOURCE", "rel": "Domain redirects to tpusafaith.com at time of research.", "e": "TPUSA Faith alternate domain", "aux": "Observed HTTP redirect", "src": "https://tpfaith.com/", "srcType": "Observed redirect", "verified": "2026-10-29", "evidence": "documented-web", "researched": true},
+      {"id": 104, "d": "courses.tpusafaith.com", "h": "h_tppr", "c": "#3bd4b3", "cat": "Course subdomain", "fara": "PUBLIC WEBSITE • VERIFIED SOURCE", "rel": "Education and course catalog under the TPUSA Faith domain.", "e": "TPUSA Faith courses", "aux": "Subdomain / program", "src": "https://courses.tpusafaith.com/", "srcType": "Official subdomain", "verified": "2026-10-29", "evidence": "documented-web", "researched": true},
+      {"id": 105, "d": "makeheavencrowdedtour.com", "h": "h_tppr", "c": "#3bd4b3", "cat": "Event microsite", "fara": "PUBLIC WEBSITE • VERIFIED SOURCE", "rel": "The TPUSA Faith site links directly to the tour website.", "e": "Make Heaven Crowded Tour", "aux": "Linked from official site", "src": "https://tpusafaith.com/", "srcType": "Official cross-link", "verified": "2026-10-29", "evidence": "documented-web", "researched": true},
+      {"id": 106, "d": "strongchurchpodcast.com", "h": "h_tppr", "c": "#3bd4b3", "cat": "Media microsite", "fara": "PUBLIC WEBSITE • VERIFIED SOURCE", "rel": "The TPUSA Faith site links to this podcast site; the site names Lucas Miles.", "e": "Strong Church Podcast", "aux": "Linked from official site", "src": "https://tpusafaith.com/", "srcType": "Official cross-link", "verified": "2026-10-29", "evidence": "documented-web", "researched": true},
+      {"id": 107, "d": "tpusafaithevents.com", "h": "h_tppr", "c": "#3bd4b3", "cat": "Event redirect", "fara": "PUBLIC WEBSITE • VERIFIED SOURCE", "rel": "The www host redirects to the TPUSA Faith Summit site.", "e": "TPUSA Faith event domain", "aux": "Observed HTTP redirect", "src": "https://www.tpusafaithevents.com/", "srcType": "Observed redirect", "verified": "2026-10-29", "evidence": "documented-web", "researched": true},
+      {"id": 108, "d": "tpusafaithsummit.com", "h": "h_tppr", "c": "#3bd4b3", "cat": "Event microsite", "fara": "PUBLIC WEBSITE • VERIFIED SOURCE", "rel": "Event website reached by the redirect from tpusafaithevents.com.", "e": "Faith Forward Pastors Summit", "aux": "Destination of redirect", "src": "https://www.tpusafaithsummit.com/", "srcType": "Event website", "verified": "2026-10-29", "evidence": "documented-web", "researched": true},
+      {"id": 109, "d": "turningpoint.com", "h": "h_tppr", "c": "#3bd4b3", "cat": "Related store", "fara": "PUBLIC WEBSITE • VERIFIED SOURCE", "rel": "Its About Us page says store profits support Turning Point Action. This is an Action-associated store, not evidence about another registrant.", "e": "Turning Point Action store", "aux": "Store self-disclosure", "src": "https://turningpoint.com/pages/about-us", "srcType": "Official store disclosure", "verified": "2026-10-29", "evidence": "documented-web", "researched": true},
+      {"id": 110, "d": "register.tpusafaithevents.com", "h": "h_tppr", "c": "#3bd4b3", "cat": "Event subdomain", "fara": "PUBLIC WEBSITE • VERIFIED SOURCE", "rel": "Event registration website under the tpusafaithevents.com subdomain.", "e": "TPUSA Faith event registration", "aux": "Official registration subdomain", "src": "https://register.tpusafaithevents.com/", "srcType": "Event registration site", "verified": "2026-10-29", "evidence": "documented-web", "researched": true},
+      {"id": 111, "d": "cdn.tpaction.com", "h": "h_tppr", "c": "#3bd4b3", "cat": "Asset subdomain", "fara": "PUBLIC WEBSITE • VERIFIED SOURCE", "rel": "TPAction-branded document delivery subdomain appearing in the organization's own published release.", "e": "Turning Point Action CDN", "aux": "Official asset host", "src": "https://cdn.tpaction.com/be/2023/07/20115007/TPAAFW.Press_.Release.pdf", "srcType": "Official published asset", "verified": "2026-10-29", "evidence": "documented-web", "researched": true},
+      {"id": 112, "d": "tpusamerch.com", "h": "h_tppr", "c": "#3bd4b3", "cat": "Merchandise website", "fara": "PUBLIC WEBSITE • VERIFIED SOURCE", "rel": "The storefront identifies itself as the official Turning Point USA merch site.", "e": "TPUSA Merch", "aux": "Store self-disclosure", "src": "https://tpusamerch.com/", "srcType": "Official store", "verified": "2026-10-29", "evidence": "documented-web", "researched": true},
+      {"id": 113, "d": "targetedvictory.com", "h": "h_agweb", "c": "#ffbe74", "cat": "Agency website", "fara": "PUBLIC WEBSITE • VERIFIED SOURCE", "rel": "Company site identifies Targeted Victory as a member of Stagwell; Stagwell lists the site in its agency directory.", "e": "Targeted Victory", "aux": "Firm website", "src": "https://www.stagwellglobal.com/agency/targeted-victory/", "srcType": "Parent company directory", "verified": "2026-10-29", "evidence": "documented-web", "researched": true},
+      {"id": 114, "d": "stagwellglobal.com", "h": "h_agweb", "c": "#ffbe74", "cat": "Holding company website", "fara": "PUBLIC WEBSITE • VERIFIED SOURCE", "rel": "Stagwell corporate website; its agency directory identifies Targeted Victory.", "e": "Stagwell", "aux": "Corporate website", "src": "https://www.stagwellglobal.com/", "srcType": "Official corporate site", "verified": "2026-10-29", "evidence": "documented-web", "researched": true},
+      {"id": 115, "d": "tcommsglobal.com", "h": "h_agweb", "c": "#ffbe74", "cat": "Registrant website", "fara": "PUBLIC WEBSITE • VERIFIED SOURCE", "rel": "Website and privacy policy identify Targeted Communications Global LLC as the operator.", "e": "Targeted Communications Global", "aux": "Operator named in policy", "src": "https://www.tcommsglobal.com/policies/privacy-policy", "srcType": "Official privacy policy", "verified": "2026-10-29", "evidence": "documented-web", "researched": true},
+      {"id": 116, "d": "pluspr.com", "h": "h_agweb", "c": "#ffbe74", "cat": "Registrant website", "fara": "PUBLIC WEBSITE • VERIFIED SOURCE", "rel": "PLUS Communications identifies this as its website and lists its Arlington headquarters.", "e": "PLUS Communications", "aux": "Company self-disclosure", "src": "https://pluspr.com/", "srcType": "Official site", "verified": "2026-10-29", "evidence": "documented-web", "researched": true},
+      {"id": 117, "d": "mmgyglobal.com", "h": "h_agweb", "c": "#ffbe74", "cat": "Registrant website", "fara": "PUBLIC WEBSITE • VERIFIED SOURCE", "rel": "Official integrated travel and tourism marketing agency website.", "e": "MMGY Global", "aux": "Company self-disclosure", "src": "https://www.mmgyglobal.com/", "srcType": "Official site", "verified": "2026-10-29", "evidence": "documented-web", "researched": true},
+      {"id": 118, "d": "havasmedia.de", "h": "h_agweb", "c": "#ffbe74", "cat": "Broker website", "fara": "PUBLIC WEBSITE • VERIFIED SOURCE", "rel": "German legal notice names Havas Media Germany GmbH as the site's operating entity.", "e": "Havas Media Germany", "aux": "Legal imprint", "src": "https://havasmedia.de/impressum/", "srcType": "Official legal notice", "verified": "2026-10-29", "evidence": "documented-web", "researched": true},
+      {"id": 119, "d": "davis-media.com", "h": "h_agweb", "c": "#ffbe74", "cat": "Founder-associated site", "fara": "PUBLIC WEBSITE • VERIFIED SOURCE", "rel": "Site identifies Yoav Davis as founder and CEO. This founder match does not independently prove the site belongs to the same registered LLC.", "e": "Davis Media / Yoav Davis", "aux": "Founder name corroboration", "src": "https://www.davis-media.com/about", "srcType": "Company founder profile", "verified": "2026-10-29", "evidence": "documented-web", "researched": true}
     ];
 
     // Explicit Directed & Cross-Network Relational Edges
@@ -424,7 +456,32 @@
       { s: 51, t: 61, lbl: "CO_LOCATED_AT" },
       { s: 51, t: 62, lbl: "CO_LOCATED_AT" },
       { s: 52, t: 63, lbl: "CO_LOCATED_AT" },
-      { s: 52, t: 64, lbl: "CO_LOCATED_AT" }
+      { s: 52, t: 64, lbl: "CO_LOCATED_AT" },
+
+      // Publicly evidenced website and program cross-links, researched 2026-10-29
+      { s: 65, t: 98, lbl: "SUBDOMAIN_OF" },
+      { s: 98, t: 99, lbl: "RELATED_SEPARATE_ORGANIZATION" },
+      { s: 98, t: 100, lbl: "PROGRAM_WEBSITE" },
+      { s: 98, t: 101, lbl: "DIVISION_WEBSITE" },
+      { s: 98, t: 102, lbl: "PROGRAM_WEBSITE" },
+      { s: 103, t: 100, lbl: "HTTP_REDIRECT" },
+      { s: 100, t: 104, lbl: "COURSE_SUBDOMAIN" },
+      { s: 100, t: 105, lbl: "OFFICIAL_SITE_LINK" },
+      { s: 100, t: 106, lbl: "OFFICIAL_SITE_LINK" },
+      { s: 107, t: 108, lbl: "HTTP_REDIRECT" },
+      { s: 110, t: 107, lbl: "SUBDOMAIN_OF" },
+      { s: 100, t: 107, lbl: "FAITH_EVENT_WEBSITE" },
+      { s: 99, t: 109, lbl: "ACTION_STORE_DISCLOSURE" },
+      { s: 99, t: 111, lbl: "PUBLISHED_CDN_ASSET" },
+      { s: 98, t: 112, lbl: "OFFICIAL_MERCH_SITE" },
+      { s: 113, t: 61, lbl: "OFFICIAL_WEBSITE" },
+      { s: 114, t: 36, lbl: "CORPORATE_WEBSITE" },
+      { s: 114, t: 113, lbl: "STAGWELL_AGENCY_LISTING" },
+      { s: 115, t: 11, lbl: "OFFICIAL_WEBSITE" },
+      { s: 116, t: 16, lbl: "OFFICIAL_WEBSITE" },
+      { s: 117, t: 15, lbl: "OFFICIAL_WEBSITE" },
+      { s: 118, t: 6, lbl: "OFFICIAL_WEBSITE" },
+      { s: 119, t: 47, lbl: "NAMED_FOUNDER_SITE" }
     ];
 
 
@@ -436,17 +493,21 @@ const HUB_META = {
  h_adr:{short:'Addresses + co-location',region:'corporate'},h_core:{short:'Clock Tower X systems',region:'digital'},
  h_geo:{short:'GEO + outreach',region:'digital'},h_tpsq:{short:'Squarespace',region:'tpusa'},
  h_tpcf:{short:'Cloudflare + Spectrum',region:'tpusa'},h_tpgc:{short:'Google Cloud',region:'tpusa'},
- h_tpaw:{short:'AWS + CloudFront',region:'tpusa'},h_tpsp:{short:'Specialized hosting',region:'tpusa'}
+ h_tpaw:{short:'AWS + CloudFront',region:'tpusa'},h_tpsp:{short:'Specialized hosting',region:'tpusa'},
+ h_tppr:{short:'Verified TPUSA websites',region:'research',scopes:['tpusa','research']},
+ h_agweb:{short:'Agency / corporate sites',region:'research',scopes:['corporate','research']}
 };
 const POS={
  h_fp:[-585,-296],h_reg:[-270,-308],h_hold:[-125,-22],h_own:[-590,-10],h_adr:[-345,50],
  h_core:[238,-289],h_geo:[535,-152],
- h_tpsq:[-590,345],h_tpcf:[-288,345],h_tpgc:[22,345],h_tpaw:[335,345],h_tpsp:[627,345]
+ h_tpsq:[-590,345],h_tpcf:[-288,345],h_tpgc:[22,345],h_tpaw:[335,345],h_tpsp:[627,345],
+ h_tppr:[-418,735],h_agweb:[362,735]
 };
 const REGIONS=[
  {id:'corporate',name:'01  FARA & CORPORATE',detail:'Principals · Registrants · Ownership',x:-790,y:-490,w:830,h:735,c:'#b97bea'},
  {id:'digital',name:'02  DIGITAL & OUTREACH',detail:'Clock Tower X · GEO & messaging',x:52,y:-490,w:728,h:735,c:'#58a7e9'},
- {id:'tpusa',name:'03  TPUSA INFRASTRUCTURE',detail:'Squarespace · Cloudflare · GCP · AWS',x:-790,y:258,w:1570,h:305,c:'#65d5c4'}
+ {id:'tpusa',name:'03  TPUSA INFRASTRUCTURE',detail:'Squarespace · Cloudflare · GCP · AWS',x:-790,y:245,w:1570,h:338,c:'#65d5c4'},
+ {id:'research',name:'04  VERIFIED DOMAINS / NEW RESEARCH',detail:'Official websites · program sites · direct published links',x:-790,y:598,w:1570,h:325,c:'#efb56e'}
 ];
 const EXPLICIT_LINKS=LINKS.slice();
 // Expand same-pool adjacency without drawing a default complete graph.
@@ -459,11 +520,11 @@ const $=id=>document.getElementById(id);
 const canvas=$('cv'),context=canvas.getContext('2d');
 const workspace=$('workspace');
 const state={scope:'all',category:null,query:'',selected:null,hover:null,highlighted:new Set(),mode:'focus',zoom:.6,cx:0,cy:35,w:0,h:0,down:null,dragged:false,auto:null,frame:0};
-const bounding={minX:-840,minY:-560,maxX:835,maxY:650};
+const bounding={minX:-840,minY:-560,maxX:835,maxY:950};
 const reduceMotion=window.matchMedia('(prefers-reduced-motion: reduce)').matches;
 const truncate=(s,n=31)=>s.length>n?s.slice(0,n-1)+'…':s;
-function scopeVisible(n){return (state.scope==='all'||HUB_META[n.h].region===state.scope)&&(!state.category||n.h===state.category)}
-function matchesQuery(n){const q=state.query.toLowerCase();return !q||[n.d,n.e,n.cat,n.fara,n.aux,n.rel].some(v=>String(v||'').toLowerCase().includes(q))}
+function scopeVisible(n){const meta=HUB_META[n.h];return (state.scope==='all'||meta.region===state.scope||meta.scopes?.includes(state.scope))&&(!state.category||n.h===state.category)}
+function matchesQuery(n){const q=state.query.toLowerCase();return !q||[n.d,n.e,n.cat,n.fara,n.aux,n.rel,n.src].some(v=>String(v||'').toLowerCase().includes(q))}
 function isVisible(n){return scopeVisible(n)&&matchesQuery(n)}
 function setPositions(){
  HUBS.forEach(h=>{const p=POS[h.id];h.x=p[0];h.y=p[1];h.r=25});
@@ -498,7 +559,7 @@ function text(t,x,y,color,size=11,weight=600,align='left',font='var'){context.fi
 function getFocus(){return state.selected||state.hover}
 function drawRegions(){
  REGIONS.forEach(r=>{
-  const dim=state.scope!=='all'&&state.scope!==r.id;
+  const dim=state.scope!=='all'&&state.scope!==r.id&&!(r.id==='research'&&['corporate','tpusa'].includes(state.scope));
   context.save();context.globalAlpha=dim?.20:1;
   roundedRect(context,r.x,r.y,r.w,r.h,20);
   context.fillStyle='#0d1c2b70';context.fill();
@@ -550,7 +611,7 @@ function drawLines(){
 function drawHubs(){
  HUBS.forEach(h=>{
   const meta=HUB_META[h.id],members=NODES.filter(n=>n.h===h.id);
-  const vis=(state.scope==='all'||meta.region===state.scope)&&(!state.category||state.category===h.id);
+  const vis=(state.scope==='all'||meta.region===state.scope||meta.scopes?.includes(state.scope))&&(!state.category||state.category===h.id);
   const queryAny=members.some(matchesQuery);
   context.save();context.globalAlpha=vis?(queryAny?1:.18):.15;
   const glow=context.createRadialGradient(h.x,h.y,2,h.x,h.y,65);glow.addColorStop(0,h.c+'20');glow.addColorStop(1,h.c+'00');
@@ -647,6 +708,7 @@ function selectNode(n,center=true){
  $('d-cat-chip').textContent=n.cat.toUpperCase();$('d-dom').textContent=n.d;$('d-ent').textContent=n.e;
  $('d-cat').textContent=n.cat;$('d-fara').textContent=n.fara;$('d-rel').textContent=n.rel;
  $('d-aux').textContent=n.aux||'Not supplied';
+ $('d-evidence').hidden=!n.src; if(n.src){$('d-date').textContent=(n.srcType||'Published source')+' · reviewed '+(n.verified||'date not recorded');$('d-source').href=n.src;$('d-source').textContent='View evidence source ↗'}
  const edges=adjacency.get(n.id)||[];
  $('d-count').textContent=edges.length+' links';
  const list=$('d-edges');list.replaceChildren();
@@ -686,7 +748,7 @@ $('zoom-in').onclick=()=>zoom(1.22);$('zoom-out').onclick=()=>zoom(.82);$('btn-f
 $('btn-reset').onclick=()=>{stopAuto();state.highlighted.clear();updateCounts();closeInspector();fit();toast('Highlights cleared')};
 $('btn-step').onclick=()=>traceNext(true);$('btn-auto').onclick=toggleAuto;
 $('d-btn').onclick=()=>{const n=state.selected;if(!n)return;if(state.highlighted.has(n.id))state.highlighted.delete(n.id);else state.highlighted.add(n.id);updateCounts();selectNode(n,false)};
-$('copy-node').onclick=async()=>{const n=state.selected;if(!n)return;const details=`${n.d}\n${n.e}\nCategory: ${n.cat}\nRegistration/network: ${n.fara}\nRelationship: ${n.rel}\nMetadata: ${n.aux||'N/A'}\n\nSupplied dataset; not independently verified.`;try{await navigator.clipboard.writeText(details);toast('Entity details copied')}catch{toast('Clipboard unavailable in this browser context')}};
+$('copy-node').onclick=async()=>{const n=state.selected;if(!n)return;const details=`${n.d}\n${n.e}\nCategory: ${n.cat}\nRegistration/network: ${n.fara}\nRelationship: ${n.rel}\nMetadata: ${n.aux||'N/A'}\nSource: ${n.src||'Not individually verified'}\nReviewed: ${n.verified||'Not recorded'}\n\nOriginal records are user-supplied; new website associations are sourced. Shared hosting is not evidence of ownership or coordination.`;try{await navigator.clipboard.writeText(details);toast('Entity details copied')}catch{toast('Clipboard unavailable in this browser context')}};
 $('close-inspector').onclick=closeInspector;
 $('connection-mode').onchange=e=>state.mode=e.target.value;
 $('btn-relationships').onclick=()=>{const modes=['focus','explicit','shared','none'];state.mode=modes[(modes.indexOf(state.mode)+1)%modes.length];$('connection-mode').value=state.mode;toast('Link visibility: '+$('connection-mode').selectedOptions[0].textContent)};
