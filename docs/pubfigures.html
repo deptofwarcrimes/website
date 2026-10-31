@@ -56,6 +56,25 @@
         .badge-aggregator { background-color: #0d2019; color: #6ee7b7; border: 1px solid #134e3a; }
         .badge-hybrid { background-color: #23111b; color: #f472b6; border: 1px solid #501b38; }
         .badge-dual { background-color: #1c152b; color: #c084fc; border: 1px solid #402868; }
+        .figure-photo {
+            width: 100%;
+            aspect-ratio: 16 / 9;
+            object-fit: cover;
+            background: #0b0f17;
+        }
+        .figure-photo-fallback {
+            width: 100%;
+            aspect-ratio: 16 / 9;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: linear-gradient(135deg, #1e293b, #0b0f17);
+            color: #d4a359;
+            font-family: 'Space Grotesk', sans-serif;
+            font-size: 2.25rem;
+            font-weight: 700;
+            letter-spacing: .08em;
+        }
     </style>
 </head>
 <body class="min-h-screen flex flex-col bg-[#0b0f17] text-slate-200 antialiased">
@@ -396,6 +415,23 @@
         // State Management
         let currentFilter = 'all';
         let searchQuery = '';
+        let expandedFigureId = null;
+
+        const photoHandles = {
+            "nick-shirley": "nickshirleyy",
+            "benny-johnson": "bennyjohnson",
+            "tim-pool": "Timcast",
+            "nick-sortor": "nicksortor",
+            "cam-higby": "CamHigby",
+            "spencer-pratt": "spencerpratt",
+            "chaya-raichik": "libsoftiktok",
+            "jack-posobiec": "JackPosobiec",
+            "charlie-kirk": "charliekirk11",
+            "matt-walsh": "MattWalshBlog",
+            "steven-crowder": "scrowder",
+            "ben-shapiro": "benshapiro",
+            "ryan-amacher": "RheinAmacher"
+        };
 
         // DOM Elements
         const gridContainer = document.getElementById('figures-grid');
@@ -484,10 +520,17 @@
             gridContainer.innerHTML = '';
             data.forEach(item => {
                 const card = document.createElement('div');
-                card.className = "bg-[#111622] rounded-md border border-slate-800 hover:border-slate-600 transition-colors p-4 flex flex-col justify-between space-y-3 cursor-pointer group";
-                card.onclick = () => openModal(item);
+                const isExpanded = expandedFigureId === item.id;
+                const initials = item.name.split(' ').map(part => part[0]).join('').slice(0, 2);
+                const photoUrl = `https://unavatar.io/x/${photoHandles[item.id]}`;
+                card.className = "bg-[#111622] rounded-md border border-slate-800 hover:border-slate-600 transition-colors overflow-hidden flex flex-col group";
 
                 card.innerHTML = `
+                    <button type="button" data-expand aria-expanded="${isExpanded}" class="text-left focus:outline-none focus-visible:ring-2 focus-visible:ring-[#d4a359] focus-visible:ring-inset" aria-label="${isExpanded ? 'Hide' : 'Show'} information for ${item.name}">
+                        <img data-photo src="${photoUrl}" alt="${item.name}" class="figure-photo" loading="lazy">
+                        <div data-photo-fallback class="figure-photo-fallback hidden" aria-hidden="true">${initials}</div>
+                    </button>
+                    <div class="p-4 flex flex-col justify-between space-y-3">
                     <div class="space-y-2">
                         <div class="flex items-start justify-between gap-2">
                             <h3 class="text-base font-bold font-heading text-slate-100 group-hover:text-[#d4a359] transition-colors">${item.name}</h3>
@@ -495,6 +538,12 @@
                         </div>
                         <p class="text-xs text-[#d4a359] font-mono">${item.model}</p>
                         <p class="text-xs text-slate-300 leading-normal line-clamp-2">${item.focus}</p>
+                    </div>
+
+                    <div data-profile-details class="${isExpanded ? '' : 'hidden'} border-t border-slate-800 pt-3 space-y-2 text-xs leading-relaxed">
+                        <p><span class="font-mono uppercase tracking-wider text-[10px] text-slate-500">Known for</span><span class="block text-slate-200 mt-0.5">${item.focus}</span></p>
+                        <p><span class="font-mono uppercase tracking-wider text-[10px] text-slate-500">Model</span><span class="block text-slate-300 mt-0.5">${item.model}</span></p>
+                        <p><span class="font-mono uppercase tracking-wider text-[10px] text-slate-500">Distribution</span><span class="block text-slate-300 mt-0.5">${item.monetization}</span></p>
                     </div>
 
                     <div class="pt-2.5 border-t border-slate-800/80 space-y-1.5 text-xs font-mono">
@@ -507,7 +556,20 @@
                             <a href="${item.secondaryUrl}" target="_blank" onclick="event.stopPropagation()" class="text-slate-300 hover:underline truncate max-w-[190px]">${cleanUrl(item.secondaryUrl)}</a>
                         </div>
                     </div>
+                    <button type="button" data-full-profile class="text-left text-[11px] font-mono text-[#d4a359] hover:underline">OPEN FULL REGISTRY RECORD ↗</button>
+                    </div>
                 `;
+                const photo = card.querySelector('[data-photo]');
+                const fallback = card.querySelector('[data-photo-fallback]');
+                photo.addEventListener('error', () => {
+                    photo.classList.add('hidden');
+                    fallback.classList.remove('hidden');
+                });
+                card.querySelector('[data-expand]').addEventListener('click', () => {
+                    expandedFigureId = isExpanded ? null : item.id;
+                    renderGrid(data);
+                });
+                card.querySelector('[data-full-profile]').addEventListener('click', () => openModal(item));
                 gridContainer.appendChild(card);
             });
         }
