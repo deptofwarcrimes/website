@@ -29,10 +29,11 @@ h1{font-family:Georgia,"Times New Roman",serif;font-size:clamp(44px,6.5vw,82px);
 .profile:hover{transform:translateY(-4px);border-color:rgba(226,201,144,.67);background:#293248}
 .name{font:700 clamp(12px,1.2vw,17px)/1.2 Georgia,"Times New Roman",serif;display:flex;align-items:center;justify-content:center;min-height:43px;margin-bottom:10px;overflow-wrap:anywhere}
 .portrait{aspect-ratio:1.08/1;display:block;width:100%;object-fit:cover;border-radius:7px;background:#101624}
-.portrait-toggle{cursor:pointer;display:block;width:100%;padding:0;border:0;background:transparent;color:inherit}
+.portrait-toggle{cursor:pointer;position:relative;display:block;width:100%;padding:0;border:0;border-radius:7px;overflow:hidden;background:transparent;color:inherit}
+.portrait-toggle.is-public-break:after{content:"×";position:absolute;inset:-8% 0 auto 0;z-index:1;color:rgba(225,48,55,.88);font:700 clamp(9rem,14vw,15rem)/.75 Arial,sans-serif;text-align:center;text-shadow:0 2px 14px rgba(0,0,0,.72);pointer-events:none;transform:rotate(-8deg)}
 .profile-details{margin-top:10px;padding:11px;border-top:1px solid var(--stroke);text-align:left;font-size:12px;line-height:1.5;color:var(--muted)}
 .profile-details[hidden]{display:none}.profile-details strong{display:block;color:var(--accent);font-size:10px;letter-spacing:.11em;text-transform:uppercase;margin-bottom:4px}.profile-details p{margin:0}.view-button{cursor:pointer;margin-top:9px;border:1px solid var(--stroke);border-radius:8px;background:#1b2336;color:var(--ink);padding:7px 9px;font:600 11px system-ui,sans-serif}
-.zoomhint{display:flex;justify-content:center;gap:5px;align-items:center;font-size:11px;color:var(--muted);margin-top:9px}
+.zoomhint{display:flex;justify-content:center;gap:5px;align-items:center;font-size:11px;color:var(--muted);margin-top:9px}.profile-details .break-note{color:#f2a2a5}.profile-details a{color:#e2c990;text-underline-offset:2px}.profile-details a:hover{color:#fff0c9}
 .zoomhint svg{width:13px;height:13px;fill:none;stroke:currentColor;stroke-width:2}
 .empty{border:1px dashed var(--stroke);padding:40px;text-align:center;border-radius:12px;color:var(--muted)}
 footer{margin-top:32px;color:#8390ab;font-size:12px;text-align:center;line-height:1.65}
@@ -61,7 +62,7 @@ dialog::backdrop{background:rgba(1,4,11,.88);backdrop-filter:blur(5px)}
 <header>
 <div class="stars" aria-hidden="true">★ ★ ★</div>
 <h1>MAGA 2026</h1>
-<p class="subtitle">Interactive portrait gallery · Click a portrait to reveal basic information, then use “View enlarged portrait” for the full image. Arrow keys move between enlarged portraits.</p>
+<p class="subtitle">Interactive portrait gallery · Click a portrait to reveal basic information, then use “View enlarged portrait” for the full image. A red X marks a documented public break with Trump or the MAGA coalition. Arrow keys move between enlarged portraits.</p>
 </header>
 <div class="toolbar">
 <input class="search" type="search" id="search" autocomplete="off" placeholder="Search people..." aria-label="Search people">
@@ -141,6 +142,11 @@ const KNOWN_FOR={
   "Megyn Kelly":"Journalist, media personality, and podcast host.",
   "Alex Jones":"Radio host and founder of Infowars."
 };
+const PUBLIC_BREAKS={
+  "Candace Owens":{note:"Publicly opposed Trump over the Iran war and his handling of the Epstein files.",source:"Axios · April 14, 2026",url:"https://www.axios.com/2026/04/14/maga-women-media-megaphone"},
+  "Tucker Carlson":{note:"Said he would no longer support the Republican Party after breaking with Trump over the Iran war.",source:"Associated Press · June 22, 2026",url:"https://apnews.com/article/2da45ec63516d0cc9f0d2ea1891839d2"},
+  "Alex Jones":{note:"Publicly criticized Trump over the Iran war; this marker denotes that documented break, not a claim about every political view.",source:"Axios · April 8, 2026",url:"https://www.axios.com/2026/04/08/trump-maga-tucker-carlson-iran-war"}
+};
 let expandedName=null;
 const gallery=document.getElementById('gallery');
 const search=document.getElementById('search');
@@ -168,9 +174,11 @@ function render(){
     const expanded=expandedName===p.name;
     toggle.setAttribute('aria-expanded',String(expanded));
     toggle.setAttribute('aria-label',(expanded?'Hide':'Show')+' basic information for '+p.name);
+    const publicBreak=PUBLIC_BREAKS[p.name];
+    if(publicBreak){toggle.classList.add('is-public-break');toggle.title='Documented public break with Trump or the MAGA coalition';}
     const img=document.createElement('img');img.className='portrait';img.src=p.image;img.alt='Portrait of '+p.name;img.loading=i<12?'eager':'lazy';img.decoding='async';
     const details=document.createElement('div');details.className='profile-details';details.hidden=!expanded;
-    details.innerHTML='<strong>Known for</strong><p>'+ (KNOWN_FOR[p.name]||'Public figure featured in this gallery.') +'</p><p class="zoomhint">Collection: '+(p.group==='original'?'Original screenshot':'Added name')+'</p>';
+    details.innerHTML='<strong>Known for</strong><p>'+ (KNOWN_FOR[p.name]||'Public figure featured in this gallery.') +'</p>'+(publicBreak?'<p class="break-note"><strong>Public break</strong>'+publicBreak.note+' <a href="'+publicBreak.url+'" target="_blank" rel="noopener">'+publicBreak.source+' ↗</a></p>':'')+'<p class="zoomhint">Collection: '+(p.group==='original'?'Original screenshot':'Added name')+'</p>';
     const view=document.createElement('button');view.className='view-button';view.type='button';view.textContent='View enlarged portrait';
     toggle.append(img);toggle.addEventListener('click',()=>{expandedName=expanded?null:p.name;render()});
     view.addEventListener('click',()=>{lastClicked=view;openAt(i)});
