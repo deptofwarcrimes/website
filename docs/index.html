@@ -21,6 +21,7 @@
     button{cursor:pointer}
     button:focus-visible,input:focus-visible,select:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
     button:disabled{opacity:.4;cursor:not-allowed}
+    .sr-only{position:absolute;width:1px;height:1px;padding:0;margin:-1px;overflow:hidden;clip:rect(0,0,0,0);white-space:nowrap;border:0}
     .app{height:100dvh;min-height:420px;display:flex;flex-direction:column;background:linear-gradient(145deg,#0b1522 0%,#07101c 44%,#07101c 100%)}
     .topbar{height:78px;flex:0 0 78px;border-bottom:1px solid #223149;background:#0b1421eF;display:flex;align-items:center;justify-content:space-between;gap:18px;padding:0 25px;z-index:30}
     .brand{display:flex;gap:14px;align-items:center;min-width:0}
@@ -83,6 +84,7 @@
     .workspace{min-width:0;min-height:0;position:relative;overflow:hidden;background:#080f1b}
     .workspace::before{content:"";position:absolute;inset:0;z-index:0;pointer-events:none;background:radial-gradient(ellipse at 48% 36%,rgba(19,91,114,.19),transparent 60%),radial-gradient(ellipse at 85% 91%,rgba(46,36,110,.12),transparent 48%),linear-gradient(rgba(92,130,160,.035) 1px,transparent 1px),linear-gradient(90deg,rgba(92,130,160,.035) 1px,transparent 1px);background-size:auto,auto,40px 40px,40px 40px}
     #cv{display:block;width:100%;height:100%;position:absolute;z-index:1;cursor:grab;touch-action:none}
+    #cv:focus-visible{outline:2px solid var(--accent);outline-offset:-3px}
     #cv.dragging{cursor:grabbing}
     .workspace-head{position:absolute;left:26px;right:26px;top:22px;z-index:6;display:flex;justify-content:space-between;align-items:flex-start;gap:12px;pointer-events:none}
     .workspace-title{padding-top:3px;max-width:520px}
@@ -157,7 +159,7 @@
         <div class="top-separator"></div><div class="top-sub"><strong>Strategic influence topology</strong>FARA · Corporate · Digital infrastructure</div>
       </div>
       <div class="top-actions">
-        <button class="btn hide-mobile" id="btn-relationships" title="Change connection display"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><circle cx="5" cy="12" r="2"/><circle cx="19" cy="5" r="2"/><circle cx="19" cy="19" r="2"/><path d="M7 11l10-5M7 13l10 5"/></svg><span>Connections</span></button>
+        <button class="btn hide-mobile" id="btn-relationships" title="Change connection display"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><circle cx="5" cy="12" r="2"/><circle cx="19" cy="5" r="2"/><circle cx="19" cy="19" r="2"/><path d="M7 11l10-5M7 13l10 5"/></svg><span id="connection-status">Links: Focused</span></button>
         <button class="btn hide-mobile" id="btn-reset" title="Clear highlighted nodes">Reset highlights</button>
         <button class="btn btn-primary" id="btn-auto"><svg viewBox="0 0 24 24" fill="currentColor" id="auto-icon"><path d="m8 5 12 7-12 7z"/></svg><span id="auto-text">Trace network</span></button>
       </div>
@@ -168,15 +170,15 @@
           <div class="side-head"><h2>Explore network</h2><span class="tiny-count" id="sidebar-total">97 entities</span></div>
           <div class="search-wrap"><span class="search-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="7"/><path d="m16 16 5 5"/></svg></span><input id="search" placeholder="Find entity, domain, IP..." aria-label="Search entities" autocomplete="off"><span class="keycap">/</span></div>
           <div class="section-header"><span class="sidebar-label">Investigation scope</span></div>
-          <div class="scope-grid" id="scopes"><button class="scope active" data-scope="all">All networks</button><button class="scope" data-scope="corporate">FARA + Corporate</button><button class="scope" data-scope="digital">CTX + Outreach</button><button class="scope" data-scope="tpusa">TPUSA Hosting</button><button class="scope" data-scope="research">New domains (22)</button></div>
+          <div class="scope-grid" id="scopes"><button class="scope active" data-scope="all">All networks</button><button class="scope" data-scope="corporate">FARA + Corporate</button><button class="scope" data-scope="digital" title="Clock Tower X digital infrastructure and outreach">Clock Tower X outreach</button><button class="scope" data-scope="tpusa" title="Turning Point USA linked web hosting">TPUSA web hosting</button><button class="scope" data-scope="research">New domains (22)</button></div>
           <div class="side-section"><div class="section-header"><span class="sidebar-label">Clusters</span><button class="link-btn" id="clear-category">Show all</button></div><div class="category-list" id="category-list"></div></div>
-          <div class="side-section" id="results-heading" style="display:none"><div class="section-header"><span class="sidebar-label">Matching entities</span><span class="tiny-count" id="match-count">0</span></div><div class="results" id="results"></div></div>
+          <div class="side-section" id="results-heading"><div class="section-header"><span class="sidebar-label">Entity list</span><span class="tiny-count" id="match-count">0</span><button class="link-btn" id="browse-entities" aria-expanded="false" aria-controls="results">Browse all</button></div><div class="results" id="results"></div></div>
           <div class="side-tip"><strong>Explore the relationships</strong><p>Newly researched domains show source citations and review dates in the entity panel. Shared IPs or hosting providers alone do not prove ownership, funding or coordination.</p></div>
         </div>
         <div class="sidebar-footer"><span class="live-dot"></span><span>PUBLIC-SOURCE EXPANSION · 29 OCT 2026</span></div>
       </aside>
       <main class="workspace" id="workspace">
-        <canvas id="cv" aria-label="Interactive topology graph. Use search and category filters for keyboard navigation."></canvas>
+        <canvas id="cv" tabindex="0" aria-label="Interactive topology graph" aria-describedby="graph-keyboard-help"></canvas><p class="sr-only" id="graph-keyboard-help">Use the arrow keys to move through visible entities. Press Enter or Space to open the selected entity. Press Home or End to jump to the first or last visible entity.</p>
         <div class="workspace-head">
           <div class="workspace-title"><div class="eyebrow">Network overview / investigation workspace</div><h1>Follow the relationships.</h1><p>Explore the original topology alongside 22 newly sourced public websites and program domains.</p></div>
           <div class="mode-tools"><label for="connection-mode">LINK VISIBILITY</label><select id="connection-mode" aria-label="Choose link visibility"><option value="focus">Focused only</option><option value="explicit">Primary connections</option><option value="shared">Shared infrastructure</option><option value="none">Hidden</option></select></div>
@@ -192,7 +194,7 @@
         </section>
       </main>
     </div>
-    <footer class="bottomline"><span><strong>RESEARCH NOTE</strong>  Original 97 records are user-supplied and not independently verified. 22 new domains include source URLs. Shared infrastructure ≠ affiliation.</span><span class="kbd-help">22 VERIFIED ADDITIONS &nbsp;·&nbsp; DRAG to pan &nbsp;·&nbsp; SCROLL to zoom &nbsp;·&nbsp; / search &nbsp;·&nbsp; ESC close</span></footer>
+    <footer class="bottomline"><span><strong>RESEARCH NOTE</strong>  Original 97 records are user-supplied and not independently verified. 22 new domains include source URLs. Shared infrastructure ≠ affiliation.</span><span class="kbd-help">22 VERIFIED ADDITIONS &nbsp;·&nbsp; DRAG to pan &nbsp;·&nbsp; SCROLL to zoom &nbsp;·&nbsp; ↑↓ browse &nbsp;·&nbsp; / search &nbsp;·&nbsp; ESC close</span></footer>
   </div>
 <script>
 'use strict';
@@ -519,7 +521,7 @@ LINKS.forEach(l=>{if(adjacency.has(l.s))adjacency.get(l.s).push(l);if(adjacency.
 const $=id=>document.getElementById(id);
 const canvas=$('cv'),context=canvas.getContext('2d');
 const workspace=$('workspace');
-const state={scope:'all',category:null,query:'',selected:null,hover:null,highlighted:new Set(),mode:'focus',zoom:.6,cx:0,cy:35,w:0,h:0,down:null,dragged:false,auto:null,frame:0};
+const state={scope:'all',category:null,query:'',browseAll:false,selected:null,hover:null,highlighted:new Set(),mode:'focus',zoom:.6,cx:0,cy:35,w:0,h:0,down:null,dragged:false,auto:null,frame:0};
 const bounding={minX:-840,minY:-560,maxX:835,maxY:950};
 const reduceMotion=window.matchMedia('(prefers-reduced-motion: reduce)').matches;
 const truncate=(s,n=31)=>s.length>n?s.slice(0,n-1)+'…':s;
@@ -688,18 +690,25 @@ function updateFilter(){
 }
 function updateSearchResults(){
  const box=$('results'),title=$('results-heading');box.replaceChildren();
- const show=state.query.trim().length>0||state.category!==null;
- title.style.display=show?'block':'none';box.classList.toggle('visible',show);
- if(!show)return;
+ const show=state.browseAll||state.query.trim().length>0||state.category!==null;
  const matches=NODES.filter(isVisible);
+ title.style.display='block';box.classList.toggle('visible',show);
+ $('browse-entities').textContent=state.browseAll?'Hide list':'Browse all';$('browse-entities').setAttribute('aria-expanded',String(state.browseAll));
  $('match-count').textContent=matches.length;
+ if(!show)return;
  if(!matches.length){const empty=document.createElement('div');empty.className='empty';empty.textContent='No entities match this search and filter.';box.appendChild(empty);return}
  matches.slice(0,60).forEach(n=>{
   const b=document.createElement('button');b.className='result';b.innerHTML='<div class="result-name"></div><div class="result-cat"></div>';
   b.querySelector('.result-name').textContent=n.d;b.querySelector('.result-cat').textContent=n.cat;
   b.onclick=()=>{selectNode(n,true);$('sidebar').classList.remove('show')};box.appendChild(b);
  });
- if(matches.length>60){const more=document.createElement('div');more.className='empty';more.textContent=`Showing first 60 of ${matches.length} matches`;box.appendChild(more)}
+ if(matches.length>60){const more=document.createElement('div');more.className='empty';more.textContent=`Showing first 60 of ${matches.length} entities. Refine your search to narrow the list.`;box.appendChild(more)}
+}
+function keyboardNodes(){return NODES.filter(isVisible).sort((a,b)=>a.d.localeCompare(b.d))}
+function moveKeyboardNode(delta){
+ const nodes=keyboardNodes();if(!nodes.length){toast('No visible entities to select');return}
+ const current=state.selected?nodes.findIndex(n=>n.id===state.selected.id):-1;
+ const next=nodes[(current+delta+nodes.length)%nodes.length];selectNode(next,true);toast(`${next.d} selected`);
 }
 function escapeSelector(str){return str.replace(/[<>&"']/g,c=>({'<':'&lt;','>':'&gt;','&':'&amp;','"':'&quot;',"'":'&#39;'}[c]))}
 function selectNode(n,center=true){
@@ -733,7 +742,7 @@ function stopAuto(){if(state.auto){clearInterval(state.auto);state.auto=null}$('
 function toggleAuto(){if(state.auto){stopAuto();return}state.auto=setInterval(()=>{if(NODES.filter(isVisible).every(n=>state.highlighted.has(n.id))){stopAuto();return}traceNext(false)},650);$('auto-text').textContent='Pause trace';$('auto-icon').innerHTML='<path d="M7 5h4v14H7zM15 5h4v14h-4z"/>'}
 let toastTimer;
 function toast(message){const el=$('toast');el.textContent=message;el.classList.add('show');clearTimeout(toastTimer);toastTimer=setTimeout(()=>el.classList.remove('show'),2600)}
-canvas.addEventListener('pointerdown',e=>{if(e.button!==0)return;canvas.setPointerCapture(e.pointerId);const r=canvas.getBoundingClientRect(),x=e.clientX-r.left,y=e.clientY-r.top;state.down={x,y,cx:state.cx,cy:state.cy,node:nearestNode(screenToWorld(x,y))};state.dragged=false;canvas.classList.add('dragging')});
+canvas.addEventListener('pointerdown',e=>{if(e.button!==0)return;canvas.focus({preventScroll:true});canvas.setPointerCapture(e.pointerId);const r=canvas.getBoundingClientRect(),x=e.clientX-r.left,y=e.clientY-r.top;state.down={x,y,cx:state.cx,cy:state.cy,node:nearestNode(screenToWorld(x,y))};state.dragged=false;canvas.classList.add('dragging')});
 canvas.addEventListener('pointermove',e=>{
  const r=canvas.getBoundingClientRect(),x=e.clientX-r.left,y=e.clientY-r.top;
  if(state.down){const dx=x-state.down.x,dy=y-state.down.y;if(Math.hypot(dx,dy)>4)state.dragged=true;
@@ -750,15 +759,24 @@ $('btn-step').onclick=()=>traceNext(true);$('btn-auto').onclick=toggleAuto;
 $('d-btn').onclick=()=>{const n=state.selected;if(!n)return;if(state.highlighted.has(n.id))state.highlighted.delete(n.id);else state.highlighted.add(n.id);updateCounts();selectNode(n,false)};
 $('copy-node').onclick=async()=>{const n=state.selected;if(!n)return;const details=`${n.d}\n${n.e}\nCategory: ${n.cat}\nRegistration/network: ${n.fara}\nRelationship: ${n.rel}\nMetadata: ${n.aux||'N/A'}\nSource: ${n.src||'Not individually verified'}\nReviewed: ${n.verified||'Not recorded'}\n\nOriginal records are user-supplied; new website associations are sourced. Shared hosting is not evidence of ownership or coordination.`;try{await navigator.clipboard.writeText(details);toast('Entity details copied')}catch{toast('Clipboard unavailable in this browser context')}};
 $('close-inspector').onclick=closeInspector;
-$('connection-mode').onchange=e=>state.mode=e.target.value;
-$('btn-relationships').onclick=()=>{const modes=['focus','explicit','shared','none'];state.mode=modes[(modes.indexOf(state.mode)+1)%modes.length];$('connection-mode').value=state.mode;toast('Link visibility: '+$('connection-mode').selectedOptions[0].textContent)};
+function updateConnectionModeUI(){const label=$('connection-mode').selectedOptions[0].textContent;$('connection-status').textContent='Links: '+label.replace(' only','');$('btn-relationships').setAttribute('aria-label','Connection visibility: '+label+'. Activate to change.');}
+$('connection-mode').onchange=e=>{state.mode=e.target.value;updateConnectionModeUI()};
+$('btn-relationships').onclick=()=>{const modes=['focus','explicit','shared','none'];state.mode=modes[(modes.indexOf(state.mode)+1)%modes.length];$('connection-mode').value=state.mode;updateConnectionModeUI();toast('Link visibility: '+$('connection-mode').selectedOptions[0].textContent)};
 $('search').addEventListener('input',e=>{state.query=e.target.value.trim();updateFilter()});
+$('browse-entities').onclick=()=>{state.browseAll=!state.browseAll;updateSearchResults()};
 $('clear-category').onclick=()=>{state.category=null;state.query='';$('search').value='';state.scope='all';updateFilter();fit()};
 document.querySelectorAll('.scope').forEach(b=>b.onclick=()=>{state.scope=b.dataset.scope;state.category=null;updateFilter();if(state.scope==='all')fit();else {const region=REGIONS.find(r=>r.id===state.scope);state.cx=region.x+region.w/2;state.cy=region.y+region.h/2;state.zoom=Math.max(.35,Math.min(1.25,(state.w-50)/region.w,(state.h-160)/region.h))}});
 $('mobile-menu').onclick=()=>{$('sidebar').classList.toggle('show')};
+canvas.addEventListener('keydown',e=>{
+ if(['ArrowDown','ArrowRight'].includes(e.key)){e.preventDefault();moveKeyboardNode(1)}
+ else if(['ArrowUp','ArrowLeft'].includes(e.key)){e.preventDefault();moveKeyboardNode(-1)}
+ else if(e.key==='Home'){e.preventDefault();const nodes=keyboardNodes();if(nodes.length)selectNode(nodes[0],true)}
+ else if(e.key==='End'){e.preventDefault();const nodes=keyboardNodes();if(nodes.length)selectNode(nodes[nodes.length-1],true)}
+ else if(e.key==='Enter'||e.key===' '){e.preventDefault();if(state.selected)selectNode(state.selected,true);else moveKeyboardNode(1)}
+});
 document.addEventListener('keydown',e=>{if(e.key==='/'&&document.activeElement?.tagName!=='INPUT'){e.preventDefault();$('search').focus();$('sidebar').classList.add('show')}if(e.key==='Escape'){closeInspector();$('sidebar').classList.remove('show');$('search').blur();showHover(null,0,0)}if((e.key==='f'||e.key==='F')&&!['INPUT','SELECT'].includes(document.activeElement?.tagName))fit()});
 window.addEventListener('resize',()=>{canvasSize();if(!state.selected)fit()});
-setPositions();canvasSize();fit();buildCategories();updateCounts();updateSearchResults();requestAnimationFrame(paint);
+setPositions();canvasSize();fit();buildCategories();updateCounts();updateSearchResults();updateConnectionModeUI();requestAnimationFrame(paint);
 </script>
 <!-- Influence Atlas cinematic database entrance: add immediately before </body> -->
 <style>
