@@ -1,2015 +1,428 @@
 <!doctype html>
-<html lang="en" class="dark">
+<html lang="en">
 <head>
 <meta charset="utf-8">
-<meta name="viewport" content="width=device-width,initial-scale=1">
-<title>U.S. Taxpayer → Government → Israel Money Flow</title>
-
-<!-- Tailwind CSS CDN for utility classes alongside custom bleeding-edge CSS -->
-<script src="https://cdn.tailwindcss.com"></script>
-
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="theme-color" content="#0a1018">
+<meta name="description" content="An interactive, editable model of U.S.–Israel assistance, procurement, and illustrative bilateral financial flows.">
+<title>Follow the Money | U.S.–Israel Flow Model</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700;800&family=IBM+Plex+Mono:wght@400;500;600;700&family=Instrument+Serif:ital@0;1&display=swap" rel="stylesheet">
 <style>
-@import url('https://fonts.googleapis.com/css2?family=Cinzel:wght@700;800;900&family=Inter:wght@400;500;600;700;800;900&family=JetBrains+Mono:wght@500;700;800&display=swap');
-
-/* 1. Bleeding-Edge CSS @property for Animated Conic Borders */
-@property --border-angle {
-  syntax: "<angle>";
-  inherits: true;
-  initial-value: 0turn;
-}
-
-:root {
-  --c: #00e5ff;
-  --v: #9b5cff;
-  --g: #54f0a8;
-  --y: #ffd166;
-  --r: #ff4d6d;
-  --bg: #02030a;
-  --p: rgba(8, 12, 26, 0.84);
-  --t: #f8fbff;
-  --m: #a9b4cc;
-  --speed-mult: 1;
-}
-
-* {
-  box-sizing: border-box;
-}
-
-html {
-  scroll-behavior: smooth;
-  color-scheme: dark;
-}
-
-body {
-  margin: 0;
-  background:
-    radial-gradient(circle at 15% 15%, rgba(0, 229, 255, 0.22), transparent 30%),
-    radial-gradient(circle at 85% 8%, rgba(155, 92, 255, 0.28), transparent 32%),
-    linear-gradient(#000, #02030a);
-  color: var(--t);
-  font-family: 'Inter', system-ui, -apple-system, sans-serif;
-  overflow-x: hidden;
-  min-height: 100vh;
-}
-
-/* Futuristic Grid Background */
-body::before {
-  content: "";
-  position: fixed;
-  inset: 0;
-  pointer-events: none;
-  background-image:
-    linear-gradient(rgba(0, 229, 255, 0.04) 1px, transparent 1px),
-    linear-gradient(90deg, rgba(0, 229, 255, 0.04) 1px, transparent 1px);
-  background-size: 54px 54px;
-  mask-image: radial-gradient(circle at 50% 35%, black 35%, transparent 90%);
-  z-index: 0;
-}
-
-/* Ambient Rotating Conic Aura */
-body::after {
-  content: "";
-  position: fixed;
-  inset: -25%;
-  pointer-events: none;
-  background: conic-gradient(from 180deg, transparent, rgba(0, 229, 255, 0.09), transparent, rgba(155, 92, 255, 0.09), transparent);
-  animation: spin 22s linear infinite;
-  z-index: 1;
-  mix-blend-mode: screen;
-}
-
-.mono {
-  font-family: 'JetBrains Mono', monospace;
-  font-variant-numeric: tabular-nums;
-}
-
-h1, h2, h3, .cinzel {
-  font-family: 'Cinzel', Georgia, serif;
-}
-
-.page {
-  position: relative;
-  z-index: 2;
-  width: min(1440px, calc(100% - 28px));
-  margin: auto;
-  padding: 20px 0 80px;
-}
-
-/* Animated Conic Border Utility */
-.conic-card {
-  --border-angle: 0turn;
-  border: 1px solid transparent;
-  background:
-    linear-gradient(145deg, rgba(12, 18, 38, 0.92), rgba(5, 8, 20, 0.95)) padding-box,
-    conic-gradient(
-      from var(--border-angle),
-      rgba(0, 229, 255, 0.15) 10%,
-      var(--c) 25%,
-      var(--v) 50%,
-      var(--r) 75%,
-      rgba(0, 229, 255, 0.15) 90%
-    ) border-box;
-  animation: borderSpin 10s linear infinite;
-}
-
-@keyframes borderSpin {
-  to {
-    --border-angle: 1turn;
-  }
-}
-
-/* 3D Perspective Tilt & Spotlight Glow Card */
-.tilt-card {
-  --rx: 0deg;
-  --ry: 0deg;
-  --mx: 50%;
-  --my: 50%;
-  transform: perspective(1000px) rotateX(var(--rx)) rotateY(var(--ry));
-  transition: transform 0.18s cubic-bezier(0.2, 0.8, 0.2, 1), border-color 0.25s ease, box-shadow 0.25s ease;
-  will-change: transform;
-}
-
-.tilt-card::before {
-  content: "";
-  position: absolute;
-  inset: 0;
-  border-radius: inherit;
-  pointer-events: none;
-  background: radial-gradient(
-    360px circle at var(--mx) var(--my),
-    rgba(0, 229, 255, 0.16),
-    transparent 65%
-  );
-  opacity: 0;
-  transition: opacity 0.3s ease;
-  z-index: 0;
-}
-
-.tilt-card:hover::before {
-  opacity: 1;
-}
-
-/* Hero Section */
-.hero {
-  position: relative;
-  overflow: hidden;
-  min-height: 410px;
-  display: grid;
-  place-items: center;
-  text-align: center;
-  margin: 8px 0 18px;
-  padding: clamp(30px, 5vw, 64px);
-  border-radius: 36px;
-  box-shadow: 0 30px 90px #000, inset 0 0 90px rgba(155, 92, 255, 0.12);
-  backdrop-filter: blur(18px);
-}
-
-.hero-ribbon {
-  position: absolute;
-  top: 34px;
-  right: -76px;
-  transform: rotate(28deg);
-  padding: 10px 90px;
-  background: linear-gradient(90deg, var(--r), var(--y));
-  color: #140006;
-  font-weight: 900;
-  font-size: 0.76rem;
-  letter-spacing: 0.18em;
-  box-shadow: 0 0 28px rgba(255, 77, 109, 0.5);
-  z-index: 3;
-}
-
-.hero-ring {
-  position: absolute;
-  width: 520px;
-  height: 520px;
-  border-radius: 50%;
-  border: 1px solid rgba(0, 229, 255, 0.22);
-  box-shadow: inset 0 0 44px rgba(0, 229, 255, 0.12), 0 0 60px rgba(155, 92, 255, 0.12);
-  animation: pulse 4.5s ease-in-out infinite;
-  pointer-events: none;
-}
-
-.eyebrow {
-  display: inline-flex;
-  align-items: center;
-  gap: 8px;
-  margin: 0 0 16px;
-  padding: 8px 16px;
-  border: 1px solid rgba(0, 229, 255, 0.42);
-  border-radius: 999px;
-  color: var(--c);
-  background: rgba(0, 229, 255, 0.08);
-  text-transform: uppercase;
-  letter-spacing: 0.2em;
-  font-size: 0.74rem;
-  font-weight: 900;
-}
-
-h1 {
-  max-width: 1080px;
-  margin: 0 auto;
-  font-size: clamp(2.3rem, 6vw, 5.6rem);
-  line-height: 0.98;
-  font-weight: 800;
-  letter-spacing: -0.04em;
-  text-shadow: 0 0 38px rgba(0, 229, 255, 0.42), 0 0 72px rgba(155, 92, 255, 0.3);
-}
-
-.rule {
-  width: min(420px, 72%);
-  height: 4px;
-  margin: 24px auto 20px;
-  border-radius: 999px;
-  background: linear-gradient(90deg, transparent, var(--r), var(--y), var(--c), transparent);
-  box-shadow: 0 0 20px rgba(0, 229, 255, 0.42);
-}
-
-.subtitle {
-  max-width: 940px;
-  margin: 0 auto 24px;
-  color: #dbe5f6;
-  line-height: 1.7;
-  font-size: clamp(0.98rem, 1.45vw, 1.16rem);
-}
-
-.meta {
-  display: flex;
-  flex-wrap: wrap;
-  justify-content: center;
-  gap: 10px;
-}
-
-.pill {
-  display: inline-flex;
-  align-items: center;
-  gap: 8px;
-  border-radius: 999px;
-  border: 1px solid rgba(0, 229, 255, 0.28);
-  background: rgba(0, 229, 255, 0.075);
-  color: #d9f9ff;
-  padding: 9px 14px;
-  font-size: 0.82rem;
-  font-weight: 800;
-}
-
-.pill::before {
-  content: "";
-  width: 7px;
-  height: 7px;
-  border-radius: 50%;
-  background: var(--g);
-  box-shadow: 0 0 12px var(--g);
-}
-
-/* Sticky Navigation & Controls Bar */
-.nav-bar {
-  position: sticky;
-  top: 12px;
-  z-index: 40;
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  flex-wrap: wrap;
-  gap: 10px;
-  width: fit-content;
-  max-width: 100%;
-  margin: 0 auto 24px;
-  padding: 8px 12px;
-  border: 1px solid rgba(0, 229, 255, 0.22);
-  border-radius: 999px;
-  background: rgba(4, 7, 18, 0.78);
-  backdrop-filter: blur(20px);
-  box-shadow: 0 16px 40px rgba(0, 0, 0, 0.6);
-}
-
-.nav-links {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 6px;
-}
-
-.nav-bar a, .nav-btn {
-  border: 1px solid rgba(255, 255, 255, 0.12);
-  border-radius: 999px;
-  padding: 9px 15px;
-  color: #cbd6ef;
-  background: rgba(255, 255, 255, 0.04);
-  font-size: 0.8rem;
-  font-weight: 800;
-  text-transform: uppercase;
-  letter-spacing: 0.08em;
-  text-decoration: none;
-  cursor: pointer;
-  transition: all 0.2s ease;
-  display: inline-flex;
-  align-items: center;
-  gap: 6px;
-}
-
-.nav-bar a:hover, .nav-btn:hover, .nav-btn.active {
-  color: #041016;
-  background: var(--c);
-  border-color: var(--c);
-  box-shadow: 0 0 22px rgba(0, 229, 255, 0.45);
-}
-
-/* Sections */
-.section {
-  position: relative;
-  overflow: hidden;
-  margin: 26px 0;
-  padding: clamp(22px, 3vw, 36px);
-  border: 1px solid rgba(0, 229, 255, 0.2);
-  border-radius: 28px;
-  background: linear-gradient(145deg, rgba(255, 255, 255, 0.06), rgba(255, 255, 255, 0.015)), rgba(8, 12, 26, 0.72);
-  backdrop-filter: blur(16px);
-  box-shadow: 0 24px 70px rgba(0, 0, 0, 0.35);
-}
-
-.section > * {
-  position: relative;
-  z-index: 1;
-}
-
-.section-head {
-  display: flex;
-  flex-wrap: wrap;
-  justify-content: space-between;
-  align-items: flex-end;
-  gap: 16px;
-  margin-bottom: 24px;
-}
-
-.section-head h2 {
-  margin: 0;
-  font-size: clamp(1.85rem, 3.5vw, 3rem);
-  line-height: 1.05;
-  letter-spacing: -0.03em;
-}
-
-.section-head p {
-  max-width: 880px;
-  margin: 8px 0 0;
-  color: #cbd6ea;
-  line-height: 1.65;
-}
-
-/* Scenario Preset Pills */
-.preset-bar {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 8px;
-  margin-bottom: 22px;
-}
-
-.preset-btn {
-  padding: 9px 15px;
-  border-radius: 999px;
-  border: 1px solid rgba(0, 229, 255, 0.28);
-  background: rgba(0, 229, 255, 0.06);
-  color: #dffaff;
-  font-size: 0.82rem;
-  font-weight: 800;
-  cursor: pointer;
-  transition: all 0.2s ease;
-}
-
-.preset-btn:hover, .preset-btn.active {
-  background: linear-gradient(90deg, var(--c), var(--v));
-  color: #02050d;
-  border-color: transparent;
-  box-shadow: 0 0 24px rgba(0, 229, 255, 0.45);
-}
-
-/* Stat Grid */
-.stat-grid {
-  display: grid;
-  grid-template-columns: repeat(4, 1fr);
-  gap: 14px;
-  margin-bottom: 24px;
-}
-
-.stat {
-  position: relative;
-  min-height: 126px;
-  padding: 18px 20px;
-  border: 1px solid rgba(255, 255, 255, 0.12);
-  border-radius: 22px;
-  background: radial-gradient(circle at top right, rgba(0, 229, 255, 0.16), transparent 45%), rgba(255, 255, 255, 0.04);
-  overflow: hidden;
-}
-
-.stat::after {
-  content: "";
-  position: absolute;
-  left: 18px;
-  right: 18px;
-  bottom: 12px;
-  height: 3px;
-  border-radius: 999px;
-  background: linear-gradient(90deg, var(--r), var(--y), var(--c));
-}
-
-.stat > * {
-  position: relative;
-  z-index: 1;
-}
-
-.stat span.label {
-  display: block;
-  margin-bottom: 8px;
-  color: var(--m);
-  font-size: 0.72rem;
-  font-weight: 900;
-  text-transform: uppercase;
-  letter-spacing: 0.12em;
-}
-
-.stat strong {
-  display: block;
-  font-size: clamp(1.35rem, 2.2vw, 2rem);
-  line-height: 1.15;
-}
-
-.stat .sub-stat {
-  display: block;
-  margin-top: 6px;
-  font-size: 0.76rem;
-  color: var(--g);
-  font-weight: 700;
-}
-
-/* Flow Stage & Bezier / Particle Overlay */
-.flow-stage {
-  position: relative;
-  min-height: 650px;
-  border: 1px solid rgba(0, 229, 255, 0.28);
-  border-radius: 30px;
-  background:
-    radial-gradient(circle at 15% 32%, rgba(0, 229, 255, 0.2), transparent 25%),
-    radial-gradient(circle at 50% 32%, rgba(255, 209, 102, 0.15), transparent 24%),
-    radial-gradient(circle at 85% 32%, rgba(255, 77, 109, 0.2), transparent 25%),
-    rgba(2, 4, 12, 0.65);
-  overflow: hidden;
-}
-
-#flowCanvas {
-  position: absolute;
-  inset: 0;
-  width: 100%;
-  height: 100%;
-  pointer-events: none;
-  z-index: 1;
-}
-
-.node {
-  position: absolute;
-  width: 256px;
-  min-height: 196px;
-  display: grid;
-  place-items: center;
-  text-align: center;
-  padding: 16px;
-  border: 1px solid rgba(255, 255, 255, 0.18);
-  border-radius: 28px;
-  background: rgba(10, 16, 34, 0.76);
-  backdrop-filter: blur(12px);
-  box-shadow: 0 22px 60px rgba(0, 0, 0, 0.45);
-  cursor: pointer;
-  z-index: 5;
-}
-
-.node:hover {
-  border-color: var(--c);
-  box-shadow: 0 0 35px rgba(0, 229, 255, 0.3), 0 22px 60px rgba(0, 0, 0, 0.5);
-}
-
-.node h3 {
-  margin: 8px 0 0;
-  font-size: 1.55rem;
-}
-
-.node p {
-  margin: 6px 8px 10px;
-  color: #cbd6ea;
-  font-size: 0.88rem;
-  line-height: 1.45;
-}
-
-.node-badge {
-  display: inline-flex;
-  align-items: center;
-  gap: 5px;
-  padding: 4px 10px;
-  border-radius: 999px;
-  font-size: 0.7rem;
-  font-weight: 800;
-  text-transform: uppercase;
-  letter-spacing: 0.08em;
-  background: rgba(0, 229, 255, 0.12);
-  color: var(--c);
-  border: 1px solid rgba(0, 229, 255, 0.3);
-}
-
-.flag {
-  font-size: 3.6rem;
-  filter: drop-shadow(0 0 24px rgba(0, 229, 255, 0.45));
-}
-
-.taxpayer {
-  left: 3%;
-  top: 88px;
-}
-
-.government {
-  left: 50%;
-  top: 88px;
-  transform: translateX(-50%);
-}
-
-.government.tilt-card {
-  transform: translateX(-50%) perspective(1000px) rotateX(var(--rx)) rotateY(var(--ry));
-}
-
-.israel {
-  right: 3%;
-  top: 88px;
-}
-
-/* Optional Defense Contractors FMF Loop Node */
-.contractors {
-  left: 50%;
-  bottom: 22px;
-  transform: translateX(-50%);
-  width: 290px;
-  min-height: 115px;
-  padding: 12px 16px;
-  border-color: rgba(84, 240, 168, 0.4);
-  background: rgba(6, 24, 22, 0.82);
-  transition: opacity 0.35s ease, transform 0.35s ease;
-}
-
-.contractors.hidden-node {
-  opacity: 0;
-  pointer-events: none;
-  transform: translateX(-50%) translateY(20px);
-}
-
-.flow-label {
-  position: absolute;
-  left: 50%;
-  transform: translateX(-50%);
-  padding: 9px 15px;
-  border-radius: 999px;
-  border: 1px solid rgba(0, 229, 255, 0.32);
-  background: rgba(3, 6, 16, 0.82);
-  color: #eafcff;
-  font-size: 0.85rem;
-  font-weight: 900;
-  white-space: nowrap;
-  z-index: 6;
-  backdrop-filter: blur(8px);
-}
-
-.mini-track {
-  position: absolute;
-  height: 84px;
-  border-radius: 999px;
-  border: 1px solid rgba(255, 255, 255, 0.13);
-  background: rgba(255, 255, 255, 0.03);
-  overflow: hidden;
-  z-index: 3;
-}
-
-.mini-track::before {
-  content: "";
-  position: absolute;
-  left: 0;
-  right: 0;
-  top: 40px;
-  height: 4px;
-  border-radius: 999px;
-  background: linear-gradient(90deg, transparent, var(--c), var(--y), transparent);
-  box-shadow: 0 0 18px rgba(0, 229, 255, 0.6);
-}
-
-.tax-track {
-  left: 22%;
-  right: 54%;
-  top: 145px;
-}
-
-.aid-track {
-  left: 54%;
-  right: 22%;
-  top: 145px;
-}
-
-.israel-tax-track {
-  left: 24%;
-  right: 24%;
-  bottom: 165px;
-}
-
-.israel-tax-track::before {
-  background: linear-gradient(90deg, transparent, var(--r), var(--y), transparent);
-  box-shadow: 0 0 18px rgba(255, 77, 109, 0.55);
-}
-
-/* Dollar bill animation */
-.packet {
-  position: absolute;
-  top: 22px;
-  width: 60px;
-  height: 36px;
-  display: grid;
-  place-items: center;
-  border-radius: 8px;
-  background:
-    radial-gradient(circle at 15% 50%, rgba(255, 255, 255, 0.8) 0 4px, transparent 5px),
-    radial-gradient(circle at 85% 50%, rgba(255, 255, 255, 0.8) 0 4px, transparent 5px),
-    linear-gradient(135deg, #9cffb8, #38d871);
-  border: 2px solid rgba(255, 255, 255, 0.75);
-  color: #063d19;
-  font-weight: 900;
-  font-size: 1.15rem;
-  box-shadow:
-    0 0 16px rgba(84, 240, 168, 0.85),
-    0 0 38px rgba(84, 240, 168, 0.35);
-}
-
-.packet::before {
-  content: "$";
-  width: 22px;
-  height: 22px;
-  display: grid;
-  place-items: center;
-  border-radius: 50%;
-  border: 2px solid rgba(6, 61, 25, 0.45);
-  background: rgba(255, 255, 255, 0.36);
-  line-height: 1;
-}
-
-.packet::after {
-  content: "";
-  position: absolute;
-  inset: 4px;
-  border: 1px solid rgba(6, 61, 25, 0.25);
-  border-radius: 5px;
-  pointer-events: none;
-}
-
-.tax-track .packet {
-  animation: moveRight calc(3.2s / var(--speed-mult)) linear infinite, billFloat 0.9s ease-in-out infinite alternate;
-}
-
-.aid-track .packet {
-  animation: moveRight calc(2.8s / var(--speed-mult)) linear infinite, billFloat 0.9s ease-in-out infinite alternate;
-}
-
-.israel-tax-track .packet {
-  animation: moveLeft calc(4.8s / var(--speed-mult)) linear infinite, billFloat 0.9s ease-in-out infinite alternate;
-  background:
-    radial-gradient(circle at 15% 50%, rgba(255, 255, 255, 0.8) 0 4px, transparent 5px),
-    radial-gradient(circle at 85% 50%, rgba(255, 255, 255, 0.8) 0 4px, transparent 5px),
-    linear-gradient(135deg, #ffc2cc, #ff4d6d);
-  color: #4c0010;
-  box-shadow:
-    0 0 16px rgba(255, 77, 109, 0.85),
-    0 0 38px rgba(255, 77, 109, 0.35);
-}
-
-.packet:nth-child(2) { animation-delay: -0.65s; }
-.packet:nth-child(3) { animation-delay: -1.3s; }
-.packet:nth-child(4) { animation-delay: -1.95s; }
-.packet:nth-child(5) { animation-delay: -2.6s; }
-
-.Paused .packet {
-  animation-play-state: paused !important;
-}
-
-.tax-label {
-  top: 52px;
-  left: 33%;
-}
-
-.aid-label {
-  top: 52px;
-  left: 67%;
-}
-
-.israel-tax-label {
-  bottom: 260px;
-  left: 50%;
-}
-
-/* Stage Toolbar */
-.stage-toolbar {
-  display: flex;
-  flex-wrap: wrap;
-  justify-content: space-between;
-  align-items: center;
-  gap: 12px;
-  margin-bottom: 16px;
-  padding: 12px 18px;
-  border-radius: 18px;
-  border: 1px solid rgba(255, 255, 255, 0.1);
-  background: rgba(0, 0, 0, 0.4);
-}
-
-/* Live Session Ticker Box */
-.ticker-strip {
-  display: grid;
-  grid-template-columns: repeat(3, 1fr);
-  gap: 12px;
-  margin-top: 18px;
-  padding: 16px;
-  border-radius: 20px;
-  border: 1px solid rgba(0, 229, 255, 0.25);
-  background: rgba(3, 9, 23, 0.78);
-}
-
-.note-box {
-  margin-top: 18px;
-  padding: 18px 20px;
-  border: 1px solid rgba(255, 209, 102, 0.35);
-  border-radius: 20px;
-  background: rgba(255, 209, 102, 0.075);
-  color: #fff5cf;
-  line-height: 1.65;
-  font-size: 0.92rem;
-}
-
-/* Bar Comparison & Donut Grid */
-.analytics-grid {
-  display: grid;
-  grid-template-columns: 1.35fr 0.85fr;
-  gap: 20px;
-  align-items: stretch;
-}
-
-.bar-card {
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  gap: 22px;
-  border: 1px solid rgba(255, 255, 255, 0.1);
-  border-left: 5px solid var(--c);
-  border-radius: 24px;
-  padding: 26px;
-  background: linear-gradient(120deg, rgba(0, 229, 255, 0.1), transparent 38%), var(--p);
-}
-
-.bar-row {
-  display: grid;
-  grid-template-columns: 220px 1fr 130px;
-  gap: 14px;
-  align-items: center;
-}
-
-.bar-title {
-  font-weight: 800;
-  color: #fff;
-  font-size: 0.95rem;
-}
-
-.bar {
-  height: 24px;
-  border-radius: 999px;
-  background: rgba(255, 255, 255, 0.08);
-  overflow: hidden;
-  border: 1px solid rgba(255, 255, 255, 0.12);
-}
-
-.fill {
-  width: 0%;
-  height: 100%;
-  border-radius: 999px;
-  background: linear-gradient(90deg, var(--c), var(--y));
-  box-shadow: 0 0 20px rgba(0, 229, 255, 0.45);
-  transition: width 0.6s cubic-bezier(0.22, 1, 0.36, 1);
-}
-
-.fill.reverse {
-  background: linear-gradient(90deg, var(--r), var(--y));
-  box-shadow: 0 0 20px rgba(255, 77, 109, 0.45);
-}
-
-.fill.fmf {
-  background: linear-gradient(90deg, var(--g), var(--c));
-  box-shadow: 0 0 20px rgba(84, 240, 168, 0.45);
-}
-
-.bar-value {
-  color: #dffaff;
-  font-weight: 900;
-  text-align: right;
-}
-
-/* Controls & Inputs */
-.controls {
-  display: grid;
-  grid-template-columns: 1fr 1fr auto;
-  gap: 14px;
-  margin-top: 18px;
-}
-
-label.field-label {
-  display: grid;
-  gap: 8px;
-  color: #cbd6ea;
-  font-weight: 800;
-  font-size: 0.9rem;
-}
-
-input[type="number"], input[type="text"] {
-  min-height: 52px;
-  border: 1px solid rgba(0, 229, 255, 0.34);
-  border-radius: 999px;
-  background: rgba(0, 0, 0, 0.45);
-  color: #fff;
-  padding: 0 18px;
-  font: inherit;
-  outline: none;
-  transition: border-color 0.2s, box-shadow 0.2s;
-}
-
-input[type="number"]:focus {
-  border-color: var(--c);
-  box-shadow: 0 0 18px rgba(0, 229, 255, 0.35);
-}
-
-input[type="range"] {
-  accent-color: var(--c);
-  cursor: pointer;
-}
-
-.action-btn {
-  min-height: 52px;
-  border: 1px solid rgba(0, 229, 255, 0.4);
-  border-radius: 999px;
-  background: linear-gradient(135deg, rgba(0, 229, 255, 0.18), rgba(155, 92, 255, 0.14));
-  color: #fff;
-  padding: 0 24px;
-  font: inherit;
-  cursor: pointer;
-  font-weight: 900;
-  transition: all 0.2s ease;
-}
-
-.action-btn:hover {
-  color: #041016;
-  background: var(--c);
-  border-color: var(--c);
-  box-shadow: 0 0 26px rgba(0, 229, 255, 0.5);
-}
-
-/* Node Inspector Drawer / Modal */
-.inspector-backdrop {
-  position: fixed;
-  inset: 0;
-  background: rgba(2, 4, 12, 0.76);
-  backdrop-filter: blur(10px);
-  z-index: 100;
-  display: grid;
-  place-items: center;
-  padding: 20px;
-  opacity: 0;
-  pointer-events: none;
-  transition: opacity 0.25s ease;
-}
-
-.inspector-backdrop.open {
-  opacity: 1;
-  pointer-events: auto;
-}
-
-.inspector-modal {
-  width: min(680px, 100%);
-  border-radius: 28px;
-  border: 1px solid rgba(0, 229, 255, 0.4);
-  background: linear-gradient(145deg, rgba(10, 16, 36, 0.96), rgba(4, 7, 18, 0.98));
-  padding: 28px;
-  box-shadow: 0 30px 90px rgba(0, 0, 0, 0.85), 0 0 50px rgba(0, 229, 255, 0.2);
-  transform: translateY(16px) scale(0.97);
-  transition: transform 0.25s cubic-bezier(0.2, 0.8, 0.2, 1);
-}
-
-.inspector-backdrop.open .inspector-modal {
-  transform: translateY(0) scale(1);
-}
-
-/* Toast Notification */
-.toast {
-  position: fixed;
-  bottom: 24px;
-  right: 24px;
-  z-index: 120;
-  padding: 12px 20px;
-  border-radius: 999px;
-  border: 1px solid var(--g);
-  background: rgba(5, 16, 24, 0.92);
-  color: var(--g);
-  font-weight: 800;
-  font-size: 0.86rem;
-  box-shadow: 0 12px 35px rgba(0, 0, 0, 0.6);
-  transform: translateY(80px);
-  opacity: 0;
-  transition: all 0.3s ease;
-  pointer-events: none;
-}
-
-.toast.show {
-  transform: translateY(0);
-  opacity: 1;
-}
-
-.footer {
-  max-width: 900px;
-  margin: 28px auto 0;
-  color: var(--m);
-  text-align: center;
-  line-height: 1.7;
-  font-size: 0.86rem;
-}
-
-@keyframes spin { to { transform: rotate(360deg); } }
-@keyframes pulse { 0%, 100% { transform: scale(0.92); opacity: 0.3; } 50% { transform: scale(1.08); opacity: 0.58; } }
-@keyframes moveRight { from { left: -80px; } to { left: calc(100% + 80px); } }
-@keyframes moveLeft { from { right: -80px; } to { right: calc(100% + 80px); } }
-@keyframes billFloat {
-  from { margin-top: -3px; transform: rotate(-4deg); }
-  to { margin-top: 3px; transform: rotate(4deg); }
-}
-
-@media (max-width: 1024px) {
-  .stat-grid { grid-template-columns: repeat(2, 1fr); }
-  .analytics-grid { grid-template-columns: 1fr; }
-  .controls { grid-template-columns: 1fr; }
-  .ticker-strip { grid-template-columns: 1fr; }
-
-  .flow-stage {
-    min-height: 980px;
-    padding-bottom: 24px;
-  }
-
-  .node, .government.tilt-card, .contractors {
-    position: relative;
-    left: auto !important;
-    right: auto !important;
-    top: auto !important;
-    bottom: auto !important;
-    transform: none !important;
-    width: auto;
-    margin: 18px;
-  }
-
-  .mini-track {
-    left: 8% !important;
-    right: 8% !important;
-  }
-
-  .tax-track { top: 245px; }
-  .aid-track { top: 510px; }
-  .israel-tax-track { bottom: 155px; }
-
-  .tax-label, .aid-label, .israel-tax-label {
-    left: 50%;
-    transform: translateX(-50%);
-    white-space: normal;
-    text-align: center;
-    max-width: 88%;
-  }
-
-  .tax-label { top: 215px; }
-  .aid-label { top: 480px; }
-  .israel-tax-label { bottom: 245px; }
-
-  .bar-row { grid-template-columns: 1fr; }
-  .bar-value { text-align: left; }
-}
-
-@media (max-width: 640px) {
-  .stat-grid { grid-template-columns: 1fr; }
-  .nav-bar { border-radius: 22px; width: 100%; justify-content: center; }
-}
+:root{
+  color-scheme:dark;
+  --bg:#0a1018;--shell:#101924;--panel:#141f2b;--panel-alt:#172431;--edge:#2a3a48;
+  --text:#f2f1eb;--muted:#a0afbc;--faint:#758999;--gold:#e5b776;--teal:#70c9b8;
+  --rose:#e88b8b;--blue:#92aacb;--field:#0c1620;
+  --font-ui:'DM Sans',system-ui,sans-serif;--font-data:'IBM Plex Mono',monospace;
+  --radius:16px;
+}
+*,*::before,*::after{box-sizing:border-box}
+[hidden]{display:none!important}
+html{scroll-behavior:smooth;scroll-padding-top:100px;scrollbar-color:#455564 #0a1018;scrollbar-width:thin}
+::-webkit-scrollbar{width:11px;height:11px}
+::-webkit-scrollbar-track{background:var(--bg)}
+::-webkit-scrollbar-thumb{border:3px solid var(--bg);border-radius:12px;background:#455564}
+::-webkit-scrollbar-thumb:hover{background:#67798a}
+body{margin:0;background:var(--bg);color:var(--text);font:400 15px/1.6 var(--font-ui);overflow-x:hidden}
+body::before{content:"";position:absolute;top:0;left:0;right:0;height:640px;pointer-events:none;background:radial-gradient(ellipse at 76% 8%,#22344352,transparent 61%);z-index:-1}
+button,input{font:inherit}button{cursor:pointer}button:disabled{cursor:not-allowed;opacity:.55}
+button:focus-visible,a:focus-visible,input:focus-visible{outline:2px solid var(--gold);outline-offset:4px}
+a{color:inherit}a:hover{color:var(--gold)}strong{font-weight:700}
+.mono{font-family:var(--font-data);font-variant-numeric:tabular-nums}
+.wrap{width:min(1272px,calc(100% - 68px));margin:auto}
+.masthead{height:74px;border-bottom:1px solid #253440;display:flex;align-items:center;justify-content:space-between;gap:24px}
+.brand{display:flex;gap:12px;align-items:center;text-decoration:none}
+.brandmark{width:34px;height:34px;display:grid;place-items:center;background:#1e2b33;border:1px solid #516376;border-radius:9px;position:relative}
+.brandmark:before,.brandmark:after{content:"";position:absolute;height:20px;width:2px;background:var(--gold);transform:rotate(40deg)}
+.brandmark:after{transform:rotate(-40deg)}
+.brand strong{display:block;font-size:13px;letter-spacing:.18em;text-transform:uppercase;line-height:1.25}
+.brand small{display:block;margin-top:1px;color:var(--faint);font:10px var(--font-data);letter-spacing:.1em;text-transform:uppercase}
+.mast-meta{display:flex;align-items:center;gap:16px;color:var(--muted);font:11px var(--font-data);letter-spacing:.07em;text-transform:uppercase}
+.status-dot{width:7px;height:7px;border-radius:50%;background:var(--teal);display:inline-block;box-shadow:0 0 0 4px #70c9b818;margin-right:6px}
+.tiny-rule{height:17px;width:1px;background:var(--edge)}
+.site-nav{position:sticky;top:0;z-index:30;background:#0a1018f2;backdrop-filter:blur(18px);border-bottom:1px solid #253440}
+.nav-inner{display:flex;align-items:center;justify-content:space-between;gap:16px;min-height:57px}
+.nav-links{display:flex;gap:26px;align-items:center;overflow-x:auto;scrollbar-width:none;min-width:0;flex:1}
+.nav-links::-webkit-scrollbar{display:none}
+.nav-links a{white-space:nowrap;text-decoration:none;color:var(--muted);font-size:12px;font-weight:700;letter-spacing:.025em;padding:19px 0;position:relative}
+.nav-links a:hover,.nav-links a.current{color:var(--text)}
+.nav-links a.current:after{content:"";position:absolute;bottom:0;left:0;right:0;height:2px;background:var(--gold)}
+.nav-actions{display:flex;gap:8px;align-items:center;flex-shrink:0}
+.btn{min-height:38px;padding:9px 13px;border-radius:9px;border:1px solid #3a4a57;background:#17222d;color:var(--text);font-size:12px;font-weight:700;display:inline-flex;align-items:center;justify-content:center;gap:8px;transition:background .15s,border-color .15s,transform .15s}
+.btn:hover{background:#22323f;border-color:#61788b;transform:translateY(-1px)}
+.btn:active{transform:translateY(0)}
+.btn.primary{background:var(--gold);border-color:var(--gold);color:#13202a}
+.btn.primary:hover{background:#f3cb91;border-color:#f3cb91}
+.btn.ghost{background:transparent;border-color:transparent;color:var(--muted)}
+.btn.ghost:hover{color:var(--text);background:#182630}
+.btn svg{width:15px;height:15px;fill:none;stroke:currentColor;stroke-width:1.8;stroke-linecap:round;stroke-linejoin:round}
+.hero{padding:70px 0 44px;display:grid;grid-template-columns:minmax(0,1.65fr) minmax(260px,.65fr);gap:56px;align-items:end;border-bottom:1px solid var(--edge)}
+.kicker{font:600 11px var(--font-data);color:var(--gold);letter-spacing:.18em;text-transform:uppercase}
+.hero h1{font:400 clamp(4rem,7.6vw,7.5rem)/.97 'Instrument Serif',Georgia,serif;letter-spacing:-.035em;margin:21px 0 18px;max-width:850px}
+.hero h1 em{font-weight:400;color:var(--gold)}
+.hero p{margin:0;color:var(--muted);font-size:15px;line-height:1.85;max-width:680px}
+.hero-note{border-left:2px solid var(--gold);padding:9px 0 9px 24px;margin-bottom:11px}
+.hero-note .note-label{font:600 10px var(--font-data);color:var(--faint);letter-spacing:.13em;text-transform:uppercase}
+.hero-note p{font:italic 28px/1.2 'Instrument Serif',serif;color:#e8e5de;margin:14px 0 12px}
+.hero-note small{font-size:12px;color:var(--muted);line-height:1.65;display:block}
+.section{margin-top:46px;scroll-margin-top:96px}
+.section-head{display:flex;align-items:flex-end;justify-content:space-between;gap:20px;margin-bottom:23px}
+.headline-group{max-width:720px}
+.section-index{display:inline-block;color:var(--gold);font:600 11px var(--font-data);letter-spacing:.07em;margin-bottom:8px}
+.section h2{margin:0;font:400 clamp(2rem,3.2vw,3.2rem)/1.05 'Instrument Serif',Georgia,serif;letter-spacing:-.015em}
+.section-head p{margin:10px 0 0;color:var(--muted);line-height:1.72;font-size:13px}
+.aside-label{font:11px var(--font-data);color:var(--faint);text-transform:uppercase;letter-spacing:.07em;white-space:nowrap;padding-bottom:6px}
+.overview{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:1px;background:var(--edge);border:1px solid var(--edge);border-radius:var(--radius);overflow:hidden;margin-top:27px}
+.kpi{padding:24px 27px 22px;min-width:0;background:var(--shell);position:relative}
+.kpi .eyebrow{display:flex;align-items:center;gap:8px;color:var(--muted);text-transform:uppercase;letter-spacing:.1em;font-size:10px;font-weight:800}
+.swatch{height:8px;width:8px;display:inline-block;border-radius:2px;background:var(--gold);flex:0 0 auto}
+.swatch.teal{background:var(--teal)}.swatch.rose{background:var(--rose)}.swatch.blue{background:var(--blue)}
+.kpi strong{display:block;font:500 clamp(28px,3vw,45px)/1.25 var(--font-data);letter-spacing:-.055em;margin-top:13px;white-space:nowrap}
+.kpi small{font-size:12px;color:var(--muted);display:block;margin-top:5px}
+.kpi .kpi-unit{font:11px var(--font-data);color:var(--faint);margin-top:8px;display:block}
+.controls-strip{background:var(--shell);border:1px solid var(--edge);border-radius:var(--radius) var(--radius) 0 0;padding:21px 23px;display:flex;align-items:flex-end;gap:20px;justify-content:space-between;flex-wrap:wrap}
+.strip-label{font:700 10px var(--font-data);letter-spacing:.13em;color:var(--faint);text-transform:uppercase;margin-bottom:11px}
+.preset-row{display:flex;gap:7px;flex-wrap:wrap}
+.preset{border:1px solid #354757;background:#16222d;color:#a9b8c5;border-radius:8px;padding:9px 13px;font-size:12px;font-weight:700;min-height:40px;transition:all .15s}
+.preset:hover{border-color:#77899a;color:var(--text)}
+.preset.active{background:#354231;border-color:var(--gold);color:#f5d29a}
+.sim-control{display:flex;align-items:center;gap:11px;padding-bottom:2px;flex-wrap:wrap}
+.speed-label{font-size:11px;color:var(--muted);font-weight:700;white-space:nowrap}
+.speed-label strong{color:var(--text);font-family:var(--font-data)}
+input[type=range]{accent-color:var(--gold);width:130px;cursor:pointer}
+.model-stage{position:relative;overflow:hidden;padding:57px 33px 34px;background:radial-gradient(ellipse at 50% 20%,#1e2e3b70,transparent 60%),#0c151e;border:1px solid var(--edge);border-top:0;isolation:isolate}
+.model-stage::before{content:"";position:absolute;inset:0;pointer-events:none;opacity:.26;background-image:linear-gradient(#31404c45 1px,transparent 1px),linear-gradient(90deg,#31404c45 1px,transparent 1px);background-size:38px 38px;z-index:-1}
+.stage-id{position:absolute;top:14px;left:25px;color:#788c9b;font:10px var(--font-data);letter-spacing:.12em;text-transform:uppercase}
+#flowCanvas{position:absolute;inset:0;width:100%;height:100%;pointer-events:none;z-index:1}
+.node-row{position:relative;z-index:2;display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:10%;align-items:start}
+.entity-node{text-align:left;border:1px solid #405461;border-radius:12px;background:#192733ee;color:var(--text);padding:21px;min-height:205px;display:flex;flex-direction:column;align-items:flex-start;box-shadow:0 20px 35px #030a1235;transition:background .17s,border-color .17s,transform .17s;min-width:0}
+.entity-node:hover{border-color:var(--gold);background:#213340;transform:translateY(-3px)}
+.node-top{display:flex;width:100%;justify-content:space-between;align-items:center;color:var(--faint);font:10px var(--font-data);text-transform:uppercase;letter-spacing:.08em}
+.node-symbol{font-size:24px;font-weight:500;line-height:1}
+.entity-node h3{font:400 31px/1.03 'Instrument Serif',serif;letter-spacing:-.01em;margin:30px 0 8px}
+.entity-node p{color:#aabcce;font-size:12px;line-height:1.65;margin:0;max-width:230px}
+.node-bottom{display:flex;align-items:center;justify-content:space-between;gap:10px;width:100%;margin-top:auto;padding-top:16px}
+.node-bottom span{font:10px var(--font-data);color:var(--gold);letter-spacing:.03em}
+.node-bottom .arrow{font-size:20px;color:var(--muted)}
+.entity-node.treasury{border-top:3px solid var(--gold)}
+.entity-node.israel{border-top:3px solid var(--rose)}
+.entity-node.taxpayer{border-top:3px solid var(--blue)}
+.bottom-row{display:flex;justify-content:center;align-items:center;position:relative;z-index:2;margin-top:163px}
+.entity-node.contractor{min-height:138px;width:min(310px,100%);background:#142923eb;border-color:#386c62;border-top:3px solid var(--teal);padding:16px 19px}
+.entity-node.contractor h3{font-size:26px;margin:13px 0 7px}
+.entity-node.contractor p{max-width:none}
+.entity-node.contractor .node-bottom{padding-top:7px}
+.stage-legend{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));border:1px solid var(--edge);border-top:0;background:#111c27;border-radius:0 0 var(--radius) var(--radius);overflow:hidden}
+.legend-item{padding:18px 19px;border-right:1px solid var(--edge);min-width:0}
+.legend-item:last-child{border-right:0}
+.legend-head{display:flex;align-items:center;gap:9px;font-size:10px;text-transform:uppercase;letter-spacing:.055em;color:var(--muted);font-weight:800}
+.legend-val{display:block;font:600 18px/1.3 var(--font-data);margin-top:9px;white-space:nowrap;letter-spacing:-.05em}
+.legend-item small{display:block;color:var(--faint);font-size:11px;margin-top:3px}
+.understage{display:flex;justify-content:space-between;align-items:center;gap:18px;margin-top:14px;flex-wrap:wrap}
+.understage .aside-label{white-space:normal}
+.checkline{display:inline-flex;align-items:center;gap:9px;color:var(--muted);font-size:12px;cursor:pointer}
+.checkline input{accent-color:var(--teal);width:16px;height:16px;cursor:pointer}
+.session{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:12px;margin-top:25px}
+.session-cell{background:#101c26;border:1px solid var(--edge);border-radius:12px;padding:17px 19px}
+.session-cell .mini-head{color:var(--faint);text-transform:uppercase;font-size:10px;font-weight:700;letter-spacing:.11em}
+.session-cell strong{display:block;font:600 clamp(16px,2vw,26px)/1.4 var(--font-data);margin-top:7px;letter-spacing:-.05em;overflow-wrap:anywhere}
+.session-cell p{font-size:11px;color:var(--muted);margin:3px 0 0}
+.method-line{display:flex;align-items:flex-start;gap:12px;border:1px solid #544a36;background:#241f192e;border-radius:11px;padding:15px 18px;margin-top:18px;font-size:12px;color:#c8beb0;line-height:1.8}
+.method-line strong{color:#e7c692}
+.method-line .mark{color:var(--gold);font:600 14px var(--font-data)}
+.analytics-grid{display:grid;grid-template-columns:1.35fr .95fr;gap:16px}
+.panel{background:var(--shell);border:1px solid var(--edge);border-radius:var(--radius);padding:28px;min-width:0}
+.panel-label{font:700 10px var(--font-data);letter-spacing:.13em;text-transform:uppercase;color:var(--faint);display:block}
+.bar-stack{margin-top:30px;display:grid;gap:23px}
+.bar-label{display:flex;justify-content:space-between;align-items:center;gap:10px;font-size:12px;color:var(--muted);margin-bottom:9px}
+.bar-label strong{font:600 15px var(--font-data);color:var(--text);letter-spacing:-.035em;white-space:nowrap}
+.bar-track{height:11px;background:#243340;border-radius:4px;overflow:hidden}
+.bar-fill{height:100%;width:0;background:var(--gold);border-radius:3px;transition:width .45s ease}
+.bar-fill.teal{background:var(--teal)}.bar-fill.rose{background:var(--rose)}
+.comp-foot{border-top:1px solid var(--edge);margin-top:32px;padding-top:16px;display:grid;grid-template-columns:1fr 1fr;gap:15px}
+.comp-foot span{font-size:11px;color:var(--faint)}
+.comp-foot strong{display:block;font:600 19px var(--font-data);color:var(--text);margin-top:3px}
+.donut-layout{display:flex;align-items:center;justify-content:center;gap:28px;min-height:243px}
+.donut{width:188px;height:188px;flex:0 0 auto;position:relative}
+.donut svg{width:100%;height:100%;transform:rotate(-90deg);overflow:visible}
+.donut circle{fill:none;stroke-width:12;stroke-linecap:butt}
+.donut .bg-ring{stroke:#273643}
+.donut .a-ring{stroke:var(--gold);stroke-dasharray:86.84 13.16}
+.donut .b-ring{stroke:var(--blue);stroke-dasharray:13.16 86.84;stroke-dashoffset:-86.84}
+.donut-center{position:absolute;inset:0;display:flex;flex-direction:column;justify-content:center;align-items:center;pointer-events:none}
+.donut-center strong{font:500 34px var(--font-data);letter-spacing:-.09em}
+.donut-center span{font:10px var(--font-data);text-transform:uppercase;color:var(--faint);letter-spacing:.08em}
+.alloc-legend{display:grid;gap:17px;min-width:0}
+.alloc-item{display:grid;grid-template-columns:9px minmax(0,1fr);gap:10px;align-items:start}
+.alloc-item strong{font-size:12px;display:block;line-height:1.45}
+.alloc-item small{font:11px var(--font-data);color:var(--muted);display:block;margin-top:4px}
+.alloc-note{font-size:11px;color:var(--faint);border-top:1px solid var(--edge);padding-top:13px;line-height:1.75}
+.impact-layout{display:grid;grid-template-columns:1.2fr .8fr;gap:16px}
+.impact-control .field-title{font-size:12px;color:var(--muted);font-weight:700}
+.tax-output{font:600 clamp(32px,4vw,52px)/1.2 var(--font-data);margin:15px 0 21px;letter-spacing:-.07em}
+.tax-range{width:100%!important;margin:0;display:block}
+.range-limits{display:flex;justify-content:space-between;color:var(--faint);font:11px var(--font-data);margin-top:7px}
+.tax-presets{display:flex;flex-wrap:wrap;gap:8px;margin-top:25px}
+.quick{min-height:34px;padding:7px 11px;border:1px solid #3b5060;background:#1a2935;border-radius:7px;color:var(--muted);font:600 11px var(--font-data)}
+.quick:hover,.quick.selected{background:#374534;color:var(--gold);border-color:var(--gold)}
+.impact-results{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+.result{padding:23px 19px;border:1px solid var(--edge);border-radius:12px;background:#15232d;display:flex;flex-direction:column;justify-content:space-between;min-height:199px}
+.result .field-title{font:700 10px var(--font-data);text-transform:uppercase;letter-spacing:.12em;color:var(--muted)}
+.result strong{font:600 clamp(22px,2.45vw,38px) var(--font-data);letter-spacing:-.07em;display:block;margin:15px 0 0}
+.result small{font-size:11px;color:var(--muted);line-height:1.6}
+.result.annual{border-top:3px solid var(--gold)}.result.daily{border-top:3px solid var(--teal)}
+.edit-layout{display:grid;grid-template-columns:1.1fr .9fr;gap:16px}
+.edit-form{display:grid;gap:16px}
+.field{display:grid;gap:8px;font-size:12px;font-weight:700;color:var(--muted)}
+.field input{width:100%;background:var(--field);border:1px solid #425362;border-radius:8px;color:var(--text);padding:13px 14px;height:47px;outline:none;font:500 14px var(--font-data);min-width:0}
+.field input:focus{border-color:var(--gold);box-shadow:0 0 0 3px #e5b77619}
+.field input[aria-invalid=true]{border-color:var(--rose)}
+.field small{color:var(--faint);font-size:11px;font-weight:400}
+.form-error{margin:0;min-height:0;color:#ffc0c0;font-size:12px}
+.form-bottom{display:flex;align-items:center;justify-content:space-between;gap:16px;flex-wrap:wrap}
+.form-bottom span{font-size:11px;color:var(--muted)}
+.assumptions{background:#14212b}
+.assumptions h3{margin:0 0 11px;font:400 26px 'Instrument Serif',serif}
+.assumptions p{margin:0 0 11px;color:var(--muted);font-size:12px;line-height:1.8}
+.assumptions p:last-child{margin:0}
+.assumption-list{list-style:none;padding:0;margin:12px 0 0}
+.assumption-list li{border-top:1px solid var(--edge);padding:10px 0;display:grid;grid-template-columns:105px 1fr;gap:14px;font-size:11px;line-height:1.7}
+.assumption-list b{color:var(--text)}.assumption-list span{color:var(--muted)}
+.site-footer{margin:66px 0 37px;display:flex;justify-content:space-between;gap:30px;border-top:1px solid var(--edge);padding-top:23px;color:var(--faint);font-size:11px}
+.site-footer strong{color:var(--muted);font-weight:700}
+.dialog-wrap{position:fixed;inset:0;z-index:100;background:#050a11c9;display:grid;place-items:center;padding:18px;backdrop-filter:blur(7px)}
+.dialog-wrap[hidden]{display:none}
+.dialog{background:#182530;border:1px solid #536673;border-radius:17px;width:min(640px,100%);max-height:min(85vh,740px);overflow:auto;box-shadow:0 30px 100px #000a;padding:29px;scrollbar-gutter:stable}
+.dialog-head{display:flex;justify-content:space-between;align-items:flex-start;gap:14px}
+.dialog-title{font:400 41px/1.1 'Instrument Serif',serif;margin:9px 0 0}
+.close-btn{width:38px;height:38px;border:1px solid var(--edge);border-radius:8px;color:var(--text);background:#243440;font-size:23px;flex:0 0 auto}
+.close-btn:hover{background:#365061}
+.dialog-desc{font-size:13px;color:var(--muted);margin:17px 0;line-height:1.8}
+.dialog-metrics{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:19px}
+.dialog-metric{border:1px solid var(--edge);border-radius:10px;padding:14px;background:#111d27}
+.dialog-metric span{font-size:10px;color:var(--muted);display:block;text-transform:uppercase;letter-spacing:.04em}
+.dialog-metric strong{font:600 14px var(--font-data);display:block;margin-top:6px;overflow-wrap:anywhere}
+.dialog-foot{margin-top:22px;display:flex;justify-content:flex-end}
+.toast{position:fixed;bottom:22px;right:22px;z-index:200;border:1px solid #54786e;background:#192d2d;color:#d5f1e6;border-radius:10px;padding:12px 17px;box-shadow:0 12px 36px #0008;max-width:min(450px,calc(100vw - 40px));font-size:12px;font-weight:700}
+.toast[hidden]{display:none}
+@media(max-width:1080px){
+ .wrap{width:min(100% - 44px,1272px)}.node-row{gap:4%}.entity-node{padding:17px;min-height:218px}.entity-node h3{font-size:27px}
+ .stage-legend{grid-template-columns:repeat(2,1fr)}.legend-item:nth-child(2){border-right:0}.legend-item:nth-child(-n+2){border-bottom:1px solid var(--edge)}
+ .donut-layout{flex-wrap:wrap;justify-content:flex-start}.alloc-legend{grid-template-columns:1fr 1fr;width:100%}
+}
+@media(max-width:760px){
+ .wrap{width:calc(100% - 32px)}.masthead{height:62px}.mast-meta .tiny-rule,.mast-meta .meta-date{display:none}
+ .nav-inner{gap:8px}.nav-links{gap:15px}.nav-links a{font-size:11px;padding:15px 0}.nav-actions .btn{padding:8px}.nav-actions .btn span{display:none}
+ .hero{padding:45px 0 36px;grid-template-columns:1fr;gap:30px}.hero h1{font-size:clamp(55px,12vw,88px)}
+ .hero-note{max-width:430px}.hero-note p{font-size:26px}
+ .overview{grid-template-columns:1fr}.kpi{padding:18px 21px}.kpi strong{margin-top:5px;font-size:35px}
+ .section{margin-top:37px}.section-head{display:block}.aside-label{display:block;margin-top:15px}
+ .controls-strip{padding:17px}.sim-control{width:100%;justify-content:space-between}
+ .model-stage{padding:43px 42px 28px}.node-row{display:flex;flex-direction:column;gap:86px;align-items:stretch}
+ .entity-node{width:100%;min-height:148px;padding:17px 19px}.entity-node h3{margin:15px 0 6px}.entity-node p{max-width:unset}
+ .bottom-row{margin-top:88px}.entity-node.contractor{width:100%;min-height:135px}
+ .analytics-grid,.impact-layout,.edit-layout{grid-template-columns:1fr}.impact-results{grid-template-columns:1fr 1fr}.donut-layout{flex-wrap:nowrap}
+ .session{grid-template-columns:1fr}.session-cell{padding:15px 17px}.site-footer{display:block}.site-footer span{display:block;margin-top:7px}
+}
+@media(max-width:480px){
+ .nav-links{gap:12px}.nav-actions{gap:1px}.nav-actions .btn{min-width:34px;padding:7px}.hero h1{font-size:61px}
+ .preset{padding:8px 10px;font-size:11px}.controls-strip{gap:16px}
+ .stage-legend{grid-template-columns:1fr 1fr}.legend-item{padding:14px 10px}.legend-val{font-size:14px}.legend-head{font-size:9px}
+ .panel{padding:20px}.comp-foot strong{font-size:15px}.donut-layout{flex-direction:column;align-items:center}.alloc-legend{grid-template-columns:1fr 1fr;gap:9px}
+ .impact-results{grid-template-columns:1fr}.result{min-height:131px}.dialog{padding:20px}.dialog-metrics{grid-template-columns:1fr}
+}
+@media(prefers-reduced-motion:reduce){html{scroll-behavior:auto}*,*::before,*::after{animation-duration:.01ms!important;transition-duration:.01ms!important}}
+@media(forced-colors:active){.swatch,.status-dot{forced-color-adjust:none;border:1px solid CanvasText}}
 </style>
 </head>
-
 <body>
-<main class="page">
-
-  <!-- HERO HEADER -->
-  <header class="hero conic-card">
-    <div class="hero-ribbon">FOLLOW THE MONEY</div>
-    <div class="hero-ring"></div>
-    <div>
-      <p class="eyebrow">
-        <span class="inline-block w-2 h-2 rounded-full bg-[#00e5ff] animate-ping"></span>
-        Bilateral Money Flow Dashboard • Live Telemetry
-      </p>
-      <h1>U.S. Taxpayer → Government → Israel</h1>
-      <div class="rule"></div>
-      <p class="subtitle">
-        An interactive visual simulation showing how U.S. taxpayer revenue is collected by the federal treasury,
-        appropriated as bilateral aid to Israel, cycled through U.S. defense procurement, and accompanied by
-        Israel-linked taxable commercial activity flowing back into the U.S. tax system.
-      </p>
-      <div class="meta">
-        <span class="pill">Bezier Particle Engine</span>
-        <span class="pill">Interactive Node Inspector</span>
-        <span class="pill">Live Per-Second Ticker</span>
-        <span class="pill">Personal Tax Calculator</span>
-      </div>
-    </div>
-  </header>
-
-  <!-- STICKY NAVIGATION & AUDIO / SHARE CONTROLS -->
-  <nav class="nav-bar" aria-label="Dashboard Navigation">
-    <div class="nav-links">
-      <a href="#animation">Flow Map</a>
-      <a href="#numbers">Analytics</a>
-      <a href="#calculator">My Tax Impact</a>
-      <a href="#edit">Edit Data</a>
-    </div>
-    <div class="flex items-center gap-2">
-      <button id="soundToggleBtn" class="nav-btn" type="button" title="Toggle Web Audio Synthesizer">
-        <span id="soundIcon">🔇</span> <span id="soundText">Audio Off</span>
-      </button>
-      <button id="shareUrlBtn" class="nav-btn" type="button" title="Copy Shareable Scenario Link">
-        🔗 Share
-      </button>
-    </div>
-  </nav>
-
-  <!-- SECTION 1: ANIMATED FLOW STAGE -->
-  <section class="section" id="animation">
-    <div class="section-head">
-      <div>
-        <h2>Interactive Telemetry &amp; Flow Map</h2>
-        <p>
-          Click any entity node below to inspect detailed fiscal breakdowns. Particle velocity and stream density
-          dynamically scale with the active dollar figures.
-        </p>
-      </div>
-      <div class="text-xs font-bold uppercase tracking-widest text-[#00e5ff] bg-[#00e5ff]/10 border border-[#00e5ff]/30 px-3.5 py-2 rounded-full">
-        Click Nodes to Inspect 🔍
-      </div>
-    </div>
-
-    <!-- Preset Historical Scenarios -->
-    <div class="preset-bar" role="group" aria-label="Historical Scenarios">
-      <button class="preset-btn active" data-us="3800000000" data-il="298542028" data-label="Standard MOU Baseline ($3.8B)">
-        ⚡ Standard MOU Baseline ($3.8B)
-      </button>
-      <button class="preset-btn" data-us="17900000000" data-il="345000000" data-label="FY2024 Supplemental Peak ($17.9B)">
-        🚀 FY2024 Supplemental Peak ($17.9B)
-      </button>
-      <button class="preset-btn" data-us="3300000000" data-il="240000000" data-label="2009–2018 MOU Average ($3.3B)">
-        📊 Prior Decade MOU ($3.3B)
-      </button>
-      <button class="preset-btn" data-us="8700000000" data-il="312000000" data-label="Combined Aid + Missile Defense Surge ($8.7B)">
-        🛡️ Multi-Tier Defense Surge ($8.7B)
-      </button>
-    </div>
-
-    <!-- 3D Tilt Stat Cards -->
-    <div class="stat-grid">
-      <div class="stat tilt-card">
-        <span class="label">Taxpayer → Government</span>
-        <strong class="mono">$4.92T / yr</strong>
-        <span class="sub-stat">Total U.S. Federal Tax Receipts</span>
-      </div>
-
-      <div class="stat tilt-card">
-        <span class="label">Government → Israel</span>
-        <strong id="usToIsraelStat" class="mono text-[#00e5ff]">$3.8B</strong>
-        <span class="sub-stat" id="usPerSecStat">$120.50 / second</span>
-      </div>
-
-      <div class="stat tilt-card">
-        <span class="label">Israel-linked Activity → U.S.</span>
-        <strong id="israelToUsStat" class="mono text-[#ff4d6d]">$298.5M</strong>
-        <span class="sub-stat" id="ilPerSecStat">$9.47 / second</span>
-      </div>
-
-      <div class="stat tilt-card">
-        <span class="label">Net Bilateral Flow Gap</span>
-        <strong id="differenceStat" class="mono text-[#ffd166]">$3.5B</strong>
-        <span class="sub-stat" id="ratioStat">Ratio: 12.7x Outflow vs Return</span>
-      </div>
-    </div>
-
-    <!-- Simulation Controls Toolbar -->
-    <div class="stage-toolbar">
-      <div class="flex flex-wrap items-center gap-3">
-        <button id="playPauseBtn" type="button" class="px-4 py-1.5 rounded-full text-xs font-extrabold uppercase tracking-wider bg-[#00e5ff]/20 border border-[#00e5ff]/50 text-[#00e5ff] hover:bg-[#00e5ff] hover:text-black transition">
-          ⏸ Pause Stream
-        </button>
-        <label class="flex items-center gap-2 text-xs font-bold text-slate-300">
-          <span>Sim Speed: <strong id="speedValueLabel" class="text-[#00e5ff] mono">1.0x</strong></span>
-          <input id="speedSlider" type="range" min="0.25" max="4" step="0.25" value="1" class="w-28">
-        </label>
-      </div>
-
-      <div class="flex flex-wrap items-center gap-4">
-        <label class="flex items-center gap-2 text-xs font-bold text-emerald-300 cursor-pointer">
-          <input id="fmfLoopToggle" type="checkbox" checked class="w-4 h-4 accent-[#54f0a8] rounded">
-          <span>Show U.S. Defense Contractors FMF Loop (~75% domestic buyback)</span>
-        </label>
-      </div>
-    </div>
-
-    <!-- Main Visual Flow Stage -->
-    <div class="flow-stage" id="flowStage">
-      <!-- Dynamic HTML5 Canvas for Glowing Bezier Curves & Particles -->
-      <canvas id="flowCanvas"></canvas>
-
-      <!-- Node 1: U.S. Taxpayer -->
-      <div class="node taxpayer tilt-card" data-node="taxpayer" role="button" tabindex="0" aria-label="Inspect U.S. Taxpayer Node">
-        <div>
-          <div class="flag">👤</div>
-          <h3>U.S. Taxpayer</h3>
-          <p>Individual &amp; corporate taxes paid into the federal treasury</p>
-          <span class="node-badge">Click to Inspect →</span>
-        </div>
-      </div>
-
-      <!-- Node 2: U.S. Government -->
-      <div class="node government tilt-card" data-node="government" role="button" tabindex="0" aria-label="Inspect U.S. Government Node">
-        <div>
-          <div class="flag">🏛️</div>
-          <h3>U.S. Government</h3>
-          <p>Collects taxes, appropriates Foreign Military Financing &amp; aid</p>
-          <span class="node-badge">Click to Inspect →</span>
-        </div>
-      </div>
-
-      <!-- Node 3: Israel -->
-      <div class="node israel tilt-card" data-node="israel" role="button" tabindex="0" aria-label="Inspect Israel Node">
-        <div>
-          <div class="flag">🇮🇱</div>
-          <h3>Israel</h3>
-          <p>Receives U.S. security assistance &amp; missile defense funding</p>
-          <span class="node-badge">Click to Inspect →</span>
-        </div>
-      </div>
-
-      <!-- Optional Node 4: U.S. Defense Contractors (FMF Domestic Procurement) -->
-      <div class="node contractors tilt-card" id="contractorsNode" data-node="contractors" role="button" tabindex="0" aria-label="Inspect U.S. Defense Contractors Node">
-        <div>
-          <div class="flex items-center justify-center gap-2">
-            <span class="text-2xl">🛡️</span>
-            <h3 class="text-lg !m-0 text-[#54f0a8]">U.S. Defense Industry</h3>
-          </div>
-          <p class="!text-xs !my-1">FMF grants require procurement of U.S.-manufactured defense systems</p>
-          <span class="node-badge !text-[#54f0a8] !border-[#54f0a8]/40 !bg-[#54f0a8]/10" id="fmfLoopBadge">Est. $2.85B Recycled to U.S.</span>
-        </div>
-      </div>
-
-      <!-- Floating Bill Track 1: Taxpayer -> Gov -->
-      <div class="flow-label tax-label">Taxpayer → Government: Federal Taxes</div>
-      <div class="mini-track tax-track">
-        <span class="packet"></span>
-        <span class="packet"></span>
-        <span class="packet"></span>
-        <span class="packet"></span>
-      </div>
-
-      <!-- Floating Bill Track 2: Gov -> Israel -->
-      <div class="flow-label aid-label" id="topFlowLabel">
-        U.S. Government → Israel: $3.8B
-      </div>
-      <div class="mini-track aid-track">
-        <span class="packet"></span>
-        <span class="packet"></span>
-        <span class="packet"></span>
-        <span class="packet"></span>
-        <span class="packet"></span>
-      </div>
-
-      <!-- Floating Bill Track 3: Israel-linked activity -> US Gov -->
-      <div class="flow-label israel-tax-label" id="bottomFlowLabel">
-        Israel-linked taxable activity → U.S. Government: $298.5M
-      </div>
-      <div class="mini-track israel-tax-track">
-        <span class="packet"></span>
-        <span class="packet"></span>
-        <span class="packet"></span>
-        <span class="packet"></span>
-      </div>
-    </div>
-
-    <!-- Live Real-Time Session Ticker Strip -->
-    <div class="ticker-strip">
-      <div class="flex flex-col justify-between p-2 rounded-xl bg-white/[0.02]">
-        <span class="text-[11px] font-extrabold uppercase tracking-wider text-slate-400">Session Elapsed Time</span>
-        <strong id="sessionTimeTicker" class="text-xl mono text-white mt-1">00m 00s</strong>
-        <span class="text-[11px] text-slate-400 mt-0.5">Real-time pro-rata flow since page load</span>
-      </div>
-      <div class="flex flex-col justify-between p-2 rounded-xl bg-[#00e5ff]/[0.05] border border-[#00e5ff]/20">
-        <span class="text-[11px] font-extrabold uppercase tracking-wider text-[#00e5ff]">U.S. → Israel Flowed This Session</span>
-        <strong id="sessionUsFlowTicker" class="text-xl mono text-[#00e5ff] mt-1">$0.00</strong>
-        <span class="text-[11px] text-slate-300 mt-0.5">Based on annual appropriation rate</span>
-      </div>
-      <div class="flex flex-col justify-between p-2 rounded-xl bg-[#ff4d6d]/[0.05] border border-[#ff4d6d]/20">
-        <span class="text-[11px] font-extrabold uppercase tracking-wider text-[#ff4d6d]">Israel-Linked Return This Session</span>
-        <strong id="sessionIlFlowTicker" class="text-xl mono text-[#ff4d6d] mt-1">$0.00</strong>
-        <span class="text-[11px] text-slate-300 mt-0.5">Based on entered return activity</span>
-      </div>
-    </div>
-
-    <div class="note-box">
-      <strong>Methodology Note:</strong> This interactive model visualizes bilateral financial streams. The U.S. government collects general tax revenue and appropriates foreign assistance through Congress (primarily Foreign Military Financing and cooperative missile defense under the 10-year Memorandum of Understanding). Much of FMF is spent on U.S. defense contractors. The return stream represents customizable data for Israel-linked taxable commercial, bilateral trade, or lobbying-related financial activity entering the U.S. system.
-    </div>
-  </section>
-
-  <!-- SECTION 2: ANALYTICS & SUNBURST/DONUT BREAKDOWN -->
-  <section class="section" id="numbers">
-    <div class="section-head">
-      <div>
-        <h2>Proportional Flow Comparison &amp; Breakdown</h2>
-        <p>
-          Real-time normalized scaling alongside an interactive SVG allocation breakdown of U.S. assistance categories.
-        </p>
-      </div>
-    </div>
-
-    <div class="analytics-grid">
-      <!-- Left: Auto-scaling comparison bars -->
-      <div class="bar-card">
-        <div class="bar-row">
-          <div class="bar-title">Government → Israel Total</div>
-          <div class="bar">
-            <div class="fill" id="usBar"></div>
-          </div>
-          <div class="bar-value mono" id="usBarValue">$3.8B</div>
-        </div>
-
-        <div class="bar-row">
-          <div class="bar-title">Est. U.S. Defense Buyback (FMF)</div>
-          <div class="bar">
-            <div class="fill fmf" id="fmfBar"></div>
-          </div>
-          <div class="bar-value mono text-[#54f0a8]" id="fmfBarValue">$2.9B</div>
-        </div>
-
-        <div class="bar-row">
-          <div class="bar-title">Israel-linked Activity → U.S.</div>
-          <div class="bar">
-            <div class="fill reverse" id="israelBar"></div>
-          </div>
-          <div class="bar-value mono text-[#ff4d6d]" id="israelBarValue">$298.5M</div>
-        </div>
-
-        <div class="pt-4 border-t border-white/10 flex flex-wrap justify-between items-center gap-2 text-xs text-slate-300">
-          <span>Return-to-Aid Ratio: <strong id="percentReturnLabel" class="text-[#ffd166] mono">7.86%</strong></span>
-          <span>Net Outflow Multiple: <strong id="multipleReturnLabel" class="text-[#00e5ff] mono">12.73x</strong></span>
-        </div>
-      </div>
-
-      <!-- Right: Interactive SVG Donut Breakdown -->
-      <div class="p-6 rounded-3xl border border-white/10 bg-[#080c1a]/80 flex flex-col items-center justify-between">
-        <div class="w-full flex justify-between items-center mb-2">
-          <span class="text-xs font-extrabold uppercase tracking-wider text-slate-300">Aid Category Allocation</span>
-          <span class="text-xs mono text-[#00e5ff]" id="donutTotalLabel">$3.8B Total</span>
-        </div>
-
-        <div class="relative w-48 h-48 my-2 grid place-items-center">
-          <svg viewBox="0 0 42 42" class="w-full h-full -rotate-90 overflow-visible">
-            <!-- Background Ring -->
-            <circle cx="21" cy="21" r="15.915" fill="transparent" stroke="rgba(255,255,255,0.06)" stroke-width="5"></circle>
-            <!-- Segment 1: Foreign Military Financing (86.8%) -->
-            <circle id="donutSeg1" cx="21" cy="21" r="15.915" fill="transparent" stroke="#00e5ff" stroke-width="5.5"
-              stroke-dasharray="86.8 13.2" stroke-dashoffset="0" class="transition-all duration-500 cursor-pointer hover:opacity-80">
-            </circle>
-            <!-- Segment 2: Cooperative Missile Defense (13.2%) -->
-            <circle id="donutSeg2" cx="21" cy="21" r="15.915" fill="transparent" stroke="#9b5cff" stroke-width="5.5"
-              stroke-dasharray="13.2 86.8" stroke-dashoffset="-86.8" class="transition-all duration-500 cursor-pointer hover:opacity-80">
-            </circle>
-          </svg>
-          <div class="absolute inset-0 flex flex-col items-center justify-center text-center pointer-events-none">
-            <span class="text-[10px] uppercase tracking-widest text-slate-400 font-bold">MOU Split</span>
-            <strong class="text-lg font-black mono text-white" id="donutCenterValue">87% / 13%</strong>
-          </div>
-        </div>
-
-        <div class="w-full grid grid-cols-2 gap-2 text-xs mt-2">
-          <div class="p-2.5 rounded-xl bg-white/[0.03] border border-[#00e5ff]/30">
-            <div class="flex items-center gap-1.5 font-bold text-[#00e5ff]">
-              <span class="w-2.5 h-2.5 rounded-full bg-[#00e5ff]"></span> FMF Grants (~87%)
-            </div>
-            <div id="fmfSplitVal" class="mono font-extrabold text-white mt-1">$3.3B</div>
-          </div>
-          <div class="p-2.5 rounded-xl bg-white/[0.03] border border-[#9b5cff]/30">
-            <div class="flex items-center gap-1.5 font-bold text-[#9b5cff]">
-              <span class="w-2.5 h-2.5 rounded-full bg-[#9b5cff]"></span> Missile Def (~13%)
-            </div>
-            <div id="missileSplitVal" class="mono font-extrabold text-white mt-1">$500.0M</div>
-          </div>
-        </div>
-      </div>
-    </div>
-  </section>
-
-  <!-- SECTION 3: PERSONAL TAXPAYER IMPACT CALCULATOR -->
-  <section class="section" id="calculator">
-    <div class="section-head">
-      <div>
-        <h2>Personal Taxpayer Impact Calculator</h2>
-        <p>
-          Estimate your personal individual share of the U.S. → Israel assistance stream based on your annual federal income tax contribution.
-        </p>
-      </div>
-    </div>
-
-    <div class="grid grid-cols-1 lg:grid-cols-12 gap-6 items-center">
-      <div class="lg:col-span-7 p-6 rounded-3xl border border-white/10 bg-black/30 space-y-5">
-        <div>
-          <div class="flex justify-between text-sm font-bold mb-2">
-            <span class="text-slate-300">Your Estimated Annual Federal Tax Paid:</span>
-            <span id="userTaxDisplay" class="mono text-[#00e5ff] text-lg font-black">$14,500</span>
-          </div>
-          <input id="userTaxSlider" type="range" min="1000" max="250000" step="500" value="14500" class="w-full h-2 rounded-lg">
-          <div class="flex justify-between text-[11px] text-slate-400 mt-1 mono">
-            <span>$1,000 / yr</span>
-            <span>U.S. Avg (~$14.5K)</span>
-            <span>$250,000 / yr</span>
-          </div>
-        </div>
-
-        <div class="flex flex-wrap gap-2 pt-2">
-          <span class="text-xs text-slate-400 self-center mr-1">Quick Tax Brackets:</span>
-          <button type="button" class="tax-preset px-3 py-1 rounded-full text-xs font-bold bg-white/5 hover:bg-[#00e5ff] hover:text-black transition" data-tax="4500">$4.5K Tax</button>
-          <button type="button" class="tax-preset px-3 py-1 rounded-full text-xs font-bold bg-white/5 hover:bg-[#00e5ff] hover:text-black transition" data-tax="14500">$14.5K (Avg)</button>
-          <button type="button" class="tax-preset px-3 py-1 rounded-full text-xs font-bold bg-white/5 hover:bg-[#00e5ff] hover:text-black transition" data-tax="38000">$38K Tax</button>
-          <button type="button" class="tax-preset px-3 py-1 rounded-full text-xs font-bold bg-white/5 hover:bg-[#00e5ff] hover:text-black transition" data-tax="95000">$95K Tax</button>
-        </div>
-      </div>
-
-      <div class="lg:col-span-5 grid grid-cols-2 gap-4">
-        <div class="p-5 rounded-3xl border border-[#00e5ff]/30 bg-[#00e5ff]/[0.06] tilt-card">
-          <span class="text-[11px] font-black uppercase tracking-wider text-[#00e5ff]">Your Annual Share</span>
-          <strong id="personalAnnualShare" class="block text-2xl sm:text-3xl mono font-black text-white mt-2">$11.20</strong>
-          <span class="text-xs text-slate-300 mt-1 block">per year to Israel aid</span>
-        </div>
-
-        <div class="p-5 rounded-3xl border border-[#54f0a8]/30 bg-[#54f0a8]/[0.06] tilt-card">
-          <span class="text-[11px] font-black uppercase tracking-wider text-[#54f0a8]">Your Daily Cost</span>
-          <strong id="personalDailyShare" class="block text-2xl sm:text-3xl mono font-black text-white mt-2">3.07¢</strong>
-          <span class="text-xs text-slate-300 mt-1 block">per day from your taxes</span>
-        </div>
-      </div>
-    </div>
-  </section>
-
-  <!-- SECTION 4: EDIT AMOUNTS & SNAPSHOT EXPORT -->
-  <section class="section" id="edit">
-    <div class="section-head">
-      <div>
-        <h2>Edit the Amounts &amp; Export</h2>
-        <p>
-          Enter custom amounts in dollars (e.g. <strong>3800000000</strong> for $3.8B) to dynamically recalibrate the particle simulation, bars, and calculators.
-        </p>
-      </div>
-      <div class="flex gap-2">
-        <button id="exportJsonBtn" type="button" class="px-4 py-2 rounded-full text-xs font-extrabold uppercase tracking-wider border border-white/20 bg-white/5 hover:bg-white/15 transition">
-          ⬇ Export JSON Snapshot
-        </button>
-      </div>
-    </div>
-
-    <div class="controls">
-      <label class="field-label">
-        U.S. Government to Israel ($)
-        <input id="usToIsraelInput" type="number" value="3800000000" min="0" step="1000000">
-      </label>
-
-      <label class="field-label">
-        Israel-linked taxable activity to U.S. ($)
-        <input id="israelToUsInput" type="number" value="298542028" min="0" step="100000">
-      </label>
-
-      <button id="updateBtn" class="action-btn" type="button">Update Simulation</button>
-    </div>
-  </section>
-
-  <p class="footer">
-    Interactive HTML5/Canvas/SVG Telemetry Dashboard. Built with CSS <code>@property</code> conic shaders, 3D perspective transforms, Web Audio API synthesis, and real-time fiscal interpolation.
-  </p>
-
-</main>
-
-<!-- INTERACTIVE NODE INSPECTOR MODAL -->
-<div class="inspector-backdrop" id="inspectorBackdrop" role="dialog" aria-modal="true" aria-labelledby="inspectorTitle">
-  <div class="inspector-modal">
-    <div class="flex justify-between items-start gap-4 mb-4">
-      <div class="flex items-center gap-3">
-        <span id="inspectorIcon" class="text-4xl">🏛️</span>
-        <div>
-          <span id="inspectorTag" class="text-[11px] font-black uppercase tracking-widest text-[#00e5ff]">Entity Node Breakdown</span>
-          <h3 id="inspectorTitle" class="text-2xl font-bold m-0">U.S. Government</h3>
-        </div>
-      </div>
-      <button id="closeInspectorBtn" type="button" class="w-9 h-9 rounded-full border border-white/20 bg-white/5 text-white font-bold hover:bg-[#ff4d6d] hover:border-[#ff4d6d] transition">
-        ✕
-      </button>
-    </div>
-    <p id="inspectorDesc" class="text-slate-300 text-sm leading-relaxed mb-5"></p>
-    <div id="inspectorMetrics" class="grid grid-cols-1 sm:grid-cols-2 gap-3 mb-5"></div>
-    <div class="text-right">
-      <button id="closeInspectorFooterBtn" type="button" class="px-5 py-2 rounded-full text-xs font-black uppercase tracking-wider bg-[#00e5ff] text-black">
-        Close Inspector
-      </button>
-    </div>
+<header class="masthead wrap" id="top">
+  <a class="brand" href="#top" aria-label="Fiscal Atlas, back to top">
+    <span class="brandmark" aria-hidden="true"></span>
+    <span><strong>Fiscal Atlas</strong><small>US / Israel · Brief 01</small></span>
+  </a>
+  <div class="mast-meta"><span><i class="status-dot" aria-hidden="true"></i>Interactive model</span><span class="tiny-rule"></span><span class="meta-date">Illustrative annual figures</span></div>
+</header>
+<nav class="site-nav" aria-label="Page sections"><div class="wrap nav-inner">
+  <div class="nav-links"><a href="#flow" class="current">Flow model</a><a href="#compare">Comparison</a><a href="#impact">Your tax share</a><a href="#edit">Adjust data</a></div>
+  <div class="nav-actions">
+    <button type="button" id="shareBtn" class="btn ghost" aria-label="Copy shareable scenario link" title="Copy shareable scenario link"><svg viewBox="0 0 24 24"><path d="M9 15l6-6M8 11l-2 2a4 4 0 005.7 5.7l2-2M16 13l2-2a4 4 0 00-5.7-5.7l-2 2"/></svg><span>Share</span></button>
+    <button type="button" id="exportBtn" class="btn"><svg viewBox="0 0 24 24"><path d="M12 3v12m-4-4l4 4 4-4M4 17v4h16v-4"/></svg><span>Export JSON</span></button>
   </div>
-</div>
-
-<!-- TOAST NOTIFICATION -->
-<div id="toast" class="toast">Link copied to clipboard!</div>
-
-<script>
-// ============================================================================
-// 1. STATE & REFERENCES
-// ============================================================================
-const usToIsraelInput = document.getElementById("usToIsraelInput");
-const israelToUsInput = document.getElementById("israelToUsInput");
-
-const usToIsraelStat = document.getElementById("usToIsraelStat");
-const israelToUsStat = document.getElementById("israelToUsStat");
-const differenceStat = document.getElementById("differenceStat");
-const usPerSecStat = document.getElementById("usPerSecStat");
-const ilPerSecStat = document.getElementById("ilPerSecStat");
-const ratioStat = document.getElementById("ratioStat");
-
-const topFlowLabel = document.getElementById("topFlowLabel");
-const bottomFlowLabel = document.getElementById("bottomFlowLabel");
-const fmfLoopBadge = document.getElementById("fmfLoopBadge");
-
-const usBar = document.getElementById("usBar");
-const fmfBar = document.getElementById("fmfBar");
-const israelBar = document.getElementById("israelBar");
-const usBarValue = document.getElementById("usBarValue");
-const fmfBarValue = document.getElementById("fmfBarValue");
-const israelBarValue = document.getElementById("israelBarValue");
-
-const percentReturnLabel = document.getElementById("percentReturnLabel");
-const multipleReturnLabel = document.getElementById("multipleReturnLabel");
-const donutTotalLabel = document.getElementById("donutTotalLabel");
-const fmfSplitVal = document.getElementById("fmfSplitVal");
-const missileSplitVal = document.getElementById("missileSplitVal");
-
-const userTaxSlider = document.getElementById("userTaxSlider");
-const userTaxDisplay = document.getElementById("userTaxDisplay");
-const personalAnnualShare = document.getElementById("personalAnnualShare");
-const personalDailyShare = document.getElementById("personalDailyShare");
-
-const flowStage = document.getElementById("flowStage");
-const contractorsNode = document.getElementById("contractorsNode");
-const fmfLoopToggle = document.getElementById("fmfLoopToggle");
-const playPauseBtn = document.getElementById("playPauseBtn");
-const speedSlider = document.getElementById("speedSlider");
-const speedValueLabel = document.getElementById("speedValueLabel");
-
-const sessionTimeTicker = document.getElementById("sessionTimeTicker");
-const sessionUsFlowTicker = document.getElementById("sessionUsFlowTicker");
-const sessionIlFlowTicker = document.getElementById("sessionIlFlowTicker");
-
-const SECONDS_PER_YEAR = 31536000;
-const TOTAL_US_TAX_REVENUE = 4920000000000; // ~$4.92 Trillion annual receipts
-
-let state = {
-  usToIsrael: 3800000000,
-  israelToUs: 298542028,
-  displayedUs: 3800000000,
-  displayedIl: 298542028,
-  paused: false,
-  speedMult: 1,
-  showFmfLoop: true,
-  audioEnabled: false,
-  sessionStartMs: performance.now()
-};
-
-// ============================================================================
-// 2. WEB AUDIO API SCI-FI UI SYNTHESIZER
-// ============================================================================
-let audioCtx = null;
-
-function playSynthTone(freq = 520, duration = 0.08, type = "sine") {
-  if (!state.audioEnabled) return;
-  try {
-    if (!audioCtx) {
-      audioCtx = new (window.AudioContext || window.webkitAudioContext)();
-    }
-    if (audioCtx.state === "suspended") {
-      audioCtx.resume();
-    }
-    const osc = audioCtx.createOscillator();
-    const gain = audioCtx.createGain();
-    osc.type = type;
-    osc.frequency.setValueAtTime(freq, audioCtx.currentTime);
-    osc.frequency.exponentialRampToValueAtTime(freq * 1.35, audioCtx.currentTime + duration);
-
-    gain.gain.setValueAtTime(0.06, audioCtx.currentTime);
-    gain.gain.exponentialRampToValueAtTime(0.001, audioCtx.currentTime + duration);
-
-    osc.connect(gain);
-    gain.connect(audioCtx.destination);
-    osc.start();
-    osc.stop(audioCtx.currentTime + duration);
-  } catch (err) {
-    // Ignore audio errors if blocked by browser autoplay policy
-  }
-}
-
-document.getElementById("soundToggleBtn").addEventListener("click", () => {
-  state.audioEnabled = !state.audioEnabled;
-  document.getElementById("soundIcon").textContent = state.audioEnabled ? "🔊" : "🔇";
-  document.getElementById("soundText").textContent = state.audioEnabled ? "Audio On" : "Audio Off";
-  document.getElementById("soundToggleBtn").classList.toggle("active", state.audioEnabled);
-  if (state.audioEnabled) playSynthTone(660, 0.12, "triangle");
-});
-
-// ============================================================================
-// 3. FORMATTING UTILITIES & TWEENING
-// ============================================================================
-function money(n) {
-  n = Number(n || 0);
-  if (n >= 1_000_000_000) {
-    return "$" + (n / 1_000_000_000).toFixed(2).replace(/\.00$/, "").replace(/(\.\d)0$/, "$1") + "B";
-  }
-  if (n >= 1_000_000) {
-    return "$" + (n / 1_000_000).toFixed(1).replace(".0", "") + "M";
-  }
-  if (n >= 1_000) {
-    return "$" + (n / 1_000).toFixed(1).replace(".0", "") + "K";
-  }
-  return "$" + n.toLocaleString("en-US", { maximumFractionDigits: 2 });
-}
-
-function showToast(msg) {
-  const t = document.getElementById("toast");
-  t.textContent = msg;
-  t.classList.add("show");
-  setTimeout(() => t.classList.remove("show"), 2600);
-}
-
-// Smooth number interpolation
-let tweenFrame = null;
-function animateNumbersTo(targetUs, targetIl) {
-  if (tweenFrame) cancelAnimationFrame(tweenFrame);
-  const startUs = state.displayedUs;
-  const startIl = state.displayedIl;
-  const startTime = performance.now();
-  const duration = 550;
-
-  function step(now) {
-    const t = Math.min(1, (now - startTime) / duration);
-    const ease = 1 - Math.pow(1 - t, 3); // cubic ease out
-    state.displayedUs = startUs + (targetUs - startUs) * ease;
-    state.displayedIl = startIl + (targetIl - startIl) * ease;
-    renderMetrics(state.displayedUs, state.displayedIl);
-    if (t < 1) {
-      tweenFrame = requestAnimationFrame(step);
-    }
-  }
-  tweenFrame = requestAnimationFrame(step);
-}
-
-// ============================================================================
-// 4. CORE DASHBOARD RENDERING
-// ============================================================================
-function renderMetrics(usToIsrael, israelToUs) {
-  const max = Math.max(usToIsrael, israelToUs, 1);
-  const diff = Math.abs(usToIsrael - israelToUs);
-  const fmfDomestic = usToIsrael * 0.75; // ~75% domestic procurement
-
-  usToIsraelStat.textContent = money(usToIsrael);
-  israelToUsStat.textContent = money(israelToUs);
-  differenceStat.textContent = money(diff);
-
-  const usPerSec = usToIsrael / SECONDS_PER_YEAR;
-  const ilPerSec = israelToUs / SECONDS_PER_YEAR;
-  usPerSecStat.textContent = `${money(usPerSec)} / second`;
-  ilPerSecStat.textContent = `${money(ilPerSec)} / second`;
-
-  const ratio = israelToUs > 0 ? (usToIsrael / israelToUs).toFixed(1) : "∞";
-  ratioStat.textContent = `Ratio: ${ratio}x Outflow vs Return`;
-
-  topFlowLabel.textContent = "U.S. Government → Israel: " + money(usToIsrael);
-  bottomFlowLabel.textContent = "Israel-linked taxable activity → U.S. Government: " + money(israelToUs);
-  fmfLoopBadge.textContent = `Est. ${money(fmfDomestic)} Recycled to U.S.`;
-
-  usBar.style.width = Math.max((usToIsrael / max) * 100, 2) + "%";
-  fmfBar.style.width = Math.max((fmfDomestic / max) * 100, 2) + "%";
-  israelBar.style.width = Math.max((israelToUs / max) * 100, 2) + "%";
-
-  usBarValue.textContent = money(usToIsrael);
-  fmfBarValue.textContent = money(fmfDomestic);
-  israelBarValue.textContent = money(israelToUs);
-
-  const pctReturn = usToIsrael > 0 ? ((israelToUs / usToIsrael) * 100).toFixed(2) : "0.00";
-  percentReturnLabel.textContent = `${pctReturn}%`;
-  multipleReturnLabel.textContent = `${ratio}x`;
-
-  donutTotalLabel.textContent = `${money(usToIsrael)} Total`;
-  fmfSplitVal.textContent = money(usToIsrael * 0.868);
-  missileSplitVal.textContent = money(usToIsrael * 0.132);
-
-  updatePersonalTaxCalculator();
-}
-
-function updateDashboard(useViewTransition = false) {
-  const newUs = Math.max(0, Number(usToIsraelInput.value || 0));
-  const newIl = Math.max(0, Number(israelToUsInput.value || 0));
-  state.usToIsrael = newUs;
-  state.israelToUs = newIl;
-
-  playSynthTone(540, 0.09, "sine");
-
-  if (useViewTransition && document.startViewTransition) {
-    document.startViewTransition(() => {
-      animateNumbersTo(newUs, newIl);
-    });
-  } else {
-    animateNumbersTo(newUs, newIl);
-  }
-}
-
-// ============================================================================
-// 5. PERSONAL TAXPAYER IMPACT CALCULATOR
-// ============================================================================
-function updatePersonalTaxCalculator() {
-  const userTax = Number(userTaxSlider.value || 0);
-  userTaxDisplay.textContent = "$" + userTax.toLocaleString("en-US");
-
-  const shareFraction = userTax / TOTAL_US_TAX_REVENUE;
-  const annualContribution = shareFraction * state.usToIsrael;
-  const dailyContribution = annualContribution / 365;
-
-  personalAnnualShare.textContent = "$" + annualContribution.toFixed(2);
-  if (dailyContribution < 1) {
-    personalDailyShare.textContent = (dailyContribution * 100).toFixed(2) + "¢";
-  } else {
-    personalDailyShare.textContent = "$" + dailyContribution.toFixed(2);
-  }
-}
-
-userTaxSlider.addEventListener("input", () => {
-  updatePersonalTaxCalculator();
-  playSynthTone(420, 0.04, "sine");
-});
-
-document.querySelectorAll(".tax-preset").forEach(btn => {
-  btn.addEventListener("click", () => {
-    userTaxSlider.value = btn.dataset.tax;
-    updatePersonalTaxCalculator();
-    playSynthTone(620, 0.07, "triangle");
-  });
-});
-
-// ============================================================================
-// 6. HISTORICAL PRESET SCENARIOS
-// ============================================================================
-document.querySelectorAll(".preset-btn").forEach(btn => {
-  btn.addEventListener("click", () => {
-    document.querySelectorAll(".preset-btn").forEach(b => b.classList.remove("active"));
-    btn.classList.add("active");
-    usToIsraelInput.value = btn.dataset.us;
-    israelToUsInput.value = btn.dataset.il;
-    updateDashboard(true);
-    showToast(`Loaded: ${btn.dataset.label}`);
-  });
-});
-
-// ============================================================================
-// 7. 3D PERSPECTIVE TILT & RADIAL SPOTLIGHT CARDS
-// ============================================================================
-document.querySelectorAll(".tilt-card").forEach(card => {
-  card.addEventListener("mousemove", e => {
-    const rect = card.getBoundingClientRect();
-    const x = e.clientX - rect.left;
-    const y = e.clientY - rect.top;
-    const px = x / rect.width;
-    const py = y / rect.height;
-    const rx = (0.5 - py) * 10;
-    const ry = (px - 0.5) * 10;
-
-    card.style.setProperty("--rx", `${rx.toFixed(2)}deg`);
-    card.style.setProperty("--ry", `${ry.toFixed(2)}deg`);
-    card.style.setProperty("--mx", `${(px * 100).toFixed(1)}%`);
-    card.style.setProperty("--my", `${(py * 100).toFixed(1)}%`);
-  });
-
-  card.addEventListener("mouseleave", () => {
-    card.style.setProperty("--rx", "0deg");
-    card.style.setProperty("--ry", "0deg");
-  });
-});
-
-// ============================================================================
-// 8. INTERACTIVE NODE INSPECTOR MODAL
-// ============================================================================
-const NODE_DETAILS = {
-  taxpayer: {
-    icon: "👤",
-    tag: "Origin Node • Revenue Source",
-    title: "U.S. Taxpayer",
-    desc: "Individual income taxes, payroll taxes, and corporate tax receipts fund the U.S. Treasury General Fund. Foreign assistance represents roughly 1% of total federal spending, with bilateral security aid to Israel comprising a key share of U.S. Foreign Military Financing.",
-    metrics: [
-      { label: "Annual Federal Receipts", val: "~$4.92 Trillion" },
-      { label: "Individual Income Tax Share", val: "~50% of Federal Revenue" },
-      { label: "Avg Household Tax Paid", val: "~$14,500 / year" },
-      { label: "Primary Collection Agency", val: "Internal Revenue Service (IRS)" }
-    ]
-  },
-  government: {
-    icon: "🏛️",
-    tag: "Central Clearinghouse • Appropriations",
-    title: "U.S. Government",
-    desc: "Congress appropriates funds via annual State/Foreign Operations and Defense bills. Under the 2019–2028 Memorandum of Understanding (MOU), the U.S. pledged $3.8B annually ($3.3B in FMF grants and $500M in cooperative missile defense), occasionally augmented by emergency supplemental packages.",
-    metrics: [
-      { label: "Active Aid Stream", val: () => money(state.usToIsrael) + " / yr" },
-      { label: "Foreign Military Financing", val: () => money(state.usToIsrael * 0.868) },
-      { label: "Missile Defense Co-op", val: () => money(state.usToIsrael * 0.132) },
-      { label: "Inbound Taxable Stream", val: () => money(state.israelToUs) + " / yr" }
-    ]
-  },
-  israel: {
-    icon: "🇮🇱",
-    tag: "Recipient Node • Bilateral Partner",
-    title: "State of Israel",
-    desc: "Receives U.S. Foreign Military Financing (FMF) and joint R&D/production funds for multi-layered missile defense (Iron Dome, David's Sling, Arrow). Under current MOU phase-out rules, the vast majority of FMF grants must be spent on U.S.-manufactured defense equipment.",
-    metrics: [
-      { label: "Total Inflow Shown", val: () => money(state.usToIsrael) },
-      { label: "Est. U.S. Procurement Return", val: () => money(state.usToIsrael * 0.75) },
-      { label: "Israel-Linked Return Activity", val: () => money(state.israelToUs) },
-      { label: "Bilateral Framework", val: "10-Year MOU (FY2019–FY2028)" }
-    ]
-  },
-  contractors: {
-    icon: "🛡️",
-    tag: "Domestic Loop • Defense Industrial Base",
-    title: "U.S. Defense Contractors",
-    desc: "Foreign Military Financing (FMF) operates largely as a credit line held in the Federal Reserve Bank of New York. Funds are disbursed directly to U.S. aerospace and defense manufacturers (e.g., Lockheed Martin, Boeing, RTX) to fulfill approved procurement contracts.",
-    metrics: [
-      { label: "Estimated Domestic Buyback", val: () => money(state.usToIsrael * 0.75) },
-      { label: "Key Programs Funded", val: "F-35I Adir, Precision Munitions" },
-      { label: "Missile Co-Production", val: "Iron Dome Tamir Interceptors" },
-      { label: "Offshore Procurement Phase-Out", val: "Transitioning to 100% U.S. Spend" }
-    ]
-  }
-};
-
-const inspectorBackdrop = document.getElementById("inspectorBackdrop");
-
-function openNodeInspector(key) {
-  const info = NODE_DETAILS[key];
-  if (!info) return;
-  playSynthTone(740, 0.1, "triangle");
-
-  document.getElementById("inspectorIcon").textContent = info.icon;
-  document.getElementById("inspectorTag").textContent = info.tag;
-  document.getElementById("inspectorTitle").textContent = info.title;
-  document.getElementById("inspectorDesc").textContent = info.desc;
-
-  const container = document.getElementById("inspectorMetrics");
-  container.innerHTML = info.metrics.map(m => {
-    const v = typeof m.val === "function" ? m.val() : m.val;
-    return `
-      <div class="p-3.5 rounded-2xl border border-white/10 bg-white/[0.04]">
-        <span class="block text-[10px] font-extrabold uppercase tracking-wider text-slate-400">${m.label}</span>
-        <strong class="block text-base mono text-white mt-1">${v}</strong>
+</div></nav>
+<main class="wrap">
+  <header class="hero">
+    <div><div class="kicker">Bilateral assistance · Financial flow explorer</div><h1>Follow<br>the <em>money.</em></h1><p>Explore a simplified view of how U.S. federal revenue supports assistance to Israel, how security procurement can involve U.S. manufacturers, and how a separately modeled Israel-linked financial stream compares.</p></div>
+    <aside class="hero-note"><div class="note-label">A model, not a live feed</div><p>Every dollar shown has a direction. Not every arrow represents a direct cash payment.</p><small>Choose a scenario, open a node, or edit the underlying amounts to explore the assumptions.</small></aside>
+  </header>
+  <section class="section" id="flow" aria-labelledby="flow-title">
+    <div class="section-head"><div class="headline-group"><span class="section-index">01 / THE FLOW</span><h2 id="flow-title">How the funds move</h2><p>Annualized figures for the selected scenario. Click a card to inspect what the modeled flow represents.</p></div><span class="aside-label">USD / annual basis</span></div>
+    <div class="overview">
+      <div class="kpi"><span class="eyebrow"><i class="swatch"></i>U.S. assistance modeled</span><strong id="usAmount">$3.8B</strong><small>Government → Israel</small><span class="kpi-unit" id="usRate">$120.50 per second · annualized</span></div>
+      <div class="kpi"><span class="eyebrow"><i class="swatch teal"></i>Estimated U.S. procurement</span><strong id="buybackAmount">$2.85B</strong><small>Assumed share of assistance spent with U.S. industry</small><span class="kpi-unit">Illustrative 75% assumption</span></div>
+      <div class="kpi"><span class="eyebrow"><i class="swatch rose"></i>Custom Israel-linked stream</span><strong id="returnAmount">$298.5M</strong><small>Separate, user-editable return-flow estimate</small><span class="kpi-unit" id="returnRate">$9.47 per second · annualized</span></div>
+    </div>
+    <div class="controls-strip"><div><div class="strip-label">Explore a scenario</div><div class="preset-row" role="group" aria-label="Scenario presets">
+      <button type="button" class="preset active" data-scenario="baseline" aria-pressed="true">MOU baseline · $3.8B</button>
+      <button type="button" class="preset" data-scenario="supplemental" aria-pressed="false">FY2024 example · $17.9B</button>
+      <button type="button" class="preset" data-scenario="prior" aria-pressed="false">Prior MOU · $3.3B</button>
+      <button type="button" class="preset" data-scenario="surge" aria-pressed="false">Defense surge · $8.7B</button>
+    </div></div><div class="sim-control"><button id="pauseBtn" class="btn" type="button" aria-pressed="false">Ⅱ <span>Pause motion</span></button><label class="speed-label" for="speedSlider">Speed <strong id="speedReadout">1.0×</strong></label><input type="range" id="speedSlider" min="0.25" max="4" step="0.25" value="1" aria-label="Animation speed"></div></div>
+    <div id="flowStage" class="model-stage" aria-label="Animated bilateral flow diagram">
+      <span class="stage-id">FLOW / 001 — SELECT NODES FOR DETAIL</span><canvas id="flowCanvas" aria-hidden="true"></canvas>
+      <div class="node-row">
+        <button type="button" class="entity-node taxpayer" data-node="taxpayer"><span class="node-top"><span>01 / Origin</span><span class="node-symbol" aria-hidden="true">◉</span></span><h3>U.S. taxpayers</h3><p>Federal revenue enters the government’s general fiscal system.</p><span class="node-bottom"><span>Inspect source</span><span class="arrow" aria-hidden="true">↗</span></span></button>
+        <button type="button" class="entity-node treasury" data-node="government"><span class="node-top"><span>02 / Allocation</span><span class="node-symbol" aria-hidden="true">▥</span></span><h3>U.S. government</h3><p>Congress authorizes assistance and associated programs.</p><span class="node-bottom"><span>Inspect allocation</span><span class="arrow" aria-hidden="true">↗</span></span></button>
+        <button type="button" class="entity-node israel" data-node="israel"><span class="node-top"><span>03 / Recipient</span><span class="node-symbol" aria-hidden="true">✧</span></span><h3>Israel</h3><p>Security assistance supports eligible procurements and programs.</p><span class="node-bottom"><span>Inspect recipient</span><span class="arrow" aria-hidden="true">↗</span></span></button>
       </div>
-    `;
-  }).join("");
-
-  inspectorBackdrop.classList.add("open");
-}
-
-document.querySelectorAll(".node[data-node]").forEach(node => {
-  node.addEventListener("click", () => openNodeInspector(node.dataset.node));
-  node.addEventListener("keydown", e => {
-    if (e.key === "Enter" || e.key === " ") {
-      e.preventDefault();
-      openNodeInspector(node.dataset.node);
-    }
+      <div class="bottom-row"><button type="button" class="entity-node contractor" id="contractorNode" data-node="contractors"><span class="node-top"><span>04 / Procurement pathway</span><span class="node-symbol" aria-hidden="true">⌁</span></span><h3>U.S. defense industry</h3><p>Modeled U.S.-based purchasing linked to military assistance.</p><span class="node-bottom"><span id="contractorNodeValue">$2.85B modeled</span><span class="arrow" aria-hidden="true">↗</span></span></button></div>
+    </div>
+    <div class="stage-legend" aria-label="Flow categories">
+      <div class="legend-item"><span class="legend-head"><i class="swatch blue"></i>Revenue base</span><strong class="legend-val">$4.92T</strong><small>Illustrative federal receipts</small></div>
+      <div class="legend-item"><span class="legend-head"><i class="swatch"></i>Assistance →</span><strong class="legend-val" id="legendUs">$3.8B</strong><small>Government to Israel</small></div>
+      <div class="legend-item"><span class="legend-head"><i class="swatch rose"></i>Modeled return ←</span><strong class="legend-val" id="legendReturn">$298.5M</strong><small>Custom financial stream</small></div>
+      <div class="legend-item"><span class="legend-head"><i class="swatch teal"></i>Procurement ↙</span><strong class="legend-val" id="legendBuyback">$2.85B</strong><small>Illustrative U.S. purchases</small></div>
+    </div>
+    <div class="understage"><label class="checkline" for="procurementToggle"><input type="checkbox" id="procurementToggle" checked> Show U.S. defense procurement pathway</label><span class="aside-label">Animated bills represent relative direction, not individual payments</span></div>
+    <div class="session" aria-label="Elapsed session model"><div class="session-cell"><span class="mini-head">Time on this page</span><strong id="sessionTime">00m 00s</strong><p>Duration since opening this model</p></div><div class="session-cell"><span class="mini-head">U.S. assistance · pro rata</span><strong id="sessionUs">$0.00</strong><p>Hypothetical accrual at the annualized rate</p></div><div class="session-cell"><span class="mini-head">Custom incoming flow · pro rata</span><strong id="sessionReturn">$0.00</strong><p>Hypothetical accrual, not observed transfers</p></div></div>
+    <div class="method-line"><span class="mark" aria-hidden="true">i</span><div><strong>Reading the graphic:</strong> This is a scenario illustration rather than a trace of bank transfers. The customizable incoming stream is not necessarily tax revenue, and comparing it with aid does not calculate a governmental net balance.</div></div>
+  </section>
+  <section class="section" id="compare" aria-labelledby="compare-title"><div class="section-head"><div class="headline-group"><span class="section-index">02 / COMPARISON</span><h2 id="compare-title">Putting the scale in context</h2><p>Compare relative modeled amounts on one common scale. The procurement amount is a component pathway, not an additional expenditure.</p></div></div>
+    <div class="analytics-grid"><div class="panel"><span class="panel-label">Annual stream comparison / linear scale</span><div class="bar-stack">
+      <div><div class="bar-label"><span>U.S. government assistance</span><strong id="barUsLabel">$3.8B</strong></div><div class="bar-track"><div class="bar-fill" id="barUs"></div></div></div>
+      <div><div class="bar-label"><span>Estimated U.S. procurement</span><strong id="barProcurementLabel">$2.85B</strong></div><div class="bar-track"><div class="bar-fill teal" id="barProcurement"></div></div></div>
+      <div><div class="bar-label"><span>Custom Israel-linked flow</span><strong id="barReturnLabel">$298.5M</strong></div><div class="bar-track"><div class="bar-fill rose" id="barReturn"></div></div></div>
+    </div><div class="comp-foot"><div><span>Incoming stream / assistance</span><strong id="ratioPercent">7.86%</strong></div><div><span>Assistance / incoming stream</span><strong id="ratioTimes">12.7×</strong></div></div></div>
+    <div class="panel"><span class="panel-label">MOU baseline / category reference</span><div class="donut-layout"><div class="donut"><svg viewBox="0 0 120 120" role="img" aria-label="Baseline $3.3 billion foreign military financing, $500 million missile defense"><circle class="bg-ring" cx="60" cy="60" r="42" pathLength="100"/><circle class="a-ring" cx="60" cy="60" r="42" pathLength="100"/><circle class="b-ring" cx="60" cy="60" r="42" pathLength="100"/></svg><div class="donut-center"><strong>87<span style="font-size:16px">%</span></strong><span>FMF share</span></div></div><div class="alloc-legend"><div class="alloc-item"><i class="swatch"></i><div><strong>Foreign Military Financing</strong><small>$3.3B · 86.8%</small></div></div><div class="alloc-item"><i class="swatch blue"></i><div><strong>Missile defense cooperation</strong><small>$500M · 13.2%</small></div></div></div></div><p class="alloc-note">The split above describes the illustrative $3.8B MOU baseline only. It is not automatically applied to other scenario totals, which may have different category compositions.</p></div></div>
+  </section>
+  <section class="section" id="impact" aria-labelledby="impact-title"><div class="section-head"><div class="headline-group"><span class="section-index">03 / PERSONAL ESTIMATE</span><h2 id="impact-title">What does that mean for your taxes?</h2><p>Estimate a proportional share using your federal tax amount divided by the model’s $4.92T federal-receipts base. This is an allocation thought experiment, not a tax-bill designation.</p></div></div>
+    <div class="impact-layout"><div class="panel impact-control"><label class="field-title" for="taxSlider">Annual federal taxes paid</label><div class="tax-output" id="taxAmount">$14,500</div><input type="range" class="tax-range" id="taxSlider" min="1000" max="250000" step="500" value="14500"><div class="range-limits"><span>$1,000</span><span>$250,000</span></div><div class="tax-presets" role="group" aria-label="Quick taxpayer examples"><button type="button" class="quick" data-tax="4500">$4,500</button><button type="button" class="quick selected" data-tax="14500">$14,500</button><button type="button" class="quick" data-tax="38000">$38,000</button><button type="button" class="quick" data-tax="95000">$95,000</button></div></div>
+    <div class="impact-results"><div class="result annual"><span class="field-title">Estimated annual share</span><strong id="personalAnnual">$11.20</strong><small>Proportional to the selected U.S. aid scenario.</small></div><div class="result daily"><span class="field-title">Equivalent daily share</span><strong id="personalDaily">3.07¢</strong><small>Annual estimate divided by 365 days.</small></div></div></div>
+  </section>
+  <section class="section" id="edit" aria-labelledby="edit-title"><div class="section-head"><div class="headline-group"><span class="section-index">04 / PARAMETERS</span><h2 id="edit-title">Make the model your own</h2><p>Change either stream to compare a different hypothesis. Presets are illustrative values carried forward from the source dashboard, not verified datasets.</p></div></div>
+    <div class="edit-layout"><form class="panel edit-form" id="modelForm" novalidate><label class="field" for="usInput">Annual U.S. assistance ($)<input id="usInput" name="us" inputmode="decimal" type="number" min="0" max="1000000000000000" step="any" value="3800000000" aria-describedby="usHelp"><small id="usHelp">Dollar amount. Example: 3800000000 = $3.8B.</small></label><label class="field" for="returnInput">Custom Israel-linked activity ($)<input id="returnInput" name="il" inputmode="decimal" type="number" min="0" max="1000000000000000" step="any" value="298542028" aria-describedby="returnHelp"><small id="returnHelp">A separately modeled stream. Its category and source must be established independently.</small></label><p class="form-error" id="formError" role="alert"></p><div class="form-bottom"><span>Changes update the flow, comparison, and tax calculator.</span><button type="submit" class="btn primary">Apply amounts <span aria-hidden="true">↗</span></button></div></form>
+    <aside class="panel assumptions"><h3>Assumptions &amp; limitations</h3><p>These figures illustrate possible fiscal relationships. They should not be presented as a verified ledger of transactions or as a claim that aid is directly offset by incoming tax revenue.</p><ul class="assumption-list"><li><b>Receipts base</b><span>$4.92T reference amount used solely as the calculator denominator.</span></li><li><b>Procurement</b><span>75% modeling assumption applied to the total U.S. assistance input; actual eligible procurement varies by program and year.</span></li><li><b>Annualization</b><span>Per-second counters are annual totals ÷ 31,536,000; no payments are monitored.</span></li><li><b>MOU split</b><span>$3.3B FMF / $0.5B missile defense for the baseline reference.</span></li></ul></aside></div>
+  </section>
+  <footer class="site-footer"><strong>FISCAL ATLAS / EXPLORATORY MODEL</strong><span>Dark analysis edition · self-contained HTML · illustrative data</span></footer>
+</main>
+<div class="dialog-wrap" id="inspector" role="presentation" hidden><div class="dialog" role="dialog" aria-modal="true" aria-labelledby="dialogTitle" aria-describedby="dialogDesc"><div class="dialog-head"><div><span class="kicker" id="dialogKicker">Entity details</span><h2 class="dialog-title" id="dialogTitle">U.S. government</h2></div><button type="button" class="close-btn" id="closeDialog" aria-label="Close entity details">×</button></div><p class="dialog-desc" id="dialogDesc"></p><div class="dialog-metrics" id="dialogMetrics"></div><div class="dialog-foot"><button type="button" class="btn primary" id="closeDialogBottom">Close details</button></div></div></div>
+<div class="toast" id="toast" role="status" aria-live="polite" hidden></div>
+<script>
+(() => {
+  'use strict';
+  const $ = id => document.getElementById(id);
+  const YEAR_SECONDS = 365 * 24 * 60 * 60;
+  const TAX_BASE = 4_920_000_000_000;
+  const DOMESTIC_FACTOR = 0.75;
+  const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)');
+  const presets = {
+    baseline:{us:3_800_000_000,il:298_542_028},
+    supplemental:{us:17_900_000_000,il:345_000_000},
+    prior:{us:3_300_000_000,il:240_000_000},
+    surge:{us:8_700_000_000,il:312_000_000}
+  };
+  const state={...presets.baseline,scenario:'baseline',tax:14_500,speed:1,paused:reduceMotion.matches,procurement:true,start:performance.now()};
+  const formatMoney = (num, digits=1) => {
+    const n=Number(num)||0;
+    if(n>=1e12)return '$'+(n/1e12).toFixed(2).replace(/0+$/,'').replace(/\.$/,'')+'T';
+    if(n>=1e9)return '$'+(n/1e9).toFixed(2).replace(/0+$/,'').replace(/\.$/,'')+'B';
+    if(n>=1e6)return '$'+(n/1e6).toFixed(digits).replace(/0+$/,'').replace(/\.$/,'')+'M';
+    if(n>=1e3)return '$'+(n/1e3).toFixed(digits).replace(/0+$/,'').replace(/\.$/,'')+'K';
+    return '$'+n.toLocaleString('en-US',{maximumFractionDigits:2});
+  };
+  const usd2 = n => new Intl.NumberFormat('en-US',{style:'currency',currency:'USD',minimumFractionDigits:2,maximumFractionDigits:2}).format(n);
+  let toastTimer;
+  function toast(msg){const el=$('toast');el.textContent=msg;el.hidden=false;clearTimeout(toastTimer);toastTimer=setTimeout(()=>el.hidden=true,2800);}
+  function markActiveScenario(name){document.querySelectorAll('[data-scenario]').forEach(btn=>{const active=btn.dataset.scenario===name;btn.classList.toggle('active',active);btn.setAttribute('aria-pressed',String(active));});}
+  function updateTax(){const annual=state.tax/TAX_BASE*state.us;const daily=annual/365;$('taxAmount').textContent='$'+state.tax.toLocaleString('en-US');$('personalAnnual').textContent=usd2(annual);$('personalDaily').textContent=daily<1?(daily*100).toFixed(2)+'¢':usd2(daily);document.querySelectorAll('[data-tax]').forEach(b=>b.classList.toggle('selected',Number(b.dataset.tax)===state.tax));}
+  function render(){
+    const buyback=state.us*DOMESTIC_FACTOR;const max=Math.max(state.us,state.il,buyback,1);
+    $('usAmount').textContent=formatMoney(state.us);$('buybackAmount').textContent=formatMoney(buyback,2);$('returnAmount').textContent=formatMoney(state.il);
+    $('usRate').textContent=usd2(state.us/YEAR_SECONDS)+' per second · annualized';$('returnRate').textContent=usd2(state.il/YEAR_SECONDS)+' per second · annualized';
+    $('contractorNodeValue').textContent=formatMoney(buyback,2)+' modeled';
+    $('legendUs').textContent=formatMoney(state.us);$('legendReturn').textContent=formatMoney(state.il);$('legendBuyback').textContent=formatMoney(buyback,2);
+    $('barUsLabel').textContent=formatMoney(state.us);$('barProcurementLabel').textContent=formatMoney(buyback,2);$('barReturnLabel').textContent=formatMoney(state.il);
+    [['barUs',state.us],['barProcurement',buyback],['barReturn',state.il]].forEach(([id,n])=>$(id).style.width=(n<=0?0:Math.max(.35,n/max*100))+'%');
+    $('ratioPercent').textContent=state.us>0?(state.il/state.us*100).toFixed(2)+'%':'N/A';
+    $('ratioTimes').textContent=state.il>0?(state.us/state.il).toFixed(1)+'×':'N/A';
+    updateTax();
+  }
+  function setModel(us,il,scenario='custom'){
+    state.us=us;state.il=il;state.scenario=scenario;$('usInput').value=String(us);$('returnInput').value=String(il);
+    markActiveScenario(scenario);render();
+  }
+  function safeAmount(value){if(String(value).trim()==='')return null;const n=Number(value);return Number.isFinite(n)&&n>=0&&n<=1e15?n:null;}
+  $('modelForm').addEventListener('submit',e=>{
+    e.preventDefault();const us=safeAmount($('usInput').value);const il=safeAmount($('returnInput').value);
+    const err=us===null?'Enter a valid, non-negative U.S. assistance amount (up to $1 quadrillion).':il===null?'Enter a valid, non-negative incoming amount (up to $1 quadrillion).':'';
+    $('usInput').setAttribute('aria-invalid',String(us===null));$('returnInput').setAttribute('aria-invalid',String(il===null));$('formError').textContent=err;
+    if(err){(us===null?$('usInput'):$('returnInput')).focus();return;}
+    setModel(us,il);toast('Model amounts updated.');
   });
-});
-
-function closeInspector() {
-  inspectorBackdrop.classList.remove("open");
-  playSynthTone(380, 0.07, "sine");
-}
-
-document.getElementById("closeInspectorBtn").addEventListener("click", closeInspector);
-document.getElementById("closeInspectorFooterBtn").addEventListener("click", closeInspector);
-inspectorBackdrop.addEventListener("click", e => {
-  if (e.target === inspectorBackdrop) closeInspector();
-});
-
-// ============================================================================
-// 9. HTML5 CANVAS BEZIER & PARTICLE STREAM ENGINE
-// ============================================================================
-const canvas = document.getElementById("flowCanvas");
-const ctx = canvas.getContext("2d");
-
-let particles = [];
-
-function initParticles() {
-  particles = [];
-  // Stream 0: Taxpayer -> Gov
-  for (let i = 0; i < 18; i++) {
-    particles.push({ stream: 0, t: Math.random(), speed: 0.0032 + Math.random() * 0.0015, size: 2.5 + Math.random() * 2, color: "#00e5ff" });
-  }
-  // Stream 1: Gov -> Israel
-  for (let i = 0; i < 24; i++) {
-    particles.push({ stream: 1, t: Math.random(), speed: 0.0038 + Math.random() * 0.002, size: 3 + Math.random() * 2.5, color: "#54f0a8" });
-  }
-  // Stream 2: Israel -> Gov (Return)
-  for (let i = 0; i < 14; i++) {
-    particles.push({ stream: 2, t: Math.random(), speed: 0.0022 + Math.random() * 0.0012, size: 2.2 + Math.random() * 1.8, color: "#ff4d6d" });
-  }
-  // Stream 3: Israel -> US Defense Contractors -> Taxpayer/Economy (FMF Loop)
-  for (let i = 0; i < 16; i++) {
-    particles.push({ stream: 3, t: Math.random(), speed: 0.0028 + Math.random() * 0.0015, size: 2.4 + Math.random() * 2, color: "#ffd166" });
-  }
-}
-
-function resizeCanvas() {
-  const rect = flowStage.getBoundingClientRect();
-  canvas.width = rect.width * window.devicePixelRatio;
-  canvas.height = rect.height * window.devicePixelRatio;
-  ctx.setTransform(window.devicePixelRatio, 0, 0, window.devicePixelRatio, 0, 0);
-}
-
-window.addEventListener("resize", resizeCanvas);
-
-function getPointOnQuadraticBezier(p0, p1, p2, t) {
-  const invT = 1 - t;
-  return {
-    x: invT * invT * p0.x + 2 * invT * t * p1.x + t * t * p2.x,
-    y: invT * invT * p0.y + 2 * invT * t * p1.y + t * t * p2.y
+  document.querySelectorAll('[data-scenario]').forEach(btn=>btn.addEventListener('click',()=>{const key=btn.dataset.scenario;setModel(presets[key].us,presets[key].il,key);$('formError').textContent='';['usInput','returnInput'].forEach(id=>$(id).removeAttribute('aria-invalid'));}));
+  $('taxSlider').addEventListener('input',e=>{state.tax=Number(e.target.value);updateTax();});
+  document.querySelectorAll('[data-tax]').forEach(btn=>btn.addEventListener('click',()=>{state.tax=Number(btn.dataset.tax);$('taxSlider').value=state.tax;updateTax();}));
+  const NODE_DETAILS={
+    taxpayer:{kicker:'01 / origin of revenue',title:'U.S. taxpayers',description:'The U.S. government collects revenue from income, payroll, corporate, and other taxes. The model uses a $4.92T illustrative annual receipts base, not a claim that any particular taxpayer pays directly into an Israel-specific account.',metrics:[['Reference receipts base',()=>formatMoney(TAX_BASE)],['Modeled annual assistance',()=>formatMoney(state.us)],['Your selected tax paid',()=>usd2(state.tax)],['Collection and budgeting','IRS / U.S. Treasury / Congress']]},
+    government:{kicker:'02 / authorization and allocation',title:'U.S. government',description:'Congress appropriates foreign assistance through federal budget processes. The reference $3.8B memorandum-of-understanding baseline comprises $3.3B in Foreign Military Financing and $500M in cooperative missile defense. Supplemental scenarios require their own category breakdown.',metrics:[['Assistance in this model',()=>formatMoney(state.us)],['MOU reference: FMF','$3.3B'],['MOU reference: missile defense','$500M'],['Modeled incoming stream',()=>formatMoney(state.il)]]},
+    israel:{kicker:'03 / beneficiary and procurement',title:'Israel',description:'Security assistance can support procurement and cooperative missile defense programs. Transfers, credits, and procurement disbursements are not all direct cash payments to Israel. The separate incoming stream is a custom scenario variable and has not been established as tax receipts.',metrics:[['Selected aid scenario',()=>formatMoney(state.us)],['Illustrative U.S. procurement',()=>formatMoney(state.us*DOMESTIC_FACTOR)],['Custom return variable',()=>formatMoney(state.il)],['Current MOU period','FY2019–FY2028']]},
+    contractors:{kicker:'04 / domestic procurement',title:'U.S. defense industry',description:'U.S. military assistance supports purchases of approved goods and services, frequently from American suppliers. This model uses a 75% placeholder for U.S. procurement; the realized share depends on the aid category, procurement rules, and year. This is part of the assistance stream, not a separate refund to the U.S. Treasury.',metrics:[['Illustrative purchases',()=>formatMoney(state.us*DOMESTIC_FACTOR)],['Model assumption','75% of aid input'],['Modeled total assistance',()=>formatMoney(state.us)],['Accounting treatment','Included within aid, not added to it']]}
   };
-}
-
-function drawBezierGlow(p0, p1, p2, strokeColor) {
-  ctx.save();
-  ctx.beginPath();
-  ctx.moveTo(p0.x, p0.y);
-  ctx.quadraticCurveTo(p1.x, p1.y, p2.x, p2.y);
-  ctx.strokeStyle = strokeColor;
-  ctx.lineWidth = 2;
-  ctx.setLineDash([6, 8]);
-  ctx.stroke();
-  ctx.restore();
-}
-
-function renderLoop(now) {
-  // Update live session counters
-  const elapsedSec = (now - state.sessionStartMs) / 1000;
-  const mins = Math.floor(elapsedSec / 60);
-  const secs = Math.floor(elapsedSec % 60);
-  sessionTimeTicker.textContent = `${String(mins).padStart(2, "0")}m ${String(secs).padStart(2, "0")}s`;
-
-  const usFlowed = (state.usToIsrael / SECONDS_PER_YEAR) * elapsedSec;
-  const ilFlowed = (state.israelToUs / SECONDS_PER_YEAR) * elapsedSec;
-  sessionUsFlowTicker.textContent = "$" + usFlowed.toLocaleString("en-US", { minimumFractionDigits: 2, maximumFractionDigits: 2 });
-  sessionIlFlowTicker.textContent = "$" + ilFlowed.toLocaleString("en-US", { minimumFractionDigits: 2, maximumFractionDigits: 2 });
-
-  // Draw Canvas Streams (Desktop layout)
-  const w = flowStage.clientWidth;
-  const h = flowStage.clientHeight;
-  ctx.clearRect(0, 0, w, h);
-
-  if (w > 980) {
-    const pTax = { x: w * 0.14, y: 185 };
-    const pGov = { x: w * 0.50, y: 185 };
-    const pIsl = { x: w * 0.86, y: 185 };
-    const pCon = { x: w * 0.50, y: h - 80 };
-
-    const c0 = { x: w * 0.32, y: 95 };
-    const c1 = { x: w * 0.68, y: 95 };
-    const c2 = { x: w * 0.68, y: h - 220 };
-    const c3 = { x: w * 0.76, y: h - 45 };
-
-    drawBezierGlow(pTax, c0, pGov, "rgba(0, 229, 255, 0.25)");
-    drawBezierGlow(pGov, c1, pIsl, "rgba(84, 240, 168, 0.28)");
-    drawBezierGlow(pIsl, c2, pGov, "rgba(255, 77, 109, 0.25)");
-
-    if (state.showFmfLoop) {
-      drawBezierGlow(pIsl, c3, pCon, "rgba(255, 209, 102, 0.28)");
+  const dialog=$('inspector');let previousFocus=null;
+  function openDialog(key){const d=NODE_DETAILS[key];if(!d)return;previousFocus=document.activeElement;$('dialogKicker').textContent=d.kicker;$('dialogTitle').textContent=d.title;$('dialogDesc').textContent=d.description;const metrics=$('dialogMetrics');metrics.replaceChildren();for(const [label,v] of d.metrics){const item=document.createElement('div'),name=document.createElement('span'),value=document.createElement('strong');item.className='dialog-metric';name.textContent=label;value.textContent=typeof v==='function'?v():v;item.append(name,value);metrics.append(item);}dialog.hidden=false;document.body.style.overflow='hidden';$('closeDialog').focus();}
+  function closeDialog(){dialog.hidden=true;document.body.style.overflow='';previousFocus?.focus();}
+  document.querySelectorAll('[data-node]').forEach(node=>node.addEventListener('click',()=>openDialog(node.dataset.node)));
+  $('closeDialog').addEventListener('click',closeDialog);$('closeDialogBottom').addEventListener('click',closeDialog);
+  dialog.addEventListener('click',e=>{if(e.target===dialog)closeDialog();});
+  document.addEventListener('keydown',e=>{if(dialog.hidden)return;if(e.key==='Escape'){e.preventDefault();closeDialog();return;}if(e.key==='Tab'){const focusables=[...dialog.querySelectorAll('button:not([disabled])')];const first=focusables[0],last=focusables[focusables.length-1];if(e.shiftKey&&document.activeElement===first){e.preventDefault();last.focus();}else if(!e.shiftKey&&document.activeElement===last){e.preventDefault();first.focus();}}});
+  async function copy(text){if(navigator.clipboard?.writeText){try{await navigator.clipboard.writeText(text);return true;}catch{}}
+    const box=document.createElement('textarea');box.value=text;box.style.position='fixed';box.style.opacity='0';document.body.append(box);box.select();const ok=document.execCommand('copy');box.remove();return ok;}
+  $('shareBtn').addEventListener('click',async()=>{try{const url=new URL(location.href);url.searchParams.set('us',state.us);url.searchParams.set('il',state.il);if(await copy(url.toString()))toast('Scenario link copied.');else toast('Copy was blocked by your browser.');}catch{toast('Unable to create a shareable link.');}});
+  $('exportBtn').addEventListener('click',()=>{const snapshot={model:'Fiscal Atlas · illustrative scenario',timestamp:new Date().toISOString(),scenario:state.scenario,annualUsAssistance:state.us,annualCustomIncomingStream:state.il,assumedDomesticProcurementRate:DOMESTIC_FACTOR,illustrativeUsDefenseProcurement:state.us*DOMESTIC_FACTOR,federalReceiptsBase:TAX_BASE,selectedFederalTaxesPaid:state.tax,notes:'Annualized scenario rates, not observed transfers; incoming stream not established as tax receipts; procurement spending is within assistance total.'};const blob=new Blob([JSON.stringify(snapshot,null,2)],{type:'application/json'});const url=URL.createObjectURL(blob);const a=document.createElement('a');a.href=url;a.download='fiscal-atlas-scenario.json';document.body.append(a);a.click();a.remove();setTimeout(()=>URL.revokeObjectURL(url),1000);toast('Scenario JSON exported.');});
+  // Canvas drawing uses actual node bounds, so connectors follow the desktop and mobile layouts.
+  const canvas=$('flowCanvas');const ctx=canvas.getContext('2d');const stage=$('flowStage');let w=0,h=0,lastFrame=0,lastTicker=0,cachedPaths=[];
+  const colors=['#92aacb','#e5b776','#e88b8b','#70c9b8'];
+  const packets=Array.from({length:34},(_,i)=>({stream:i%4,t:((i*0.61803398875)%1),speed:.06+((i*7)%8)*.009}));
+  function resize(){const r=stage.getBoundingClientRect();w=r.width;h=r.height;const dpr=Math.min(devicePixelRatio||1,2);canvas.width=Math.max(1,Math.round(w*dpr));canvas.height=Math.max(1,Math.round(h*dpr));ctx.setTransform(dpr,0,0,dpr,0,0);cachedPaths=paths();}
+  function rectFor(key){const node=document.querySelector('[data-node="'+key+'"]');const r=node.getBoundingClientRect(),s=stage.getBoundingClientRect();return {x:r.left-s.left,y:r.top-s.top,w:r.width,h:r.height};}
+  const pt=(x,y)=>({x,y});
+  function paths(){const a=rectFor('taxpayer'),b=rectFor('government'),c=rectFor('israel'),d=rectFor('contractors');const mobile=w<761;
+    if(mobile){
+      const down=(from,to,shift)=>{const start=pt(from.x+from.w/2,from.y+from.h),end=pt(to.x+to.w/2,to.y);return [start,pt(start.x+shift,start.y+32),pt(end.x+shift,end.y-32),end];};
+      const back=[pt(c.x-3,c.y+c.h/2),pt(10,c.y+c.h/2+35),pt(10,b.y+b.h/2+35),pt(b.x-3,b.y+b.h/2)];
+      return [down(a,b,14),down(b,c,-14),back,down(c,d,15)];
     }
-
-    const aidScale = Math.min(2.5, Math.max(0.5, state.usToIsrael / 3800000000));
-
-    particles.forEach(pt => {
-      if (pt.stream === 3 && !state.showFmfLoop) return;
-
-      if (!state.paused) {
-        const mult = pt.stream === 1 ? aidScale : 1;
-        pt.t = (pt.t + pt.speed * state.speedMult * mult) % 1;
-      }
-
-      let pos;
-      if (pt.stream === 0) pos = getPointOnQuadraticBezier(pTax, c0, pGov, pt.t);
-      else if (pt.stream === 1) pos = getPointOnQuadraticBezier(pGov, c1, pIsl, pt.t);
-      else if (pt.stream === 2) pos = getPointOnQuadraticBezier(pIsl, c2, pGov, pt.t);
-      else pos = getPointOnQuadraticBezier(pIsl, c3, pCon, pt.t);
-
-      ctx.save();
-      ctx.beginPath();
-      ctx.arc(pos.x, pos.y, pt.size, 0, Math.PI * 2);
-      ctx.fillStyle = pt.color;
-      ctx.shadowColor = pt.color;
-      ctx.shadowBlur = 12;
-      ctx.fill();
-      ctx.restore();
-    });
+    const tax=[pt(a.x+a.w,a.y+a.h*.48),pt(a.x+a.w+65,a.y+a.h*.48-16),pt(b.x-65,b.y+b.h*.48-16),pt(b.x,b.y+b.h*.48)];
+    const aid=[pt(b.x+b.w,b.y+b.h*.48),pt(b.x+b.w+65,b.y+b.h*.48-16),pt(c.x-65,c.y+c.h*.48-16),pt(c.x,c.y+c.h*.48)];
+    const returnPath=[pt(c.x+c.w*.45,c.y+c.h),pt(c.x+c.w*.38,c.y+c.h+122),pt(b.x+b.w*.82,b.y+b.h+122),pt(b.x+b.w*.73,b.y+b.h)];
+    const procure=[pt(c.x+c.w*.65,c.y+c.h),pt(c.x+c.w*.54,c.y+c.h+195),pt(d.x+d.w*.78,d.y-70),pt(d.x+d.w*.75,d.y)];
+    return [tax,aid,returnPath,procure];
   }
-
-  requestAnimationFrame(renderLoop);
-}
-
-// ============================================================================
-// 10. SIMULATION CONTROLS, SHARE LINK & EXPORT
-// ============================================================================
-playPauseBtn.addEventListener("click", () => {
-  state.paused = !state.paused;
-  flowStage.classList.toggle("Paused", state.paused);
-  playPauseBtn.textContent = state.paused ? "▶ Resume Stream" : "⏸ Pause Stream";
-  playSynthTone(state.paused ? 340 : 580, 0.08, "triangle");
-});
-
-speedSlider.addEventListener("input", () => {
-  state.speedMult = Number(speedSlider.value);
-  speedValueLabel.textContent = state.speedMult.toFixed(2).replace(/\.00$/, ".0") + "x";
-  document.documentElement.style.setProperty("--speed-mult", state.speedMult);
-});
-
-fmfLoopToggle.addEventListener("change", () => {
-  state.showFmfLoop = fmfLoopToggle.checked;
-  contractorsNode.classList.toggle("hidden-node", !state.showFmfLoop);
-  playSynthTone(500, 0.08, "sine");
-});
-
-document.getElementById("updateBtn").addEventListener("click", () => {
-  updateDashboard(true);
-  showToast("Simulation Updated!");
-});
-usToIsraelInput.addEventListener("input", () => updateDashboard(false));
-israelToUsInput.addEventListener("input", () => updateDashboard(false));
-
-// Copy Shareable URL with query parameters (using execCommand fallback for iframe compatibility)
-document.getElementById("shareUrlBtn").addEventListener("click", () => {
-  const url = new URL(window.location.href);
-  url.searchParams.set("us", state.usToIsrael);
-  url.searchParams.set("il", state.israelToUs);
-  const shareText = url.toString();
-
-  const tempInput = document.createElement("textarea");
-  tempInput.value = shareText;
-  document.body.appendChild(tempInput);
-  tempInput.select();
-  document.execCommand("copy");
-  document.body.removeChild(tempInput);
-
-  playSynthTone(820, 0.1, "triangle");
-  showToast("Shareable Scenario URL Copied!");
-});
-
-// Export JSON Snapshot
-document.getElementById("exportJsonBtn").addEventListener("click", () => {
-  const snapshot = {
-    timestamp: new Date().toISOString(),
-    usGovernmentToIsraelAid: state.usToIsrael,
-    estimatedUsDefenseContractorBuyback: state.usToIsrael * 0.75,
-    israelLinkedTaxableActivityToUs: state.israelToUs,
-    netBilateralDifference: Math.abs(state.usToIsrael - state.israelToUs)
-  };
-  const blob = new Blob([JSON.stringify(snapshot, null, 2)], { type: "application/json" });
-  const a = document.createElement("a");
-  a.href = URL.createObjectURL(blob);
-  a.download = "bilateral-money-flow-snapshot.json";
-  a.click();
-  URL.revokeObjectURL(a.href);
-  playSynthTone(700, 0.1, "sine");
-  showToast("JSON Snapshot Downloaded!");
-});
-
-// Initialize from URL query params if present
-window.addEventListener("DOMContentLoaded", () => {
-  const params = new URLSearchParams(window.location.search);
-  if (params.has("us")) usToIsraelInput.value = Number(params.get("us"));
-  if (params.has("il")) israelToUsInput.value = Number(params.get("il"));
-
-  resizeCanvas();
-  initParticles();
-  updateDashboard(false);
-  requestAnimationFrame(renderLoop);
-});
+  function bezier(points,t){const [a,b,c,d]=points,u=1-t;return pt(u*u*u*a.x+3*u*u*t*b.x+3*u*t*t*c.x+t*t*t*d.x,u*u*u*a.y+3*u*u*t*b.y+3*u*t*t*c.y+t*t*t*d.y);}
+  function strokePath(points,color){const [a,b,c,d]=points;ctx.beginPath();ctx.moveTo(a.x,a.y);ctx.bezierCurveTo(b.x,b.y,c.x,c.y,d.x,d.y);ctx.strokeStyle=color+'80';ctx.lineWidth=2;ctx.setLineDash([4,9]);ctx.stroke();ctx.setLineDash([]);const p=bezier(points,.98),q=bezier(points,.995),ang=Math.atan2(q.y-p.y,q.x-p.x);ctx.fillStyle=color;ctx.beginPath();ctx.moveTo(q.x,q.y);ctx.lineTo(q.x-Math.cos(ang-.5)*10,q.y-Math.sin(ang-.5)*10);ctx.lineTo(q.x-Math.cos(ang+.5)*10,q.y-Math.sin(ang+.5)*10);ctx.closePath();ctx.fill();}
+  function drawBill(p,color,angle){ctx.save();ctx.translate(p.x,p.y);ctx.rotate(angle);ctx.fillStyle=color;ctx.globalAlpha=.92;ctx.beginPath();ctx.roundRect(-11,-6,22,12,2);ctx.fill();ctx.strokeStyle='#0c1620';ctx.globalAlpha=.7;ctx.lineWidth=.7;ctx.strokeRect(-8,-3,16,6);ctx.fillStyle='#0a1018';ctx.font='bold 9px monospace';ctx.textAlign='center';ctx.textBaseline='middle';ctx.fillText('$',0,0);ctx.restore();}
+  function draw(now){if(!w||!h)resize();const dt=Math.min(.06,Math.max(0,(now-lastFrame)/1000||0));lastFrame=now;ctx.clearRect(0,0,w,h);const p=cachedPaths;p.forEach((item,i)=>{if(i===3&&!state.procurement)return;strokePath(item,colors[i]);});
+    if(!state.paused&&!reduceMotion.matches){packets.forEach(item=>{if(item.stream===3&&!state.procurement)return;item.t=(item.t+item.speed*dt*state.speed*(item.stream===1?Math.min(2.5,Math.max(.65,state.us/3.8e9)):1))%1;const points=p[item.stream],pos=bezier(points,item.t),next=bezier(points,Math.min(.999,item.t+.008));drawBill(pos,colors[item.stream],Math.atan2(next.y-pos.y,next.x-pos.x));});}
+    else { // Keep the selected flows readable when animation is paused.
+      [0,1,2,3].forEach(i=>{if(i===3&&!state.procurement)return;for(let n=1;n<=3;n++){const pos=bezier(p[i],n/4),ahead=bezier(p[i],n/4+.01);drawBill(pos,colors[i],Math.atan2(ahead.y-pos.y,ahead.x-pos.x));}});
+    }
+    if(now-lastTicker>=180){const elapsed=(now-state.start)/1000;const min=Math.floor(elapsed/60),sec=Math.floor(elapsed%60);$('sessionTime').textContent=String(min).padStart(2,'0')+'m '+String(sec).padStart(2,'0')+'s';$('sessionUs').textContent=usd2(state.us/YEAR_SECONDS*elapsed);$('sessionReturn').textContent=usd2(state.il/YEAR_SECONDS*elapsed);lastTicker=now;}
+    requestAnimationFrame(draw);
+  }
+  $('pauseBtn').addEventListener('click',()=>{state.paused=!state.paused;setPauseLabel();});
+  function setPauseLabel(){const btn=$('pauseBtn');btn.replaceChildren();const prefix=document.createTextNode(state.paused?'▶ ':'Ⅱ '),label=document.createElement('span');label.textContent=state.paused?'Resume motion':'Pause motion';btn.append(prefix,label);btn.setAttribute('aria-pressed',String(state.paused));}
+  $('speedSlider').addEventListener('input',e=>{state.speed=Number(e.target.value);$('speedReadout').textContent=state.speed.toFixed(2).replace(/0$/,'').replace(/\.$/,'')+'×';});
+  $('procurementToggle').addEventListener('change',e=>{state.procurement=e.target.checked;$('contractorNode').parentElement.hidden=!state.procurement;});
+  const observer=new ResizeObserver(resize);observer.observe(stage);
+  const navObserver=new IntersectionObserver(entries=>{entries.forEach(entry=>{if(entry.isIntersecting){document.querySelectorAll('.nav-links a').forEach(a=>a.classList.toggle('current',a.getAttribute('href')==='#'+entry.target.id));}});},{rootMargin:'-110px 0px -65% 0px',threshold:0});
+  document.querySelectorAll('main section[id]').forEach(s=>navObserver.observe(s));
+  const query=new URLSearchParams(location.search);const inputUs=safeAmount(query.get('us')),inputIl=safeAmount(query.get('il'));
+  if(query.has('us')&&query.has('il')&&inputUs!==null&&inputIl!==null)setModel(inputUs,inputIl);else render();
+  if(reduceMotion.matches)setPauseLabel();
+  resize();requestAnimationFrame(draw);
+})();
 </script>
-
 </body>
 </html>
