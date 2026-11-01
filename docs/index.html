@@ -201,7 +201,7 @@
         </section>
       </main>
     </div>
-    <footer class="bottomline"><span><strong>RESEARCH NOTE</strong>  Original 97 records are user-supplied and not independently verified. 22 new domains include source URLs. Shared infrastructure ≠ affiliation.</span><span class="kbd-help">22 VERIFIED ADDITIONS &nbsp;·&nbsp; DRAG to pan &nbsp;·&nbsp; SCROLL to zoom &nbsp;·&nbsp; ↑↓ browse &nbsp;·&nbsp; / search &nbsp;·&nbsp; ESC close</span></footer>
+    <footer class="bottomline"><span><strong>RESEARCH NOTE</strong> Original 97 records are user-supplied and not independently verified. 22 verified domain additions and 10 sourced Today Is America / Influenceable context records include source URLs. Shared infrastructure or a reported relationship ≠ affiliation beyond the cited record.</span><span class="kbd-help">32 SOURCED ADDITIONS &nbsp;·&nbsp; DRAG to pan &nbsp;·&nbsp; SCROLL to zoom &nbsp;·&nbsp; ↑↓ browse &nbsp;·&nbsp; / search &nbsp;·&nbsp; ESC close</span></footer>
   </div>
 <script>
 'use strict';
@@ -225,7 +225,8 @@
       { id: "h_tpaw", n: "TPUSA AWS & CloudFront",        c: "#f43f5e", x: 0, y: 0, r: 26 },
       { id: "h_tpsp", n: "TPUSA Dedicated & Origin",      c: "#34d399", x: 0, y: 0, r: 26 },
       { id:"h_tppr", n:"TPUSA Official Sites & Programs", c:"#3bd4b3",x:0,y:0,r:28 },
-      { id:"h_agweb",n:"Agency & Corporate Websites",c:"#ffbe74",x:0,y:0,r:28 }
+      { id:"h_agweb",n:"Agency & Corporate Websites",c:"#ffbe74",x:0,y:0,r:28 },
+      { id:"h_tia",n:"Today Is America / Influenceable",c:"#f0a45d",x:0,y:0,r:30 }
     ];
 
     const NODES = [
@@ -373,7 +374,19 @@
       {"id": 116, "d": "pluspr.com", "h": "h_agweb", "c": "#ffbe74", "cat": "Registrant website", "fara": "PUBLIC WEBSITE • VERIFIED SOURCE", "rel": "PLUS Communications identifies this as its website and lists its Arlington headquarters.", "e": "PLUS Communications", "aux": "Company self-disclosure", "src": "https://pluspr.com/", "srcType": "Official site", "verified": "2026-10-29", "evidence": "documented-web", "researched": true},
       {"id": 117, "d": "mmgyglobal.com", "h": "h_agweb", "c": "#ffbe74", "cat": "Registrant website", "fara": "PUBLIC WEBSITE • VERIFIED SOURCE", "rel": "Official integrated travel and tourism marketing agency website.", "e": "MMGY Global", "aux": "Company self-disclosure", "src": "https://www.mmgyglobal.com/", "srcType": "Official site", "verified": "2026-10-29", "evidence": "documented-web", "researched": true},
       {"id": 118, "d": "havasmedia.de", "h": "h_agweb", "c": "#ffbe74", "cat": "Broker website", "fara": "PUBLIC WEBSITE • VERIFIED SOURCE", "rel": "German legal notice names Havas Media Germany GmbH as the site's operating entity.", "e": "Havas Media Germany", "aux": "Legal imprint", "src": "https://havasmedia.de/impressum/", "srcType": "Official legal notice", "verified": "2026-10-29", "evidence": "documented-web", "researched": true},
-      {"id": 119, "d": "davis-media.com", "h": "h_agweb", "c": "#ffbe74", "cat": "Founder-associated site", "fara": "PUBLIC WEBSITE • VERIFIED SOURCE", "rel": "Site identifies Yoav Davis as founder and CEO. This founder match does not independently prove the site belongs to the same registered LLC.", "e": "Davis Media / Yoav Davis", "aux": "Founder name corroboration", "src": "https://www.davis-media.com/about", "srcType": "Company founder profile", "verified": "2026-10-29", "evidence": "documented-web", "researched": true}
+      {"id": 119, "d": "davis-media.com", "h": "h_agweb", "c": "#ffbe74", "cat": "Founder-associated site", "fara": "PUBLIC WEBSITE • VERIFIED SOURCE", "rel": "Site identifies Yoav Davis as founder and CEO. This founder match does not independently prove the site belongs to the same registered LLC.", "e": "Davis Media / Yoav Davis", "aux": "Founder name corroboration", "src": "https://www.davis-media.com/about", "srcType": "Company founder profile", "verified": "2026-10-29", "evidence": "documented-web", "researched": true},
+
+      // Today Is America / Influenceable context — reported relationships; select any entity for its source.
+      {"id": 120, "d": "Camron Rafizadeh", "h": "h_tia", "c": "#f0a45d", "cat": "Co-founder / executive", "fara": "REPORTED RELATIONSHIP", "rel": "Media Matters reported that Camron Rafizadeh co-founded Today Is America and the agency Influencing America with his brother Liam.", "e": "Today Is America / Influencing America", "aux": "Reported organizational relationship", "src": "https://www.mediamatters.org/tiktok/right-wing-organization-today-america-fueling-extremist-network-young-conservative?page=0", "srcType": "Media Matters reporting", "verified": "2026-11-01", "evidence": "reported", "researched": true},
+      {"id": 121, "d": "Liam Rafizadeh", "h": "h_tia", "c": "#f0a45d", "cat": "Co-founder / executive", "fara": "REPORTED RELATIONSHIP", "rel": "Media Matters reported that Liam Rafizadeh co-founded Today Is America and Influencing America; TIME identified him as the person who started Today Is America.", "e": "Today Is America / Influencing America", "aux": "Reported organizational relationship", "src": "https://time.com/5893660/tiktok-gen-z-voters/", "srcType": "TIME reporting", "verified": "2026-11-01", "evidence": "reported", "researched": true},
+      {"id": 122, "d": "Today Is America", "h": "h_tia", "c": "#f0a45d", "cat": "Media organization / project", "fara": "REPORTED ORGANIZATION", "rel": "Media Matters reported that Today Is America was run by Influencing America. The relationship is shown as reported context, not as a legal ownership finding.", "e": "Social-media organization", "aux": "Reported operating relationship", "src": "https://www.mediamatters.org/tiktok/right-wing-organization-today-america-fueling-extremist-network-young-conservative?page=0", "srcType": "Media Matters reporting", "verified": "2026-11-01", "evidence": "reported", "researched": true},
+      {"id": 123, "d": "Influencing America", "h": "h_tia", "c": "#f0a45d", "cat": "Digital marketing agency", "fara": "REPORTED ORGANIZATION", "rel": "Media Matters described Influencing America as an agency founded by Camron and Liam Rafizadeh and reported that it ran Today Is America.", "e": "Digital marketing agency", "aux": "Reported operating relationship", "src": "https://www.mediamatters.org/tiktok/right-wing-organization-today-america-fueling-extremist-network-young-conservative?page=0", "srcType": "Media Matters reporting", "verified": "2026-11-01", "evidence": "reported", "researched": true},
+      {"id": 124, "d": "Republican Hype House", "h": "h_tia", "c": "#f0a45d", "cat": "Social-media account / project", "fara": "REPORTED HISTORY", "rel": "TIME identified @TheRepublicanHypeHouse as a Today Is America page; Media Matters later reported that the account was banned and subsequently became a Today Is America account.", "e": "Social-media account", "aux": "Reported account history", "src": "https://time.com/5893660/tiktok-gen-z-voters/", "srcType": "TIME reporting", "verified": "2026-11-01", "evidence": "reported", "researched": true},
+      {"id": 125, "d": "Influenceable LLC", "h": "h_tia", "c": "#f0a45d", "cat": "Influencer marketing firm", "fara": "REPORTED ORGANIZATION", "rel": "The Texas Tribune reported that Influenceable recruited young conservatives to promote political campaigns and films through its influencer network.", "e": "Influencer marketing firm", "aux": "Texas Tribune reporting", "src": "https://www.texastribune.org/2023/08/14/influenceable-texas-politics-ken-paxton/", "srcType": "Texas Tribune reporting", "verified": "2026-11-01", "evidence": "reported", "researched": true},
+      {"id": 126, "d": "Campaign Nucleus", "h": "h_tia", "c": "#f0a45d", "cat": "Digital campaign service", "fara": "REPORTED PARTNERSHIP", "rel": "The Texas Tribune reported that Influenceable partnered with Campaign Nucleus, which it described as a digital campaign service founded by Brad Parscale.", "e": "Digital campaign service", "aux": "Reported partnership", "src": "https://www.texastribune.org/2024/06/18/texas-ethics-commission-influencers-political-ads/", "srcType": "Texas Tribune reporting", "verified": "2026-11-01", "evidence": "reported", "researched": true},
+      {"id": 127, "d": "Defend Texas Liberty PAC", "h": "h_tia", "c": "#f0a45d", "cat": "Texas political action committee", "fara": "REPORTED PAYMENT", "rel": "The Texas Tribune reported an $18,000 May 2023 payment from Defend Texas Liberty PAC to an entity recorded as “Influencable LLC”; it noted that the recorded name appeared to be a misspelling.", "e": "Texas PAC", "aux": "Reported payment; name caveat retained", "src": "https://www.texastribune.org/2024/06/18/texas-ethics-commission-influencers-political-ads/", "srcType": "Texas Tribune reporting", "verified": "2026-11-01", "evidence": "reported", "researched": true},
+      {"id": 128, "d": "todayisamerica.com", "h": "h_tia", "c": "#f0a45d", "cat": "Organization website", "fara": "SELF-REPORTED PROFILE", "rel": "Today Is America’s LinkedIn company profile lists todayisamerica.com as its website. This is self-reported profile information.", "e": "Today Is America website", "aux": "Self-reported company profile", "src": "https://www.linkedin.com/company/todayisamerica", "srcType": "LinkedIn company profile", "verified": "2026-11-01", "evidence": "self-reported", "researched": true},
+      {"id": 129, "d": "Tim Korshunov", "h": "h_tia", "c": "#f0a45d", "cat": "Executive / self-reported profile", "fara": "SELF-REPORTED PROFILE", "rel": "Tim Korshunov’s LinkedIn profile lists Influenceable and describes a prior chief strategy role at Today Is America. This is self-reported profile information.", "e": "Influenceable / Today Is America", "aux": "Self-reported professional profile", "src": "https://www.linkedin.com/in/tim-korshunov-4b9535207", "srcType": "LinkedIn profile", "verified": "2026-11-01", "evidence": "self-reported", "researched": true}
     ];
 
     // Explicit Directed & Cross-Network Relational Edges
@@ -490,7 +503,20 @@
       { s: 116, t: 16, lbl: "OFFICIAL_WEBSITE" },
       { s: 117, t: 15, lbl: "OFFICIAL_WEBSITE" },
       { s: 118, t: 6, lbl: "OFFICIAL_WEBSITE" },
-      { s: 119, t: 47, lbl: "NAMED_FOUNDER_SITE" }
+      { s: 119, t: 47, lbl: "NAMED_FOUNDER_SITE" },
+
+      // Today Is America / Influenceable context — labels correspond to cited entity records.
+      { s: 120, t: 122, lbl: "CO_FOUNDED_REPORTED" },
+      { s: 121, t: 122, lbl: "FOUNDED_REPORTED" },
+      { s: 120, t: 123, lbl: "CO_FOUNDED_REPORTED" },
+      { s: 121, t: 123, lbl: "CO_FOUNDED_REPORTED" },
+      { s: 123, t: 122, lbl: "RUNS_REPORTED" },
+      { s: 124, t: 122, lbl: "HISTORICAL_ACCOUNT_LINK_REPORTED" },
+      { s: 125, t: 126, lbl: "PARTNERSHIP_REPORTED" },
+      { s: 127, t: 125, lbl: "$18K_PAYMENT_REPORTED" },
+      { s: 122, t: 128, lbl: "WEBSITE_LISTED_SELF_REPORTED" },
+      { s: 129, t: 125, lbl: "PROFILE_LISTS_ROLE" },
+      { s: 129, t: 122, lbl: "PROFILE_LISTS_ROLE" }
     ];
 
 
@@ -504,13 +530,14 @@ const HUB_META = {
  h_tpcf:{short:'Cloudflare + Spectrum',region:'tpusa'},h_tpgc:{short:'Google Cloud',region:'tpusa'},
  h_tpaw:{short:'AWS + CloudFront',region:'tpusa'},h_tpsp:{short:'Specialized hosting',region:'tpusa'},
  h_tppr:{short:'Verified TPUSA websites',region:'research',scopes:['tpusa','research']},
- h_agweb:{short:'Agency / corporate sites',region:'research',scopes:['corporate','research']}
+ h_agweb:{short:'Agency / corporate sites',region:'research',scopes:['corporate','research']},
+ h_tia:{short:'Today Is America context',region:'research',scopes:['research']}
 };
 const POS={
  h_fp:[-585,-296],h_reg:[-270,-308],h_hold:[-125,-22],h_own:[-590,-10],h_adr:[-345,50],
  h_core:[238,-289],h_geo:[535,-152],
  h_tpsq:[-590,345],h_tpcf:[-288,345],h_tpgc:[22,345],h_tpaw:[335,345],h_tpsp:[627,345],
- h_tppr:[-418,735],h_agweb:[362,735]
+ h_tppr:[-418,735],h_agweb:[362,735],h_tia:[650,735]
 };
 const REGIONS=[
  {id:'corporate',name:'01  FARA & CORPORATE',detail:'Principals · Registrants · Ownership',x:-790,y:-490,w:830,h:735,c:'#b97bea'},
