@@ -187,8 +187,8 @@
           <div class="mode-tools"><label for="connection-mode">LINK VISIBILITY</label><select id="connection-mode" aria-label="Choose link visibility"><option value="focus">Focused only</option><option value="explicit">Primary connections</option><option value="shared">Shared infrastructure</option><option value="none">Hidden</option></select></div>
         </div>
         <nav class="flow-rail" aria-label="Guided declared pathway">
-          <div class="flow-copy"><small>Guided reading order</small><strong id="flow-title">01 / PRINCIPALS &amp; BROKERS</strong><span id="flow-detail">Start with the Israel-linked foreign principals and named intermediary brokers in the supplied network record.</span></div>
-          <div class="flow-steps"><button class="flow-step" type="button" data-flow="0" aria-pressed="true"><b>01</b>Principals</button><button class="flow-step" type="button" data-flow="1" aria-pressed="false"><b>02</b>FARA agents</button><button class="flow-step" type="button" data-flow="2" aria-pressed="false"><b>03</b>Network clusters</button></div>
+          <div class="flow-copy"><small>Guided reading order</small><strong id="flow-title">01 / REGISTERED FARA AGENTS</strong><span id="flow-detail">Begin with the registered foreign-agent entities. Advance to reveal their direct documented relationships across the supplied network record.</span></div>
+          <div class="flow-steps"><button class="flow-step" type="button" data-flow="0" aria-pressed="true"><b>01</b>FARA agents</button><button class="flow-step" type="button" data-flow="1" aria-pressed="false"><b>02</b>Connections</button></div>
         </nav>
         <div class="metrics"><div class="metric"><strong id="metric-entities">119</strong><span>Entities</span></div><div class="metric"><strong id="metric-hubs">14</strong><span>Clusters</span></div><div class="metric"><strong id="metric-links">0</strong><span>Explicit links</span></div><div class="metric"><strong id="metric-revealed" style="color:#6cdeec">0</strong><span>Traced</span></div></div>
         <div class="canvas-commands"><button class="btn icon-only" title="Zoom out" id="zoom-out" aria-label="Zoom out">−</button><button class="btn" id="btn-fit" title="Fit all">Fit view</button><button class="btn icon-only" title="Zoom in" id="zoom-in" aria-label="Zoom in">+</button><span class="vertical-sep"></span><button class="btn" id="btn-flow-next" title="Advance guided pathway">Next stage <span style="color:#60b9d0">›</span></button></div>
@@ -519,6 +519,8 @@ const REGIONS=[
  {id:'research',name:'04  VERIFIED DOMAINS / NEW RESEARCH',detail:'Official websites · program sites · direct published links',x:-790,y:598,w:1570,h:325,c:'#efb56e'}
 ];
 const EXPLICIT_LINKS=LINKS.slice();
+const FARA_AGENT_IDS=new Set([9,10,11,12,13,14,15,16,17]);
+const FARA_CONNECTIONS=EXPLICIT_LINKS.filter(link=>FARA_AGENT_IDS.has(link.s)||FARA_AGENT_IDS.has(link.t));
 // Expand same-pool adjacency without drawing a default complete graph.
 for(let i=0;i<NODES.length;i++) for(let j=i+1;j<NODES.length;j++) if(NODES[i].g && NODES[i].g===NODES[j].g) LINKS.push({s:NODES[i].id,t:NODES[j].id,lbl:'SHARED_INFRASTRUCTURE'});
 const nodeById=new Map(NODES.map(n=>[n.id,n]));
@@ -528,24 +530,19 @@ LINKS.forEach(l=>{if(adjacency.has(l.s))adjacency.get(l.s).push(l);if(adjacency.
 const $=id=>document.getElementById(id);
 const canvas=$('cv'),context=canvas.getContext('2d');
 const workspace=$('workspace');
-const state={scope:'all',category:null,query:'',browseAll:false,selected:null,hover:null,highlighted:new Set(),mode:'focus',flowStage:0,zoom:.6,cx:0,cy:35,w:0,h:0,down:null,dragged:false,auto:null,frame:0};
+const state={scope:'all',category:null,query:'',browseAll:false,selected:null,hover:null,highlighted:new Set(),mode:'focus',flowStage:0,flowStartedAt:0,zoom:.6,cx:0,cy:35,w:0,h:0,down:null,dragged:false,auto:null,frame:0};
 const FLOW_STAGES=[
- {title:'01 / PRINCIPALS & BROKERS',detail:'Start with the Israel-linked foreign principals and named intermediary brokers in the supplied network record.',hubs:['h_fp']},
- {title:'02 / REGISTERED FARA AGENTS',detail:'Read the principal-to-registrant mapping next. Arrow direction is a visual reading order, not an independently verified cash-transfer ledger.',hubs:['h_reg']},
- {title:'03 / DOWNSTREAM NETWORK CLUSTERS',detail:'Continue through direct relationships into operations, ownership, co-location, outreach, hosting, and publicly documented web clusters.',hubs:null}
+ {title:'01 / REGISTERED FARA AGENTS',detail:'Begin with the registered foreign-agent entities only.',hubs:['h_reg']},
+ {title:'02 / DIRECT CONNECTIONS',detail:'Connections animate outward from those FARA agents to linked principals, brokers, owners, addresses, operations, and other documented nodes. Arrows indicate relationship order, not an independently verified cash-transfer ledger.',hubs:null}
 ];
-const FLOW_ROUTES={
-  1:[{s:1,t:9},{s:4,t:10},{s:2,t:11},{s:1,t:12},{s:1,t:13},{s:4,t:14},{s:2,t:15},{s:3,t:16},{s:5,t:17}],
-  2:[{s:9,t:18},{s:9,t:20},{s:9,t:33},{s:20,t:24},{s:33,t:34},{s:34,t:35},{s:11,t:38},{s:15,t:39},{s:16,t:42}]
-};
 const bounding={minX:-840,minY:-560,maxX:835,maxY:950};
 const reduceMotion=window.matchMedia('(prefers-reduced-motion: reduce)').matches;
 const truncate=(s,n=31)=>s.length>n?s.slice(0,n-1)+'…':s;
 function scopeVisible(n){const meta=HUB_META[n.h];return (state.scope==='all'||meta.region===state.scope||meta.scopes?.includes(state.scope))&&(!state.category||n.h===state.category)}
 function matchesQuery(n){const q=state.query.toLowerCase();return !q||[n.d,n.e,n.cat,n.fara,n.aux,n.rel,n.src].some(v=>String(v||'').toLowerCase().includes(q))}
 function isVisible(n){return scopeVisible(n)&&matchesQuery(n)}
-function isFlowEmphasis(n){const stage=FLOW_STAGES[state.flowStage];return stage.hubs?stage.hubs.includes(n.h):!['h_fp','h_reg'].includes(n.h)}
-function isFlowHubEmphasis(h){const stage=FLOW_STAGES[state.flowStage];return stage.hubs?stage.hubs.includes(h.id):!['h_fp','h_reg'].includes(h.id)}
+function isFlowEmphasis(n){const stage=FLOW_STAGES[state.flowStage];return stage.hubs?stage.hubs.includes(n.h):true}
+function isFlowHubEmphasis(h){const stage=FLOW_STAGES[state.flowStage];return stage.hubs?stage.hubs.includes(h.id):true}
 function setPositions(){
  HUBS.forEach(h=>{const p=POS[h.id];h.x=p[0];h.y=p[1];h.r=25});
  HUBS.forEach(h=>{const members=NODES.filter(n=>n.h===h.id);const count=members.length;members.forEach((n,i)=>{
@@ -629,10 +626,14 @@ function drawLines(){
  }
 }
 function drawFlowRoutes(){
- const routes=FLOW_ROUTES[state.flowStage];if(!routes)return;
+ if(state.flowStage!==1)return;
+ const duration=reduceMotion?0:Math.max(2600,FARA_CONNECTIONS.length*150);
+ const progress=duration?Math.min(1,(performance.now()-state.flowStartedAt)/duration):1;
+ const routes=FARA_CONNECTIONS.slice(0,Math.ceil(FARA_CONNECTIONS.length*progress));
  context.save();
  routes.forEach(route=>{
-  const a=nodeById.get(route.s),b=nodeById.get(route.t);if(!a||!b)return;
+  const from=FARA_AGENT_IDS.has(route.s)?route.s:route.t,to=from===route.s?route.t:route.s;
+  const a=nodeById.get(from),b=nodeById.get(to);if(!a||!b)return;
   const dx=b.x-a.x,dy=b.y-a.y,len=Math.hypot(dx,dy)||1,ux=dx/len,uy=dy/len;
   const ex=b.x-ux*(b.r+4),ey=b.y-uy*(b.r+4),mx=(a.x+ex)/2,my=(a.y+ey)/2;
   context.beginPath();context.moveTo(a.x+ux*(a.r+4),a.y+uy*(a.r+4));context.quadraticCurveTo(mx-dy*.06,my+dx*.06,ex,ey);
@@ -776,11 +777,11 @@ let toastTimer;
 function toast(message){const el=$('toast');el.textContent=message;el.classList.add('show');clearTimeout(toastTimer);toastTimer=setTimeout(()=>el.classList.remove('show'),2600)}
 function applyFlowStage(index){
  const stage=(index+FLOW_STAGES.length)%FLOW_STAGES.length;state.flowStage=stage;state.selected=null;state.hover=null;showHover(null,0,0);$('inspector').classList.remove('open');
+ state.flowStartedAt=performance.now();
  const current=FLOW_STAGES[stage];$('flow-title').textContent=current.title;$('flow-detail').textContent=current.detail;
  document.querySelectorAll('.flow-step').forEach(button=>button.setAttribute('aria-pressed',String(Number(button.dataset.flow)===stage)));
- if(stage===0){state.cx=-585;state.cy=-296;state.zoom=Math.max(.72,Math.min(1.2,state.w/450))}
- else if(stage===1){state.cx=-428;state.cy=-300;state.zoom=Math.max(.62,Math.min(1.02,state.w/650))}
- else {state.cx=80;state.cy=180;state.zoom=Math.max(.35,Math.min(.68,state.w/1120,state.h/720))}
+ if(stage===0){state.cx=-270;state.cy=-308;state.zoom=Math.max(.72,Math.min(1.2,state.w/450))}
+ else fit();
 }
 canvas.addEventListener('pointerdown',e=>{if(e.button!==0)return;canvas.focus({preventScroll:true});canvas.setPointerCapture(e.pointerId);const r=canvas.getBoundingClientRect(),x=e.clientX-r.left,y=e.clientY-r.top;state.down={x,y,cx:state.cx,cy:state.cy,node:nearestNode(screenToWorld(x,y))};state.dragged=false;canvas.classList.add('dragging')});
 canvas.addEventListener('pointermove',e=>{
