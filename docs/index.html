@@ -147,8 +147,8 @@
     .toast{position:absolute;left:50%;bottom:102px;z-index:25;transform:translateX(-50%);padding:11px 15px;border-radius:10px;background:#193348;border:1px solid #43758b;color:#daeffa;font-size:12px;box-shadow:0 15px 35px #0008;opacity:0;pointer-events:none;transition:opacity .2s}
     .toast.show{opacity:1}
     @media(max-width:1150px){.top-sub,.top-separator{display:none}.topbar{padding:0 18px}.brand-title{font-size:18px}.inspector{width:345px}.sidebar{width:256px}.body{grid-template-columns:256px minmax(0,1fr)}.workspace-title h1{font-size:19px}.workspace-head,.flow-rail{left:18px;right:18px}}
-    @media(max-width:800px){.mobile-menu{display:inline-flex}.topbar{height:65px;flex-basis:65px;padding:0 12px}.brand-mark{height:36px;width:36px}.brand-title{font-size:17px}.brand .eyebrow{font-size:8px}.top-actions .hide-mobile{display:none}.body{display:block;position:relative}.sidebar{position:absolute;left:0;top:0;bottom:0;width:min(290px,86vw);transform:translateX(-101%);transition:transform .2s ease;box-shadow:18px 0 30px #0006}.sidebar.show{transform:translateX(0)}.workspace{width:100%;height:100%}.workspace-head{left:14px;right:14px;top:13px}.workspace-title h1{font-size:16px}.workspace-title p{display:none}.flow-rail{top:88px;left:13px;right:13px;display:block;padding:9px 10px}.flow-copy span{display:none}.flow-steps{margin-top:8px;overflow:auto;padding-bottom:1px}.flow-step{min-width:116px;padding:7px 9px}.mode-tools{gap:0;padding:5px}.mode-tools label{display:none}.mode-tools select{max-width:130px}.metrics{left:13px;bottom:17px;gap:5px}.metric{min-width:75px;padding:8px 9px}.metric strong{font-size:16px}.metric span{font-size:8px}.canvas-commands{right:12px;bottom:83px}.inspector{right:9px;top:10px;bottom:75px;max-width:calc(100% - 18px)}.bottomline{padding:0 12px}.bottomline .kbd-help{display:none}}
-    @media(max-width:480px){.brand-title{font-size:15px}.top-actions{gap:4px}.top-actions .btn{padding:0 8px}.top-actions .btn-primary{min-height:32px}.mode-tools select{max-width:112px}.inspector h2{font-size:17px}.metric:nth-child(3){display:none}.canvas-commands{bottom:71px}.bottomline{font-size:9px}}
+    @media(max-width:800px){.mobile-menu{display:inline-flex}.topbar{height:65px;flex-basis:65px;padding:0 12px}.brand-mark{height:36px;width:36px}.brand-title{font-size:17px}.brand .eyebrow{font-size:8px}.top-actions .hide-mobile{display:none}.body{display:block;position:relative}.sidebar{position:absolute;left:0;top:0;bottom:0;width:min(290px,86vw);transform:translateX(-101%);transition:transform .2s ease;box-shadow:18px 0 30px #0006}.sidebar.show{transform:translateX(0)}.workspace{width:100%;height:100%}.workspace-head{left:14px;right:14px;top:13px}.workspace-title h1{font-size:16px}.workspace-title p{display:none}.flow-rail{top:88px;left:13px;right:13px;display:block;padding:9px 10px}.flow-copy span{display:none}.flow-steps{margin-top:8px;overflow:auto;padding-bottom:1px}.flow-step{min-width:116px;padding:7px 9px}.mode-tools{gap:0;padding:5px}.mode-tools label{display:none}.mode-tools select{max-width:130px}.metrics{left:13px;bottom:17px;gap:5px}.metric{min-width:75px;padding:8px 9px}.metric strong{font-size:16px}.metric span{font-size:8px}.canvas-commands{right:12px;bottom:145px}.inspector{right:9px;top:10px;bottom:75px;max-width:calc(100% - 18px)}.bottomline{padding:0 12px}.bottomline .kbd-help{display:none}#db-replay{right:12px;bottom:82px}}
+    @media(max-width:480px){.brand-title{font-size:15px}.top-actions{gap:4px}.top-actions .btn{padding:0 8px}.top-actions .btn-primary{min-height:32px}.mode-tools select{max-width:112px}.inspector h2{font-size:17px}.metric:nth-child(3){display:none}.canvas-commands{bottom:145px}.bottomline{font-size:9px}}
     @media(prefers-reduced-motion:reduce){*,*:before,*:after{transition-duration:0s!important;animation-duration:0s!important}}
   </style>
 </head>
@@ -558,6 +558,16 @@ const POS={
  h_tpsq:[-590,345],h_tpcf:[-288,345],h_tpgc:[22,345],h_tpaw:[335,345],h_tpsp:[627,345],
  h_tppr:[-418,735],h_agweb:[362,735],h_tia:[650,735]
 };
+// Stage 02 uses a directional evidence map rather than the default radial cluster layout.
+// Left: principals and brokers. Center: registrants. Right: websites, owners, and company context.
+const STAGE_TWO_HUB_POS={h_fp:[-540,-380],h_reg:[-30,-380],h_faraweb:[240,-380],h_hold:[520,-380],h_own:[520,360]};
+const STAGE_TWO_NODE_POS={
+  1:[-540,-265],4:[-540,-155],2:[-540,-45],3:[-540,65],5:[-540,175],
+  6:[-310,-240],7:[-310,-55],8:[-310,110],
+  9:[-30,-285],10:[-30,-205],11:[-30,-125],12:[-30,-45],13:[-30,35],14:[-30,115],15:[-30,195],16:[-30,275],17:[-30,355],
+  18:[240,-285],115:[240,-125],132:[240,35],119:[240,115],117:[240,195],116:[240,275],
+  38:[520,-125],43:[520,-285],45:[460,-220],46:[580,-220],44:[520,-45],47:[520,115],39:[460,175],40:[580,175],41:[460,255],42:[580,255],48:[520,355]
+};
 const REGIONS=[
  {id:'corporate',name:'01  FARA & CORPORATE',detail:'Principals · Registrants · Ownership',x:-790,y:-490,w:830,h:735,c:'#b97bea'},
  {id:'digital',name:'02  DIGITAL & OUTREACH',detail:'Clock Tower X · GEO & messaging',x:52,y:-490,w:728,h:735,c:'#58a7e9'},
@@ -595,13 +605,14 @@ function isFlowVisible(n){if(state.flowStage===0)return n.h==='h_reg';if(state.f
 function isVisible(n){return scopeVisible(n)&&matchesQuery(n)&&isFlowVisible(n)}
 function isFlowHubVisible(h){return NODES.some(n=>n.h===h.id&&isFlowVisible(n))}
 function isFlowRegionVisible(region){return NODES.some(n=>HUB_META[n.h].region===region&&isFlowVisible(n))}
-function setPositions(){
- HUBS.forEach(h=>{const p=POS[h.id];h.x=p[0];h.y=p[1];h.r=25});
+function setPositions(stage=0){
+ HUBS.forEach(h=>{const p=(stage===1&&STAGE_TWO_HUB_POS[h.id])||POS[h.id];h.x=p[0];h.y=p[1];h.r=25});
  HUBS.forEach(h=>{const members=NODES.filter(n=>n.h===h.id);const count=members.length;members.forEach((n,i)=>{
    const angle=(Math.PI*2*i/count)-Math.PI/2, radius=h.id==='h_reg'?135:(count>13?116:(count>9?103:92));
    const stagger=(i%2)*10;
-   n.x=h.x+Math.cos(angle)*(radius+stagger);n.y=h.y+Math.sin(angle)*(radius+stagger);
-   n.r=n.cat==='Co-Located Entity'?6.3:7.4;
+   const custom=stage===1&&STAGE_TWO_NODE_POS[n.id];
+   n.x=custom?custom[0]:h.x+Math.cos(angle)*(radius+stagger);n.y=custom?custom[1]:h.y+Math.sin(angle)*(radius+stagger);
+   n.r=stage===1?9:(n.cat==='Co-Located Entity'?6.3:7.4);
  });});
 }
 function canvasSize(){
@@ -698,12 +709,14 @@ function drawFlowRoutes(){
   const dx=b.x-a.x,dy=b.y-a.y,len=Math.hypot(dx,dy)||1,ux=dx/len,uy=dy/len;
   const ex=b.x-ux*(b.r+4),ey=b.y-uy*(b.r+4),mx=(a.x+ex)/2,my=(a.y+ey)/2;
   context.beginPath();context.moveTo(a.x+ux*(a.r+4),a.y+uy*(a.r+4));context.quadraticCurveTo(mx-dy*.06,my+dx*.06,ex,ey);
-  context.strokeStyle='#f0c96e';context.globalAlpha=.9;context.lineWidth=2.4;context.stroke();
-  context.save();context.translate(ex,ey);context.rotate(Math.atan2(ey-my,ex-mx));context.fillStyle='#f6d47e';context.beginPath();context.moveTo(0,0);context.lineTo(-8,-4);context.lineTo(-8,4);context.closePath();context.fill();context.restore();
+  const stageTwo=state.flowStage===1;
+  context.strokeStyle=stageTwo?'#9acbe0':'#f0c96e';context.globalAlpha=stageTwo?.56:.9;context.lineWidth=stageTwo?1.25:2.4;context.stroke();
+  context.save();context.translate(ex,ey);context.rotate(Math.atan2(ey-my,ex-mx));context.fillStyle=stageTwo?'#9acbe0':'#f6d47e';context.globalAlpha=stageTwo?.65:1;context.beginPath();context.moveTo(0,0);context.lineTo(stageTwo?-5:-8,stageTwo?-2.5:-4);context.lineTo(stageTwo?-5:-8,stageTwo?2.5:4);context.closePath();context.fill();context.restore();
  });
  context.restore();
 }
 function drawHubs(){
+ if(state.flowStage===1)return;
  HUBS.forEach(h=>{
   if(!isFlowHubVisible(h))return;
   const meta=HUB_META[h.id],members=NODES.filter(n=>n.h===h.id),shownMembers=members.filter(isFlowVisible);
@@ -734,9 +747,9 @@ function drawNodes(){
   if(highlight||select||hover){context.beginPath();context.arc(n.x,n.y,n.r+7,0,Math.PI*2);context.strokeStyle=n.c;context.globalAlpha=alpha*.48;context.lineWidth=1.5;context.stroke();context.globalAlpha=alpha}
   if(select||hover){context.beginPath();context.arc(n.x,n.y,n.r+11,0,Math.PI*2);context.strokeStyle='#ecfaff';context.lineWidth=1;context.stroke()}
   context.beginPath();context.arc(n.x,n.y,n.r+(select?1.7:0),0,Math.PI*2);context.fillStyle=highlight||select||hover?n.c:'#122436';context.fill();context.lineWidth=1.7;context.strokeStyle=highlight||select||hover?'#ebf8fc':n.c;context.stroke();
-  const labelEnabled=visible&&(state.zoom>=.93||select||hover||isNeighbor&&(state.zoom>=.56)||highlight&&state.zoom>=.77);
+  const labelEnabled=visible&&(state.zoom>=.93||select||hover||isNeighbor&&(state.zoom>=.56)||highlight&&state.zoom>=.77||state.flowStage===1&&state.zoom>=.55);
   if(labelEnabled){
-   const label=truncate(n.d,state.zoom>=1.55?47:31);const fs=(select||hover)?12:10.5;
+   const label=truncate(n.d,state.zoom>=1.55?47:31);const fs=state.flowStage===1?13:(select||hover?12:10.5);
    context.font=`${select||hover?700:600} ${fs}px "DM Sans",sans-serif`;
    const w=context.measureText(label).width;
    const rectY=n.y+n.r+7;
@@ -839,6 +852,7 @@ let toastTimer;
 function toast(message){const el=$('toast');el.textContent=message;el.classList.add('show');clearTimeout(toastTimer);toastTimer=setTimeout(()=>el.classList.remove('show'),2600)}
 function applyFlowStage(index){
  const stage=(index+FLOW_STAGES.length)%FLOW_STAGES.length;state.flowStage=stage;state.selected=null;state.hover=null;showHover(null,0,0);$('inspector').classList.remove('open');
+ setPositions(stage);
  state.flowStartedAt=performance.now();
  const current=FLOW_STAGES[stage];$('flow-title').textContent=current.title;$('flow-detail').textContent=current.detail;
  document.querySelectorAll('.flow-step').forEach(button=>button.setAttribute('aria-pressed',String(Number(button.dataset.flow)===stage)));
@@ -881,7 +895,7 @@ canvas.addEventListener('keydown',e=>{
 });
 document.addEventListener('keydown',e=>{if(e.key==='/'&&document.activeElement?.tagName!=='INPUT'){e.preventDefault();$('search').focus();$('sidebar').classList.add('show')}if(e.key==='Escape'){closeInspector();$('sidebar').classList.remove('show');$('search').blur();showHover(null,0,0)}if((e.key==='f'||e.key==='F')&&!['INPUT','SELECT'].includes(document.activeElement?.tagName))fit()});
 window.addEventListener('resize',()=>{canvasSize();if(!state.selected)applyFlowStage(state.flowStage)});
-setPositions();canvasSize();applyFlowStage(0);buildCategories();updateCounts();updateSearchResults();updateConnectionModeUI();requestAnimationFrame(paint);
+setPositions(0);canvasSize();applyFlowStage(0);buildCategories();updateCounts();updateSearchResults();updateConnectionModeUI();requestAnimationFrame(paint);
 </script>
 <!-- Influence Atlas cinematic database entrance: add immediately before </body> -->
 <style>
