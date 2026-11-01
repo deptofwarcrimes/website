@@ -555,6 +555,9 @@ const FARA_CONNECTIONS=EXPLICIT_LINKS.filter(link=>FARA_AGENT_IDS.has(link.s)||F
 for(let i=0;i<NODES.length;i++) for(let j=i+1;j<NODES.length;j++) if(NODES[i].g && NODES[i].g===NODES[j].g) LINKS.push({s:NODES[i].id,t:NODES[j].id,lbl:'SHARED_INFRASTRUCTURE'});
 const nodeById=new Map(NODES.map(n=>[n.id,n]));
 const hubById=new Map(HUBS.map(h=>[h.id,h]));
+const FARA_STAGE_TWO_HUBS=new Set(['h_fp','h_reg','h_hold','h_own']);
+const FARA_STAGE_TWO_IDS=new Set(FARA_AGENT_IDS);
+FARA_CONNECTIONS.forEach(link=>[link.s,link.t].forEach(id=>{const node=nodeById.get(id);if(node&&FARA_STAGE_TWO_HUBS.has(node.h))FARA_STAGE_TWO_IDS.add(id)}));
 const adjacency=new Map(NODES.map(n=>[n.id,[]]));
 LINKS.forEach(l=>{if(adjacency.has(l.s))adjacency.get(l.s).push(l);if(adjacency.has(l.t))adjacency.get(l.t).push(l)});
 const $=id=>document.getElementById(id);
@@ -563,16 +566,17 @@ const workspace=$('workspace');
 const state={scope:'all',category:null,query:'',browseAll:false,selected:null,hover:null,highlighted:new Set(),mode:'focus',flowStage:0,flowStartedAt:0,zoom:.6,cx:0,cy:35,w:0,h:0,down:null,dragged:false,auto:null,frame:0};
 const FLOW_STAGES=[
  {title:'01 / REGISTERED FARA AGENTS',detail:'Begin with the nine registered foreign-agent entities only. Everything else stays hidden until the connection reveal.',hubs:['h_reg']},
- {title:'02 / DIRECT CONNECTIONS',detail:'Connections animate outward from those FARA agents to linked principals, brokers, owners, addresses, operations, and other documented nodes. Arrows indicate relationship order, not an independently verified cash-transfer ledger.',hubs:null}
+ {title:'02 / DIRECT CONNECTIONS',detail:'Connections animate outward from the FARA registrants to their directly linked principals, companies, people, holding entities, and LLCs. Digital infrastructure and address layers remain hidden. Arrows indicate relationship order, not an independently verified cash-transfer ledger.',hubs:null}
 ];
 const bounding={minX:-840,minY:-560,maxX:835,maxY:950};
 const reduceMotion=window.matchMedia('(prefers-reduced-motion: reduce)').matches;
 const truncate=(s,n=31)=>s.length>n?s.slice(0,n-1)+'…':s;
 function scopeVisible(n){const meta=HUB_META[n.h];return (state.scope==='all'||meta.region===state.scope||meta.scopes?.includes(state.scope))&&(!state.category||n.h===state.category)}
 function matchesQuery(n){const q=state.query.toLowerCase();return !q||[n.d,n.e,n.cat,n.fara,n.aux,n.rel,n.src].some(v=>String(v||'').toLowerCase().includes(q))}
-function isFlowVisible(n){const stage=FLOW_STAGES[state.flowStage];return !stage.hubs||stage.hubs.includes(n.h)}
+function isFlowVisible(n){return state.flowStage===0?n.h==='h_reg':FARA_STAGE_TWO_IDS.has(n.id)}
 function isVisible(n){return scopeVisible(n)&&matchesQuery(n)&&isFlowVisible(n)}
-function isFlowHubEmphasis(h){const stage=FLOW_STAGES[state.flowStage];return stage.hubs?stage.hubs.includes(h.id):true}
+function isFlowHubVisible(h){return NODES.some(n=>n.h===h.id&&isFlowVisible(n))}
+function isFlowRegionVisible(region){return NODES.some(n=>HUB_META[n.h].region===region&&isFlowVisible(n))}
 function setPositions(){
  HUBS.forEach(h=>{const p=POS[h.id];h.x=p[0];h.y=p[1];h.r=25});
  HUBS.forEach(h=>{const members=NODES.filter(n=>n.h===h.id);const count=members.length;members.forEach((n,i)=>{
@@ -594,6 +598,13 @@ function fit(){
  const scaleX=(state.w-65)/(bounding.maxX-bounding.minX), scaleY=(state.h-170)/(bounding.maxY-bounding.minY);
  state.zoom=Math.max(.22,Math.min(1.05,scaleX,scaleY));
 }
+function fitFlowNodes(){
+ const nodes=NODES.filter(isFlowVisible);if(!nodes.length){fit();return}
+ const pad=145,minX=Math.min(...nodes.map(n=>n.x))-pad,maxX=Math.max(...nodes.map(n=>n.x))+pad;
+ const minY=Math.min(...nodes.map(n=>n.y))-pad,maxY=Math.max(...nodes.map(n=>n.y))+pad;
+ state.cx=(minX+maxX)/2;state.cy=(minY+maxY)/2;
+ state.zoom=Math.max(.42,Math.min(1.15,(state.w-90)/(maxX-minX),(state.h-160)/(maxY-minY)));
+}
 function screenToWorld(x,y){return {x:(x-state.w/2)/state.zoom+state.cx,y:(y-state.h/2)/state.zoom+state.cy}}
 function worldToScreen(x,y){return {x:(x-state.cx)*state.zoom+state.w/2,y:(y-state.cy)*state.zoom+state.h/2}}
 function zoom(factor,x=state.w/2,y=state.h/2){
@@ -606,7 +617,7 @@ function text(t,x,y,color,size=11,weight=600,align='left',font='var'){context.fi
 function getFocus(){return state.selected||state.hover}
 function drawRegions(){
  REGIONS.forEach(r=>{
-  if(state.flowStage===0&&r.id!=='corporate')return;
+  if(!isFlowRegionVisible(r.id))return;
   const dim=state.scope!=='all'&&state.scope!==r.id&&!(r.id==='research'&&['corporate','tpusa'].includes(state.scope));
   context.save();context.globalAlpha=dim?.20:1;
   roundedRect(context,r.x,r.y,r.w,r.h,20);
@@ -658,11 +669,12 @@ function drawLines(){
 }
 function drawFlowRoutes(){
  if(state.flowStage!==1)return;
- const duration=reduceMotion?0:Math.max(2600,FARA_CONNECTIONS.length*150);
+ const routes=FARA_CONNECTIONS.filter(route=>isFlowVisible(nodeById.get(route.s))&&isFlowVisible(nodeById.get(route.t)));
+ const duration=reduceMotion?0:Math.max(2600,routes.length*150);
  const progress=duration?Math.min(1,(performance.now()-state.flowStartedAt)/duration):1;
- const routes=FARA_CONNECTIONS.slice(0,Math.ceil(FARA_CONNECTIONS.length*progress));
+ const revealed=routes.slice(0,Math.ceil(routes.length*progress));
  context.save();
- routes.forEach(route=>{
+ revealed.forEach(route=>{
   const from=FARA_AGENT_IDS.has(route.s)?route.s:route.t,to=from===route.s?route.t:route.s;
   const a=nodeById.get(from),b=nodeById.get(to);if(!a||!b)return;
   const dx=b.x-a.x,dy=b.y-a.y,len=Math.hypot(dx,dy)||1,ux=dx/len,uy=dy/len;
@@ -675,16 +687,16 @@ function drawFlowRoutes(){
 }
 function drawHubs(){
  HUBS.forEach(h=>{
-  if(!isFlowHubEmphasis(h))return;
-  const meta=HUB_META[h.id],members=NODES.filter(n=>n.h===h.id);
+  if(!isFlowHubVisible(h))return;
+  const meta=HUB_META[h.id],members=NODES.filter(n=>n.h===h.id),shownMembers=members.filter(isFlowVisible);
   const vis=(state.scope==='all'||meta.region===state.scope||meta.scopes?.includes(state.scope))&&(!state.category||state.category===h.id);
   const queryAny=members.some(matchesQuery);
   context.save();context.globalAlpha=vis?(queryAny?1:.18):.15;
   const glow=context.createRadialGradient(h.x,h.y,2,h.x,h.y,65);glow.addColorStop(0,h.c+'20');glow.addColorStop(1,h.c+'00');
   context.fillStyle=glow;context.beginPath();context.arc(h.x,h.y,65,0,Math.PI*2);context.fill();
   context.beginPath();context.arc(h.x,h.y,31,0,2*Math.PI);context.fillStyle='#102234';context.fill();context.lineWidth=1.8;context.strokeStyle=h.c;context.stroke();
-  const count=members.filter(n=>state.highlighted.has(n.id)).length;
-  text(count?`${count}/${members.length}`:members.length+'',h.x,h.y, '#e5f2fd',count?12:16,700,'center','mono');
+  const count=shownMembers.filter(n=>state.highlighted.has(n.id)).length;
+  text(count?`${count}/${shownMembers.length}`:shownMembers.length+'',h.x,h.y, '#e5f2fd',count?12:16,700,'center','mono');
   // Floating cluster header, with consistent legibility independent of number of nodes.
   const label=meta.short.toUpperCase();const labelSize=Math.max(11,Math.min(18,9/state.zoom));context.font=`700 ${labelSize}px "IBM Plex Mono",monospace`;const w=context.measureText(label).width;
   roundedRect(context,h.x-w/2-10,h.y+40,w+20,labelSize+11,6);context.fillStyle='#0a1829ee';context.fill();
@@ -813,7 +825,8 @@ function applyFlowStage(index){
  const current=FLOW_STAGES[stage];$('flow-title').textContent=current.title;$('flow-detail').textContent=current.detail;
  document.querySelectorAll('.flow-step').forEach(button=>button.setAttribute('aria-pressed',String(Number(button.dataset.flow)===stage)));
  if(stage===0){state.cx=-270;state.cy=-308;state.zoom=Math.max(.72,Math.min(1.2,state.w/450))}
- else fit();
+ else fitFlowNodes();
+ updateCounts();updateSearchResults();
 }
 canvas.addEventListener('pointerdown',e=>{if(e.button!==0)return;canvas.focus({preventScroll:true});canvas.setPointerCapture(e.pointerId);const r=canvas.getBoundingClientRect(),x=e.clientX-r.left,y=e.clientY-r.top;state.down={x,y,cx:state.cx,cy:state.cy,node:nearestNode(screenToWorld(x,y))};state.dragged=false;canvas.classList.add('dragging')});
 canvas.addEventListener('pointermove',e=>{
@@ -826,7 +839,7 @@ canvas.addEventListener('pointerup',e=>{canvas.classList.remove('dragging');if(s
 canvas.addEventListener('pointercancel',()=>{state.down=null;canvas.classList.remove('dragging')});
 canvas.addEventListener('pointerleave',()=>{if(!state.down)showHover(null,0,0)});
 canvas.addEventListener('wheel',e=>{e.preventDefault();const r=canvas.getBoundingClientRect();zoom(e.deltaY<0?1.12:.89,e.clientX-r.left,e.clientY-r.top)},{passive:false});
-$('zoom-in').onclick=()=>zoom(1.22);$('zoom-out').onclick=()=>zoom(.82);$('btn-fit').onclick=fit;
+$('zoom-in').onclick=()=>zoom(1.22);$('zoom-out').onclick=()=>zoom(.82);$('btn-fit').onclick=()=>state.flowStage===1?fitFlowNodes():fit();
 $('btn-reset').onclick=()=>{stopAuto();state.highlighted.clear();updateCounts();closeInspector();fit();toast('Highlights cleared')};
 $('btn-flow-next').onclick=()=>applyFlowStage(state.flowStage+1);$('btn-auto').onclick=toggleAuto;
 document.querySelectorAll('.flow-step').forEach(button=>button.onclick=()=>applyFlowStage(Number(button.dataset.flow)));
