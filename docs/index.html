@@ -91,6 +91,9 @@
     .workspace-title .eyebrow{color:#6aa7bd}
     .workspace-title h1{margin:5px 0;font-size:22px;letter-spacing:-.7px;line-height:1.2}
     .workspace-title p{margin:0;font-size:12px;color:#839ab1;line-height:1.55}
+    .flow-rail{position:absolute;z-index:6;top:125px;left:26px;right:26px;display:flex;align-items:center;justify-content:space-between;gap:18px;padding:12px 14px;background:linear-gradient(90deg,#0d1b2dd9,#0d1b2db8);border:1px solid #334b62;border-radius:13px;box-shadow:0 12px 30px #0004;backdrop-filter:blur(12px)}
+    .flow-copy{min-width:0}.flow-copy small{display:block;font:700 9px var(--mono);letter-spacing:1.35px;color:#d6b66b;text-transform:uppercase}.flow-copy strong{display:block;margin-top:4px;font-size:13px;color:#eff7ff}.flow-copy span{display:block;margin-top:3px;color:#8fa5b9;font-size:11px;line-height:1.45;max-width:470px}
+    .flow-steps{display:flex;align-items:center;gap:5px;flex:none}.flow-step{position:relative;min-height:38px;padding:0 11px;border:1px solid transparent;border-radius:8px;background:transparent;color:#8da1b5;font:700 10px var(--mono);letter-spacing:.2px;text-align:left}.flow-step:hover{background:#193045;color:#dcecf7}.flow-step[aria-pressed="true"]{background:#20384e;border-color:#5b95b2;color:#fff}.flow-step[aria-pressed="true"]:before{content:"";position:absolute;top:7px;bottom:7px;left:4px;width:2px;border-radius:4px;background:#e2c36f}.flow-step b{display:block;font-size:9px;color:#73cfe2;letter-spacing:1px}.flow-step[aria-pressed="true"] b{color:#f4d47f}
     .mode-tools{display:flex;align-items:center;gap:7px;pointer-events:auto;padding:7px;background:#0b1725eA;border:1px solid #2a4058;border-radius:13px;box-shadow:0 12px 30px #0005}
     .mode-tools label{font:600 10px var(--mono);letter-spacing:.7px;color:#8196ae;padding:0 7px}
     .mode-tools select{background:#172a3c;color:#dcecf7;border:1px solid #34506a;border-radius:8px;padding:8px 24px 8px 9px;font:600 11px var(--font);max-width:180px}
@@ -143,8 +146,8 @@
     .mobile-menu{display:none}
     .toast{position:absolute;left:50%;bottom:102px;z-index:25;transform:translateX(-50%);padding:11px 15px;border-radius:10px;background:#193348;border:1px solid #43758b;color:#daeffa;font-size:12px;box-shadow:0 15px 35px #0008;opacity:0;pointer-events:none;transition:opacity .2s}
     .toast.show{opacity:1}
-    @media(max-width:1150px){.top-sub,.top-separator{display:none}.topbar{padding:0 18px}.brand-title{font-size:18px}.inspector{width:345px}.sidebar{width:256px}.body{grid-template-columns:256px minmax(0,1fr)}.workspace-title h1{font-size:19px}.workspace-head{left:18px;right:18px}}
-    @media(max-width:800px){.mobile-menu{display:inline-flex}.topbar{height:65px;flex-basis:65px;padding:0 12px}.brand-mark{height:36px;width:36px}.brand-title{font-size:17px}.brand .eyebrow{font-size:8px}.top-actions .hide-mobile{display:none}.body{display:block;position:relative}.sidebar{position:absolute;left:0;top:0;bottom:0;width:min(290px,86vw);transform:translateX(-101%);transition:transform .2s ease;box-shadow:18px 0 30px #0006}.sidebar.show{transform:translateX(0)}.workspace{width:100%;height:100%}.workspace-head{left:14px;right:14px;top:13px}.workspace-title h1{font-size:16px}.workspace-title p{display:none}.mode-tools{gap:0;padding:5px}.mode-tools label{display:none}.mode-tools select{max-width:130px}.metrics{left:13px;bottom:17px;gap:5px}.metric{min-width:75px;padding:8px 9px}.metric strong{font-size:16px}.metric span{font-size:8px}.canvas-commands{right:12px;bottom:83px}.inspector{right:9px;top:10px;bottom:75px;max-width:calc(100% - 18px)}.bottomline{padding:0 12px}.bottomline .kbd-help{display:none}}
+    @media(max-width:1150px){.top-sub,.top-separator{display:none}.topbar{padding:0 18px}.brand-title{font-size:18px}.inspector{width:345px}.sidebar{width:256px}.body{grid-template-columns:256px minmax(0,1fr)}.workspace-title h1{font-size:19px}.workspace-head,.flow-rail{left:18px;right:18px}}
+    @media(max-width:800px){.mobile-menu{display:inline-flex}.topbar{height:65px;flex-basis:65px;padding:0 12px}.brand-mark{height:36px;width:36px}.brand-title{font-size:17px}.brand .eyebrow{font-size:8px}.top-actions .hide-mobile{display:none}.body{display:block;position:relative}.sidebar{position:absolute;left:0;top:0;bottom:0;width:min(290px,86vw);transform:translateX(-101%);transition:transform .2s ease;box-shadow:18px 0 30px #0006}.sidebar.show{transform:translateX(0)}.workspace{width:100%;height:100%}.workspace-head{left:14px;right:14px;top:13px}.workspace-title h1{font-size:16px}.workspace-title p{display:none}.flow-rail{top:88px;left:13px;right:13px;display:block;padding:9px 10px}.flow-copy span{display:none}.flow-steps{margin-top:8px;overflow:auto;padding-bottom:1px}.flow-step{min-width:116px;padding:7px 9px}.mode-tools{gap:0;padding:5px}.mode-tools label{display:none}.mode-tools select{max-width:130px}.metrics{left:13px;bottom:17px;gap:5px}.metric{min-width:75px;padding:8px 9px}.metric strong{font-size:16px}.metric span{font-size:8px}.canvas-commands{right:12px;bottom:83px}.inspector{right:9px;top:10px;bottom:75px;max-width:calc(100% - 18px)}.bottomline{padding:0 12px}.bottomline .kbd-help{display:none}}
     @media(max-width:480px){.brand-title{font-size:15px}.top-actions{gap:4px}.top-actions .btn{padding:0 8px}.top-actions .btn-primary{min-height:32px}.mode-tools select{max-width:112px}.inspector h2{font-size:17px}.metric:nth-child(3){display:none}.canvas-commands{bottom:71px}.bottomline{font-size:9px}}
     @media(prefers-reduced-motion:reduce){*,*:before,*:after{transition-duration:0s!important;animation-duration:0s!important}}
   </style>
@@ -180,11 +183,15 @@
       <main class="workspace" id="workspace">
         <canvas id="cv" tabindex="0" aria-label="Interactive topology graph" aria-describedby="graph-keyboard-help"></canvas><p class="sr-only" id="graph-keyboard-help">Use the arrow keys to move through visible entities. Press Enter or Space to open the selected entity. Press Home or End to jump to the first or last visible entity.</p>
         <div class="workspace-head">
-          <div class="workspace-title"><div class="eyebrow">Network overview / investigation workspace</div><h1>Follow the relationships.</h1><p>Explore the original topology alongside 22 newly sourced public websites and program domains.</p></div>
+          <div class="workspace-title"><div class="eyebrow">Network overview / declared relationship pathway</div><h1>Trace the documented pathway.</h1><p>Follow named principals, disclosed foreign-agent registrants, then the surrounding operational and infrastructure clusters.</p></div>
           <div class="mode-tools"><label for="connection-mode">LINK VISIBILITY</label><select id="connection-mode" aria-label="Choose link visibility"><option value="focus">Focused only</option><option value="explicit">Primary connections</option><option value="shared">Shared infrastructure</option><option value="none">Hidden</option></select></div>
         </div>
+        <nav class="flow-rail" aria-label="Guided declared pathway">
+          <div class="flow-copy"><small>Guided reading order</small><strong id="flow-title">01 / PRINCIPALS &amp; BROKERS</strong><span id="flow-detail">Start with the Israel-linked foreign principals and named intermediary brokers in the supplied network record.</span></div>
+          <div class="flow-steps"><button class="flow-step" type="button" data-flow="0" aria-pressed="true"><b>01</b>Principals</button><button class="flow-step" type="button" data-flow="1" aria-pressed="false"><b>02</b>FARA agents</button><button class="flow-step" type="button" data-flow="2" aria-pressed="false"><b>03</b>Network clusters</button></div>
+        </nav>
         <div class="metrics"><div class="metric"><strong id="metric-entities">119</strong><span>Entities</span></div><div class="metric"><strong id="metric-hubs">14</strong><span>Clusters</span></div><div class="metric"><strong id="metric-links">0</strong><span>Explicit links</span></div><div class="metric"><strong id="metric-revealed" style="color:#6cdeec">0</strong><span>Traced</span></div></div>
-        <div class="canvas-commands"><button class="btn icon-only" title="Zoom out" id="zoom-out" aria-label="Zoom out">−</button><button class="btn" id="btn-fit" title="Fit all">Fit view</button><button class="btn icon-only" title="Zoom in" id="zoom-in" aria-label="Zoom in">+</button><span class="vertical-sep"></span><button class="btn" id="btn-step" title="Highlight next entity">Next <span style="color:#60b9d0">›</span></button></div>
+        <div class="canvas-commands"><button class="btn icon-only" title="Zoom out" id="zoom-out" aria-label="Zoom out">−</button><button class="btn" id="btn-fit" title="Fit all">Fit view</button><button class="btn icon-only" title="Zoom in" id="zoom-in" aria-label="Zoom in">+</button><span class="vertical-sep"></span><button class="btn" id="btn-flow-next" title="Advance guided pathway">Next stage <span style="color:#60b9d0">›</span></button></div>
         <div class="hover-tip" id="hover-tip"><strong id="hover-name"></strong><span id="hover-type"></span></div>
         <div class="toast" id="toast" role="status" aria-live="polite"></div>
         <section class="inspector" id="inspector" aria-label="Selected entity details">
@@ -521,13 +528,24 @@ LINKS.forEach(l=>{if(adjacency.has(l.s))adjacency.get(l.s).push(l);if(adjacency.
 const $=id=>document.getElementById(id);
 const canvas=$('cv'),context=canvas.getContext('2d');
 const workspace=$('workspace');
-const state={scope:'all',category:null,query:'',browseAll:false,selected:null,hover:null,highlighted:new Set(),mode:'focus',zoom:.6,cx:0,cy:35,w:0,h:0,down:null,dragged:false,auto:null,frame:0};
+const state={scope:'all',category:null,query:'',browseAll:false,selected:null,hover:null,highlighted:new Set(),mode:'focus',flowStage:0,zoom:.6,cx:0,cy:35,w:0,h:0,down:null,dragged:false,auto:null,frame:0};
+const FLOW_STAGES=[
+ {title:'01 / PRINCIPALS & BROKERS',detail:'Start with the Israel-linked foreign principals and named intermediary brokers in the supplied network record.',hubs:['h_fp']},
+ {title:'02 / REGISTERED FARA AGENTS',detail:'Read the principal-to-registrant mapping next. Arrow direction is a visual reading order, not an independently verified cash-transfer ledger.',hubs:['h_reg']},
+ {title:'03 / DOWNSTREAM NETWORK CLUSTERS',detail:'Continue through direct relationships into operations, ownership, co-location, outreach, hosting, and publicly documented web clusters.',hubs:null}
+];
+const FLOW_ROUTES={
+  1:[{s:1,t:9},{s:4,t:10},{s:2,t:11},{s:1,t:12},{s:1,t:13},{s:4,t:14},{s:2,t:15},{s:3,t:16},{s:5,t:17}],
+  2:[{s:9,t:18},{s:9,t:20},{s:9,t:33},{s:20,t:24},{s:33,t:34},{s:34,t:35},{s:11,t:38},{s:15,t:39},{s:16,t:42}]
+};
 const bounding={minX:-840,minY:-560,maxX:835,maxY:950};
 const reduceMotion=window.matchMedia('(prefers-reduced-motion: reduce)').matches;
 const truncate=(s,n=31)=>s.length>n?s.slice(0,n-1)+'…':s;
 function scopeVisible(n){const meta=HUB_META[n.h];return (state.scope==='all'||meta.region===state.scope||meta.scopes?.includes(state.scope))&&(!state.category||n.h===state.category)}
 function matchesQuery(n){const q=state.query.toLowerCase();return !q||[n.d,n.e,n.cat,n.fara,n.aux,n.rel,n.src].some(v=>String(v||'').toLowerCase().includes(q))}
 function isVisible(n){return scopeVisible(n)&&matchesQuery(n)}
+function isFlowEmphasis(n){const stage=FLOW_STAGES[state.flowStage];return stage.hubs?stage.hubs.includes(n.h):!['h_fp','h_reg'].includes(n.h)}
+function isFlowHubEmphasis(h){const stage=FLOW_STAGES[state.flowStage];return stage.hubs?stage.hubs.includes(h.id):!['h_fp','h_reg'].includes(h.id)}
 function setPositions(){
  HUBS.forEach(h=>{const p=POS[h.id];h.x=p[0];h.y=p[1];h.r=25});
  HUBS.forEach(h=>{const members=NODES.filter(n=>n.h===h.id);const count=members.length;members.forEach((n,i)=>{
@@ -610,12 +628,25 @@ function drawLines(){
   links.filter(l=>l.lbl==='SHARED_INFRASTRUCTURE').forEach(l=>drawLink(l,focus.id,false));
  }
 }
+function drawFlowRoutes(){
+ const routes=FLOW_ROUTES[state.flowStage];if(!routes)return;
+ context.save();
+ routes.forEach(route=>{
+  const a=nodeById.get(route.s),b=nodeById.get(route.t);if(!a||!b)return;
+  const dx=b.x-a.x,dy=b.y-a.y,len=Math.hypot(dx,dy)||1,ux=dx/len,uy=dy/len;
+  const ex=b.x-ux*(b.r+4),ey=b.y-uy*(b.r+4),mx=(a.x+ex)/2,my=(a.y+ey)/2;
+  context.beginPath();context.moveTo(a.x+ux*(a.r+4),a.y+uy*(a.r+4));context.quadraticCurveTo(mx-dy*.06,my+dx*.06,ex,ey);
+  context.strokeStyle='#f0c96e';context.globalAlpha=.9;context.lineWidth=2.4;context.stroke();
+  context.save();context.translate(ex,ey);context.rotate(Math.atan2(ey-my,ex-mx));context.fillStyle='#f6d47e';context.beginPath();context.moveTo(0,0);context.lineTo(-8,-4);context.lineTo(-8,4);context.closePath();context.fill();context.restore();
+ });
+ context.restore();
+}
 function drawHubs(){
  HUBS.forEach(h=>{
   const meta=HUB_META[h.id],members=NODES.filter(n=>n.h===h.id);
   const vis=(state.scope==='all'||meta.region===state.scope||meta.scopes?.includes(state.scope))&&(!state.category||state.category===h.id);
   const queryAny=members.some(matchesQuery);
-  context.save();context.globalAlpha=vis?(queryAny?1:.18):.15;
+  const flowDim=!isFlowHubEmphasis(h);context.save();context.globalAlpha=vis?(queryAny?(flowDim ? .18 : 1):.18):.15;
   const glow=context.createRadialGradient(h.x,h.y,2,h.x,h.y,65);glow.addColorStop(0,h.c+'20');glow.addColorStop(1,h.c+'00');
   context.fillStyle=glow;context.beginPath();context.arc(h.x,h.y,65,0,Math.PI*2);context.fill();
   context.beginPath();context.arc(h.x,h.y,31,0,2*Math.PI);context.fillStyle='#102234';context.fill();context.lineWidth=1.8;context.strokeStyle=h.c;context.stroke();
@@ -634,6 +665,7 @@ function drawNodes(){
   const visible=isVisible(n),highlight=state.highlighted.has(n.id),select=state.selected?.id===n.id,hover=state.hover?.id===n.id;
   const isNeighbor=neighbors?.has(n.id);
   let alpha=visible?1:.07;
+  if(visible&&!isFlowEmphasis(n))alpha=Math.min(alpha,.17);
   if(focus&&visible&&!isNeighbor&&!select&&!hover)alpha=.26;
   context.save();context.globalAlpha=alpha;
   if(highlight||select||hover){context.beginPath();context.arc(n.x,n.y,n.r+7,0,Math.PI*2);context.strokeStyle=n.c;context.globalAlpha=alpha*.48;context.lineWidth=1.5;context.stroke();context.globalAlpha=alpha}
@@ -654,7 +686,7 @@ function drawNodes(){
 function paint(){
  state.frame++;context.clearRect(0,0,state.w,state.h);
  context.save();context.translate(state.w/2,state.h/2);context.scale(state.zoom,state.zoom);context.translate(-state.cx,-state.cy);
- drawRegions();drawLines();drawHubs();drawNodes();context.restore();
+ drawRegions();drawFlowRoutes();drawLines();drawHubs();drawNodes();context.restore();
  requestAnimationFrame(paint);
 }
 function nearestNode(world){
@@ -742,6 +774,14 @@ function stopAuto(){if(state.auto){clearInterval(state.auto);state.auto=null}$('
 function toggleAuto(){if(state.auto){stopAuto();return}state.auto=setInterval(()=>{if(NODES.filter(isVisible).every(n=>state.highlighted.has(n.id))){stopAuto();return}traceNext(false)},650);$('auto-text').textContent='Pause trace';$('auto-icon').innerHTML='<path d="M7 5h4v14H7zM15 5h4v14h-4z"/>'}
 let toastTimer;
 function toast(message){const el=$('toast');el.textContent=message;el.classList.add('show');clearTimeout(toastTimer);toastTimer=setTimeout(()=>el.classList.remove('show'),2600)}
+function applyFlowStage(index){
+ const stage=(index+FLOW_STAGES.length)%FLOW_STAGES.length;state.flowStage=stage;state.selected=null;state.hover=null;showHover(null,0,0);$('inspector').classList.remove('open');
+ const current=FLOW_STAGES[stage];$('flow-title').textContent=current.title;$('flow-detail').textContent=current.detail;
+ document.querySelectorAll('.flow-step').forEach(button=>button.setAttribute('aria-pressed',String(Number(button.dataset.flow)===stage)));
+ if(stage===0){state.cx=-585;state.cy=-296;state.zoom=Math.max(.72,Math.min(1.2,state.w/450))}
+ else if(stage===1){state.cx=-428;state.cy=-300;state.zoom=Math.max(.62,Math.min(1.02,state.w/650))}
+ else {state.cx=80;state.cy=180;state.zoom=Math.max(.35,Math.min(.68,state.w/1120,state.h/720))}
+}
 canvas.addEventListener('pointerdown',e=>{if(e.button!==0)return;canvas.focus({preventScroll:true});canvas.setPointerCapture(e.pointerId);const r=canvas.getBoundingClientRect(),x=e.clientX-r.left,y=e.clientY-r.top;state.down={x,y,cx:state.cx,cy:state.cy,node:nearestNode(screenToWorld(x,y))};state.dragged=false;canvas.classList.add('dragging')});
 canvas.addEventListener('pointermove',e=>{
  const r=canvas.getBoundingClientRect(),x=e.clientX-r.left,y=e.clientY-r.top;
@@ -755,7 +795,8 @@ canvas.addEventListener('pointerleave',()=>{if(!state.down)showHover(null,0,0)})
 canvas.addEventListener('wheel',e=>{e.preventDefault();const r=canvas.getBoundingClientRect();zoom(e.deltaY<0?1.12:.89,e.clientX-r.left,e.clientY-r.top)},{passive:false});
 $('zoom-in').onclick=()=>zoom(1.22);$('zoom-out').onclick=()=>zoom(.82);$('btn-fit').onclick=fit;
 $('btn-reset').onclick=()=>{stopAuto();state.highlighted.clear();updateCounts();closeInspector();fit();toast('Highlights cleared')};
-$('btn-step').onclick=()=>traceNext(true);$('btn-auto').onclick=toggleAuto;
+$('btn-flow-next').onclick=()=>applyFlowStage(state.flowStage+1);$('btn-auto').onclick=toggleAuto;
+document.querySelectorAll('.flow-step').forEach(button=>button.onclick=()=>applyFlowStage(Number(button.dataset.flow)));
 $('d-btn').onclick=()=>{const n=state.selected;if(!n)return;if(state.highlighted.has(n.id))state.highlighted.delete(n.id);else state.highlighted.add(n.id);updateCounts();selectNode(n,false)};
 $('copy-node').onclick=async()=>{const n=state.selected;if(!n)return;const details=`${n.d}\n${n.e}\nCategory: ${n.cat}\nRegistration/network: ${n.fara}\nRelationship: ${n.rel}\nMetadata: ${n.aux||'N/A'}\nSource: ${n.src||'Not individually verified'}\nReviewed: ${n.verified||'Not recorded'}\n\nOriginal records are user-supplied; new website associations are sourced. Shared hosting is not evidence of ownership or coordination.`;try{await navigator.clipboard.writeText(details);toast('Entity details copied')}catch{toast('Clipboard unavailable in this browser context')}};
 $('close-inspector').onclick=closeInspector;
@@ -775,8 +816,8 @@ canvas.addEventListener('keydown',e=>{
  else if(e.key==='Enter'||e.key===' '){e.preventDefault();if(state.selected)selectNode(state.selected,true);else moveKeyboardNode(1)}
 });
 document.addEventListener('keydown',e=>{if(e.key==='/'&&document.activeElement?.tagName!=='INPUT'){e.preventDefault();$('search').focus();$('sidebar').classList.add('show')}if(e.key==='Escape'){closeInspector();$('sidebar').classList.remove('show');$('search').blur();showHover(null,0,0)}if((e.key==='f'||e.key==='F')&&!['INPUT','SELECT'].includes(document.activeElement?.tagName))fit()});
-window.addEventListener('resize',()=>{canvasSize();if(!state.selected)fit()});
-setPositions();canvasSize();fit();buildCategories();updateCounts();updateSearchResults();updateConnectionModeUI();requestAnimationFrame(paint);
+window.addEventListener('resize',()=>{canvasSize();if(!state.selected)applyFlowStage(state.flowStage)});
+setPositions();canvasSize();applyFlowStage(0);buildCategories();updateCounts();updateSearchResults();updateConnectionModeUI();requestAnimationFrame(paint);
 </script>
 <!-- Influence Atlas cinematic database entrance: add immediately before </body> -->
 <style>
@@ -789,7 +830,7 @@ setPositions();canvasSize();fit();buildCategories();updateCounts();updateSearchR
 .db-intro-controls{position:absolute;z-index:2;bottom:7%;left:5%;right:5%;display:flex;justify-content:space-between;align-items:end;gap:18px}.db-intro-controls strong{font-size:clamp(17px,3vw,30px);display:block;margin-bottom:10px}.db-intro-controls small{font:11px monospace;color:#7ee3ed}
 .db-intro-buttons{display:flex;gap:8px;flex-wrap:wrap}.db-intro-buttons button,#db-replay{border:1px solid #5ce6dc90;background:#0a3045ef;color:#dfffff;border-radius:9px;padding:12px 16px;cursor:pointer;font:bold 12px monospace}.db-intro-buttons button:hover,#db-replay:hover{background:#1b5261}#db-skip{background:#55e8dd;color:#01222a}
 .db-intro-progress{position:absolute;z-index:2;bottom:3.5%;left:5%;right:5%;height:3px;background:#578ca744}.db-intro-progress div{height:100%;width:0;background:linear-gradient(90deg,#497ffb,#62ffe2)}
-#db-replay{position:fixed;z-index:40;right:20px;bottom:48px}#db-replay[hidden]{display:none}
+#db-replay{position:fixed;z-index:40;right:20px;bottom:98px}#db-replay[hidden]{display:none}
 @media(max-width:700px){.db-intro-title{top:7%}.db-intro-controls{display:block;bottom:9%}.db-intro-buttons{margin-top:16px}}
 @media(prefers-reduced-motion:reduce){#database-intro{transition:none}}
 
