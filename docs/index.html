@@ -188,7 +188,7 @@
         </div>
         <nav class="flow-rail" aria-label="Guided declared pathway">
           <div class="flow-copy"><small>Guided reading order</small><strong id="flow-title">01 / REGISTERED FARA AGENTS</strong><span id="flow-detail">Begin with the registered foreign-agent entities. Advance to reveal their direct documented relationships across the supplied network record.</span></div>
-          <div class="flow-steps"><button class="flow-step" type="button" data-flow="0" aria-pressed="true"><b>01</b>FARA agents</button><button class="flow-step" type="button" data-flow="1" aria-pressed="false"><b>02</b>Connections</button></div>
+          <div class="flow-steps"><button class="flow-step" type="button" data-flow="0" aria-pressed="true"><b>01</b>FARA agents</button><button class="flow-step" type="button" data-flow="1" aria-pressed="false"><b>02</b>Connections</button><button class="flow-step" type="button" data-flow="2" aria-pressed="false"><b>03</b>Web footprint</button></div>
         </nav>
         <div class="metrics"><div class="metric"><strong id="metric-entities">119</strong><span>Entities</span></div><div class="metric"><strong id="metric-hubs">14</strong><span>Clusters</span></div><div class="metric"><strong id="metric-links">0</strong><span>Explicit links</span></div><div class="metric"><strong id="metric-revealed" style="color:#6cdeec">0</strong><span>Traced</span></div></div>
         <div class="canvas-commands"><button class="btn icon-only" title="Zoom out" id="zoom-out" aria-label="Zoom out">−</button><button class="btn" id="btn-fit" title="Fit all">Fit view</button><button class="btn icon-only" title="Zoom in" id="zoom-in" aria-label="Zoom in">+</button><span class="vertical-sep"></span><button class="btn" id="btn-flow-next" title="Advance guided pathway">Next stage <span style="color:#60b9d0">›</span></button></div>
@@ -214,6 +214,7 @@
       { id: "h_own",  n: "Beneficial Owners",             c: "#ec4899", x: 0, y: 0, r: 26 },
       { id: "h_adr",  n: "Addresses & Co-Locations",      c: "#38bdf8", x: 0, y: 0, r: 32 },
       { id: "h_faraweb", n: "FARA Registrant Websites",   c: "#65d5c4", x: 0, y: 0, r: 27 },
+      { id: "h_webobs", n: "Public Web Observations",      c: "#8ab4f8", x: 0, y: 0, r: 27 },
 
       // Clock Tower X Digital Influence & GEO Network
       { id: "h_core", n: "Clock Tower X Core Systems",    c: "#fb7185", x: 0, y: 0, r: 30 },
@@ -375,7 +376,7 @@
       {"id": 116, "d": "pluspr.com", "h": "h_faraweb", "c": "#65d5c4", "cat": "Registrant website", "fara": "PUBLIC WEBSITE • VERIFIED SOURCE", "rel": "PLUS Communications identifies this as its website and lists its Arlington headquarters.", "e": "PLUS Communications", "aux": "Company self-disclosure", "src": "https://pluspr.com/", "srcType": "Official site", "verified": "2026-11-01", "evidence": "documented-web", "researched": true},
       {"id": 117, "d": "mmgyglobal.com", "h": "h_faraweb", "c": "#65d5c4", "cat": "Registrant website", "fara": "PUBLIC WEBSITE • VERIFIED SOURCE", "rel": "MMGY Global’s official website identifies the company and its travel-marketing operations.", "e": "MMGY Global", "aux": "Company self-disclosure", "src": "https://www.mmgyglobal.com/", "srcType": "Official site", "verified": "2026-11-01", "evidence": "documented-web", "researched": true},
       {"id": 118, "d": "havasmedia.de", "h": "h_agweb", "c": "#ffbe74", "cat": "Broker website", "fara": "PUBLIC WEBSITE • VERIFIED SOURCE", "rel": "German legal notice names Havas Media Germany GmbH as the site's operating entity.", "e": "Havas Media Germany", "aux": "Legal imprint", "src": "https://havasmedia.de/impressum/", "srcType": "Official legal notice", "verified": "2026-10-29", "evidence": "documented-web", "researched": true},
-      {"id": 119, "d": "davis-media.com", "h": "h_agweb", "c": "#ffbe74", "cat": "Founder-associated site", "fara": "PUBLIC WEBSITE • VERIFIED SOURCE", "rel": "Site identifies Yoav Davis as founder and CEO. This founder match does not independently prove the site belongs to the same registered LLC.", "e": "Davis Media / Yoav Davis", "aux": "Founder name corroboration", "src": "https://www.davis-media.com/about", "srcType": "Company founder profile", "verified": "2026-10-29", "evidence": "documented-web", "researched": true},
+      {"id": 119, "d": "davis-media.com", "h": "h_faraweb", "c": "#65d5c4", "cat": "Registrant website", "fara": "PUBLIC WEBSITE • NAME / FOUNDER MATCH", "rel": "The public site identifies Davis Media New York and Yoav Davis. It is shown with the Davis Media NY registrant as a name-and-founder match; the website alone is not a separate legal-ownership finding.", "e": "Davis Media NY LLC", "aux": "Public site and founder profile; user-supplied scan observed an accessible site", "src": "https://www.davis-media.com/about", "srcType": "Company founder profile", "verified": "2026-11-01", "evidence": "documented-web", "researched": true},
 
       // Today Is America / Influenceable context — reported relationships; select any entity for its source.
       {"id": 120, "d": "Camron Rafizadeh", "h": "h_tia", "c": "#f0a45d", "cat": "Co-founder / executive", "fara": "REPORTED RELATIONSHIP", "rel": "Media Matters reported that Camron Rafizadeh co-founded Today Is America and the agency Influencing America with his brother Liam.", "e": "Today Is America / Influencing America", "aux": "Reported organizational relationship", "src": "https://www.mediamatters.org/tiktok/right-wing-organization-today-america-fueling-extremist-network-young-conservative?page=0", "srcType": "Media Matters reporting", "verified": "2026-11-01", "evidence": "reported", "researched": true},
@@ -390,7 +391,10 @@
       {"id": 129, "d": "Tim Korshunov", "h": "h_tia", "c": "#f0a45d", "cat": "Executive / self-reported profile", "fara": "SELF-REPORTED PROFILE", "rel": "Tim Korshunov’s LinkedIn profile lists Influenceable and describes a prior chief strategy role at Today Is America. This is self-reported profile information.", "e": "Influenceable / Today Is America", "aux": "Self-reported professional profile", "src": "https://www.linkedin.com/in/tim-korshunov-4b9535207", "srcType": "LinkedIn profile", "verified": "2026-11-01", "evidence": "self-reported", "researched": true},
       {"id": 130, "d": "Today Is America Action Inc.", "h": "h_tia", "c": "#f0a45d", "cat": "501(c)(4) organization", "fara": "DIRECTORY / IRS-DERIVED LISTING", "rel": "Cause IQ lists Today Is America Action (EIN 86-3829359) as a Huntersville, North Carolina 501(c)(4), founded in 2022. The directory says it aggregates IRS and Business Master File data.", "e": "EIN 86-3829359", "aux": "Directory listing; not a finding about similarly named entities", "src": "https://www.causeiq.com/directory/civil-rights-and-social-justice-research-institutes-list/north-carolina-state/", "srcType": "Cause IQ directory (IRS-derived)", "verified": "2026-11-01", "evidence": "directory-record", "researched": true},
       {"id": 131, "d": "For A Conservative Florida", "h": "h_tia", "c": "#f0a45d", "cat": "Florida political committee", "fara": "CAMPAIGN-FINANCE DIRECTORY", "rel": "Transparency USA’s 2022 committee page lists a $2,000 top-payee entry for “Today Is America Action Inc.” The record is shown as a directory entry and does not by itself establish the purpose of the payment.", "e": "2022 Florida committee record", "aux": "Reported $2,000 payee entry", "src": "https://www.transparencyusa.org/fl/committee/for-a-conservative-florida-78788-pac?cycle=2022-election-cycle", "srcType": "Transparency USA campaign-finance directory", "verified": "2026-11-01", "evidence": "campaign-finance-directory", "researched": true},
-      {"id": 132, "d": "showfaithbyworks.com", "h": "h_faraweb", "c": "#65d5c4", "cat": "Registrant website", "fara": "FARA FILING • VERIFIED SOURCE", "rel": "Show Faith by Works LLC’s FARA Exhibit AB lists showfaithbyworks.com as the vendor’s website.", "e": "Show Faith by Works LLC", "aux": "Website named in FARA filing", "src": "https://efile.fara.gov/docs/7653-Exhibit-AB-20250927-1.pdf", "srcType": "DOJ FARA Exhibit AB", "verified": "2026-11-01", "evidence": "official-filing", "researched": true}
+      {"id": 132, "d": "showfaithbyworks.com", "h": "h_faraweb", "c": "#65d5c4", "cat": "Registrant website", "fara": "FARA FILING • VERIFIED SOURCE", "rel": "Show Faith by Works LLC’s FARA Exhibit AB lists showfaithbyworks.com as the vendor’s website.", "e": "Show Faith by Works LLC", "aux": "Website named in FARA filing", "src": "https://efile.fara.gov/docs/7653-Exhibit-AB-20250927-1.pdf", "srcType": "DOJ FARA Exhibit AB", "verified": "2026-11-01", "evidence": "official-filing", "researched": true},
+      {"id": 134, "d": "Cloudflare edge service", "h": "h_webobs", "c": "#8ab4f8", "cat": "Public web observation", "fara": "SCAN-OBSERVED SERVICE", "rel": "The supplied scan recorded public DNS/HTTP indicators consistent with Cloudflare delivery for clocktowerx.com, tcommsglobal.com, and davis-media.com. A shared delivery provider does not establish ownership, funding, or coordination.", "e": "Shared public web service", "aux": "User-supplied scan observation · 2026-11-01 · no ports, endpoints, or findings displayed"},
+      {"id": 135, "d": "Fastly delivery service", "h": "h_webobs", "c": "#8ab4f8", "cat": "Public web observation", "fara": "SCAN-OBSERVED SERVICE", "rel": "The supplied scan recorded public delivery indicators consistent with Fastly for pluspr.com and mmgyglobal.com. This is a shared-service observation only, not an affiliation inference.", "e": "Shared public web service", "aux": "User-supplied scan observation · 2026-11-01 · no ports, endpoints, or findings displayed"},
+      {"id": 136, "d": "Microsoft 365 mail routing", "h": "h_webobs", "c": "#8ab4f8", "cat": "Public DNS observation", "fara": "SCAN-OBSERVED MAIL SERVICE", "rel": "The supplied scan recorded public MX routing indicators for Clock Tower X, PLUS, and MMGY consistent with Microsoft 365 mail protection. A shared mail platform is not evidence of coordination.", "e": "Shared public mail service", "aux": "User-supplied scan observation · 2026-11-01 · no accounts, authentication endpoints, or security findings displayed"}
     ];
 
     // Explicit Directed & Cross-Network Relational Edges
@@ -508,7 +512,16 @@
       { s: 117, t: 15, lbl: "OFFICIAL_WEBSITE" },
       { s: 118, t: 6, lbl: "OFFICIAL_WEBSITE" },
       { s: 119, t: 47, lbl: "NAMED_FOUNDER_SITE" },
+      { s: 14, t: 119, lbl: "PUBLIC_WEBSITE_NAME_FOUNDER_MATCH" },
       { s: 13, t: 132, lbl: "WEBSITE_NAMED_IN_FARA_FILING" },
+      { s: 18, t: 134, lbl: "PUBLIC_DELIVERY_OBSERVED" },
+      { s: 115, t: 134, lbl: "PUBLIC_DELIVERY_OBSERVED" },
+      { s: 119, t: 134, lbl: "PUBLIC_DELIVERY_OBSERVED" },
+      { s: 116, t: 135, lbl: "PUBLIC_DELIVERY_OBSERVED" },
+      { s: 117, t: 135, lbl: "PUBLIC_DELIVERY_OBSERVED" },
+      { s: 18, t: 136, lbl: "PUBLIC_MAIL_ROUTING_OBSERVED" },
+      { s: 116, t: 136, lbl: "PUBLIC_MAIL_ROUTING_OBSERVED" },
+      { s: 117, t: 136, lbl: "PUBLIC_MAIL_ROUTING_OBSERVED" },
 
       // Today Is America / Influenceable context — labels correspond to cited entity records.
       { s: 120, t: 122, lbl: "CO_FOUNDED_REPORTED" },
@@ -531,7 +544,7 @@
 const HUB_META = {
  h_fp:{short:'Foreign principals',region:'corporate'},h_reg:{short:'FARA registrants',region:'corporate'},
  h_hold:{short:'Holding companies',region:'corporate'},h_own:{short:'Beneficial owners',region:'corporate'},
- h_adr:{short:'Addresses + co-location',region:'corporate'},h_faraweb:{short:'FARA registrant websites',region:'corporate'},h_core:{short:'Clock Tower X systems',region:'digital'},
+ h_adr:{short:'Addresses + co-location',region:'corporate'},h_faraweb:{short:'FARA registrant websites',region:'corporate'},h_webobs:{short:'Public web observations',region:'research'},h_core:{short:'Clock Tower X systems',region:'digital'},
  h_geo:{short:'GEO + outreach',region:'digital'},h_tpsq:{short:'Squarespace',region:'tpusa'},
  h_tpcf:{short:'Cloudflare + Spectrum',region:'tpusa'},h_tpgc:{short:'Google Cloud',region:'tpusa'},
  h_tpaw:{short:'AWS + CloudFront',region:'tpusa'},h_tpsp:{short:'Specialized hosting',region:'tpusa'},
@@ -540,7 +553,7 @@ const HUB_META = {
  h_tia:{short:'Today Is America context',region:'research',scopes:['research']}
 };
 const POS={
- h_fp:[-585,-296],h_reg:[-270,-308],h_hold:[-125,-22],h_own:[-590,-10],h_adr:[-345,50],h_faraweb:[45,-300],
+ h_fp:[-585,-296],h_reg:[-270,-308],h_hold:[-125,-22],h_own:[-590,-10],h_adr:[-345,50],h_faraweb:[45,-300],h_webobs:[370,-300],
  h_core:[238,-289],h_geo:[535,-152],
  h_tpsq:[-590,345],h_tpcf:[-288,345],h_tpgc:[22,345],h_tpaw:[335,345],h_tpsp:[627,345],
  h_tppr:[-418,735],h_agweb:[362,735],h_tia:[650,735]
@@ -561,6 +574,7 @@ const hubById=new Map(HUBS.map(h=>[h.id,h]));
 const FARA_STAGE_TWO_HUBS=new Set(['h_fp','h_reg','h_hold','h_own','h_faraweb']);
 const FARA_STAGE_TWO_IDS=new Set(FARA_AGENT_IDS);
 FARA_CONNECTIONS.forEach(link=>[link.s,link.t].forEach(id=>{const node=nodeById.get(id);if(node&&FARA_STAGE_TWO_HUBS.has(node.h))FARA_STAGE_TWO_IDS.add(id)}));
+const WEB_FOOTPRINT_IDS=new Set([...FARA_AGENT_IDS,18,115,116,117,119,132,134,135,136]);
 const adjacency=new Map(NODES.map(n=>[n.id,[]]));
 LINKS.forEach(l=>{if(adjacency.has(l.s))adjacency.get(l.s).push(l);if(adjacency.has(l.t))adjacency.get(l.t).push(l)});
 const $=id=>document.getElementById(id);
@@ -569,14 +583,15 @@ const workspace=$('workspace');
 const state={scope:'all',category:null,query:'',browseAll:false,selected:null,hover:null,highlighted:new Set(),mode:'focus',flowStage:0,flowStartedAt:0,zoom:.6,cx:0,cy:35,w:0,h:0,down:null,dragged:false,auto:null,frame:0};
 const FLOW_STAGES=[
  {title:'01 / REGISTERED FARA AGENTS',detail:'Begin with the nine registered foreign-agent entities only. Everything else stays hidden until the connection reveal.',hubs:['h_reg']},
- {title:'02 / DIRECT CONNECTIONS',detail:'Connections animate outward from the FARA registrants to their directly linked principals, companies, people, holding entities, and LLCs. Digital infrastructure and address layers remain hidden. Arrows indicate relationship order, not an independently verified cash-transfer ledger.',hubs:null}
+ {title:'02 / DIRECT CONNECTIONS',detail:'Connections animate outward from the FARA registrants to their directly linked principals, companies, people, holding entities, and LLCs. Digital infrastructure and address layers remain hidden. Arrows indicate relationship order, not an independently verified cash-transfer ledger.',hubs:null},
+ {title:'03 / PUBLIC WEB FOOTPRINT',detail:'Public website and delivery observations from the supplied scan appear here. Shared web or mail services are context only; they do not establish ownership, funding, or coordination. Ports, authentication endpoints, and vulnerability claims are intentionally excluded.',hubs:null}
 ];
 const bounding={minX:-840,minY:-560,maxX:835,maxY:950};
 const reduceMotion=window.matchMedia('(prefers-reduced-motion: reduce)').matches;
 const truncate=(s,n=31)=>s.length>n?s.slice(0,n-1)+'…':s;
 function scopeVisible(n){const meta=HUB_META[n.h];return (state.scope==='all'||meta.region===state.scope||meta.scopes?.includes(state.scope))&&(!state.category||n.h===state.category)}
 function matchesQuery(n){const q=state.query.toLowerCase();return !q||[n.d,n.e,n.cat,n.fara,n.aux,n.rel,n.src].some(v=>String(v||'').toLowerCase().includes(q))}
-function isFlowVisible(n){return state.flowStage===0?n.h==='h_reg':FARA_STAGE_TWO_IDS.has(n.id)}
+function isFlowVisible(n){if(state.flowStage===0)return n.h==='h_reg';if(state.flowStage===1)return FARA_STAGE_TWO_IDS.has(n.id);return WEB_FOOTPRINT_IDS.has(n.id)}
 function isVisible(n){return scopeVisible(n)&&matchesQuery(n)&&isFlowVisible(n)}
 function isFlowHubVisible(h){return NODES.some(n=>n.h===h.id&&isFlowVisible(n))}
 function isFlowRegionVisible(region){return NODES.some(n=>HUB_META[n.h].region===region&&isFlowVisible(n))}
@@ -671,14 +686,14 @@ function drawLines(){
  }
 }
 function drawFlowRoutes(){
- if(state.flowStage!==1)return;
- const routes=FARA_CONNECTIONS.filter(route=>isFlowVisible(nodeById.get(route.s))&&isFlowVisible(nodeById.get(route.t)));
+ if(state.flowStage===0)return;
+ const routes=(state.flowStage===1?FARA_CONNECTIONS:EXPLICIT_LINKS).filter(route=>isFlowVisible(nodeById.get(route.s))&&isFlowVisible(nodeById.get(route.t)));
  const duration=reduceMotion?0:Math.max(2600,routes.length*150);
  const progress=duration?Math.min(1,(performance.now()-state.flowStartedAt)/duration):1;
  const revealed=routes.slice(0,Math.ceil(routes.length*progress));
  context.save();
  revealed.forEach(route=>{
-  const from=FARA_AGENT_IDS.has(route.s)?route.s:route.t,to=from===route.s?route.t:route.s;
+  const from=state.flowStage===1&&(FARA_AGENT_IDS.has(route.s)||FARA_AGENT_IDS.has(route.t))?(FARA_AGENT_IDS.has(route.s)?route.s:route.t):route.s,to=from===route.s?route.t:route.s;
   const a=nodeById.get(from),b=nodeById.get(to);if(!a||!b)return;
   const dx=b.x-a.x,dy=b.y-a.y,len=Math.hypot(dx,dy)||1,ux=dx/len,uy=dy/len;
   const ex=b.x-ux*(b.r+4),ey=b.y-uy*(b.r+4),mx=(a.x+ex)/2,my=(a.y+ey)/2;
@@ -842,7 +857,7 @@ canvas.addEventListener('pointerup',e=>{canvas.classList.remove('dragging');if(s
 canvas.addEventListener('pointercancel',()=>{state.down=null;canvas.classList.remove('dragging')});
 canvas.addEventListener('pointerleave',()=>{if(!state.down)showHover(null,0,0)});
 canvas.addEventListener('wheel',e=>{e.preventDefault();const r=canvas.getBoundingClientRect();zoom(e.deltaY<0?1.12:.89,e.clientX-r.left,e.clientY-r.top)},{passive:false});
-$('zoom-in').onclick=()=>zoom(1.22);$('zoom-out').onclick=()=>zoom(.82);$('btn-fit').onclick=()=>state.flowStage===1?fitFlowNodes():fit();
+$('zoom-in').onclick=()=>zoom(1.22);$('zoom-out').onclick=()=>state.flowStage>0?fitFlowNodes():fit();
 $('btn-reset').onclick=()=>{stopAuto();state.highlighted.clear();updateCounts();closeInspector();fit();toast('Highlights cleared')};
 $('btn-flow-next').onclick=()=>applyFlowStage(state.flowStage+1);$('btn-auto').onclick=toggleAuto;
 document.querySelectorAll('.flow-step').forEach(button=>button.onclick=()=>applyFlowStage(Number(button.dataset.flow)));
