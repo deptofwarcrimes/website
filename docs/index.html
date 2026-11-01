@@ -93,7 +93,7 @@
     .workspace-title p{margin:0;font-size:12px;color:#839ab1;line-height:1.55}
     .flow-rail{position:absolute;z-index:6;top:125px;left:26px;right:26px;display:flex;align-items:center;justify-content:space-between;gap:18px;padding:12px 14px;background:linear-gradient(90deg,#0d1b2dd9,#0d1b2db8);border:1px solid #334b62;border-radius:13px;box-shadow:0 12px 30px #0004;backdrop-filter:blur(12px)}
     .flow-copy{min-width:0}.flow-copy small{display:block;font:700 9px var(--mono);letter-spacing:1.35px;color:#d6b66b;text-transform:uppercase}.flow-copy strong{display:block;margin-top:4px;font-size:13px;color:#eff7ff}.flow-copy span{display:block;margin-top:3px;color:#8fa5b9;font-size:11px;line-height:1.45;max-width:470px}
-    .flow-steps{display:flex;align-items:center;gap:5px;flex:none}.flow-step{position:relative;min-height:38px;padding:0 11px;border:1px solid transparent;border-radius:8px;background:transparent;color:#8da1b5;font:700 10px var(--mono);letter-spacing:.2px;text-align:left}.flow-step:hover{background:#193045;color:#dcecf7}.flow-step[aria-pressed="true"]{background:#20384e;border-color:#5b95b2;color:#fff}.flow-step[aria-pressed="true"]:before{content:"";position:absolute;top:7px;bottom:7px;left:4px;width:2px;border-radius:4px;background:#e2c36f}.flow-step b{display:block;font-size:9px;color:#73cfe2;letter-spacing:1px}.flow-step[aria-pressed="true"] b{color:#f4d47f}
+    .flow-steps{display:flex;align-items:center;gap:5px;flex:none;max-width:min(62vw,690px);overflow-x:auto;scrollbar-width:thin}.flow-step{position:relative;min-height:38px;padding:0 11px;border:1px solid transparent;border-radius:8px;background:transparent;color:#8da1b5;font:700 10px var(--mono);letter-spacing:.2px;text-align:left;white-space:nowrap}.flow-step:hover{background:#193045;color:#dcecf7}.flow-step[aria-pressed="true"]{background:#20384e;border-color:#5b95b2;color:#fff}.flow-step[aria-pressed="true"]:before{content:"";position:absolute;top:7px;bottom:7px;left:4px;width:2px;border-radius:4px;background:#e2c36f}.flow-step b{display:block;font-size:9px;color:#73cfe2;letter-spacing:1px}.flow-step[aria-pressed="true"] b{color:#f4d47f}
     .mode-tools{display:flex;align-items:center;gap:7px;pointer-events:auto;padding:7px;background:#0b1725eA;border:1px solid #2a4058;border-radius:13px;box-shadow:0 12px 30px #0005}
     .mode-tools label{font:600 10px var(--mono);letter-spacing:.7px;color:#8196ae;padding:0 7px}
     .mode-tools select{background:#172a3c;color:#dcecf7;border:1px solid #34506a;border-radius:8px;padding:8px 24px 8px 9px;font:600 11px var(--font);max-width:180px}
@@ -188,7 +188,7 @@
         </div>
         <nav class="flow-rail" aria-label="Guided declared pathway">
           <div class="flow-copy"><small>Guided reading order</small><strong id="flow-title">01 / REGISTERED FARA AGENTS</strong><span id="flow-detail">Begin with the registered foreign-agent entities. Advance to reveal their direct documented relationships across the supplied network record.</span></div>
-          <div class="flow-steps"><button class="flow-step" type="button" data-flow="0" aria-pressed="true"><b>01</b>FARA agents</button><button class="flow-step" type="button" data-flow="1" aria-pressed="false"><b>02</b>Connections</button><button class="flow-step" type="button" data-flow="2" aria-pressed="false"><b>03</b>Web footprint</button></div>
+          <div class="flow-steps" id="flow-steps"></div>
         </nav>
         <div class="metrics"><div class="metric"><strong id="metric-entities">119</strong><span>Entities</span></div><div class="metric"><strong id="metric-hubs">14</strong><span>Clusters</span></div><div class="metric"><strong id="metric-links">0</strong><span>Explicit links</span></div><div class="metric"><strong id="metric-revealed" style="color:#6cdeec">0</strong><span>Traced</span></div></div>
         <div class="canvas-commands"><button class="btn icon-only" title="Zoom out" id="zoom-out" aria-label="Zoom out">−</button><button class="btn" id="btn-fit" title="Fit all">Fit view</button><button class="btn icon-only" title="Zoom in" id="zoom-in" aria-label="Zoom in">+</button><span class="vertical-sep"></span><button class="btn" id="btn-flow-next" title="Advance guided pathway">Next stage <span style="color:#60b9d0">›</span></button></div>
@@ -558,16 +558,6 @@ const POS={
  h_tpsq:[-590,345],h_tpcf:[-288,345],h_tpgc:[22,345],h_tpaw:[335,345],h_tpsp:[627,345],
  h_tppr:[-418,735],h_agweb:[362,735],h_tia:[650,735]
 };
-// Stage 02 uses a directional evidence map rather than the default radial cluster layout.
-// Left: principals and brokers. Center: registrants. Right: websites, owners, and company context.
-const STAGE_TWO_HUB_POS={h_fp:[-540,-380],h_reg:[-30,-380],h_faraweb:[240,-380],h_hold:[520,-380],h_own:[520,360]};
-const STAGE_TWO_NODE_POS={
-  1:[-540,-265],4:[-540,-155],2:[-540,-45],3:[-540,65],5:[-540,175],
-  6:[-310,-240],7:[-310,-55],8:[-310,110],
-  9:[-30,-285],10:[-30,-205],11:[-30,-125],12:[-30,-45],13:[-30,35],14:[-30,115],15:[-30,195],16:[-30,275],17:[-30,355],
-  18:[240,-285],115:[240,-125],132:[240,35],119:[240,115],117:[240,195],116:[240,275],
-  38:[520,-125],43:[520,-285],45:[460,-220],46:[580,-220],44:[520,-45],47:[520,115],39:[460,175],40:[580,175],41:[460,255],42:[580,255],48:[520,355]
-};
 const REGIONS=[
  {id:'corporate',name:'01  FARA & CORPORATE',detail:'Principals · Registrants · Ownership',x:-790,y:-490,w:830,h:735,c:'#b97bea'},
  {id:'digital',name:'02  DIGITAL & OUTREACH',detail:'Clock Tower X · GEO & messaging',x:52,y:-490,w:728,h:735,c:'#58a7e9'},
@@ -576,15 +566,13 @@ const REGIONS=[
 ];
 const EXPLICIT_LINKS=LINKS.slice();
 const FARA_AGENT_IDS=new Set([9,10,11,12,13,14,15,16,17]);
-const FARA_CONNECTIONS=EXPLICIT_LINKS.filter(link=>FARA_AGENT_IDS.has(link.s)||FARA_AGENT_IDS.has(link.t));
 // Expand same-pool adjacency without drawing a default complete graph.
 for(let i=0;i<NODES.length;i++) for(let j=i+1;j<NODES.length;j++) if(NODES[i].g && NODES[i].g===NODES[j].g) LINKS.push({s:NODES[i].id,t:NODES[j].id,lbl:'SHARED_INFRASTRUCTURE'});
 const nodeById=new Map(NODES.map(n=>[n.id,n]));
 const hubById=new Map(HUBS.map(h=>[h.id,h]));
-const FARA_STAGE_TWO_HUBS=new Set(['h_fp','h_reg','h_hold','h_own','h_faraweb']);
-const FARA_STAGE_TWO_IDS=new Set(FARA_AGENT_IDS);
-FARA_CONNECTIONS.forEach(link=>[link.s,link.t].forEach(id=>{const node=nodeById.get(id);if(node&&FARA_STAGE_TWO_HUBS.has(node.h))FARA_STAGE_TWO_IDS.add(id)}));
-const WEB_FOOTPRINT_IDS=new Set([...FARA_AGENT_IDS,18,115,116,117,119,132,134,135,136]);
+const REGISTRANT_SEQUENCE=[17,9,10,11,12,13,14,15,16];
+const REGISTRANT_STAGE_LINKS=new Map(REGISTRANT_SEQUENCE.map(id=>[id,EXPLICIT_LINKS.filter(link=>link.s===id||link.t===id)]));
+const REGISTRANT_STAGE_IDS=new Map(REGISTRANT_SEQUENCE.map(id=>[id,new Set([id,...REGISTRANT_STAGE_LINKS.get(id).flatMap(link=>[link.s,link.t])])]));
 const adjacency=new Map(NODES.map(n=>[n.id,[]]));
 LINKS.forEach(l=>{if(adjacency.has(l.s))adjacency.get(l.s).push(l);if(adjacency.has(l.t))adjacency.get(l.t).push(l)});
 const $=id=>document.getElementById(id);
@@ -592,28 +580,42 @@ const canvas=$('cv'),context=canvas.getContext('2d');
 const workspace=$('workspace');
 const state={scope:'all',category:null,query:'',browseAll:false,selected:null,hover:null,highlighted:new Set(),mode:'focus',flowStage:0,flowStartedAt:0,zoom:.6,cx:0,cy:35,w:0,h:0,down:null,dragged:false,auto:null,frame:0};
 const FLOW_STAGES=[
- {title:'01 / REGISTERED FARA AGENTS',detail:'Begin with the nine registered foreign-agent entities only. Everything else stays hidden until the connection reveal.',hubs:['h_reg']},
- {title:'02 / DIRECT CONNECTIONS',detail:'Connections animate outward from the FARA registrants to their directly linked principals, companies, people, holding entities, and LLCs. Digital infrastructure and address layers remain hidden. Arrows indicate relationship order, not an independently verified cash-transfer ledger.',hubs:null},
- {title:'03 / PUBLIC WEB FOOTPRINT',detail:'Public website and delivery observations from the supplied scan appear here. Shared web or mail services are context only; they do not establish ownership, funding, or coordination. Ports, authentication endpoints, and vulnerability claims are intentionally excluded.',hubs:null}
+ {title:'01 / REGISTERED FARA AGENTS',step:'FARA roster',detail:'Begin with the nine registered foreign-agent entities. Advance one dossier at a time to trace each entity’s documented direct relationships.'},
+ ...REGISTRANT_SEQUENCE.map((id,index)=>{
+  const n=nodeById.get(id),count=REGISTRANT_STAGE_LINKS.get(id).length;
+  return {focus:id,title:`${String(index+2).padStart(2,'0')} / ${n.d.toUpperCase()}`,step:n.d.replace(/,? LLC$/,'').replace('Targeted Communications Global','Targeted Global'),detail:`Focused dossier: ${n.d}. This stage maps ${count} documented direct relationship${count===1?'':'s'} to people, entities, websites, payments, or other records in the supplied graph. It does not infer additional connections.`};
+ })
 ];
 const bounding={minX:-840,minY:-560,maxX:835,maxY:950};
 const reduceMotion=window.matchMedia('(prefers-reduced-motion: reduce)').matches;
 const truncate=(s,n=31)=>s.length>n?s.slice(0,n-1)+'…':s;
 function scopeVisible(n){const meta=HUB_META[n.h];return (state.scope==='all'||meta.region===state.scope||meta.scopes?.includes(state.scope))&&(!state.category||n.h===state.category)}
 function matchesQuery(n){const q=state.query.toLowerCase();return !q||[n.d,n.e,n.cat,n.fara,n.aux,n.rel,n.src].some(v=>String(v||'').toLowerCase().includes(q))}
-function isFlowVisible(n){if(state.flowStage===0)return n.h==='h_reg';if(state.flowStage===1)return FARA_STAGE_TWO_IDS.has(n.id);return WEB_FOOTPRINT_IDS.has(n.id)}
+function stageFocus(stage=state.flowStage){return FLOW_STAGES[stage]?.focus||null}
+function stageLinks(stage=state.flowStage){const focus=stageFocus(stage);return focus?REGISTRANT_STAGE_LINKS.get(focus)||[]:[]}
+function isFlowVisible(n){const focus=stageFocus();return focus?REGISTRANT_STAGE_IDS.get(focus).has(n.id):n.h==='h_reg'}
 function isVisible(n){return scopeVisible(n)&&matchesQuery(n)&&isFlowVisible(n)}
 function isFlowHubVisible(h){return NODES.some(n=>n.h===h.id&&isFlowVisible(n))}
 function isFlowRegionVisible(region){return NODES.some(n=>HUB_META[n.h].region===region&&isFlowVisible(n))}
 function setPositions(stage=0){
- HUBS.forEach(h=>{const p=(stage===1&&STAGE_TWO_HUB_POS[h.id])||POS[h.id];h.x=p[0];h.y=p[1];h.r=25});
+ HUBS.forEach(h=>{const p=POS[h.id];h.x=p[0];h.y=p[1];h.r=25});
  HUBS.forEach(h=>{const members=NODES.filter(n=>n.h===h.id);const count=members.length;members.forEach((n,i)=>{
    const angle=(Math.PI*2*i/count)-Math.PI/2, radius=h.id==='h_reg'?135:(count>13?116:(count>9?103:92));
    const stagger=(i%2)*10;
-   const custom=stage===1&&STAGE_TWO_NODE_POS[n.id];
-   n.x=custom?custom[0]:h.x+Math.cos(angle)*(radius+stagger);n.y=custom?custom[1]:h.y+Math.sin(angle)*(radius+stagger);
-   n.r=stage===1?9:(n.cat==='Co-Located Entity'?6.3:7.4);
+   n.x=h.x+Math.cos(angle)*(radius+stagger);n.y=h.y+Math.sin(angle)*(radius+stagger);
+   n.r=n.cat==='Co-Located Entity'?6.3:7.4;
  });});
+ const focus=stageFocus(stage);if(!focus)return;
+ const focusNode=nodeById.get(focus);
+ const related=[...REGISTRANT_STAGE_IDS.get(focus)].filter(id=>id!==focus).map(id=>nodeById.get(id)).filter(Boolean);
+ focusNode.x=0;focusNode.y=0;focusNode.r=14;
+ const place=(nodes,x)=>nodes.forEach((n,i)=>{
+  const rows=Math.min(nodes.length,7),row=i%7,col=Math.floor(i/7);
+  n.x=x+col*195;n.y=(row-(rows-1)/2)*86;n.r=10;
+ });
+ const incoming=related.filter(n=>n.h==='h_fp'||n.h==='h_adr');
+ const outgoing=related.filter(n=>!incoming.includes(n));
+ place(incoming,-355);place(outgoing,315);
 }
 function canvasSize(){
  const rect=canvas.getBoundingClientRect(), dpr=Math.min(window.devicePixelRatio||1,2);
@@ -698,25 +700,24 @@ function drawLines(){
 }
 function drawFlowRoutes(){
  if(state.flowStage===0)return;
- const routes=(state.flowStage===1?FARA_CONNECTIONS:EXPLICIT_LINKS).filter(route=>isFlowVisible(nodeById.get(route.s))&&isFlowVisible(nodeById.get(route.t)));
+ const routes=stageLinks();
  const duration=reduceMotion?0:Math.max(2600,routes.length*150);
  const progress=duration?Math.min(1,(performance.now()-state.flowStartedAt)/duration):1;
  const revealed=routes.slice(0,Math.ceil(routes.length*progress));
  context.save();
  revealed.forEach(route=>{
-  const from=state.flowStage===1&&(FARA_AGENT_IDS.has(route.s)||FARA_AGENT_IDS.has(route.t))?(FARA_AGENT_IDS.has(route.s)?route.s:route.t):route.s,to=from===route.s?route.t:route.s;
+  const from=route.s,to=route.t;
   const a=nodeById.get(from),b=nodeById.get(to);if(!a||!b)return;
   const dx=b.x-a.x,dy=b.y-a.y,len=Math.hypot(dx,dy)||1,ux=dx/len,uy=dy/len;
   const ex=b.x-ux*(b.r+4),ey=b.y-uy*(b.r+4),mx=(a.x+ex)/2,my=(a.y+ey)/2;
   context.beginPath();context.moveTo(a.x+ux*(a.r+4),a.y+uy*(a.r+4));context.quadraticCurveTo(mx-dy*.06,my+dx*.06,ex,ey);
-  const stageTwo=state.flowStage===1;
-  context.strokeStyle=stageTwo?'#9acbe0':'#f0c96e';context.globalAlpha=stageTwo?.56:.9;context.lineWidth=stageTwo?1.25:2.4;context.stroke();
-  context.save();context.translate(ex,ey);context.rotate(Math.atan2(ey-my,ex-mx));context.fillStyle=stageTwo?'#9acbe0':'#f6d47e';context.globalAlpha=stageTwo?.65:1;context.beginPath();context.moveTo(0,0);context.lineTo(stageTwo?-5:-8,stageTwo?-2.5:-4);context.lineTo(stageTwo?-5:-8,stageTwo?2.5:4);context.closePath();context.fill();context.restore();
+  context.strokeStyle='#f0c96e';context.globalAlpha=.88;context.lineWidth=2.15;context.stroke();
+  context.save();context.translate(ex,ey);context.rotate(Math.atan2(ey-my,ex-mx));context.fillStyle='#f6d47e';context.globalAlpha=1;context.beginPath();context.moveTo(0,0);context.lineTo(-7,-3.5);context.lineTo(-7,3.5);context.closePath();context.fill();context.restore();
  });
  context.restore();
 }
 function drawHubs(){
- if(state.flowStage===1)return;
+ if(state.flowStage>0)return;
  HUBS.forEach(h=>{
   if(!isFlowHubVisible(h))return;
   const meta=HUB_META[h.id],members=NODES.filter(n=>n.h===h.id),shownMembers=members.filter(isFlowVisible);
@@ -747,9 +748,9 @@ function drawNodes(){
   if(highlight||select||hover){context.beginPath();context.arc(n.x,n.y,n.r+7,0,Math.PI*2);context.strokeStyle=n.c;context.globalAlpha=alpha*.48;context.lineWidth=1.5;context.stroke();context.globalAlpha=alpha}
   if(select||hover){context.beginPath();context.arc(n.x,n.y,n.r+11,0,Math.PI*2);context.strokeStyle='#ecfaff';context.lineWidth=1;context.stroke()}
   context.beginPath();context.arc(n.x,n.y,n.r+(select?1.7:0),0,Math.PI*2);context.fillStyle=highlight||select||hover?n.c:'#122436';context.fill();context.lineWidth=1.7;context.strokeStyle=highlight||select||hover?'#ebf8fc':n.c;context.stroke();
-  const labelEnabled=visible&&(state.zoom>=.93||select||hover||isNeighbor&&(state.zoom>=.56)||highlight&&state.zoom>=.77||state.flowStage===1&&state.zoom>=.55);
+  const labelEnabled=visible&&(state.zoom>=.93||select||hover||isNeighbor&&(state.zoom>=.56)||highlight&&state.zoom>=.77||state.flowStage>0&&state.zoom>=.55);
   if(labelEnabled){
-   const label=truncate(n.d,state.zoom>=1.55?47:31);const fs=state.flowStage===1?13:(select||hover?12:10.5);
+   const label=truncate(n.d,state.zoom>=1.55?47:31);const fs=state.flowStage>0?13:(select||hover?12:10.5);
    context.font=`${select||hover?700:600} ${fs}px "DM Sans",sans-serif`;
    const w=context.measureText(label).width;
    const rectY=n.y+n.r+7;
@@ -850,6 +851,18 @@ function stopAuto(){if(state.auto){clearInterval(state.auto);state.auto=null}$('
 function toggleAuto(){if(state.auto){stopAuto();return}state.auto=setInterval(()=>{if(NODES.filter(isVisible).every(n=>state.highlighted.has(n.id))){stopAuto();return}traceNext(false)},650);$('auto-text').textContent='Pause trace';$('auto-icon').innerHTML='<path d="M7 5h4v14H7zM15 5h4v14h-4z"/>'}
 let toastTimer;
 function toast(message){const el=$('toast');el.textContent=message;el.classList.add('show');clearTimeout(toastTimer);toastTimer=setTimeout(()=>el.classList.remove('show'),2600)}
+function buildFlowSteps(){
+ const wrap=$('flow-steps');wrap.replaceChildren();
+ FLOW_STAGES.forEach((stage,index)=>{
+  const button=document.createElement('button');button.type='button';button.className='flow-step';button.dataset.flow=String(index);
+  button.setAttribute('aria-pressed',String(index===state.flowStage));
+  const number=document.createElement('b');number.textContent=String(index+1).padStart(2,'0');
+  button.append(number,document.createTextNode(stage.step));
+  button.onclick=()=>applyFlowStage(index);
+  wrap.append(button);
+ });
+}
+
 function applyFlowStage(index){
  const stage=(index+FLOW_STAGES.length)%FLOW_STAGES.length;state.flowStage=stage;state.selected=null;state.hover=null;showHover(null,0,0);$('inspector').classList.remove('open');
  setPositions(stage);
@@ -874,7 +887,6 @@ canvas.addEventListener('wheel',e=>{e.preventDefault();const r=canvas.getBoundin
 $('zoom-in').onclick=()=>zoom(1.22);$('zoom-out').onclick=()=>state.flowStage>0?fitFlowNodes():fit();
 $('btn-reset').onclick=()=>{stopAuto();state.highlighted.clear();updateCounts();closeInspector();fit();toast('Highlights cleared')};
 $('btn-flow-next').onclick=()=>applyFlowStage(state.flowStage+1);$('btn-auto').onclick=toggleAuto;
-document.querySelectorAll('.flow-step').forEach(button=>button.onclick=()=>applyFlowStage(Number(button.dataset.flow)));
 $('d-btn').onclick=()=>{const n=state.selected;if(!n)return;if(state.highlighted.has(n.id))state.highlighted.delete(n.id);else state.highlighted.add(n.id);updateCounts();selectNode(n,false)};
 $('copy-node').onclick=async()=>{const n=state.selected;if(!n)return;const details=`${n.d}\n${n.e}\nCategory: ${n.cat}\nRegistration/network: ${n.fara}\nRelationship: ${n.rel}\nMetadata: ${n.aux||'N/A'}\nSource: ${n.src||'Not individually verified'}\nReviewed: ${n.verified||'Not recorded'}\n\nOriginal records are user-supplied; new website associations are sourced. Shared hosting is not evidence of ownership or coordination.`;try{await navigator.clipboard.writeText(details);toast('Entity details copied')}catch{toast('Clipboard unavailable in this browser context')}};
 $('close-inspector').onclick=closeInspector;
@@ -895,7 +907,7 @@ canvas.addEventListener('keydown',e=>{
 });
 document.addEventListener('keydown',e=>{if(e.key==='/'&&document.activeElement?.tagName!=='INPUT'){e.preventDefault();$('search').focus();$('sidebar').classList.add('show')}if(e.key==='Escape'){closeInspector();$('sidebar').classList.remove('show');$('search').blur();showHover(null,0,0)}if((e.key==='f'||e.key==='F')&&!['INPUT','SELECT'].includes(document.activeElement?.tagName))fit()});
 window.addEventListener('resize',()=>{canvasSize();if(!state.selected)applyFlowStage(state.flowStage)});
-setPositions(0);canvasSize();applyFlowStage(0);buildCategories();updateCounts();updateSearchResults();updateConnectionModeUI();requestAnimationFrame(paint);
+setPositions(0);canvasSize();buildFlowSteps();applyFlowStage(0);buildCategories();updateCounts();updateSearchResults();updateConnectionModeUI();requestAnimationFrame(paint);
 </script>
 <!-- Influence Atlas cinematic database entrance: add immediately before </body> -->
 <style>
