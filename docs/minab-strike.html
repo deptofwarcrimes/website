@@ -1,0 +1,520 @@
+<!DOCTYPE html>
+<html lang="en" class="dark">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>2026 Minab Elementary School Strike: Interactive Analysis</title>
+    <!-- Chosen Palette: Dark Charcoal & Tactical Crimson (Background #09090b zinc-950, surface cards #18181b zinc-900, borders #27272a zinc-800, text #f4f4f5 zinc-100, crimson accent #ef4444, amber highlight #f59e0b) -->
+    <!-- Application Structure Plan:
+         1. Header & Metric Highlights: Key casualty stats and strike parameters with high-contrast tactical dark styling.
+         2. Executive Briefing & Context: Dark-mode optimized contextual framing of Operation Epic Fury and the Shajareh Tayyebeh school strike.
+         3. Interactive Chronology & Double-Tap Timeline: Filterable timeline of events on Feb 28, 2026, with glowing timeline nodes and status badges.
+         4. Kill-Chain Failure Explorer: Dynamic three-tier operational breakdown (Data Silos -> AI Acceleration via Project Maven -> Mitigation/Safeguard Cuts) with dark card states.
+         5. Dynamic Casualty & Site Demographics: Interactive Chart.js doughnut visualization with contrast-adjusted colors for dark backgrounds paired with historical site evolution.
+         6. Legal & Geopolitical Oversight Matrix: Tabbed layout evaluating UN War Crimes findings, Pentagon statements, Senate oversight, and dual Geneva obligations.
+         WHY THIS STRUCTURE: Dark theme enhances focused research, reduces eye strain, and provides a sleek military-analysis interface while retaining all interactive drill-down functionality. -->
+    <!-- Visualization & Content Choices:
+         - Metrics Grid: Dark cards with glowing crimson/amber numbers for immediate visual hierarchy.
+         - Timeline Filter: Interactive JS buttons with subtle zinc borders and bold active crimson states.
+         - Kill-Chain Breakdown: Clickable dynamic HTML/CSS card architecture with dark red hover overlays.
+         - Demographic Charts: Chart.js Canvas Doughnut with bright contrast palette (#ef4444, #f43f5e, #38bdf8, #f59e0b, #a1a1aa) and white/light slate text for legend & tooltips.
+         - Legal Matrix: Tabbed container with dark slate background and high contrast text.
+         - Confirming NO SVG elements used; Canvas used for Chart.js; styled HTML/Unicode used for icons/visual badges. -->
+    <!-- CONFIRMATION: NO SVG graphics used. NO Mermaid JS used. -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <style>
+        .chart-container {
+            position: relative;
+            width: 100%;
+            max-width: 600px;
+            margin-left: auto;
+            margin-right: auto;
+            height: 320px;
+            max-height: 380px;
+        }
+        @media (min-width: 768px) {
+            .chart-container {
+                height: 350px;
+            }
+        }
+        .tab-active {
+            border-bottom: 2px solid #ef4444;
+            color: #ef4444;
+            font-weight: 700;
+        }
+        .step-card {
+            transition: all 0.2s ease-in-out;
+        }
+        .step-card:hover {
+            transform: translateY(-2px);
+        }
+    </style>
+</head>
+<body class="bg-zinc-950 text-zinc-100 font-sans antialiased selection:bg-red-900 selection:text-red-100 min-h-screen">
+
+    <!-- Header & Navigation Bar -->
+    <header class="bg-zinc-900 border-b border-zinc-800 sticky top-0 z-50 shadow-lg backdrop-blur-md bg-opacity-90">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex items-center justify-between h-16">
+                <div class="flex items-center space-x-3">
+                    <span class="bg-red-950 border border-red-800 text-red-400 font-mono text-xs px-2.5 py-1 rounded tracking-wider uppercase font-semibold">Special Report</span>
+                    <h1 class="text-lg sm:text-xl font-bold tracking-tight text-zinc-100">2026 Minab School Strike Analysis</h1>
+                </div>
+                <nav class="hidden md:flex space-x-6 text-sm font-medium">
+                    <a href="#overview" class="text-zinc-400 hover:text-red-400 transition">Overview</a>
+                    <a href="#timeline" class="text-zinc-400 hover:text-red-400 transition">Timeline</a>
+                    <a href="#killchain" class="text-zinc-400 hover:text-red-400 transition">Kill-Chain Breakdown</a>
+                    <a href="#demographics" class="text-zinc-400 hover:text-red-400 transition">Casualties & Data</a>
+                    <a href="#legal" class="text-zinc-400 hover:text-red-400 transition">Legal & Oversight</a>
+                </nav>
+            </div>
+        </div>
+    </header>
+
+    <!-- Main Container -->
+    <main class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 space-y-12">
+
+        <!-- SECTION 1: OVERVIEW & KEY METRICS -->
+        <section id="overview" class="space-y-6">
+            <div class="bg-zinc-900 rounded-xl shadow-xl border border-zinc-800 p-6 md:p-8">
+                <div class="border-b border-zinc-800 pb-4 mb-6">
+                    <span class="text-xs font-semibold text-red-500 tracking-widest uppercase font-mono">Forensic, Operational & Legal Investigation</span>
+                    <h2 class="text-2xl sm:text-3xl font-extrabold text-zinc-50 mt-1">Incident Briefing: Shajareh Tayyebeh Elementary School Strike</h2>
+                    <p class="text-zinc-400 mt-2 text-sm sm:text-base leading-relaxed">
+                        On February 28, 2026, during the opening hours of Operation Epic Fury, United States forces struck a primary school in Minab, Iran, with two RGM/UGM-109 Tomahawk cruise missiles in a double-tap attack sequence. This briefing consolidates forensic evidence, military intelligence audits, UN Fact-Finding findings, and open-source verification regarding the operational collapse and civilian toll.
+                    </p>
+                </div>
+
+                <!-- KPI Metric Grid -->
+                <div class="grid grid-cols-2 lg:grid-cols-4 gap-4 sm:gap-6">
+                    <div class="bg-zinc-950/80 border border-zinc-800 rounded-lg p-4 text-center">
+                        <p class="text-xs font-semibold text-zinc-400 uppercase tracking-wider">Total Fatalities</p>
+                        <p class="text-3xl sm:text-4xl font-extrabold text-red-500 mt-1" id="kpi-deaths">156</p>
+                        <p class="text-xs text-zinc-500 mt-1">Finalized by UN / Amnesty</p>
+                    </div>
+                    <div class="bg-zinc-950/80 border border-zinc-800 rounded-lg p-4 text-center">
+                        <p class="text-xs font-semibold text-zinc-400 uppercase tracking-wider">Child Victims</p>
+                        <p class="text-3xl sm:text-4xl font-extrabold text-rose-500 mt-1" id="kpi-children">120</p>
+                        <p class="text-xs text-zinc-500 mt-1">Ages 6 to 13 (73 boys, 47 girls)</p>
+                    </div>
+                    <div class="bg-zinc-950/80 border border-zinc-800 rounded-lg p-4 text-center">
+                        <p class="text-xs font-semibold text-zinc-400 uppercase tracking-wider">Munitions Used</p>
+                        <p class="text-3xl sm:text-4xl font-extrabold text-zinc-100 mt-1">2 TLAMs</p>
+                        <p class="text-xs text-zinc-500 mt-1">Tomahawk Cruise Missiles</p>
+                    </div>
+                    <div class="bg-zinc-950/80 border border-zinc-800 rounded-lg p-4 text-center">
+                        <p class="text-xs font-semibold text-zinc-400 uppercase tracking-wider">Targeting Rate</p>
+                        <p class="text-3xl sm:text-4xl font-extrabold text-amber-400 mt-1">1,000/hr</p>
+                        <p class="text-xs text-zinc-500 mt-1">Project Maven AI generation</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- SECTION 2: CHRONOLOGY & DOUBLE-TAP TIMELINE -->
+        <section id="timeline" class="space-y-6">
+            <div class="bg-zinc-900 rounded-xl shadow-xl border border-zinc-800 p-6 md:p-8">
+                <div class="mb-6">
+                    <h3 class="text-xl font-bold text-zinc-100">Chronology of the February 28 Attack</h3>
+                    <p class="text-zinc-400 text-sm mt-1 leading-relaxed">
+                        Explore the critical timeframe on Saturday, February 28, 2026 (IRST), showing how warning delays, evacuation bottlenecks, and a 3-hour "double-tap" strike interval led to maximum civilian lethality. Click categories to filter events.
+                    </p>
+                </div>
+
+                <!-- Timeline Filter Controls -->
+                <div class="flex flex-wrap gap-2 mb-6 border-b border-zinc-800 pb-3" id="timeline-filters">
+                    <button onclick="filterTimeline('all', this)" class="filter-btn text-xs font-semibold px-3 py-1.5 rounded-full bg-red-600 text-white shadow">All Events</button>
+                    <button onclick="filterTimeline('pre', this)" class="filter-btn text-xs font-semibold px-3 py-1.5 rounded-full bg-zinc-800 text-zinc-300 hover:bg-zinc-700 hover:text-white transition">Pre-Strike & Warning</button>
+                    <button onclick="filterTimeline('strike1', this)" class="filter-btn text-xs font-semibold px-3 py-1.5 rounded-full bg-zinc-800 text-zinc-300 hover:bg-zinc-700 hover:text-white transition">First Strike (11:22 AM)</button>
+                    <button onclick="filterTimeline('rescue', this)" class="filter-btn text-xs font-semibold px-3 py-1.5 rounded-full bg-zinc-800 text-zinc-300 hover:bg-zinc-700 hover:text-white transition">Rescue Effort</button>
+                    <button onclick="filterTimeline('strike2', this)" class="filter-btn text-xs font-semibold px-3 py-1.5 rounded-full bg-zinc-800 text-zinc-300 hover:bg-zinc-700 hover:text-white transition">Second Strike (2:30 PM)</button>
+                </div>
+
+                <!-- Timeline Items Dynamic Container -->
+                <div class="relative border-l-2 border-zinc-700 ml-4 space-y-6 pl-6 py-2" id="timeline-container">
+                    <!-- Javascript populates events dynamically -->
+                </div>
+            </div>
+        </section>
+
+        <!-- SECTION 3: SYSTEMIC KILL-CHAIN FAILURE ANALYSIS -->
+        <section id="killchain" class="space-y-6">
+            <div class="bg-zinc-900 rounded-xl shadow-xl border border-zinc-800 p-6 md:p-8">
+                <div class="mb-6">
+                    <span class="text-xs font-semibold text-amber-400 tracking-widest uppercase font-mono">Targeting & Intelligence Architecture</span>
+                    <h3 class="text-xl font-bold text-zinc-100 mt-1">Anatomy of the Military "Kill-Chain" Collapse</h3>
+                    <p class="text-zinc-400 text-sm mt-1 leading-relaxed">
+                        Internal CENTCOM investigations, congressional inquiries, and press leaks revealed that the strike on Shajareh Tayyebeh was not an isolated physical navigation error, but a systemic failure across three operational layers. Select a layer below to inspect the structural flaws.
+                    </p>
+                </div>
+
+                <!-- Interactive Layer Grid -->
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-4 mb-6">
+                    <button onclick="selectLayer(1)" id="layer-btn-1" class="p-4 rounded-lg border-2 border-red-600 bg-red-950/30 text-left transition hover:shadow-md">
+                        <div class="flex items-center justify-between">
+                            <span class="text-xs font-bold text-red-400 uppercase">Layer 1</span>
+                            <span class="text-xs bg-red-900/60 text-red-200 border border-red-700/50 px-2 py-0.5 rounded font-mono">Data Silo</span>
+                        </div>
+                        <h4 class="font-bold text-zinc-100 mt-2 text-base">Legacy Intelligence Lag</h4>
+                        <p class="text-xs text-zinc-400 mt-1">7-year-old imagery & non-interoperable analyst note trapped in 2019.</p>
+                    </button>
+
+                    <button onclick="selectLayer(2)" id="layer-btn-2" class="p-4 rounded-lg border-2 border-zinc-800 bg-zinc-950 text-left transition hover:border-zinc-700">
+                        <div class="flex items-center justify-between">
+                            <span class="text-xs font-bold text-zinc-500 uppercase">Layer 2</span>
+                            <span class="text-xs bg-zinc-800 text-zinc-300 px-2 py-0.5 rounded font-mono">AI Speed</span>
+                        </div>
+                        <h4 class="font-bold text-zinc-100 mt-2 text-base">Project Maven Acceleration</h4>
+                        <p class="text-xs text-zinc-400 mt-1">Targeting generation at 1,000 targets/hr bypassing verification.</p>
+                    </button>
+
+                    <button onclick="selectLayer(3)" id="layer-btn-3" class="p-4 rounded-lg border-2 border-zinc-800 bg-zinc-950 text-left transition hover:border-zinc-700">
+                        <div class="flex items-center justify-between">
+                            <span class="text-xs font-bold text-zinc-500 uppercase">Layer 3</span>
+                            <span class="text-xs bg-zinc-800 text-zinc-300 px-2 py-0.5 rounded font-mono">Safeguards</span>
+                        </div>
+                        <h4 class="font-bold text-zinc-100 mt-2 text-base">Institutional Safeguard Cuts</h4>
+                        <p class="text-xs text-zinc-400 mt-1">90% CHMR workforce reduction & JAG dismissal.</p>
+                    </button>
+                </div>
+
+                <!-- Active Layer Deep Dive Card -->
+                <div class="bg-zinc-950 border border-zinc-800 rounded-lg p-6" id="layer-detail-box">
+                    <!-- Populated by JS -->
+                </div>
+            </div>
+        </section>
+
+        <!-- SECTION 4: DEMOGRAPHICS, SITE TRANSFORMATION & FORENSICS -->
+        <section id="demographics" class="space-y-6">
+            <div class="bg-zinc-900 rounded-xl shadow-xl border border-zinc-800 p-6 md:p-8">
+                <div class="mb-6">
+                    <h3 class="text-xl font-bold text-zinc-100">Casualty Accounting & Forensic Verification</h3>
+                    <p class="text-zinc-400 text-sm mt-1 leading-relaxed">
+                        Analysis of the 156 confirmed fatalities and site layout evolution. Open-source imagery and video geolocated by Bellingcat and *The New York Times* confirmed missile type (RGM/UGM-109 Tomahawk) and pre-existing civilian separation.
+                    </p>
+                </div>
+
+                <div class="grid grid-cols-1 lg:grid-cols-2 gap-8 items-center">
+                    <!-- Chart 1 Container -->
+                    <div class="bg-zinc-950 border border-zinc-800 rounded-lg p-4 flex flex-col items-center">
+                        <h4 class="text-sm font-bold text-zinc-200 mb-2 w-full text-left">Confirmed Fatalities Demographic Breakdown</h4>
+                        <div class="chart-container">
+                            <canvas id="casualtyChart"></canvas>
+                        </div>
+                        <p class="text-xs text-zinc-500 mt-2 text-center">Source: Minab Prosecutor & UN Fact-Finding Mission (April 2026)</p>
+                    </div>
+
+                    <!-- Historical Site Evolution Table / Interactive Timeline -->
+                    <div class="space-y-4">
+                        <h4 class="text-sm font-bold text-zinc-200">Site Transformation Timeline (2013–2026)</h4>
+                        <div class="space-y-3">
+                            <div class="p-3 bg-zinc-950 border-l-4 border-zinc-600 rounded-r text-xs">
+                                <span class="font-bold text-zinc-100">2013 or Earlier:</span> Structure operated as part of IRGCN Asif Brigade naval perimeter during/after Iran-Iraq war.
+                            </div>
+                            <div class="p-3 bg-zinc-950 border-l-4 border-amber-500 rounded-r text-xs">
+                                <span class="font-bold text-zinc-100">October 2016:</span> Masonry separation wall constructed, completely cutting off school from IRGC complex; military guard posts removed.
+                            </div>
+                            <div class="p-3 bg-zinc-950 border-l-4 border-emerald-500 rounded-r text-xs">
+                                <span class="font-bold text-zinc-100">2017 - 2018:</span> Bright pink/blue playground walls painted, football pitch added, 3 civilian street entrances commissioned.
+                            </div>
+                            <div class="p-3 bg-zinc-950 border-l-4 border-red-500 rounded-r text-xs">
+                                <span class="font-bold text-zinc-100">Feb 28, 2026:</span> Struck by 2 US Tomahawk cruise missiles. Direct hit on prayer room during 2nd strike kills surviving children and medics.
+                            </div>
+                        </div>
+
+                        <!-- Open Source Verification Box -->
+                        <div class="mt-4 p-4 border border-zinc-800 rounded-lg bg-zinc-950/90">
+                            <h5 class="text-xs font-bold text-red-400 uppercase tracking-wider mb-2 font-mono">Key Open-Source Forensic Findings</h5>
+                            <ul class="text-xs text-zinc-300 space-y-1.5 list-disc list-inside">
+                                <li><strong>Missile System:</strong> Bellingcat verified video showing US RGM/UGM-109 Tomahawk cruise missile mid-air frame.</li>
+                                <li><strong>Monopoly Operator:</strong> US is sole combatant operating Tomahawk missiles in Operation Epic Fury.</li>
+                                <li><strong>Physical Remnants:</strong> Serial-numbered TLAM wreckage recovered from school ruins by Iranian judicial authorities.</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- SECTION 5: LEGAL FINDINGS & GEOPOLITICAL OVERSIGHT -->
+        <section id="legal" class="space-y-6">
+            <div class="bg-zinc-900 rounded-xl shadow-xl border border-zinc-800 p-6 md:p-8">
+                <div class="mb-6">
+                    <span class="text-xs font-semibold text-slate-400 tracking-widest uppercase font-mono">International Humanitarian Law & Official Responses</span>
+                    <h3 class="text-xl font-bold text-zinc-100 mt-1">Legal Accountability & Institutional Positions</h3>
+                    <p class="text-zinc-400 text-sm mt-1 leading-relaxed">
+                        Compare the conclusions of the United Nations Fact-Finding Mission with official executive statements from the Trump Administration and oversight actions taken by the US Senate.
+                    </p>
+                </div>
+
+                <!-- Legal Tabs -->
+                <div class="flex border-b border-zinc-800 mb-6 space-x-4 overflow-x-auto">
+                    <button onclick="switchLegalTab('un')" id="tab-un" class="tab-btn pb-2 text-sm font-bold text-red-400 border-b-2 border-red-500 whitespace-nowrap">UN War Crimes Finding</button>
+                    <button onclick="switchLegalTab('us-exec')" id="tab-us-exec" class="tab-btn pb-2 text-sm font-semibold text-zinc-400 hover:text-zinc-200 whitespace-nowrap">US Executive / DoD</button>
+                    <button onclick="switchLegalTab('us-senate')" id="tab-us-senate" class="tab-btn pb-2 text-sm font-semibold text-zinc-400 hover:text-zinc-200 whitespace-nowrap">US Senate Oversight</button>
+                    <button onclick="switchLegalTab('ihl')" id="tab-ihl" class="tab-btn pb-2 text-sm font-semibold text-zinc-400 hover:text-zinc-200 whitespace-nowrap">Dual IHL Obligations</button>
+                </div>
+
+                <!-- Tab Content Box -->
+                <div id="legal-tab-content" class="bg-zinc-950 border border-zinc-800 rounded-lg p-6">
+                    <!-- Populated dynamically via JS -->
+                </div>
+            </div>
+        </section>
+
+    </main>
+
+    <!-- Footer -->
+    <footer class="bg-zinc-950 text-zinc-500 py-8 border-t border-zinc-800 mt-12 text-xs">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex flex-col md:flex-row justify-between items-center gap-4">
+            <div>
+                <p class="font-semibold text-zinc-300">2026 Minab Elementary School Strike Interactive Briefing</p>
+                <p class="mt-1">Compiled from open-source intelligence, CENTCOM leaks, UN Fact-Finding reports, and news archives.</p>
+            </div>
+            <div class="text-zinc-500 text-right">
+                <p>Dark Tactical Analytics Briefing</p>
+                <p class="mt-0.5">Published November 2026</p>
+            </div>
+        </div>
+    </footer>
+
+    <!-- JavaScript Application Logic -->
+    <script>
+        // Data Store
+        const timelineEvents = [
+            {
+                time: "09:45 AM IRST",
+                title: "Launch of Operation Epic Fury",
+                category: "pre",
+                desc: "Joint US-Israeli campaign commences with strikes across Iran. Iranian school week runs Saturday–Thursday; morning classes are actively in session across Minab."
+            },
+            {
+                time: "10:00 AM - 10:15 AM",
+                title: "Informal Teacher Warnings & Unofficial Evacuations",
+                category: "pre",
+                desc: "Teacher Nasim Neyestani learns of strikes on Tehran and begins telephoning parents of 22 students. 14 are picked up; 8 remain stranded."
+            },
+            {
+                time: "11:00 AM IRST",
+                title: "Official School Closure & Evacuation Bottleneck",
+                category: "pre",
+                desc: "Head teacher orders emergency closure of boys' and girls' sections. Traffic gridlock and rural bus delays hold scores of children inside the school compound."
+            },
+            {
+                time: "11:22 AM IRST",
+                title: "First Wave Missile Strike",
+                category: "strike1",
+                desc: "4th missile in a salvo (US RGM/UGM-109 Tomahawk) directly impacts Shajareh Tayyebeh school. Concrete roof collapses, pancaking girls' upper classrooms onto boys' ground floor classrooms."
+            },
+            {
+                time: "11:30 AM - 02:15 PM",
+                title: "Interim Rescue & Congregation in Prayer Room",
+                category: "rescue",
+                desc: "Parents, teachers, medics, and responders breach compound walls to dig survivors out. Principal gathers surviving children, including Neyestani's remaining 8 pupils, into undamaged school prayer room for safety."
+            },
+            {
+                time: "02:30 PM IRST",
+                title: "Second Strike ('Double-Tap')",
+                category: "strike2",
+                desc: "A second US Tomahawk missile hits the school, directly striking the prayer room shelter where surviving children, staff, parents, and first responders had assembled. Instant fatalities."
+            }
+        ];
+
+        const layerData = {
+            1: {
+                title: "Layer 1: Legacy Intelligence & Database Silos",
+                badge: "Data Corruption",
+                points: [
+                    "<strong>Outdated Master Database:</strong> DIA/CENTCOM targeting database designated the coordinates as an active IRGC naval facility based on pre-2016 boundaries.",
+                    "<strong>Trapped Intelligence Note:</strong> In 2019, a US analyst documented that the building had transitioned to a civilian primary school. However, this observation was entered into a digital tool non-interoperable with the master strike database.",
+                    "<strong>Bypassed Warnings:</strong> System flags warning that intelligence was over 7 years old were explicitly bypassed by commanders under operational pressure."
+                ]
+            },
+            2: {
+                title: "Layer 2: AI-Accelerated Target Generation (Project Maven)",
+                badge: "Automated Speed",
+                points: [
+                    "<strong>Unprecedented Tempo:</strong> Project Maven (integrating Palantir Maven Smart System and Anthropic Claude LLM) was deployed to output up to 1,000 target packages per hour during Operation Epic Fury.",
+                    "<strong>Automation Fallacy:</strong> CENTCOM personnel assumed AI software would automatically flag underlying intelligence discrepancies or outdated imagery.",
+                    "<strong>No Verification Audit:</strong> Palantir stated software is not designed to audit human inputs, resulting in rapid automated pipeline feeding corrupted legacy coordinates directly onto execution lists."
+                ]
+            },
+            3: {
+                title: "Layer 3: Collapse of Legal & Civilian Safeguards",
+                badge: "Institutional Cuts",
+                points: [
+                    "<strong>90% CHMR Workforce Reduction:</strong> Prior to the war, DoD civilian harm mitigation personnel were cut from hundreds to fewer than 20 overall; CENTCOM dedicated team shrank from 10 to 1 analyst.",
+                    "<strong>JAG Lawyer Dismissals:</strong> Operational JAG legal officers who traditionally reviewed strike lists for International Humanitarian Law (IHL) compliance were fired or sidelined.",
+                    "<strong>Zero Civilian Vetting:</strong> Pre-strike civilian protection vetting was made non-mandatory; no civilian harm specialist reviewed the school target prior to launch."
+                ]
+            }
+        };
+
+        const legalData = {
+            "un": {
+                title: "UN Independent Fact-Finding Mission Conclusion (Sept 2026)",
+                text: "The UN Independent International Fact-Finding Mission concluded there are <strong class='text-red-400'>'reasonable grounds to believe that the United States committed a war crime'</strong> by launching indiscriminate and reckless attacks against a civilian object. The mission rejected US claims of accidental collateral damage, concluding the school building itself was the intended point of impact, and that failing to update targeting databases constituted reckless disregard under International Humanitarian Law."
+            },
+            "us-exec": {
+                title: "US Executive Branch & Department of Defense Response",
+                text: "President Donald Trump offered shifting explanations, initially blaming an Iranian missile misfire, then suggesting outdated intelligence or AI-generated image falsification. CENTCOM Commander Admiral Brad Cooper defended the strike in May 2026 testimony by asserting the school sat on an active IRGC base, while the White House labeled the UN War Crimes findings as 'unserious nonsense'."
+            },
+            "us-senate": {
+                title: "US Senate Congressional Oversight Action (July 2026)",
+                text: "Led by Senator Jack Reed and Senator Kirsten Gillibrand, 25 Democratic senators demanded the immediate unredacted release of Admiral Cooper's internal investigation. Lawmakers demanded a remediation plan for intelligence database interoperability, AI targeting constraints, and full restoration of the Civilian Harm Mitigation and Response (CHMR) framework."
+            },
+            "ihl": {
+                title: "Dual Obligations Under International Humanitarian Law",
+                text: "While holding the US primarily culpable for launching an unverified lethal attack, Amnesty International and legal scholars noted Iranian authorities failed in their passive precaution duties under Geneva Conventions by operating a children's primary school immediately adjacent to an active IRGC naval facility during a period of intense geopolitical confrontation."
+            }
+        };
+
+        // Render Timeline
+        function renderTimeline(filter = 'all') {
+            const container = document.getElementById('timeline-container');
+            container.innerHTML = '';
+
+            const filteredEvents = filter === 'all' 
+                ? timelineEvents 
+                : timelineEvents.filter(e => e.category === filter);
+
+            filteredEvents.forEach(e => {
+                const item = document.createElement('div');
+                item.className = 'relative step-card';
+                item.innerHTML = `
+                    <div class="absolute -left-[31px] top-1 w-4 h-4 rounded-full border-2 border-zinc-900 ${e.category.includes('strike') ? 'bg-red-500 shadow-[0_0_8px_rgba(239,68,68,0.8)]' : 'bg-zinc-600'}"></div>
+                    <div class="bg-zinc-950/80 border border-zinc-800 rounded-lg p-4">
+                        <div class="flex items-center justify-between">
+                            <span class="text-xs font-bold font-mono text-red-400">${e.time}</span>
+                            <span class="text-[10px] uppercase tracking-wider font-mono font-semibold px-2 py-0.5 rounded ${e.category.includes('strike') ? 'bg-red-950 border border-red-800 text-red-300' : 'bg-zinc-800 text-zinc-300'}">${e.category}</span>
+                        </div>
+                        <h4 class="font-bold text-zinc-100 mt-1 text-sm">${e.title}</h4>
+                        <p class="text-xs text-zinc-400 mt-1 leading-relaxed">${e.desc}</p>
+                    </div>
+                `;
+                container.appendChild(item);
+            });
+        }
+
+        function filterTimeline(category, btnElement) {
+            document.querySelectorAll('#timeline-filters button').forEach(btn => {
+                btn.className = 'filter-btn text-xs font-semibold px-3 py-1.5 rounded-full bg-zinc-800 text-zinc-300 hover:bg-zinc-700 hover:text-white transition';
+            });
+            btnElement.className = 'filter-btn text-xs font-semibold px-3 py-1.5 rounded-full bg-red-600 text-white shadow';
+            renderTimeline(category);
+        }
+
+        // Render Kill Chain Layer
+        function selectLayer(layerId) {
+            for (let i = 1; i <= 3; i++) {
+                const btn = document.getElementById(`layer-btn-${i}`);
+                if (i === layerId) {
+                    btn.className = 'p-4 rounded-lg border-2 border-red-600 bg-red-950/30 text-left transition hover:shadow-md';
+                    btn.querySelector('span:first-child').className = 'text-xs font-bold text-red-400 uppercase';
+                } else {
+                    btn.className = 'p-4 rounded-lg border-2 border-zinc-800 bg-zinc-950 text-left transition hover:border-zinc-700';
+                    btn.querySelector('span:first-child').className = 'text-xs font-bold text-zinc-500 uppercase';
+                }
+            }
+
+            const data = layerData[layerId];
+            const detailBox = document.getElementById('layer-detail-box');
+            detailBox.innerHTML = `
+                <div class="flex items-center justify-between border-b border-zinc-800 pb-3 mb-3">
+                    <h4 class="font-bold text-zinc-100 text-base">${data.title}</h4>
+                    <span class="text-xs bg-red-950 border border-red-800 text-red-300 font-mono px-2 py-1 rounded">${data.badge}</span>
+                </div>
+                <ul class="text-xs text-zinc-300 space-y-2 list-disc list-inside leading-relaxed">
+                    ${data.points.map(pt => `<li>${pt}</li>`).join('')}
+                </ul>
+            `;
+        }
+
+        // Render Legal Tab
+        function switchLegalTab(tabKey) {
+            document.querySelectorAll('.tab-btn').forEach(btn => {
+                btn.className = 'tab-btn pb-2 text-sm font-semibold text-zinc-400 hover:text-zinc-200 whitespace-nowrap';
+            });
+            document.getElementById(`tab-${tabKey}`).className = 'tab-btn pb-2 text-sm font-bold text-red-400 border-b-2 border-red-500 whitespace-nowrap';
+
+            const tabData = legalData[tabKey];
+            const box = document.getElementById('legal-tab-content');
+            box.innerHTML = `
+                <h4 class="font-bold text-zinc-100 text-base mb-2">${tabData.title}</h4>
+                <p class="text-xs sm:text-sm text-zinc-300 leading-relaxed">${tabData.text}</p>
+            `;
+        }
+
+        // Init Chart.js in Dark Theme
+        function initCharts() {
+            const ctx = document.getElementById('casualtyChart').getContext('2d');
+            new Chart(ctx, {
+                type: 'doughnut',
+                data: {
+                    labels: [
+                        'Schoolboys (Age 6-13)', 
+                        'Schoolgirls (Age 6-13)', 
+                        'Female Teachers', 
+                        'Parents', 
+                        'Staff/Medics'
+                    ],
+                    datasets: [{
+                        data: [73, 47, 26, 7, 3],
+                        backgroundColor: [
+                            '#ef4444', // Crimson / Red 500
+                            '#f43f5e', // Rose 500
+                            '#38bdf8', // Sky 400
+                            '#f59e0b', // Amber 500
+                            '#71717a'  // Zinc 500
+                        ],
+                        borderWidth: 2,
+                        borderColor: '#09090b' // Dark Zinc 950 match
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: {
+                        legend: {
+                            position: 'bottom',
+                            labels: {
+                                boxWidth: 12,
+                                color: '#e4e4e7', // Zinc 200 text
+                                font: {
+                                    size: 11
+                                }
+                            }
+                        },
+                        tooltip: {
+                            backgroundColor: '#18181b',
+                            titleColor: '#f4f4f5',
+                            bodyColor: '#e4e4e7',
+                            borderColor: '#27272a',
+                            borderWidth: 1,
+                            callbacks: {
+                                label: function(context) {
+                                    const label = context.label || '';
+                                    const value = context.raw || 0;
+                                    const total = context.dataset.data.reduce((a, b) => a + b, 0);
+                                    const percentage = Math.round((value / total) * 100);
+                                    return `${label}: ${value} (${percentage}%)`;
+                                }
+                            }
+                        }
+                    }
+                }
+            });
+        }
+
+        // On Page Load Initialization
+        window.addEventListener('DOMContentLoaded', () => {
+            renderTimeline('all');
+            selectLayer(1);
+            switchLegalTab('un');
+            initCharts();
+        });
+    </script>
+</body>
+</html>
