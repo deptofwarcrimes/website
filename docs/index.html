@@ -3,34 +3,339 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <meta name="description" content="Source-first entry points for nine public FARA registrant records.">
-  <title>FARA Registrant Records | Influence Atlas</title>
+  <meta name="theme-color" content="#020c17">
+  <meta name="description" content="Nine public FARA registrant dossiers presented as an interactive server rack.">
+  <title>FARA Core / Nine — Registrant Dossiers</title>
   <style>
-    :root{--night:#071420;--panel:#0d2233;--ink:#f0f6f7;--muted:#a9bdc6;--faint:#6e8994;--rule:#285063;--aqua:#65d5c4;--coral:#ff867d;--gold:#f1c778;--mono:ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;--sans:Inter,ui-sans-serif,system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif}*{box-sizing:border-box}html{scroll-behavior:smooth;background:var(--night)}body{margin:0;color:var(--ink);font-family:var(--sans);background:radial-gradient(ellipse 82% 48% at 51% -12%,#155150 0,transparent 62rem),linear-gradient(116deg,#071420 0%,#081925 45%,#0b1e2a 100%)}a{color:inherit}.skip{position:absolute;left:12px;top:-60px;z-index:20;padding:10px 13px;background:var(--aqua);color:#06131c;font-weight:800;border-radius:7px}.skip:focus{top:12px}.shell{width:min(1180px,calc(100% - 48px));margin:auto}.mast{display:flex;justify-content:space-between;gap:24px;align-items:center;min-height:76px;border-bottom:1px solid var(--rule)}.brand,.source-note,.eyebrow,.card-kicker,.status{font:700 11px var(--mono);letter-spacing:.11em;text-transform:uppercase}.brand{color:var(--aqua);text-decoration:none}.source-note{color:var(--muted);text-align:right}.source-note b{display:block;color:var(--ink)}.hero{min-height:calc(100svh - 77px);display:grid;align-content:center;padding:clamp(64px,10vw,128px) 0 72px}.eyebrow{display:flex;align-items:center;gap:11px;color:var(--gold)}.eyebrow:before{content:"";width:36px;height:1px;background:currentColor}.hero h1{max-width:900px;margin:20px 0 21px;font-size:clamp(56px,10vw,146px);line-height:.82;letter-spacing:-.085em;font-weight:780}.hero h1 em{display:block;color:var(--aqua);font-style:normal}.dek{max-width:660px;margin:0;color:var(--muted);font-size:clamp(17px,2vw,21px);line-height:1.58}.jump{display:inline-flex;align-items:center;gap:10px;width:max-content;margin-top:37px;padding:13px 16px;border:1px solid #4b8a88;border-radius:8px;background:#0a2a34;color:var(--ink);font-weight:750;text-decoration:none}.jump:hover{border-color:var(--aqua);background:#103642}.jump:focus-visible,.card:focus-visible,.brand:focus-visible,.source-link:focus-visible{outline:3px solid var(--gold);outline-offset:4px}.arrow{font-size:20px;color:var(--aqua)}.route{display:grid;grid-template-columns:1fr auto 1fr;gap:18px;align-items:center;max-width:870px;margin:64px 0 0;color:var(--faint);font:600 11px var(--mono);letter-spacing:.1em;text-transform:uppercase}.route span:nth-child(2){width:clamp(74px,16vw,150px);height:1px;background:linear-gradient(90deg,var(--rule),var(--aqua))}.directory{padding:86px 0 76px;border-top:1px solid var(--rule)}.section-head{display:grid;grid-template-columns:minmax(0,1fr) auto;align-items:end;gap:24px;margin-bottom:29px}.section-head h2{max-width:680px;margin:0;font-size:clamp(31px,4vw,52px);line-height:1;letter-spacing:-.06em}.section-head p{max-width:315px;margin:0;color:var(--muted);font-size:14px;line-height:1.55}.grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:13px}.card{position:relative;min-height:218px;padding:22px;display:flex;flex-direction:column;justify-content:space-between;border:1px solid var(--rule);border-radius:13px;background:linear-gradient(145deg,#10293a,#0a1c2a);text-decoration:none;transition:transform .22s ease,border-color .22s ease,background .22s ease}.card:hover{transform:translateY(-4px);border-color:#6ccfc2;background:linear-gradient(145deg,#133449,#0d2635)}.card:after{content:"";position:absolute;left:22px;right:22px;bottom:53px;height:1px;background:var(--rule)}.card-kicker{color:var(--coral)}.card h3{max-width:270px;margin:17px 0 auto;font-size:clamp(22px,2.2vw,31px);line-height:1.02;letter-spacing:-.05em}.card-foot{display:flex;align-items:center;justify-content:space-between;gap:10px;margin-top:34px;color:var(--muted);font:600 12px var(--mono)}.card-foot strong{color:var(--aqua);font-family:var(--sans);font-size:13px}.method{display:grid;grid-template-columns:minmax(0,1.2fr) minmax(260px,.8fr);gap:36px;margin-top:26px;padding:30px 0 72px;border-top:1px solid var(--rule)}.method h2{margin:0 0 14px;font-size:27px;letter-spacing:-.045em}.method p{max-width:630px;margin:0;color:var(--muted);line-height:1.63}.source-box{padding:19px;border:1px solid #31596b;border-radius:12px;background:#0a1d2a}.status{color:var(--gold)}.source-box p{margin:10px 0 0;font-size:13px}.source-link{display:inline-block;margin-top:13px;color:var(--aqua);font-size:13px;font-weight:750}.bottom{padding:24px 0 34px;border-top:1px solid var(--rule);color:var(--faint);font-size:12px;line-height:1.5}.intro{position:fixed;inset:0;z-index:10;display:grid;place-items:center;overflow:hidden;background:#04101a;color:var(--ink);transition:opacity .65s ease,visibility .65s}.intro.done{opacity:0;visibility:hidden;pointer-events:none}.intro:before{content:"";width:min(62vw,700px);height:min(62vw,700px);position:absolute;border:1px solid #2a7371;border-radius:50%;box-shadow:0 0 0 66px #0c2e3524,0 0 0 170px #0b25301a}.intro-copy{position:relative;text-align:center}.intro-copy small{display:block;color:var(--gold);font:700 11px var(--mono);letter-spacing:.16em;text-transform:uppercase}.intro-copy strong{display:block;margin-top:16px;font-size:clamp(38px,7vw,86px);line-height:.87;letter-spacing:-.075em}.intro-copy span{display:block;margin-top:15px;color:var(--aqua);font:700 12px var(--mono);letter-spacing:.12em;text-transform:uppercase}@media (max-width:820px){.grid{grid-template-columns:repeat(2,minmax(0,1fr))}.method{grid-template-columns:1fr}.hero{min-height:auto;padding:110px 0 92px}.hero h1{font-size:clamp(58px,13vw,105px)}}@media (max-width:560px){.shell{width:min(100% - 30px,1180px)}.mast{align-items:flex-start;flex-direction:column;gap:8px;padding:18px 0}.source-note{text-align:left}.route{grid-template-columns:1fr;gap:10px;margin-top:46px}.route span:nth-child(2){width:72px}.directory{padding:58px 0}.section-head{grid-template-columns:1fr}.grid{grid-template-columns:1fr}.card{min-height:192px}.method{gap:24px;padding-bottom:54px}}@media (prefers-reduced-motion:reduce){html{scroll-behavior:auto}.intro{display:none}.card{transition:none}.card:hover{transform:none}}
+    :root{color-scheme:dark;--bg:#020a14;--surface:#051424;--surface-hi:#0a2034;--cyan:#63f4f2;--blue:#6088f8;--purple:#a879f4;--text:#e9f7ff;--muted:#8caac0;--hair:rgba(87,202,225,.22);--mono:"IBM Plex Mono",ui-monospace,SFMono-Regular,Consolas,monospace;--sans:Inter,ui-sans-serif,system-ui,-apple-system,"Segoe UI",sans-serif}*{box-sizing:border-box}html{scroll-behavior:smooth}body{margin:0;overflow-x:hidden;background:var(--bg);color:var(--text);font-family:var(--sans)}a{color:inherit;text-decoration:none}button{font:inherit}button:focus-visible,a:focus-visible{outline:2px solid var(--cyan);outline-offset:5px}.shell{min-width:320px;overflow:hidden}.topbar{height:78px;padding:0 max(24px,5vw);display:flex;align-items:center;justify-content:space-between;border-bottom:1px solid var(--hair);background:#010914d9;backdrop-filter:blur(16px)}.brand{display:inline-flex;align-items:center;gap:13px;letter-spacing:.19em;font-weight:800;font-size:14px;white-space:nowrap}.brand em{font-style:normal;color:var(--cyan);font-weight:500}.brand-mark{width:35px;height:35px;display:grid;place-items:center;border:1px solid #63f4f288;background:#082536;box-shadow:inset 0 0 15px #17c8d329,0 0 21px #00d5d31e;clip-path:polygon(22% 0,78% 0,100% 22%,100% 78%,78% 100%,22% 100%,0 78%,0 22%)}.brand-mark svg{width:21px;stroke:var(--cyan);fill:none;stroke-width:1.3}.header-center,.status,.eyebrow,.rack-top-label,.unit-num,.unit-label,.side-eyebrow,.viewer-meta,.card-num,.card-status,.footer{font-family:var(--mono)}.header-center{font-size:10px;letter-spacing:.17em;color:#66849d}.status{font-size:10px;letter-spacing:.1em;color:#b8e5e9;display:flex;align-items:center;gap:9px}.live-dot{width:6px;height:6px;background:#64f6c0;border-radius:50%;box-shadow:0 0 11px #3fffc0;animation:pulse 2.6s ease-in-out infinite}.hero{position:relative;min-height:670px;isolation:isolate;overflow:hidden;background:radial-gradient(ellipse at 50% 54%,#0d435d 0,#061b2c 28%,#020b16 73%)}.hero:before{content:"";position:absolute;inset:0;z-index:-2;background:repeating-linear-gradient(0deg,transparent 0 3px,#8ce1f00a 4px 5px),linear-gradient(90deg,#020b16e8,transparent 47%,#020b16dc)}.floor-grid{pointer-events:none;position:absolute;z-index:-1;bottom:-17%;left:-55%;width:210%;height:50%;transform:perspective(490px) rotateX(67deg);transform-origin:bottom center;background-image:linear-gradient(90deg,#00d7e41c 1px,transparent 1px),linear-gradient(0deg,#00d7e423 1px,transparent 1px);background-size:100px 80px;mask-image:linear-gradient(0deg,#000,transparent 100%)}.hero-content{max-width:1740px;min-height:610px;margin:auto;display:grid;grid-template-columns:minmax(0,1fr) minmax(290px,370px) minmax(210px,.65fr);align-items:center;gap:34px;padding:42px max(24px,5vw)}.hero-copy{max-width:430px}.eyebrow,.side-eyebrow{font-size:10px;letter-spacing:.21em;color:var(--cyan);display:flex;align-items:center;gap:12px}.eyebrow:before,.side-eyebrow:before{content:"";width:26px;height:1px;background:currentColor}h1{margin:26px 0 20px;font-size:clamp(49px,5.2vw,94px);line-height:.99;letter-spacing:-.065em}h1 span{display:block}.outlined{color:transparent;-webkit-text-stroke:1px #69e9ffd6;text-shadow:0 0 35px #1599d225}.intro{max-width:350px;color:#acc5d4;font-size:14px;line-height:1.85}.action{min-height:43px;margin-top:24px;padding:0 18px;display:inline-flex;align-items:center;gap:13px;border:1px solid #58eeedbf;background:#2ddddd24;color:#d5ffff;font:600 11px var(--mono);letter-spacing:.07em;cursor:pointer;transition:.2s}.action:hover{background:#2ddddd47;transform:translateY(-2px)}.rack-stage{position:relative;display:flex;flex-direction:column;align-items:center}.stage-halo{position:absolute;width:620px;height:67%;border-radius:50%;background:radial-gradient(ellipse, #0693b033,transparent 67%);filter:blur(18px);pointer-events:none}.rack-top-label{z-index:1;font-size:10px;color:#80b7c7;letter-spacing:.19em;margin-bottom:18px}.rack-top-label strong{color:#d3ffff;font-weight:500}.server-rack{position:relative;z-index:1;width:100%;padding:8px 11px 15px;transform:perspective(1050px) rotateY(-5deg);background:linear-gradient(90deg,#081c2f,#0b2234 52%,#061323);border:1px solid #71eef7d1;border-left:4px solid #64f1eeab;border-right:4px solid #4ba8dcd9;box-shadow:0 0 0 5px #04192ae0,0 0 0 6px #50c8e633,0 30px 100px #000c,inset 0 0 40px #02c2d816;clip-path:polygon(10px 0,calc(100% - 10px) 0,100% 10px,100% calc(100% - 10px),calc(100% - 10px) 100%,10px 100%,0 calc(100% - 10px),0 10px)}.rack-cap{height:49px;padding:0 11px;display:flex;justify-content:space-between;align-items:center;border-bottom:1px solid #67cce566;font:10px var(--mono);color:#78abbd}.rack-title{font-size:14px;font-weight:600;letter-spacing:.19em;color:#cbffff}.rack-slots{display:flex;flex-direction:column;gap:5px;margin-top:10px}.server-unit{height:48px;width:100%;border:1px solid #274b63;background:linear-gradient(180deg,#0a2538,#061726 52%,#071827);color:var(--text);padding:0 10px;cursor:pointer;display:grid;grid-template-columns:28px minmax(0,1fr) 31px;gap:7px;align-items:center;text-align:left;transition:.16s}.server-unit:before{content:"";position:absolute}.server-unit:hover,.server-unit[aria-pressed="true"]{background:linear-gradient(180deg,#12394c,#092334);border-color:#61f8ed}.server-unit[aria-pressed="true"]{box-shadow:inset 0 0 22px #3ef3ef20,0 0 13px #44dfea22}.unit-num{font-size:10px;color:#6d9aac}.unit-label{font-size:9px;letter-spacing:.13em;color:#a5c4d3;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}.unit-vent{height:12px;display:block;background:repeating-linear-gradient(90deg,#1f667c6b 0 2px,#03111cb3 2px 5px);border:1px solid #12384a}.unit-lights{display:flex;gap:4px;justify-content:end}.unit-lights i{width:3px;height:7px;background:#163a45}.unit-lights i:first-child{background:#4af0d7;box-shadow:0 0 7px #43fddd;animation:ledBlink 2.4s steps(1,end) infinite}.rack-base{padding:12px 11px 0;display:flex;justify-content:space-between;font:9px var(--mono);color:#60869a;letter-spacing:.12em}.rack-base span:last-child{color:#68dacf}.stage-hint{z-index:1;margin-top:15px;font:9px var(--mono);color:#81acbf;letter-spacing:.12em}.stage-hint b{color:var(--cyan);font-weight:500}.inspector{border-left:1px solid #5dcfdb4f;padding-left:24px}.inspector h2{margin:22px 0 8px;font:600 21px var(--mono);letter-spacing:-.04em}.node-subline{font:10px var(--mono);color:#8aafc0;letter-spacing:.09em;margin-bottom:20px}.data-line{display:flex;justify-content:space-between;gap:9px;border-top:1px solid #5fa6b83b;padding:11px 0;font:10px var(--mono)}.data-line span{color:#7e9aae}.data-line strong{font-weight:500;color:#d0eeef}.data-line .ok{color:#73ffd7}.systems{padding:85px max(24px,7vw);background:linear-gradient(#03111e,#071524);border-top:1px solid #10364a}.systems-inner{max-width:1320px;margin:auto}.section-heading{display:flex;justify-content:space-between;align-items:end;gap:26px;margin-bottom:34px}.section-heading h2{font-size:clamp(35px,4vw,58px);letter-spacing:-.055em;line-height:1.04;margin:17px 0 0}.section-heading p{max-width:360px;color:#8daabd;font-size:13px;line-height:1.7}.directory{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:12px}.directory-card{padding:19px;background:linear-gradient(145deg,#0e2739cc,#041421cc);border:1px solid #5ba2ba38;color:inherit;min-height:124px;text-align:left;cursor:pointer;display:flex;flex-direction:column;justify-content:space-between;gap:18px;transition:.2s}.directory-card:hover,.directory-card[aria-pressed="true"]{transform:translateY(-3px);border-color:#58eee79e;background:#143945d9}.card-top,.card-bottom{display:flex;justify-content:space-between;gap:12px}.card-num{font-size:10px;color:var(--cyan);letter-spacing:.15em}.card-status{font-size:9px;color:#80cdb7}.card-bottom strong{font-size:17px;letter-spacing:-.02em}.card-bottom span{font:10px var(--mono);color:#83a2b7;white-space:nowrap}.viewer{padding:0 max(24px,7vw) 100px;background:#071524}.viewer-inner{max-width:1320px;margin:auto;border:1px solid #315c70;background:#020c17;box-shadow:0 20px 60px #0009}.viewer-head{padding:16px 20px;display:flex;justify-content:space-between;gap:16px;border-bottom:1px solid #315c70}.viewer-title{font-size:18px}.viewer-meta{font-size:10px;letter-spacing:.1em;color:#8daabd}.viewer iframe{display:block;width:100%;height:min(80vh,900px);border:0;background:#071420}.footer{padding:28px max(24px,7vw);display:flex;justify-content:space-between;gap:16px;background:#020a14;border-top:1px solid #143041;color:#648295;font-size:10px;letter-spacing:.1em}.footer strong{color:#bedde5;font-weight:500}@keyframes pulse{50%{opacity:.35;box-shadow:0 0 3px #4dffb0}}@keyframes ledBlink{0%,71%,100%{opacity:1}72%,79%{opacity:.2}}@media(max-width:1020px){.header-center,.inspector{display:none}.hero-content{grid-template-columns:minmax(0,1fr) minmax(260px,340px);gap:28px}.directory{grid-template-columns:repeat(2,minmax(0,1fr))}}@media(max-width:690px){.topbar{height:64px;padding:0 20px}.brand{font-size:12px}.status{font-size:9px}.hero-content{display:flex;flex-direction:column;align-items:stretch;padding:52px 24px}.hero-copy{max-width:510px}.rack-stage{width:min(100%,390px);align-self:center}.server-rack{transform:none}.directory{grid-template-columns:1fr}.section-heading{display:block}.section-heading p{margin-top:15px}.viewer iframe{height:76vh}.footer{flex-direction:column}.hero{min-height:auto}}@media(prefers-reduced-motion:reduce){html{scroll-behavior:auto}*,*::before,*::after{animation:none!important;transition:none!important}}
   </style>
 </head>
 <body>
-  <a class="skip" href="#registrants">Skip to registrants</a>
-  <div class="intro" id="intro" aria-hidden="true"><div class="intro-copy"><small>Public records / U.S. Department of Justice</small><strong>Follow the<br>filing trail.</strong><span>Nine active dossiers</span></div></div>
-  <div class="shell">
-    <header class="mast"><a class="brand" href="index.html">Influence Atlas</a><div class="source-note"><b>FARA registrant records</b>Source-first entry points</div></header>
+  <div class="shell" id="top">
+    <header class="topbar">
+      <a href="#top" class="brand" aria-label="FARA Core Nine, back to top"><span class="brand-mark" aria-hidden="true"><svg viewBox="0 0 24 24"><rect x="4" y="3.5" width="16" height="5" rx=".6"/><rect x="4" y="10" width="16" height="5" rx=".6"/><rect x="4" y="16.5" width="16" height="5" rx=".6"/><path d="M7 6h2M7 12.5h2M7 19h2"/></svg></span>FARA <em>/</em> NINE</a>
+      <div class="header-center">PUBLIC RECORDS INTERFACE // 001</div>
+      <div class="status"><i class="live-dot" aria-hidden="true"></i> 09 DOSSIERS</div>
+    </header>
     <main>
-      <section class="hero" aria-labelledby="page-title"><div class="eyebrow">A narrower research starting point</div><h1 id="page-title">Start with the<em>registered agents.</em></h1><p class="dek">Nine public FARA registrant records, each with its own static dossier page and a direct path to the underlying Department of Justice filing index.</p><a class="jump" href="#registrants">View the nine registrants <span class="arrow" aria-hidden="true">↓</span></a><div class="route" aria-label="Research path"><span>Registrant</span><span aria-hidden="true"></span><span>Government filing record</span></div></section>
-      <section class="directory" id="registrants" aria-labelledby="directory-title"><div class="section-head"><h2 id="directory-title">Choose a FARA registrant.</h2><p>Each dossier starts with the limited, verifiable facts necessary to locate the public record.</p></div><div class="grid">
-        <a class="card" href="clocktowerx.html"><span class="card-kicker">FARA registrant</span><h3>Clock Tower X LLC</h3><span class="card-foot">Registration #7649 <strong>Open dossier →</strong></span></a>
-        <a class="card" href="bridgepartners.html"><span class="card-kicker">FARA registrant</span><h3>Bridges Partners LLC</h3><span class="card-foot">Registration #7652 <strong>Open dossier →</strong></span></a>
-        <a class="card" href="agents/targeted-communications-global.html"><span class="card-kicker">FARA registrant</span><h3>Targeted Communications Global LLC</h3><span class="card-foot">Registration #7553 <strong>Open dossier →</strong></span></a>
-        <a class="card" href="agents/genesis-21.html"><span class="card-kicker">FARA registrant</span><h3>Genesis 21 Consulting LLC</h3><span class="card-foot">Registration #7631 <strong>Open dossier →</strong></span></a>
-        <a class="card" href="agents/show-faith-by-works.html"><span class="card-kicker">FARA registrant</span><h3>Show Faith by Works, LLC</h3><span class="card-foot">Registration #7653 <strong>Open dossier →</strong></span></a>
-        <a class="card" href="agents/davis-media-ny.html"><span class="card-kicker">FARA registrant</span><h3>Davis Media NY LLC</h3><span class="card-foot">Registration #7662 <strong>Open dossier →</strong></span></a>
-        <a class="card" href="agents/mmgy-global.html"><span class="card-kicker">FARA registrant</span><h3>MMGY Global, LLC</h3><span class="card-foot">Registration #6492 <strong>Open dossier →</strong></span></a>
-        <a class="card" href="agents/plus-communications.html"><span class="card-kicker">FARA registrant</span><h3>PLUS Communications, LLC</h3><span class="card-foot">Registration #7107 <strong>Open dossier →</strong></span></a>
-        <a class="card" href="agents/pearson-unlimited.html"><span class="card-kicker">FARA registrant</span><h3>Pearson Unlimited, LLC</h3><span class="card-foot">Registration #7768 <strong>Open dossier →</strong></span></a>
-      </div></section>
-      <section class="method" aria-labelledby="method-title"><div><h2 id="method-title">What this page does—and does not—claim.</h2><p>A registration record establishes that a registrant filed under FARA. It does not, by itself, establish every corporate, financial, technical, or ideological relationship that may be discussed elsewhere. Each dossier is intentionally limited to its cited public record.</p></div><aside class="source-box"><div class="status">Primary-source standard</div><p>Use the DOJ filing index and the underlying document, rather than a visualization, to assess a claim.</p><a class="source-link" href="https://efile.fara.gov/ords/fara/f?p=1235:1" target="_blank" rel="noopener noreferrer">Search DOJ FARA records ↗</a></aside></section>
+      <section class="hero" aria-labelledby="hero-title">
+        <div class="floor-grid" aria-hidden="true"></div>
+        <div class="hero-content">
+          <div class="hero-copy"><div class="eyebrow">09 REGISTRANTS. ONE INDEX.</div><h1 id="hero-title"><span>ENTER</span><span>THE FARA</span><span class="outlined">CORE.</span></h1><p class="intro">Select a rack unit to load its source-first FARA dossier. Each record links onward to the public Department of Justice filing index.</p><a class="action" href="#viewer">OPEN SELECTED DOSSIER →</a></div>
+          <div class="rack-stage"><div class="stage-halo" aria-hidden="true"></div><div class="rack-top-label">PRIMARY ARRAY <strong>FARA–09</strong></div><div class="server-rack"><div class="rack-cap"><div><div class="rack-title">CORE // 09</div><div>FARA REGISTRANT ARRAY</div></div><div class="unit-lights" aria-hidden="true"><i></i><i></i><i></i></div></div><div class="rack-slots" id="rack-rows" role="group" aria-label="Nine FARA registrant dossier units"></div><div class="rack-base"><span>ARRAY 001 / 09U</span><span>● RECORDS READY</span></div></div><div class="stage-hint">[ <b>SELECT A SERVER ROW</b> TO OPEN A DOSSIER ]</div></div>
+          <aside class="inspector" aria-label="Selected FARA dossier"><div class="side-eyebrow">DOSSIER INSPECTOR / 09</div><h2 id="inspector-name">Clock Tower X LLC</h2><div class="node-subline" id="inspector-id">REGISTRATION #7649 / UNIT 01</div><div class="data-line"><span>STATUS</span><strong class="ok">● READY</strong></div><div class="data-line"><span>RECORD</span><strong id="inspector-record">FARA REGISTRANT</strong></div><div class="data-line"><span>VIEW</span><strong>EMBEDDED</strong></div><a class="action" id="new-tab" target="_blank" rel="noopener">OPEN PAGE ↗</a></aside>
+        </div>
+      </section>
+      <section class="systems" id="systems" aria-labelledby="systems-title"><div class="systems-inner"><div class="section-heading"><div><div class="eyebrow">02 / RACK DIRECTORY</div><h2 id="systems-title">Nine registrants.<br>One entry point.</h2></div><p>Select a registrant to focus its physical rack row and load its dossier below.</p></div><div class="directory" id="directory" aria-label="FARA registrant directory"></div></div></section>
+      <section class="viewer" id="viewer" aria-labelledby="viewer-title"><div class="viewer-inner"><div class="viewer-head"><div><div class="eyebrow">03 / DOSSIER VIEWER</div><h2 class="viewer-title" id="viewer-title">Clock Tower X LLC</h2></div><div class="viewer-meta" id="viewer-meta">REGISTRATION #7649</div></div><iframe id="dossier-frame" title="Clock Tower X LLC FARA dossier" src="clocktowerx.html"></iframe></div></section>
     </main>
-    <footer class="bottom">Static research entry point · Last structure review: November 1, 2026 · All dossier pages link to public DOJ records.</footer>
+    <footer class="footer"><div><strong>FARA / NINE</strong> — SOURCE-FIRST DOSSIER INDEX</div><div>PUBLIC DOJ RECORDS / STATIC RESEARCH TOOL</div></footer>
   </div>
-  <script>window.setTimeout(()=>document.getElementById('intro').classList.add('done'),1150);</script>
+  <script>
+  (()=>{'use strict';
+    const records=[
+      ['Clock Tower X LLC','7649','clocktowerx.html'],
+      ['Bridges Partners LLC','7652','bridgepartners.html'],
+      ['Targeted Communications Global LLC','7553','agents/targeted-communications-global.html'],
+      ['Genesis 21 Consulting LLC','7631','agents/genesis-21.html'],
+      ['Show Faith by Works, LLC','7653','agents/show-faith-by-works.html'],
+      ['Davis Media NY LLC','7662','agents/davis-media-ny.html'],
+      ['MMGY Global, LLC','6492','agents/mmgy-global.html'],
+      ['PLUS Communications, LLC','7107','agents/plus-communications.html'],
+      ['Pearson Unlimited, LLC','7768','agents/pearson-unlimited.html']
+    ];
+    const rows=document.getElementById('rack-rows'),directory=document.getElementById('directory'),frame=document.getElementById('dossier-frame');
+    const name=document.getElementById('inspector-name'),id=document.getElementById('inspector-id'),viewerTitle=document.getElementById('viewer-title'),viewerMeta=document.getElementById('viewer-meta'),newTab=document.getElementById('new-tab');
+    const n2=v=>String(v).padStart(2,'0');
+    records.forEach(([label,registration],index)=>{
+      const unit=index+1,button=document.createElement('button');button.type='button';button.className='server-unit';button.dataset.unit=unit;button.setAttribute('aria-controls','dossier-frame');button.setAttribute('aria-pressed',String(unit===1));button.setAttribute('aria-label','Unit '+n2(unit)+': '+label);
+      button.innerHTML='<span class="unit-num">'+n2(unit)+'</span><span class="unit-label">'+label+'</span><span class="unit-lights" aria-hidden="true"><i></i><i></i></span>';rows.append(button);
+      const card=document.createElement('button');card.type='button';card.className='directory-card';card.dataset.unit=unit;card.setAttribute('aria-pressed',String(unit===1));card.innerHTML='<span class="card-top"><span class="card-num">UNIT / '+n2(unit)+'</span><span class="card-status">● RECORD READY</span></span><span class="card-bottom"><strong>'+label+'</strong><span>#'+registration+' ↗</span></span>';directory.append(card);
+    });
+    function select(unit,scroll){const [label,registration,path]=records[unit-1];document.querySelectorAll('[data-unit]').forEach(el=>el.setAttribute('aria-pressed',String(Number(el.dataset.unit)===unit)));name.textContent=label;id.textContent='REGISTRATION #'+registration+' / UNIT '+n2(unit);viewerTitle.textContent=label;viewerMeta.textContent='REGISTRATION #'+registration;newTab.href=path;frame.title=label+' FARA dossier';if(frame.getAttribute('src')!==path)frame.src=path;if(scroll)document.getElementById('viewer').scrollIntoView({behavior:matchMedia('(prefers-reduced-motion:reduce)').matches?'auto':'smooth',block:'start'})}
+    document.addEventListener('click',event=>{const button=event.target.closest('[data-unit]');if(button)select(Number(button.dataset.unit),button.classList.contains('directory-card'))});
+    rows.addEventListener('keydown',event=>{const current=event.target.closest('.server-unit');if(!current||!['ArrowDown','ArrowUp'].includes(event.key))return;event.preventDefault();const next=(Number(current.dataset.unit)-1+(event.key==='ArrowDown'?1:8))%9+1;select(next,false);rows.querySelector('[data-unit="'+next+'"]').focus()});
+    newTab.href=records[0][2];
+  })();
+  </script>
+<!-- Influence Atlas cinematic database entrance: add immediately before </body> -->
+<style>
+#database-intro{position:fixed;inset:0;z-index:9999;overflow:hidden;background:#020713;color:#e5faff;font-family:system-ui,sans-serif;transition:opacity .9s ease,visibility .9s}
+#database-intro.finished{opacity:0;visibility:hidden;pointer-events:none}
+#database-intro canvas{position:absolute;inset:0;width:100%;height:100%}
+#database-intro:after{content:"";position:absolute;inset:0;background:radial-gradient(ellipse at center,transparent 15%,#01040ddc 100%);pointer-events:none}
+.db-intro-title{position:absolute;z-index:2;top:7%;left:5%;max-width:480px}
+.db-intro-title small{font:bold 11px monospace;letter-spacing:3px;color:#5cfbe4}.db-intro-title h2{font-size:clamp(32px,5vw,70px);line-height:1;letter-spacing:-3px;margin:18px 0;color:#fff}.db-intro-title h2 span{color:#5cfbe4}.db-intro-title p{font-size:13px;color:#94b8cc;line-height:1.7}
+.db-intro-controls{position:absolute;z-index:2;bottom:7%;left:5%;right:5%;display:flex;justify-content:space-between;align-items:end;gap:18px}.db-intro-controls strong{font-size:clamp(17px,3vw,30px);display:block;margin-bottom:10px}.db-intro-controls small{font:11px monospace;color:#7ee3ed}
+.db-intro-buttons{display:flex;gap:8px;flex-wrap:wrap}.db-intro-buttons button,#db-replay{border:1px solid #5ce6dc90;background:#0a3045ef;color:#dfffff;border-radius:9px;padding:12px 16px;cursor:pointer;font:bold 12px monospace}.db-intro-buttons button:hover,#db-replay:hover{background:#1b5261}#db-skip{background:#55e8dd;color:#01222a}
+.db-intro-progress{position:absolute;z-index:2;bottom:3.5%;left:5%;right:5%;height:3px;background:#578ca744}.db-intro-progress div{height:100%;width:0;background:linear-gradient(90deg,#497ffb,#62ffe2)}
+#db-replay{position:fixed;z-index:40;right:20px;bottom:48px}#db-replay[hidden]{display:none}
+@media(max-width:700px){.db-intro-title{top:7%}.db-intro-controls{display:block;bottom:9%}.db-intro-buttons{margin-top:16px}}
+@media(prefers-reduced-motion:reduce){#database-intro{transition:none}}
+
+/* Better contrast between the richer racks and the foreground HUD. */
+.db-intro-title{text-shadow:0 4px 28px #010712}
+.db-intro-title h2{text-shadow:0 4px 20px #010511,0 0 35px #163e6b88}
+.db-intro-controls{filter:drop-shadow(0 8px 14px #010610)}
+.db-intro-title:before{content:"";position:absolute;top:-16px;left:-17px;width:62px;height:2px;background:linear-gradient(90deg,#51f9ec,transparent)}
+#database-intro:before{content:"";position:absolute;z-index:1;inset:15px;border:1px solid #53beef20;border-radius:10px;pointer-events:none}
+</style>
+<div id="database-intro" role="region" aria-label="Animated introduction to Influence Atlas">
+  <canvas id="db-tunnel" aria-hidden="true"></canvas>
+  <div class="db-intro-title"><small>INFLUENCE ATLAS / DATABASE ACCESS</small><h2>ENTER THE<br><span>DATABASE.</span></h2><p>Travel through data records and relationship layers to reach the interactive Influence Atlas network.</p></div>
+  <div class="db-intro-controls"><div><small id="db-phase">01 / INITIALIZING</small><strong id="db-stage">ENTERING THE DATABASE</strong><small id="db-status">INDEXING GRAPH RELATIONSHIPS</small></div><div class="db-intro-buttons"><button type="button" id="db-pause">Ⅱ Pause</button><button type="button" id="db-skip">Explore graph →</button></div></div>
+  <div class="db-intro-progress"><div id="db-progress"></div></div>
+</div>
+<button type="button" id="db-replay" hidden>↻ Replay descent</button>
+<script>
+(()=>{
+'use strict';
+const intro=document.getElementById('database-intro'),canvas=document.getElementById('db-tunnel'),ctx=canvas.getContext('2d');
+if(!ctx){intro.hidden=true;return}
+const $=id=>document.getElementById(id),clamp=(x,a,b)=>Math.max(a,Math.min(x,b));
+let w=0,h=0,f=0,dpr=1,elapsed=0,last=0,raf=0,active=true,paused=false,phase=-1;
+const duration=8000,rand=(a,b)=>a+Math.random()*(b-a);
+// Dense, dimensional server towers with stable details across every frame.
+const shelves=Array.from({length:50},(_,i)=>{
+  const index=Math.floor(i/2),side=i%2?-1:1;
+  return {side,index,z:11+index*6.65+(i%2)*1.15,
+    h:rand(5.3,9.25),width:rand(2.5,3.3),deep:rand(3.0,4.5),
+    accent:index%6===0?'#b48aff':index%5===0?'#5ca0ff':'#54f7e5',
+    code:Array.from({length:6},()=>Math.random().toString(16).slice(2,10).toUpperCase()),
+    seed:rand(0,100),bays:7+Math.floor(rand(0,4)),
+    label:'DB-'+String(index+1).padStart(2,'0')};
+});
+const particles=Array.from({length:180},()=>({x:rand(-6,6),y:rand(-4,4),z:rand(7,150),speed:rand(.6,1.8)}));
+function size(){w=innerWidth;h=innerHeight;dpr=Math.min(devicePixelRatio||1,2);canvas.width=w*dpr;canvas.height=h*dpr;ctx.setTransform(dpr,0,0,dpr,0,0);f=Math.min(w*.8,h*1.1)}
+function p(x,y,z){const s=f/Math.max(z,3);return [w/2+x*s,h*.48-y*s]}
+function stroke(a,b,col,width=1){ctx.strokeStyle=col;ctx.lineWidth=width;ctx.beginPath();ctx.moveTo(...a);ctx.lineTo(...b);ctx.stroke()}
+function shape(points,col,edge){ctx.beginPath();ctx.moveTo(...points[0]);for(const point of points.slice(1))ctx.lineTo(...point);ctx.closePath();ctx.fillStyle=col;ctx.fill();ctx.strokeStyle=edge;ctx.stroke()}
+// Render the data city from the back of the corridor toward the camera.
+function draw(){
+  const bg=ctx.createLinearGradient(0,0,0,h);
+  bg.addColorStop(0,'#020713');bg.addColorStop(.49,'#0d1c3c');bg.addColorStop(1,'#020716');
+  ctx.fillStyle=bg;ctx.fillRect(0,0,w,h);
+  const depth=elapsed*.025;
+  const vanishY=h*.48;
+  // The distant glow gives the structures a single readable vanishing point.
+  const glow=ctx.createRadialGradient(w*.5,vanishY,3,w*.5,vanishY,Math.max(w,h)*.72);
+  glow.addColorStop(0,'#4b91ff62');glow.addColorStop(.21,'#1571c524');glow.addColorStop(1,'#03091c00');
+  ctx.fillStyle=glow;ctx.fillRect(0,0,w,h);
+
+  // Dark glossy floor, illuminated by actual world-space circuit lanes.
+  const floor=[p(-7,-4,6),p(-7,-4,150),p(7,-4,150),p(7,-4,6)];
+  const floorGrad=ctx.createLinearGradient(0,vanishY,0,h);
+  floorGrad.addColorStop(0,'#101f4260');floorGrad.addColorStop(1,'#060e24b0');
+  shape(floor,floorGrad,'#4686d622');
+  for(const x of [-7,-5,-3,-1,0,1,3,5,7]){
+    const road=x===-5||x===5?'#53fae5a8':x===0?'#a277ff74':'#447cff60';
+    stroke(p(x,-4,6),p(x,-4,160),road,x===-5||x===5?1.9:1.05);
+  }
+  // A sequence of luminous tunnel ribs and the horizontal floor grid.
+  for(let i=0;i<23;i++){
+    const z=6+((i*8-depth%184+184)%184);
+    if(z>156)continue;
+    const opacity=clamp((155-z)/160,.025,.76);
+    const ring=[[-7,-4],[-7,2.9],[-5.2,5.25],[5.2,5.25],[7,2.9],[7,-4]];
+    for(let k=0;k<ring.length-1;k++)stroke(p(...ring[k],z),p(...ring[k+1],z),
+      'rgba(67,184,250,'+(opacity*.48)+')',z<25?1.8:1.1);
+    stroke(p(-7,-4,z),p(7,-4,z),'rgba(134,94,246,'+(opacity*.34)+')',1.1);
+  }
+  // Ground conduits between racks and inner pathway, with occasional active pulses.
+  for(let i=0;i<17;i++){
+    const z=8+((i*12-depth%204+204)%204);
+    if(z>150)continue;
+    for(const side of [-1,1]){
+      stroke(p(side*5.3,-4,z),p(side*7,-4,z),'rgba(89,242,236,.28)',1.0);
+    }
+  }
+
+  // Each tower is a 3D prism: true front, corridor-facing side, and rooftop.
+  // Back-to-front painter ordering prevents far racks from obscuring nearer racks.
+  const visible=shelves.map(s=>({...s,d:7+((s.z-depth%176+176)%176)}))
+    .filter(s=>s.d>5&&s.d<152).sort((a,b)=>b.d-a.d);
+  for(const s of visible)drawTower(s,depth);
+
+  // Streaking data packets pass along the corridor and rack faces.
+  for(const q of particles){
+    const z=7+((q.z-depth*q.speed%150+150)%150),a=p(q.x,q.y,z),b=p(q.x,q.y,z+3.6*q.speed);
+    if(a[0]<-70||a[0]>w+70||a[1]<-70||a[1]>h+70)continue;
+    stroke(a,b,q.speed>1.4?'#ba87ffb8':'#60f9f3a5',clamp(54/z,.6,2.6));
+  }
+  // Sparse, legible Cypher/data fragments floating in the central air.
+  ctx.save();ctx.textAlign='center';
+  const fragments=['MATCH (n)','RETURN n','INDEX_SCAN','NODE: 3024','RELATIONSHIP','WHERE n.id','FARA_RECORD','SOURCE_URL'];
+  for(let k=0;k<13;k++){
+    const z=18+((k*16-depth*.9%184+184)%184);
+    if(z>140)continue;
+    const pos=p(k%2===0?-2.35:2.35,1.25+(k%4)*.55,z);
+    const size=clamp(f/z*.12,9,17);ctx.font='600 '+size+'px monospace';
+    ctx.fillStyle='rgba(91,248,242,'+clamp((150-z)/230,.08,.46)+')';
+    ctx.fillText(fragments[k%fragments.length],pos[0],pos[1]);
+  }
+  ctx.restore();
+
+  // Animated portal appears in the last part of the flight before the graph.
+  const t=clamp((elapsed/duration-.58)/.42,0,1);
+  if(t){
+    const z=115-t*108,center=p(0,0,z),r=clamp(5*f/z,4,Math.max(w,h)*2);
+    ctx.save();ctx.translate(...center);ctx.globalAlpha=clamp(t*2.7,0,1);
+    ctx.shadowColor='#52f9e8';ctx.shadowBlur=25;
+    for(let i=0;i<3;i++){
+      ctx.strokeStyle=i%2?'#c594ff99':'#65ffe0ba';ctx.lineWidth=3;
+      ctx.beginPath();ctx.arc(0,0,r*(1+i*.14),0,Math.PI*2);ctx.stroke();
+    }
+    ctx.shadowBlur=0;ctx.fillStyle='#011124ee';ctx.beginPath();ctx.arc(0,0,r*.97,0,Math.PI*2);ctx.fill();
+    if(r>50){ctx.font='bold '+clamp(r*.11,11,28)+'px monospace';ctx.textAlign='center';ctx.fillStyle='#a3fff1';ctx.fillText('INFLUENCE ATLAS',0,0)}ctx.restore();
+  }
+}
+
+// High-contrast 3D server rack with a recessed, independently lit front panel.
+// All details use the same perspective projection as the moving corridor.
+function drawTower(s,depth){
+  const z=s.d,side=s.side;
+  const inner=side*7.05,outer=side*(7.05+s.width),y=-4,top=y+s.h;
+  const A=p(inner,y,z),B=p(outer,y,z),C=p(outer,top,z),D=p(inner,top,z);
+  const Ar=p(inner,y,z+s.deep),Dr=p(inner,top,z+s.deep),
+        Br=p(outer,y,z+s.deep),Cr=p(outer,top,z+s.deep);
+  const x0=Math.min(A[0],B[0]),x1=Math.max(A[0],B[0]),
+        yf=D[1],yb=A[1],fw=x1-x0,fh=yb-yf;
+  const alpha=clamp((152-z)/125,.12,.98);
+  const near=z<47,wide=fw>26;
+  // The roof and two-tone side establish an unambiguous 3D tower silhouette.
+  shape([D,C,Cr,Dr],'#203e57f0','rgba(126,206,255,'+(alpha*.66)+')');
+  const sideGrad=ctx.createLinearGradient(A[0],0,Ar[0],0);
+  sideGrad.addColorStop(0,'#0d3653');sideGrad.addColorStop(.52,'#071c32');sideGrad.addColorStop(1,'#05101d');
+  shape([A,D,Dr,Ar],sideGrad,'rgba(83,235,245,'+(alpha*.75)+')');
+  const frontGrad=ctx.createLinearGradient(x0,0,x1,0);
+  frontGrad.addColorStop(0,'#122c45');frontGrad.addColorStop(.11,'#081624');
+  frontGrad.addColorStop(.77,'#061424');frontGrad.addColorStop(1,'#23415e');
+  shape([A,B,C,D],frontGrad,'rgba(108,229,255,'+(alpha*.86)+')');
+
+  // Thick outer metal rails define the tower against the background.
+  const rail=clamp(fw*.048,1.5,11),inset=clamp(fw*.09,2,16),pady=clamp(fh*.035,2,13);
+  ctx.save();ctx.beginPath();ctx.moveTo(...A);ctx.lineTo(...B);ctx.lineTo(...C);ctx.lineTo(...D);ctx.closePath();ctx.clip();
+  let railGrad=ctx.createLinearGradient(x0,0,x0+rail,0);
+  railGrad.addColorStop(0,'#82eaf7c2');railGrad.addColorStop(.3,'#255476');railGrad.addColorStop(1,'#132e48');
+  ctx.fillStyle=railGrad;ctx.fillRect(x0,yf,rail,fh);
+  ctx.fillStyle='#1b425b';ctx.fillRect(x1-rail,yf,rail,fh);
+  ctx.fillStyle='rgba(160,228,255,'+(alpha*.65)+')';ctx.fillRect(x0+rail*.45,yf,Math.max(1,rail*.16),fh);
+  ctx.fillStyle='rgba(89,177,234,.35)';ctx.fillRect(x1-rail*.72,yf,Math.max(1,rail*.16),fh);
+  // Header rail with a neon-cyan or purple identifying strip.
+  const headerH=clamp(fh*.105,5,43);
+  ctx.fillStyle='#142d43';ctx.fillRect(x0+rail,yf,fw-rail*2,headerH);
+  ctx.fillStyle=s.accent;ctx.globalAlpha=alpha*.85;
+  ctx.fillRect(x0+rail,yf+headerH-2.2,fw-rail*2,clamp(headerH*.08,1,2.4));ctx.globalAlpha=1;
+  const bayTop=yf+headerH+clamp(fh*.025,3,10),bayBottom=yb-pady;
+  const bodyHeight=Math.max(1,bayBottom-bayTop);
+
+  // Crisp recessed server modules: separate panels, vents, activity lights.
+  const modCount=s.bays;
+  for(let k=0;k<modCount;k++){
+    const ey=bayTop+k*bodyHeight/modCount;
+    const eh=bodyHeight/modCount;
+    if(eh<1.3)continue;
+    const modX=x0+inset,modW=Math.max(1,fw-inset*2),modY=ey+eh*.1,modH=eh*.82;
+    ctx.fillStyle=k%3===0?'#0d293e':'#061522';ctx.fillRect(modX,modY,modW,modH);
+    ctx.strokeStyle='rgba(96,165,198,'+(alpha*.42)+')';ctx.lineWidth=clamp(fw*.006,.5,1.1);
+    ctx.strokeRect(modX+.5,modY+.5,Math.max(1,modW-1),Math.max(1,modH-1));
+    if(modW>18&&modH>5){
+      // Detailed horizontal vents and individual status LEDs.
+      ctx.fillStyle='#18394c';for(let v=0;v<4;v++)ctx.fillRect(modX+modW*.14,modY+modH*(.2+v*.17),modW*.52,Math.max(.7,modH*.035));
+      if(modW>33){
+        ctx.fillStyle=(Math.sin(depth*.09+s.seed+k*1.6)>-.35)?'#46ffe0':'#37717b';
+        ctx.fillRect(modX+modW*.81,modY+modH*.24,clamp(modH*.12,1.2,3),clamp(modH*.12,1.2,3));
+        ctx.fillStyle=k%4===0?'#a977fa':'#54a1ff';
+        ctx.fillRect(modX+modW*.89,modY+modH*.24,clamp(modH*.10,1,2.6),clamp(modH*.10,1,2.6));
+      }
+      if(k===1&&modW>55&&modH>10){
+        ctx.fillStyle='rgba(69,232,242,.35)';ctx.fillRect(modX+modW*.15,modY+modH*.65,modW*.55,1);
+        ctx.fillStyle='#48f9e2';ctx.fillRect(modX+modW*.15,modY+modH*.65,modW*.34,1.2);
+      }
+    }
+  }
+
+  if(wide&&headerH>11){
+    ctx.textAlign='left';ctx.textBaseline='middle';
+    const font=clamp(fw*.067,8,14);
+    ctx.font='700 '+font+'px monospace';ctx.fillStyle='rgba(160,250,255,'+(alpha*.95)+')';
+    ctx.fillText(s.label,x0+inset,yf+headerH*.49);
+    if(fw>108){ctx.textAlign='right';ctx.font='600 '+Math.max(7,font*.68)+'px monospace';
+      ctx.fillStyle='rgba(141,190,226,'+(alpha*.95)+')';ctx.fillText('ONLINE',x1-inset,yf+headerH*.49)}
+  }
+  // Larger nearby server racks expose a telemetry/code window.
+  if(near&&fw>72&&fh>135){
+    const panelX=x0+inset+2,panelW=fw-inset*2-4;
+    const panelY=bayTop+bodyHeight*.06,panelH=Math.min(bodyHeight*.26,115);
+    ctx.fillStyle='#041323ec';ctx.fillRect(panelX,panelY,panelW,panelH);
+    ctx.strokeStyle='rgba(72,219,239,.5)';ctx.lineWidth=1;ctx.strokeRect(panelX,panelY,panelW,panelH);
+    ctx.font=clamp(fw*.047,7,11)+'px monospace';ctx.textAlign='left';ctx.textBaseline='top';
+    const lh=clamp(fw*.065,9,15);
+    for(let j=0;j<Math.min(s.code.length,Math.floor((panelH-6)/lh));j++){
+      ctx.fillStyle=j%2===0?'#54dbdbaf':'#84a6f7ad';ctx.fillText(s.code[j],panelX+7,panelY+5+j*lh);
+    }
+    // Bottom histogram stays inside the rack silhouette.
+    if(fh>265){
+      const hx=panelX,hy=yb-pady-26,hw=panelW,hh=19;
+      ctx.fillStyle='#051322';ctx.fillRect(hx,hy,hw,hh);
+      const bw=hw/15;
+      for(let j=0;j<13;j++){
+        let bar=(.18+.72*Math.abs(Math.sin(j*.85+s.seed+depth*.018)))*hh*.82;
+        ctx.fillStyle=j%4===0?'#b680fa':'#4ce8f2';
+        ctx.fillRect(hx+(j+1)*bw,hy+hh-bar,Math.max(1,bw*.48),bar);
+      }
+    }
+  }
+  ctx.restore();
+
+  // Inward-facing side wall: bright inner-edge LED spine, depth seams, vents.
+  // It is drawn after the front panel but remains confined to the side polygon.
+  ctx.save();ctx.beginPath();ctx.moveTo(...A);ctx.lineTo(...D);ctx.lineTo(...Dr);ctx.lineTo(...Ar);ctx.closePath();ctx.clip();
+  for(let k=1;k<8;k++){
+    const yy=y+(s.h*k/8),q1=p(inner,yy,z),q2=p(inner,yy,z+s.deep);
+    stroke(q1,q2,'rgba(75,171,213,'+(alpha*.40)+')',.9);
+  }
+  // Recessed panels physically wrap around the corridor-facing side.
+  // Using perspective-correct corners keeps the flank from looking like a flat wall.
+  for(let k=0;k<7;k++){
+    const panelBottom=y+.3+k*s.h/7, panelTop=y+.22+(k+1)*s.h/7;
+    const n=z+.27,far=z+s.deep-.27;
+    const corners=[p(inner,panelBottom,n),p(inner,panelTop,n),
+                   p(inner,panelTop,far),p(inner,panelBottom,far)];
+    shape(corners,k%3===0?'rgba(4,27,48,.73)':'rgba(4,15,32,.68)',
+      'rgba(52,161,205,'+(alpha*.43)+')');
+    if(z<50){
+      const ym=(panelBottom+panelTop)*.5;
+      const led1=p(inner,ym,n+.48),led2=p(inner,ym,n+.95);
+      stroke(led1,led2,k%4===0?'rgba(177,119,255,.65)':'rgba(80,253,229,.72)',1.4);
+    }
+  }
+  for(const a of [.34,.7]){
+    const zLine=z+s.deep*a;
+    stroke(p(inner,y+.1,zLine),p(inner,top-.1,zLine),
+      a<.5?'rgba(118,250,255,'+(alpha*.36)+')':'rgba(79,137,209,'+(alpha*.45)+')',
+      z<40?1.45:.85);
+  }
+  ctx.restore();
+  if(z<83){
+    ctx.save();ctx.shadowBlur=near?13:5;ctx.shadowColor=s.accent;
+    stroke(D,A,s.accent,clamp(145/z,1.0,3.2));
+    stroke(D,Dr,'rgba(103,226,252,'+(alpha*.8)+')',clamp(78/z,.6,2.1));
+    ctx.restore();
+  }
+  // Small cyan service LEDs at the side's lower corner, not arbitrary sprites.
+  const light=p(inner,y+.6,z);
+  if(z<90){ctx.fillStyle=s.index%4===0?'#ae7cf5':'#4fffd7';ctx.beginPath();ctx.arc(light[0],light[1],clamp(20/z,1.1,2.5),0,Math.PI*2);ctx.fill()}
+}
+function setPhase(){const progress=elapsed/duration;let n=progress>=.79?3:progress>=.52?2:progress>=.24?1:0;if(n!==phase){phase=n;const vals=[['01 / INITIALIZING','ENTERING THE DATABASE','ESTABLISHING GRAPH CONTEXT'],['02 / INDEXING','TRAVERSING THE RECORDS','FARA + CORPORATE DATA'],['03 / RELATIONSHIPS','RESOLVING CONNECTIONS','DIGITAL INFRASTRUCTURE + ENTITIES'],['04 / GRAPH CORE','REVEALING INFLUENCE ATLAS','INTERACTIVE NETWORK READY']][n];$('db-phase').textContent=vals[0];$('db-stage').textContent=vals[1];$('db-status').textContent=vals[2]};$('db-progress').style.width=(progress*100)+'%'}
+function finish(){if(!active)return;active=false;cancelAnimationFrame(raf);intro.classList.add('finished');$('db-replay').hidden=false;setTimeout(()=>{if(!active)intro.hidden=true},950)}
+function tick(t){if(!active)return;const dt=clamp(last?t-last:16,0,50);last=t;if(!paused)elapsed=Math.min(duration,elapsed+dt);draw();setPhase();if(elapsed>=duration){finish();return}raf=requestAnimationFrame(tick)}
+function replay(){cancelAnimationFrame(raf);active=true;paused=false;elapsed=0;last=0;phase=-1;intro.hidden=false;intro.classList.remove('finished');$('db-replay').hidden=true;$('db-pause').textContent='Ⅱ Pause';raf=requestAnimationFrame(tick)}
+$('db-skip').onclick=finish;$('db-pause').onclick=()=>{paused=!paused;$('db-pause').textContent=paused?'▶ Resume':'Ⅱ Pause'};$('db-replay').onclick=replay;
+addEventListener('resize',size);document.addEventListener('keydown',e=>{if(active&&e.key==='Escape')finish()});
+size();if(matchMedia('(prefers-reduced-motion:reduce)').matches){finish()}else raf=requestAnimationFrame(tick);
+})();
+</script>
+
 </body>
 </html>
