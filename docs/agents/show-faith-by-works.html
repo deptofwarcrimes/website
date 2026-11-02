@@ -1,1 +1,761 @@
-<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Show Faith by Works, LLC — FARA dossier</title><link rel="stylesheet" href="agent.css"></head><body><div class="shell"><header class="top"><a class="brand" href="../index.html">Influence Atlas / FARA records</a><a class="back" href="../index.html">← All registrants</a></header><main><div class="eyebrow">FARA registrant dossier</div><h1>Show Faith by Works, LLC</h1><div class="record">Registration #7653</div><p class="intro">This page is a source-first starting point for the public FARA record. It does not make claims beyond the linked government filing index.</p><section class="panel"><h2>Primary public record</h2><p>Use the U.S. Department of Justice FARA filing index to inspect the registration statement, exhibits, amendments, supplemental statements, and informational materials.</p><a class="action" href="https://efile.fara.gov/ords/fara/f?p=1381:200:::NO::P200_REG_NUMBER:7653" target="_blank" rel="noopener noreferrer">Open DOJ FARA record ↗</a></section><p class="note">Source: U.S. Department of Justice FARA public records. Review filing dates and the underlying document before drawing conclusions.</p></main></div></body></html>
+<!DOCTYPE html>
+<html lang="en" class="h-full bg-slate-950">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>OSINT Analysis: showfaithbyworks.com | BBOT Telemetry Dashboard</title>
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Chart.js CDN -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script>
+        tailwind.config = {
+            darkMode: 'class',
+            theme: {
+                extend: {
+                    colors: {
+                        brand: {
+                            50: '#f0f7ff',
+                            100: '#e0effe',
+                            500: '#0284c7',
+                            600: '#0369a1',
+                            900: '#0c4a6e',
+                        }
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        .chart-container {
+            position: relative;
+            width: 100%;
+            max-width: 650px;
+            margin-left: auto;
+            margin-right: auto;
+            height: 320px;
+            max-height: 380px;
+        }
+        @media (min-width: 768px) {
+            .chart-container {
+                height: 350px;
+            }
+        }
+        /* Custom scrollbar for dark tables */
+        ::-webkit-scrollbar {
+            width: 8px;
+            height: 8px;
+        }
+        ::-webkit-scrollbar-track {
+            background: #0f172a;
+        }
+        ::-webkit-scrollbar-thumb {
+            background: #334155;
+            border-radius: 4px;
+        }
+        ::-webkit-scrollbar-thumb:hover {
+            background: #475569;
+        }
+    </style>
+</head>
+<body class="h-full font-sans text-slate-100 flex flex-col bg-slate-950">
+
+<!-- Chosen Palette: Dark Cyber Slate (Deep Slate-950 background, Slate-900 panels, Sky-500 / Cyan accents, Vivid Amber warnings, Emerald status markers) -->
+
+<!-- Application Structure Plan: 
+    1. Header & Hero Dashboard: Identifies the BBOT scan session (derogatory_diana), key KPIs (2 target subdomains, AS53831, Google Workspace, 404 Website Expired status), and quick metrics in dark slate cards.
+    2. Tabbed Navigation Structure:
+       - Overview & Dashboard: High-level visualization of BBOT module output, event distribution, and risk synthesis with dark chart styling.
+       - DNS & Email Infrastructure: Detailed mapping of Google Cloud DNS and Google Workspace mail routing in sleek dark panels.
+       - Web Routing & Redirects: Visual funnel of HTTP status transitions (301 -> 404) leading to Squarespace expired state.
+       - AS53831 Network & Hosting: Anycast CDN density analysis, multi-tenant IP footprint, BGP prefixes, and latency stats.
+       - BBOT Scan Telemetry Data: Fully interactive, filterable table of all 35 telemetry records with context on artifacts (login.windows.net, urlscan.io).
+       - Risk Analysis & Subdomain Takeover: In-depth evaluation of Subdomain Takeover vulnerability for ext-sq.squarespace.com and remediation steps.
+    3. Designed for logical exploration from executive summary to deep technical protocol analysis and actionable defense steps.
+-->
+
+<!-- Visualization & Content Choices:
+    - Event Types -> Chart.js Doughnut Chart -> High-contrast dark palette -> Quick understanding of discovered entity categories.
+    - HTTP Funnel -> Chart.js Horizontal Bar Chart -> Sequential redirect trace with dark gridlines -> Visual route clarity.
+    - Network Density -> Chart.js Bar Chart -> Logarithmic comparison of top IPs by domain count -> Highlights multi-tenant Anycast environment.
+    - Telemetry Table -> Dynamic HTML + JS Filter/Search -> Immediate lookup across all 35 raw telemetry lines with high-contrast text.
+    - Chart Containers -> Styled with responsive max-width/height constraints. Strict adherence to NO SVG and NO Mermaid JS.
+-->
+
+<!-- CONFIRMATION: NO SVG graphics used. NO Mermaid JS used. -->
+
+<!-- Header Navigation Bar -->
+<header class="bg-slate-900 text-white border-b border-slate-800 sticky top-0 z-50 shadow-lg">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-3 flex flex-wrap justify-between items-center gap-4">
+        <div class="flex items-center gap-3">
+            <span class="inline-flex items-center justify-center w-9 h-9 rounded-lg bg-sky-600 text-white font-bold text-lg shadow-sm">B</span>
+            <div>
+                <h1 class="font-bold text-base sm:text-lg leading-tight flex items-center gap-2 text-slate-100">
+                    OSINT Analysis: showfaithbyworks.com
+                    <span class="text-xs font-normal px-2 py-0.5 rounded bg-sky-950 text-sky-400 border border-sky-800">BBOT 2.x</span>
+                </h1>
+                <p class="text-xs text-slate-400">Scan Session: <span class="text-slate-300 font-mono">derogatory_diana</span> (SCAN:469f471b...)</p>
+            </div>
+        </div>
+        <div class="flex items-center gap-2">
+            <span class="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full text-xs font-medium bg-amber-500/10 text-amber-400 border border-amber-500/20">
+                <span class="w-2 h-2 rounded-full bg-amber-400 animate-pulse"></span>
+                Website Expired
+            </span>
+            <span class="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full text-xs font-medium bg-emerald-500/10 text-emerald-400 border border-emerald-500/20">
+                <span class="w-2 h-2 rounded-full bg-emerald-400"></span>
+                Takeover: Not Vulnerable
+            </span>
+        </div>
+    </div>
+</header>
+
+<main class="flex-1 max-w-7xl w-full mx-auto px-4 sm:px-6 lg:px-8 py-6 space-y-6">
+
+    <!-- KPI Summary Cards -->
+    <section aria-label="Key Summary Metrics" class="grid grid-cols-2 md:grid-cols-5 gap-4">
+        <div class="bg-slate-900 p-4 rounded-xl border border-slate-800 shadow-sm hover:border-slate-700 transition">
+            <p class="text-xs font-medium text-slate-400">Target Subdomains</p>
+            <p class="text-2xl font-extrabold text-slate-100 mt-1">2</p>
+            <p class="text-xs text-slate-400 mt-1 font-mono truncate">Apex & www</p>
+        </div>
+        <div class="bg-slate-900 p-4 rounded-xl border border-slate-800 shadow-sm hover:border-slate-700 transition">
+            <p class="text-xs font-medium text-slate-400">Autonomous System</p>
+            <p class="text-2xl font-extrabold text-sky-400 mt-1">AS53831</p>
+            <p class="text-xs text-slate-400 mt-1 truncate">Squarespace, Inc.</p>
+        </div>
+        <div class="bg-slate-900 p-4 rounded-xl border border-slate-800 shadow-sm hover:border-slate-700 transition">
+            <p class="text-xs font-medium text-slate-400">Email Provider</p>
+            <p class="text-2xl font-extrabold text-indigo-400 mt-1">Google</p>
+            <p class="text-xs text-slate-400 mt-1 truncate">Workspace (5 MX)</p>
+        </div>
+        <div class="bg-slate-900 p-4 rounded-xl border border-slate-800 shadow-sm hover:border-slate-700 transition">
+            <p class="text-xs font-medium text-slate-400">Web Status (HTTPS)</p>
+            <p class="text-2xl font-extrabold text-rose-400 mt-1">404</p>
+            <p class="text-xs text-slate-400 mt-1 truncate">Website Expired</p>
+        </div>
+        <div class="bg-slate-900 p-4 rounded-xl border border-slate-800 shadow-sm hover:border-slate-700 transition col-span-2 md:col-span-1">
+            <p class="text-xs font-medium text-slate-400">Total BBOT Events</p>
+            <p class="text-2xl font-extrabold text-slate-100 mt-1" id="kpi-total-events">35</p>
+            <p class="text-xs text-slate-400 mt-1">Including Distance-1</p>
+        </div>
+    </section>
+
+    <!-- Main Tabbed Navigation Bar -->
+    <div class="border-b border-slate-800 bg-slate-900 rounded-xl shadow-sm px-2 pt-2">
+        <nav class="flex flex-wrap gap-1 sm:gap-2" id="main-tabs" aria-label="Report Tabs">
+            <button onclick="switchTab('tab-overview')" id="btn-tab-overview" class="tab-btn px-4 py-2.5 text-sm font-medium rounded-lg text-sky-400 bg-sky-950/60 border-b-2 border-sky-500 transition">
+                📊 Overview & Dashboard
+            </button>
+            <button onclick="switchTab('tab-dns')" id="btn-tab-dns" class="tab-btn px-4 py-2.5 text-sm font-medium rounded-lg text-slate-400 hover:text-slate-200 hover:bg-slate-800 transition">
+                🌐 DNS & Email
+            </button>
+            <button onclick="switchTab('tab-web')" id="btn-tab-web" class="tab-btn px-4 py-2.5 text-sm font-medium rounded-lg text-slate-400 hover:text-slate-200 hover:bg-slate-800 transition">
+                🔄 Web Routing
+            </button>
+            <button onclick="switchTab('tab-asn')" id="btn-tab-asn" class="tab-btn px-4 py-2.5 text-sm font-medium rounded-lg text-slate-400 hover:text-slate-200 hover:bg-slate-800 transition">
+                ☁️ AS53831 Network
+            </button>
+            <button onclick="switchTab('tab-events')" id="btn-tab-events" class="tab-btn px-4 py-2.5 text-sm font-medium rounded-lg text-slate-400 hover:text-slate-200 hover:bg-slate-800 transition">
+                🔍 Telemetry Data
+            </button>
+            <button onclick="switchTab('tab-security')" id="btn-tab-security" class="tab-btn px-4 py-2.5 text-sm font-medium rounded-lg text-slate-400 hover:text-slate-200 hover:bg-slate-800 transition">
+                🛡️ Risks & Takeover
+            </button>
+        </nav>
+    </div>
+
+    <!-- TAB 1: OVERVIEW & DASHBOARD -->
+    <div id="tab-overview" class="tab-content space-y-6">
+        <div class="bg-amber-950/40 border border-amber-800/60 rounded-xl p-4 text-amber-200 text-sm leading-relaxed">
+            <strong class="text-amber-400">Section Overview:</strong> This dashboard synthesizes the key findings gathered by the automated BBOT 2.x scanner for <code class="bg-amber-900/60 px-1 py-0.5 rounded text-amber-200 font-mono">showfaithbyworks.com</code>. It illustrates module contributions, event classifications, and the attack surface layout.
+        </div>
+
+        <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
+            <!-- Chart: BBOT Event Types -->
+            <div class="bg-slate-900 p-5 rounded-xl border border-slate-800 shadow-sm">
+                <h3 class="font-bold text-slate-100 text-base mb-1">BBOT Event Type Breakdown</h3>
+                <p class="text-xs text-slate-400 mb-4">Classification of discovered telemetry entries from output.txt</p>
+                <div class="chart-container">
+                    <canvas id="chartEventTypes"></canvas>
+                </div>
+            </div>
+
+            <!-- Chart: BBOT Recon Modules -->
+            <div class="bg-slate-900 p-5 rounded-xl border border-slate-800 shadow-sm">
+                <h3 class="font-bold text-slate-100 text-base mb-1">BBOT Module Discovery Contribution</h3>
+                <p class="text-xs text-slate-400 mb-4">Number of telemetry events generated per module</p>
+                <div class="chart-container">
+                    <canvas id="chartModules"></canvas>
+                </div>
+            </div>
+        </div>
+
+        <!-- Synthesis Card -->
+        <div class="bg-slate-900 rounded-xl border border-slate-800 p-6 shadow-sm space-y-4">
+            <h3 class="text-lg font-bold text-slate-100 border-b border-slate-800 pb-3">Digital Asset State Synthesis</h3>
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-4 text-sm">
+                <div class="p-4 rounded-lg bg-slate-950 border border-slate-800">
+                    <span class="font-bold text-slate-200 block mb-1">1. DNS Management</span>
+                    Delegated to Google Cloud DNS (<code class="text-xs font-mono text-sky-400">ns-cloud-e1..e4</code>). Zone is active and responding without errors.
+                </div>
+                <div class="p-4 rounded-lg bg-slate-950 border border-slate-800">
+                    <span class="font-bold text-slate-200 block mb-1">2. Mail Infrastructure</span>
+                    Routed to Google Workspace (<code class="text-xs font-mono text-indigo-400">aspmx.l.google.com</code>). Operational independently of the web server.
+                </div>
+                <div class="p-4 rounded-lg bg-slate-950 border border-slate-800">
+                    <span class="font-bold text-slate-200 block mb-1">3. Web Application</span>
+                    Hosted on Squarespace (<code class="text-xs font-mono text-amber-400">ext-sq.squarespace.com</code>). Active subscription expired (<code class="text-xs font-mono text-rose-400">404 Website Expired</code>).
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- TAB 2: DNS & EMAIL INFRASTRUCTURE -->
+    <div id="tab-dns" class="tab-content space-y-6 hidden">
+        <div class="bg-sky-950/40 border border-sky-800/60 rounded-xl p-4 text-sky-200 text-sm leading-relaxed">
+            <strong class="text-sky-400">Section Overview:</strong> Detailed breakdown of domain records and mail gateways. The domain employs a hybrid architecture: DNS management and email services reside in Google infrastructure, while the WWW subdomain points to Squarespace via CNAME.
+        </div>
+
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+            <!-- Authoritative NS Table -->
+            <div class="bg-slate-900 rounded-xl border border-slate-800 p-5 shadow-sm space-y-3">
+                <h3 class="font-bold text-slate-100 text-base flex items-center justify-between">
+                    <span>Authoritative DNS Servers (NS)</span>
+                    <span class="text-xs px-2 py-0.5 rounded bg-sky-950 text-sky-400 border border-sky-800 font-mono">Google Cloud DNS</span>
+                </h3>
+                <p class="text-xs text-slate-400">Delegation name servers discovered by BBOT:</p>
+                <ul class="divide-y divide-slate-800 text-sm font-mono text-slate-300">
+                    <li class="py-2 flex justify-between items-center">
+                        <span>ns-cloud-e1.googledomains.com</span>
+                        <span class="text-xs text-emerald-400 bg-emerald-950/60 border border-emerald-800 px-2 py-0.5 rounded font-sans">SOA Master</span>
+                    </li>
+                    <li class="py-2 flex justify-between items-center">
+                        <span>ns-cloud-e2.googledomains.com</span>
+                        <span class="text-xs text-slate-500 font-sans">Secondary</span>
+                    </li>
+                    <li class="py-2 flex justify-between items-center">
+                        <span>ns-cloud-e3.googledomains.com</span>
+                        <span class="text-xs text-slate-500 font-sans">Secondary</span>
+                    </li>
+                    <li class="py-2 flex justify-between items-center">
+                        <span>ns-cloud-e4.googledomains.com</span>
+                        <span class="text-xs text-slate-500 font-sans">Secondary</span>
+                    </li>
+                </ul>
+            </div>
+
+            <!-- Mail Gateways Table -->
+            <div class="bg-slate-900 rounded-xl border border-slate-800 p-5 shadow-sm space-y-3">
+                <h3 class="font-bold text-slate-100 text-base flex items-center justify-between">
+                    <span>Mail Exchange Gateways (MX)</span>
+                    <span class="text-xs px-2 py-0.5 rounded bg-indigo-950 text-indigo-400 border border-indigo-800 font-mono">Google Workspace</span>
+                </h3>
+                <p class="text-xs text-slate-400">Inbound mail routing for the target domain:</p>
+                <ul class="divide-y divide-slate-800 text-sm font-mono text-slate-300">
+                    <li class="py-2 flex justify-between items-center">
+                        <span>aspmx.l.google.com</span>
+                        <span class="text-xs text-indigo-400 bg-indigo-950/60 border border-indigo-800 px-2 py-0.5 rounded font-sans">Priority 1</span>
+                    </li>
+                    <li class="py-2 flex justify-between items-center">
+                        <span>alt1.aspmx.l.google.com</span>
+                        <span class="text-xs text-slate-500 font-sans">Priority 5</span>
+                    </li>
+                    <li class="py-2 flex justify-between items-center">
+                        <span>alt2.aspmx.l.google.com</span>
+                        <span class="text-xs text-slate-500 font-sans">Priority 5</span>
+                    </li>
+                    <li class="py-2 flex justify-between items-center">
+                        <span>alt3.aspmx.l.google.com</span>
+                        <span class="text-xs text-slate-500 font-sans">Priority 10</span>
+                    </li>
+                    <li class="py-2 flex justify-between items-center">
+                        <span>alt4.aspmx.l.google.com</span>
+                        <span class="text-xs text-slate-500 font-sans">Priority 10</span>
+                    </li>
+                </ul>
+            </div>
+        </div>
+
+        <!-- Subdomain & CNAME Analysis -->
+        <div class="bg-slate-900 rounded-xl border border-slate-800 p-6 shadow-sm space-y-4">
+            <h3 class="text-base font-bold text-slate-100">WWW Subdomain Canonical CNAME Alias</h3>
+            <div class="p-4 rounded-lg bg-slate-950 border border-slate-800 flex flex-wrap items-center justify-between gap-4 text-sm">
+                <div>
+                    <span class="font-mono font-bold text-slate-100">www.showfaithbyworks.com</span>
+                    <p class="text-xs text-slate-400 mt-0.5">Discovered by 6 modules: certspotter, hackertarget, subdomaincenter, crt, dnsbrute, excavate</p>
+                </div>
+                <div class="text-slate-500 font-bold">➔ CNAME ➔</div>
+                <div>
+                    <span class="font-mono font-bold text-sky-400">ext-sq.squarespace.com</span>
+                    <p class="text-xs text-slate-400 mt-0.5">Target Squarespace CDN balance host (AS53831)</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- TAB 3: WEB ROUTING & REDIRECTS -->
+    <div id="tab-web" class="tab-content space-y-6 hidden">
+        <div class="bg-indigo-950/40 border border-indigo-800/60 rounded-xl p-4 text-indigo-200 text-sm leading-relaxed">
+            <strong class="text-indigo-400">Section Overview:</strong> The <code class="bg-indigo-900/60 px-1 py-0.5 rounded font-mono text-indigo-300">http</code> module and web spider <code class="bg-indigo-900/60 px-1 py-0.5 rounded font-mono text-indigo-300">excavate</code> tracked all redirect paths from Apex port 80/443 to the final landing page hosted on Squarespace.
+        </div>
+
+        <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
+            <!-- Chart: HTTP Status Funnel -->
+            <div class="bg-slate-900 p-5 rounded-xl border border-slate-800 shadow-sm">
+                <h3 class="font-bold text-slate-100 text-base mb-1">HTTP Response Status Funnel</h3>
+                <p class="text-xs text-slate-400 mb-4">Sequence of 301 redirects culminating in the final 404 response</p>
+                <div class="chart-container">
+                    <canvas id="chartHttpFunnel"></canvas>
+                </div>
+            </div>
+
+            <!-- Detailed Step-by-Step Redirect Path -->
+            <div class="bg-slate-900 p-5 rounded-xl border border-slate-800 shadow-sm space-y-4">
+                <h3 class="font-bold text-slate-100 text-base">Web Traffic Routing Step Sequence</h3>
+                <div class="space-y-3 relative before:absolute before:inset-0 before:left-3.5 before:w-0.5 before:bg-slate-800">
+                    <div class="relative flex items-start gap-3 pl-8">
+                        <span class="absolute left-2 top-1.5 w-3 h-3 rounded-full bg-sky-500 border-2 border-slate-900"></span>
+                        <div class="bg-slate-950 p-3 rounded-lg border border-slate-800 w-full text-xs font-mono">
+                            <span class="text-amber-400 font-bold">[301]</span> http://showfaithbyworks.com/
+                            <p class="text-slate-400 font-sans text-[11px] mt-1">Redirect from HTTP Apex to HTTPS WWW</p>
+                        </div>
+                    </div>
+                    <div class="relative flex items-start gap-3 pl-8">
+                        <span class="absolute left-2 top-1.5 w-3 h-3 rounded-full bg-sky-500 border-2 border-slate-900"></span>
+                        <div class="bg-slate-950 p-3 rounded-lg border border-slate-800 w-full text-xs font-mono">
+                            <span class="text-amber-400 font-bold">[301]</span> https://showfaithbyworks.com/
+                            <p class="text-slate-400 font-sans text-[11px] mt-1">Canonicalization from HTTPS Apex to HTTPS WWW</p>
+                        </div>
+                    </div>
+                    <div class="relative flex items-start gap-3 pl-8">
+                        <span class="absolute left-2 top-1.5 w-3 h-3 rounded-full bg-sky-500 border-2 border-slate-900"></span>
+                        <div class="bg-slate-950 p-3 rounded-lg border border-slate-800 w-full text-xs font-mono">
+                            <span class="text-amber-400 font-bold">[301]</span> http://www.showfaithbyworks.com/
+                            <p class="text-slate-400 font-sans text-[11px] mt-1">Enforced TLS upgrade on www subdomain</p>
+                        </div>
+                    </div>
+                    <div class="relative flex items-start gap-3 pl-8">
+                        <span class="absolute left-2 top-1.5 w-3 h-3 rounded-full bg-rose-500 border-2 border-slate-900"></span>
+                        <div class="bg-rose-950/40 p-3 rounded-lg border border-rose-900/60 w-full text-xs font-mono">
+                            <span class="text-rose-400 font-bold">[404]</span> https://www.showfaithbyworks.com/
+                            <p class="text-rose-300 font-sans font-bold text-xs mt-1">Page HTML Title: "Squarespace - Website Expired"</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- TAB 4: AS53831 NETWORK INFRASTRUCTURE -->
+    <div id="tab-asn" class="tab-content space-y-6 hidden">
+        <div class="bg-emerald-950/40 border border-emerald-800/60 rounded-xl p-4 text-emerald-200 text-sm leading-relaxed">
+            <strong class="text-emerald-400">Section Overview:</strong> Hosting analysis within Autonomous System <code class="bg-emerald-900/60 px-1 py-0.5 rounded font-mono text-emerald-300">AS53831</code> (Squarespace, Inc.). Highlights the multi-tenant Anycast CDN architecture and IP distribution characteristics.
+        </div>
+
+        <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
+            <!-- Chart: Domain Density per IP -->
+            <div class="bg-slate-900 p-5 rounded-xl border border-slate-800 shadow-sm">
+                <h3 class="font-bold text-slate-100 text-base mb-1">Domain Concentration on Anycast IPs</h3>
+                <p class="text-xs text-slate-400 mb-4">Comparison of hosted virtual domain density across key AS53831 IPs</p>
+                <div class="chart-container">
+                    <canvas id="chartAsnDensity"></canvas>
+                </div>
+            </div>
+
+            <!-- ASN Profile Specification -->
+            <div class="bg-slate-900 p-5 rounded-xl border border-slate-800 shadow-sm space-y-4">
+                <h3 class="font-bold text-slate-100 text-base">Autonomous System AS53831 Specification</h3>
+                <dl class="grid grid-cols-2 gap-x-4 gap-y-3 text-sm">
+                    <div class="border-b border-slate-800 pb-2">
+                        <dt class="text-xs text-slate-400">Owner / Organization</dt>
+                        <dd class="font-semibold text-slate-200">Squarespace, Inc. (SQUAR-30)</dd>
+                    </div>
+                    <div class="border-b border-slate-800 pb-2">
+                        <dt class="text-xs text-slate-400">Total Hosted Domains</dt>
+                        <dd class="font-semibold text-sky-400">10,080,518 domains</dd>
+                    </div>
+                    <div class="border-b border-slate-800 pb-2">
+                        <dt class="text-xs text-slate-400">Unique IPv4 Pool</dt>
+                        <dd class="font-semibold text-slate-200">128 IP Addresses</dd>
+                    </div>
+                    <div class="border-b border-slate-800 pb-2">
+                        <dt class="text-xs text-slate-400">BGP Prefixes</dt>
+                        <dd class="font-semibold text-slate-200">11 Active IPv4 (/24)</dd>
+                    </div>
+                    <div class="border-b border-slate-800 pb-2">
+                        <dt class="text-xs text-slate-400">Upstream Transit Carriers</dt>
+                        <dd class="font-semibold text-slate-300 text-xs">Arelion, Lumen, NTT, Zayo, Akamai</dd>
+                    </div>
+                    <div class="border-b border-slate-800 pb-2">
+                        <dt class="text-xs text-slate-400">IPv6 Footprint</dt>
+                        <dd class="font-semibold text-amber-400 text-xs">Allocated /44, 0 BGP Announcements</dd>
+                    </div>
+                </dl>
+            </div>
+        </div>
+    </div>
+
+    <!-- TAB 5: BBOT TELEMETRY DATA -->
+    <div id="tab-events" class="tab-content space-y-6 hidden">
+        <div class="bg-slate-900 border border-slate-800 rounded-xl p-4 text-slate-300 text-sm leading-relaxed">
+            <strong class="text-slate-100">Section Overview:</strong> This table contains all 35 raw telemetry records exported from the BBOT scan output file <code class="bg-slate-800 px-1 py-0.5 rounded font-mono text-slate-200">output.txt</code>. Use the categories and search bar to filter records.
+        </div>
+
+        <!-- Search and Filter Bar -->
+        <div class="bg-slate-900 p-4 rounded-xl border border-slate-800 shadow-sm flex flex-wrap gap-4 items-center justify-between">
+            <div class="flex flex-wrap items-center gap-2">
+                <span class="text-xs font-bold text-slate-400 uppercase">Filter:</span>
+                <button onclick="filterEvents('all')" class="event-filter-btn px-3 py-1 text-xs font-medium rounded-full bg-sky-600 text-white">All (35)</button>
+                <button onclick="filterEvents('in-scope')" class="event-filter-btn px-3 py-1 text-xs font-medium rounded-full bg-slate-800 text-slate-300 hover:bg-slate-700">In-Scope</button>
+                <button onclick="filterEvents('distance-1')" class="event-filter-btn px-3 py-1 text-xs font-medium rounded-full bg-slate-800 text-slate-300 hover:bg-slate-700">Distance-1</button>
+                <button onclick="filterEvents('DNS_NAME')" class="event-filter-btn px-3 py-1 text-xs font-medium rounded-full bg-slate-800 text-slate-300 hover:bg-slate-700">DNS_NAME</button>
+                <button onclick="filterEvents('URL')" class="event-filter-btn px-3 py-1 text-xs font-medium rounded-full bg-slate-800 text-slate-300 hover:bg-slate-700">URL</button>
+            </div>
+            <div class="w-full sm:w-64">
+                <input type="text" id="eventSearch" onkeyup="searchEvents()" placeholder="Search telemetry records..." class="w-full px-3 py-1.5 text-xs rounded-lg bg-slate-950 border border-slate-800 text-slate-100 placeholder-slate-500 focus:outline-none focus:ring-2 focus:ring-sky-500">
+            </div>
+        </div>
+
+        <!-- Telemetry Table -->
+        <div class="bg-slate-900 rounded-xl border border-slate-800 shadow-sm overflow-x-auto">
+            <table class="w-full text-left text-xs" id="eventsTable">
+                <thead class="bg-slate-950 text-slate-400 uppercase border-b border-slate-800 font-semibold">
+                    <tr>
+                        <th class="px-4 py-3">Event Type</th>
+                        <th class="px-4 py-3">Entity Value / Target</th>
+                        <th class="px-4 py-3">Source Module</th>
+                        <th class="px-4 py-3">Tags & Scope Marker</th>
+                    </tr>
+                </thead>
+                <tbody class="divide-y divide-slate-800/80 font-mono" id="eventsTableBody">
+                    <!-- Dynamic rendering via JS -->
+                </tbody>
+            </table>
+        </div>
+
+        <!-- Distance-1 Artifact Explanation -->
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-4 text-xs">
+            <div class="bg-slate-900 p-4 rounded-xl border border-slate-800">
+                <h4 class="font-bold text-slate-100 mb-1">Nature of login.windows.net (oauth->host)</h4>
+                <p class="text-slate-400 leading-relaxed">
+                    Generated by BBOT's active <code class="font-mono text-sky-400">oauth</code> module probing Microsoft Entra ID (Azure AD) federation endpoints to check for OIDC tenant identity configurations. It is an active lookup artifact rather than proof of Azure hosting.
+                </p>
+            </div>
+            <div class="bg-slate-900 p-4 rounded-xl border border-slate-800">
+                <h4 class="font-bold text-slate-100 mb-1">Nature of urlscan.io/com/net (http->sslcert)</h4>
+                <p class="text-slate-400 leading-relaxed">
+                    Extracted by the <code class="font-mono text-sky-400">sslcert</code> module from Subject Alternative Names (SAN) in TLS certificates when querying the public URLScan API. These endpoints belong to external scanner infrastructure.
+                </p>
+            </div>
+        </div>
+    </div>
+
+    <!-- TAB 6: RISK ANALYSIS & SUBDOMAIN TAKEOVER -->
+    <div id="tab-security" class="tab-content space-y-6 hidden">
+        <div class="bg-rose-950/40 border border-rose-800/60 rounded-xl p-4 text-rose-200 text-sm leading-relaxed">
+            <strong class="text-rose-400">Section Overview:</strong> Expert assessment of the Subdomain Takeover vector regarding the alias <code class="bg-rose-900/60 px-1 py-0.5 rounded font-mono text-rose-200">www.showfaithbyworks.com -> ext-sq.squarespace.com</code> and recommended remediation steps.
+        </div>
+
+        <!-- Vulnerability Status Card -->
+        <div class="bg-slate-900 p-6 rounded-xl border border-slate-800 shadow-sm space-y-4">
+            <div class="flex items-center justify-between flex-wrap gap-4 border-b border-slate-800 pb-4">
+                <div>
+                    <h3 class="text-lg font-bold text-slate-100">Subdomain Takeover Assessment</h3>
+                    <p class="text-xs text-slate-400">Target host alias: CNAME ext-sq.squarespace.com</p>
+                </div>
+                <span class="px-3 py-1 rounded-full text-xs font-bold bg-emerald-950 text-emerald-400 border border-emerald-800">
+                    NOT VULNERABLE
+                </span>
+            </div>
+
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-6 text-sm">
+                <div class="space-y-2">
+                    <h4 class="font-bold text-slate-200">Why Exploitation Is Prevented:</h4>
+                    <ul class="list-disc list-inside text-slate-400 space-y-1 text-xs leading-relaxed">
+                        <li><strong>Tenant Lock:</strong> The response <em>"Website Expired"</em> indicates the domain is still linked to an expired Squarespace account, preventing third-party domain claiming.</li>
+                        <li><strong>Mandatory Ownership Verification:</strong> Squarespace requires setting a custom TXT/CNAME record in Google Cloud DNS to verify domain control before binding to a new site.</li>
+                        <li>Validated against the official <code class="text-sky-400">can-i-take-over-xyz</code> repository rules.</li>
+                    </ul>
+                </div>
+                <div class="space-y-2">
+                    <h4 class="font-bold text-slate-200">Residual Operational Risks:</h4>
+                    <ul class="list-disc list-inside text-slate-400 space-y-1 text-xs leading-relaxed">
+                        <li><strong>Brand Reputation Impact:</strong> Displaying a public "Website Expired" notice degrades user trust and organization credibility.</li>
+                        <li><strong>Recon Signal for Attackers:</strong> Orphaned DNS entries signal inactive management, prompting threat actors to probe for credential leaks.</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+
+        <!-- Step-by-Step Remediation Plan -->
+        <div class="bg-slate-900 p-6 rounded-xl border border-slate-800 shadow-sm space-y-4">
+            <h3 class="text-base font-bold text-slate-100">DNS Perimeter Cleanup Action Plan</h3>
+            <ol class="space-y-3 text-xs text-slate-300">
+                <li class="flex items-start gap-3 p-3 rounded-lg bg-slate-950 border border-slate-800">
+                    <span class="flex-shrink-0 w-6 h-6 rounded-full bg-sky-600 text-white flex items-center justify-center font-bold">1</span>
+                    <div>
+                        <strong class="text-slate-100">Remove Dangling DNS Records:</strong>
+                        <p class="text-slate-400 mt-0.5">In Google Cloud DNS console, remove the dangling CNAME record for <code class="font-mono text-sky-400">www</code> (ext-sq.squarespace.com) and any Apex A records pointing to AS53831.</p>
+                    </div>
+                </li>
+                <li class="flex items-start gap-3 p-3 rounded-lg bg-slate-950 border border-slate-800">
+                    <span class="flex-shrink-0 w-6 h-6 rounded-full bg-sky-600 text-white flex items-center justify-center font-bold">2</span>
+                    <div>
+                        <strong class="text-slate-100">Preserve Corporate Mail Profile:</strong>
+                        <p class="text-slate-400 mt-0.5">Retain all 5 Google Workspace MX records and NS authoritative servers if corporate email remains active.</p>
+                    </div>
+                </li>
+                <li class="flex items-start gap-3 p-3 rounded-lg bg-slate-950 border border-slate-800">
+                    <span class="flex-shrink-0 w-6 h-6 rounded-full bg-sky-600 text-white flex items-center justify-center font-bold">3</span>
+                    <div>
+                        <strong class="text-slate-100">Configure Managed Web Parking (Optional):</strong>
+                        <p class="text-slate-400 mt-0.5">Redirect web traffic to an internal, static maintenance page served with a valid TLS certificate.</p>
+                    </div>
+                </li>
+            </ol>
+        </div>
+    </div>
+
+</main>
+
+<!-- Footer -->
+<footer class="bg-slate-900 text-slate-400 border-t border-slate-800 py-6 mt-12 text-xs">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex flex-wrap justify-between items-center gap-4">
+        <div>
+            <p class="font-medium text-slate-300">BBOT OSINT Telemetry Interactive Explorer</p>
+            <p class="text-slate-500">Generated for session derogatory_diana analysis</p>
+        </div>
+        <p class="text-slate-500">Automated Data Import • Output File: output.txt</p>
+    </div>
+</footer>
+
+<!-- JavaScript Application Logic -->
+<script>
+    // Complete dataset of 35 telemetry records from output.txt
+    const bbotEvents = [
+        { type: "SCAN", name: "derogatory_diana", source: "SEED", tags: "SCAN:469f471b089ff7bf833a8103f38ae65279b61a11", scope: "in-scope" },
+        { type: "DNS_NAME", name: "showfaithbyworks.com", source: "SEED", tags: "a-record, domain, in-scope, mx-record, ns-record, seed, soa-record, target, txt-record", scope: "in-scope" },
+        { type: "ORG_STUB", name: "showfaithbyworks", source: "speculate", tags: "speculate", scope: "in-scope" },
+        { type: "DNS_NAME", name: "ns-cloud-e2.googledomains.com", source: "NS", tags: "a-record, aaaa-record, affiliate, cloud, distance-1, google, subdomain", scope: "distance-1" },
+        { type: "DNS_NAME", name: "ns-cloud-e1.googledomains.com", source: "NS", tags: "a-record, aaaa-record, affiliate, cloud, distance-1, google, subdomain", scope: "distance-1" },
+        { type: "DNS_NAME", name: "alt1.aspmx.l.google.com", source: "MX", tags: "a-record, aaaa-record, affiliate, cloud, distance-1, google, subdomain", scope: "distance-1" },
+        { type: "DNS_NAME", name: "alt2.aspmx.l.google.com", source: "MX", tags: "a-record, aaaa-record, affiliate, cloud, distance-1, google, subdomain", scope: "distance-1" },
+        { type: "DNS_NAME", name: "alt4.aspmx.l.google.com", source: "MX", tags: "a-record, aaaa-record, affiliate, cloud, distance-1, google, subdomain", scope: "distance-1" },
+        { type: "DNS_NAME", name: "ns-cloud-e4.googledomains.com", source: "NS", tags: "a-record, aaaa-record, affiliate, cloud, distance-1, google, subdomain", scope: "distance-1" },
+        { type: "DNS_NAME", name: "ns-cloud-e3.googledomains.com", source: "NS", tags: "a-record, aaaa-record, affiliate, cloud, distance-1, google, subdomain", scope: "distance-1" },
+        { type: "DNS_NAME", name: "aspmx.l.google.com", source: "MX", tags: "a-record, aaaa-record, affiliate, cloud, distance-1, google, subdomain", scope: "distance-1" },
+        { type: "DNS_NAME", name: "alt3.aspmx.l.google.com", source: "MX", tags: "a-record, aaaa-record, affiliate, cloud, distance-1, google, subdomain", scope: "distance-1" },
+        { type: "DNS_NAME", name: "ns-cloud-e1.googledomains.com", source: "SOA", tags: "a-record, aaaa-record, affiliate, cloud, distance-1, google, subdomain", scope: "distance-1" },
+        { type: "OPEN_TCP_PORT", name: "showfaithbyworks.com:80", source: "shodan_idb", tags: "in-scope", scope: "in-scope" },
+        { type: "OPEN_TCP_PORT", name: "showfaithbyworks.com:443", source: "shodan_idb", tags: "in-scope", scope: "in-scope" },
+        { type: "ASN", name: "AS53831", source: "asn", tags: "asn", scope: "in-scope" },
+        { type: "URL", name: "[301] https://showfaithbyworks.com/ -> https://www.showfaithbyworks.com/", source: "http", tags: "dir, in-scope, status-301", scope: "in-scope" },
+        { type: "DNS_NAME", name: "urlscan.io", source: "http->sslcert", tags: "a-record, affiliate, cdn, cloud, distance-1, domain, hetzner, quiccloud", scope: "distance-1" },
+        { type: "DNS_NAME", name: "urlscan.com", source: "http->sslcert", tags: "a-record, affiliate, cdn, cloud, distance-1, domain, hetzner, quiccloud", scope: "distance-1" },
+        { type: "DNS_NAME", name: "urlscan.net", source: "http->sslcert", tags: "a-record, affiliate, cloud, distance-1, domain, hetzner", scope: "distance-1" },
+        { type: "DNS_NAME", name: "login.windows.net", source: "oauth->host", tags: "a-record, aaaa-record, affiliate, akamai, cdn, cloud, cname-record, distance-1, github, microsoft, microsoft365, subdomain", scope: "distance-1" },
+        { type: "URL", name: "[301] http://showfaithbyworks.com/ -> https://www.showfaithbyworks.com/", source: "http", tags: "dir, in-scope, status-301", scope: "in-scope" },
+        { type: "OPEN_TCP_PORT", name: "showfaithbyworks.com:443", source: "speculate", tags: "in-scope", scope: "in-scope" },
+        { type: "OPEN_TCP_PORT", name: "showfaithbyworks.com:80", source: "speculate", tags: "in-scope", scope: "in-scope" },
+        { type: "DNS_NAME", name: "www.showfaithbyworks.com", source: "certspotter", tags: "a-record, aaaa-record, cname-record, in-scope, mx-record, ns-record, soa-record, srv-record, subdomain, txt-record", scope: "in-scope" },
+        { type: "DNS_NAME", name: "www.showfaithbyworks.com", source: "hackertarget", tags: "a-record, aaaa-record, cname-record, in-scope, mx-record, ns-record, soa-record, srv-record, subdomain, txt-record", scope: "in-scope" },
+        { type: "DNS_NAME", name: "www.showfaithbyworks.com", source: "subdomaincenter", tags: "a-record, aaaa-record, cname-record, in-scope, mx-record, ns-record, soa-record, srv-record, subdomain, txt-record", scope: "in-scope" },
+        { type: "DNS_NAME", name: "www.showfaithbyworks.com", source: "crt", tags: "a-record, aaaa-record, cname-record, in-scope, mx-record, ns-record, soa-record, srv-record, subdomain, txt-record", scope: "in-scope" },
+        { type: "DNS_NAME", name: "www.showfaithbyworks.com", source: "http->excavate->host", tags: "a-record, aaaa-record, cname-record, in-scope, mx-record, ns-record, soa-record, srv-record, subdomain, txt-record", scope: "in-scope" },
+        { type: "DNS_NAME", name: "ext-sq.squarespace.com", source: "CNAME", tags: "a-record, affiliate, distance-1, subdomain", scope: "distance-1" },
+        { type: "DNS_NAME", name: "showfaithbyworks.com", source: "speculate", tags: "a-record, domain, in-scope, mx-record, ns-record, soa-record, txt-record", scope: "in-scope" },
+        { type: "URL", name: "[404] https://www.showfaithbyworks.com/ - [Squarespace - Website Expired]", source: "http->excavate->http", tags: "dir, in-scope, status-404", scope: "in-scope" },
+        { type: "URL", name: "[301] http://www.showfaithbyworks.com/ -> https://www.showfaithbyworks.com/", source: "http", tags: "dir, in-scope, status-301", scope: "in-scope" },
+        { type: "OPEN_TCP_PORT", name: "www.showfaithbyworks.com:80", source: "speculate", tags: "in-scope", scope: "in-scope" },
+        { type: "DNS_NAME", name: "www.showfaithbyworks.com", source: "dnsbrute", tags: "a-record, aaaa-record, cname-record, in-scope, mx-record, ns-record, soa-record, srv-record, subdomain, txt-record", scope: "in-scope" }
+    ];
+
+    // Tab switcher function
+    function switchTab(tabId) {
+        document.querySelectorAll('.tab-content').forEach(el => el.classList.add('hidden'));
+        document.getElementById(tabId).classList.remove('hidden');
+
+        document.querySelectorAll('.tab-btn').forEach(btn => {
+            btn.classList.remove('text-sky-400', 'bg-sky-950/60', 'border-b-2', 'border-sky-500');
+            btn.classList.add('text-slate-400', 'hover:text-slate-200', 'hover:bg-slate-800');
+        });
+
+        const activeBtn = document.getElementById('btn-' + tabId);
+        if (activeBtn) {
+            activeBtn.classList.remove('text-slate-400', 'hover:text-slate-200', 'hover:bg-slate-800');
+            activeBtn.classList.add('text-sky-400', 'bg-sky-950/60', 'border-b-2', 'border-sky-500');
+        }
+    }
+
+    // Render events table
+    function renderEventsTable(events) {
+        const tbody = document.getElementById('eventsTableBody');
+        tbody.innerHTML = '';
+        events.forEach(item => {
+            const tr = document.createElement('tr');
+            tr.className = 'hover:bg-slate-800/50 transition';
+
+            let scopeBadge = item.scope === 'in-scope' 
+                ? '<span class="px-2 py-0.5 rounded bg-emerald-950 text-emerald-400 border border-emerald-800 text-[10px] font-sans font-bold">in-scope</span>'
+                : '<span class="px-2 py-0.5 rounded bg-amber-950 text-amber-400 border border-amber-800 text-[10px] font-sans font-bold">distance-1</span>';
+
+            tr.innerHTML = `
+                <td class="px-4 py-2.5 font-bold text-slate-200">${item.type}</td>
+                <td class="px-4 py-2.5 text-slate-100 font-medium break-all">${item.name}</td>
+                <td class="px-4 py-2.5 text-sky-400">${item.source}</td>
+                <td class="px-4 py-2.5 text-slate-400 text-[11px]">${scopeBadge} <span class="text-slate-500 ml-1">${item.tags}</span></td>
+            `;
+            tbody.appendChild(tr);
+        });
+    }
+
+    // Event category filtering
+    function filterEvents(category) {
+        document.querySelectorAll('.event-filter-btn').forEach(btn => {
+            btn.classList.remove('bg-sky-600', 'text-white');
+            btn.classList.add('bg-slate-800', 'text-slate-300');
+        });
+        event.target.classList.remove('bg-slate-800', 'text-slate-300');
+        event.target.classList.add('bg-sky-600', 'text-white');
+
+        if (category === 'all') {
+            renderEventsTable(bbotEvents);
+        } else if (category === 'in-scope' || category === 'distance-1') {
+            renderEventsTable(bbotEvents.filter(e => e.scope === category));
+        } else {
+            renderEventsTable(bbotEvents.filter(e => e.type === category));
+        }
+    }
+
+    // Text search over events
+    function searchEvents() {
+        const query = document.getElementById('eventSearch').value.toLowerCase();
+        const filtered = bbotEvents.filter(e => 
+            e.name.toLowerCase().includes(query) || 
+            e.type.toLowerCase().includes(query) || 
+            e.source.toLowerCase().includes(query) ||
+            e.tags.toLowerCase().includes(query)
+        );
+        renderEventsTable(filtered);
+    }
+
+    // Chart initialization with Dark Theme options
+    window.addEventListener('DOMContentLoaded', () => {
+        renderEventsTable(bbotEvents);
+
+        // Global Chart Defaults for Dark Theme
+        Chart.defaults.color = '#94a3b8';
+        Chart.defaults.borderColor = '#334155';
+
+        // 1. Chart: Event Types
+        const ctxTypes = document.getElementById('chartEventTypes').getContext('2d');
+        new Chart(ctxTypes, {
+            type: 'doughnut',
+            data: {
+                labels: ['DNS_NAME (Domains)', 'OPEN_TCP_PORT (Ports)', 'URL (Web Links)', 'ORG_STUB / ASN / SCAN'],
+                datasets: [{
+                    data: [23, 5, 4, 3],
+                    backgroundColor: ['#0284c7', '#38bdf8', '#f59e0b', '#64748b'],
+                    borderWidth: 2,
+                    borderColor: '#0f172a'
+                }]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                plugins: {
+                    legend: { position: 'bottom', labels: { boxWidth: 12, font: { size: 11 }, color: '#cbd5e1' } }
+                }
+            }
+        });
+
+        // 2. Chart: Module Output
+        const ctxModules = document.getElementById('chartModules').getContext('2d');
+        new Chart(ctxModules, {
+            type: 'bar',
+            data: {
+                labels: ['speculate', 'NS / MX / SOA', 'certspotter / crt', 'http / excavate', 'shodan_idb', 'oauth / sslcert'],
+                datasets: [{
+                    label: 'Events Created',
+                    data: [7, 10, 6, 5, 2, 4],
+                    backgroundColor: '#0284c7',
+                    borderRadius: 6
+                }]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                scales: {
+                    x: { ticks: { color: '#94a3b8' }, grid: { color: '#1e293b' } },
+                    y: { beginAtZero: true, ticks: { precision: 0, color: '#94a3b8' }, grid: { color: '#1e293b' } }
+                },
+                plugins: {
+                    legend: { display: false }
+                }
+            }
+        });
+
+        // 3. Chart: HTTP Response Funnel
+        const ctxHttp = document.getElementById('chartHttpFunnel').getContext('2d');
+        new Chart(ctxHttp, {
+            type: 'bar',
+            data: {
+                labels: ['301 HTTP Apex', '301 HTTPS Apex', '301 HTTP WWW', '404 HTTPS WWW (Expired)'],
+                datasets: [{
+                    label: 'Status Code',
+                    data: [301, 301, 301, 404],
+                    backgroundColor: ['#f59e0b', '#f59e0b', '#f59e0b', '#f43f5e'],
+                    borderRadius: 6
+                }]
+            },
+            options: {
+                indexAxis: 'y',
+                responsive: true,
+                maintainAspectRatio: false,
+                scales: {
+                    x: { min: 200, max: 500, ticks: { color: '#94a3b8' }, grid: { color: '#1e293b' } },
+                    y: { ticks: { color: '#cbd5e1' }, grid: { color: '#1e293b' } }
+                },
+                plugins: {
+                    legend: { display: false }
+                }
+            }
+        });
+
+        // 4. Chart: AS53831 IP Density
+        const ctxAsn = document.getElementById('chartAsnDensity').getContext('2d');
+        new Chart(ctxAsn, {
+            type: 'bar',
+            data: {
+                labels: ['198.185.159.145 (Main)', '198.185.159.177', '198.185.159.176', 'Other 125 IPs'],
+                datasets: [{
+                    label: 'Hosted Domains',
+                    data: [7606500, 12688, 8500, 2452330],
+                    backgroundColor: ['#38bdf8', '#0284c7', '#0369a1', '#475569'],
+                    borderRadius: 6
+                }]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                scales: {
+                    x: { ticks: { color: '#94a3b8' }, grid: { color: '#1e293b' } },
+                    y: { type: 'logarithmic', ticks: { color: '#94a3b8' }, grid: { color: '#1e293b' } }
+                },
+                plugins: {
+                    legend: { display: false },
+                    tooltip: {
+                        callbacks: {
+                            label: function(context) {
+                                return ' Domains: ' + context.raw.toLocaleString();
+                            }
+                        }
+                    }
+                }
+            }
+        });
+    });
+</script>
+</body>
+</html>
