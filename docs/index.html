@@ -3,36 +3,192 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <meta name="theme-color" content="#020c17">
-  <meta name="description" content="Nine public FARA registrant dossiers presented as an interactive server rack.">
+  <meta name="theme-color" content="#06111c">
+  <meta name="description" content="Nine public FARA registrant dossiers, indexed in an interactive archive rack.">
   <title>FARA Core / Nine — Registrant Dossiers</title>
   <style>
-    :root{color-scheme:dark;--bg:#020a14;--cyan:#63f4f2;--text:#e9f7ff;--muted:#8caac0;--hair:rgba(87,202,225,.22);--mono:"IBM Plex Mono",ui-monospace,SFMono-Regular,Consolas,monospace;--sans:Inter,ui-sans-serif,system-ui,-apple-system,"Segoe UI",sans-serif}*{box-sizing:border-box}html{scroll-behavior:smooth;background:var(--bg)}body{margin:0;overflow-x:hidden;background:var(--bg);color:var(--text);font-family:var(--sans)}button{font:inherit}button:focus-visible{outline:2px solid var(--cyan);outline-offset:4px}.shell{min-width:320px;min-height:100svh;overflow:hidden}.topbar{height:78px;padding:0 max(24px,5vw);display:flex;align-items:center;justify-content:space-between;border-bottom:1px solid var(--hair);background:#010914d9;backdrop-filter:blur(16px)}.brand{display:inline-flex;align-items:center;gap:13px;letter-spacing:.19em;font-weight:800;font-size:14px;white-space:nowrap}.brand em{font-style:normal;color:var(--cyan);font-weight:500}.brand-mark{width:35px;height:35px;display:grid;place-items:center;border:1px solid #63f4f288;background:#082536;box-shadow:inset 0 0 15px #17c8d329,0 0 21px #00d5d31e;clip-path:polygon(22% 0,78% 0,100% 22%,100% 78%,78% 100%,22% 100%,0 78%,0 22%)}.brand-mark svg{width:21px;stroke:var(--cyan);fill:none;stroke-width:1.3}.header-center,.status,.rack-top-label,.unit-num,.unit-label,.rack-cap,.rack-base,.stage-hint,.dialog-meta{font-family:var(--mono)}.header-center{font-size:10px;letter-spacing:.17em;color:#66849d}.status{font-size:10px;letter-spacing:.1em;color:#b8e5e9;display:flex;align-items:center;gap:9px}.live-dot{width:6px;height:6px;background:#64f6c0;border-radius:50%;box-shadow:0 0 11px #3fffc0;animation:pulse 2.6s ease-in-out infinite}.hero{position:relative;min-height:calc(100svh - 78px);display:grid;place-items:center;isolation:isolate;overflow:hidden;background:radial-gradient(ellipse at 50% 48%,#0d435d 0,#061b2c 28%,#020b16 73%)}.hero:before{content:"";position:absolute;inset:0;z-index:-2;background:repeating-linear-gradient(0deg,transparent 0 3px,#8ce1f00a 4px 5px),linear-gradient(90deg,#020b16e8,transparent 47%,#020b16dc)}.floor-grid{pointer-events:none;position:absolute;z-index:-1;bottom:-17%;left:-55%;width:210%;height:50%;transform:perspective(490px) rotateX(67deg);transform-origin:bottom center;background-image:linear-gradient(90deg,#00d7e41c 1px,transparent 1px),linear-gradient(0deg,#00d7e423 1px,transparent 1px);background-size:100px 80px;mask-image:linear-gradient(0deg,#000,transparent 100%)}.rack-stage{position:relative;width:min(430px,calc(100vw - 42px));display:flex;flex-direction:column;align-items:center}.stage-halo{position:absolute;width:650px;height:75%;border-radius:50%;background:radial-gradient(ellipse,#0693b033,transparent 67%);filter:blur(18px);pointer-events:none}.rack-top-label{position:relative;z-index:1;font-size:10px;color:#80b7c7;letter-spacing:.19em;margin-bottom:18px}.rack-top-label strong{color:#d3ffff;font-weight:500}.server-rack{position:relative;z-index:1;width:100%;padding:8px 11px 15px;transform:perspective(1050px) rotateY(-5deg);background:linear-gradient(90deg,#081c2f,#0b2234 52%,#061323);border:1px solid #71eef7d1;border-left:4px solid #64f1eeab;border-right:4px solid #4ba8dcd9;box-shadow:0 0 0 5px #04192ae0,0 0 0 6px #50c8e633,0 30px 100px #000c,inset 0 0 40px #02c2d816;clip-path:polygon(10px 0,calc(100% - 10px) 0,100% 10px,100% calc(100% - 10px),calc(100% - 10px) 100%,10px 100%,0 calc(100% - 10px),0 10px)}.rack-cap{height:49px;padding:0 11px;display:flex;justify-content:space-between;align-items:center;border-bottom:1px solid #67cce566;font-size:10px;color:#78abbd}.rack-title{font-size:14px;font-weight:600;letter-spacing:.19em;color:#cbffff}.rack-slots{display:flex;flex-direction:column;gap:5px;margin-top:10px}.server-unit{height:48px;width:100%;border:1px solid #274b63;background:linear-gradient(180deg,#0a2538,#061726 52%,#071827);color:var(--text);padding:0 10px;cursor:pointer;display:grid;grid-template-columns:28px minmax(0,1fr) 31px;gap:7px;align-items:center;text-align:left;transition:.16s}.server-unit:hover,.server-unit[aria-pressed="true"]{background:linear-gradient(180deg,#12394c,#092334);border-color:#61f8ed}.server-unit[aria-pressed="true"]{box-shadow:inset 0 0 22px #3ef3ef20,0 0 13px #44dfea22}.unit-num{font-size:10px;color:#6d9aac}.unit-label{font-size:9px;letter-spacing:.13em;color:#a5c4d3;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}.unit-lights{display:flex;gap:4px;justify-content:end}.unit-lights i{width:3px;height:7px;background:#163a45}.unit-lights i:first-child{background:#4af0d7;box-shadow:0 0 7px #43fddd;animation:ledBlink 2.4s steps(1,end) infinite}.rack-base{padding:12px 11px 0;display:flex;justify-content:space-between;font-size:9px;color:#60869a;letter-spacing:.12em}.rack-base span:last-child{color:#68dacf}.stage-hint{position:relative;z-index:1;margin-top:15px;font-size:9px;color:#81acbf;letter-spacing:.12em}.stage-hint b{color:var(--cyan);font-weight:500}.dossier-dialog{width:min(1180px,calc(100% - 32px));height:min(88svh,950px);padding:0;border:1px solid #4faec4;background:#020c17;color:var(--text);box-shadow:0 28px 110px #000}.dossier-dialog::backdrop{background:#010814de;backdrop-filter:blur(8px)}.dialog-head{height:58px;padding:0 16px 0 21px;display:flex;align-items:center;justify-content:space-between;gap:18px;border-bottom:1px solid #315c70}.dialog-title{font-weight:700}.dialog-meta{font-size:10px;letter-spacing:.1em;color:#8daabd}.close-dialog{padding:9px 12px;border:1px solid #58eeedbf;background:#2ddddd24;color:#d5ffff;font:600 10px var(--mono);letter-spacing:.08em;cursor:pointer}.dossier-dialog iframe{display:block;width:100%;height:calc(100% - 58px);border:0;background:#071420}@keyframes pulse{50%{opacity:.35;box-shadow:0 0 3px #4dffb0}}@keyframes ledBlink{0%,71%,100%{opacity:1}72%,79%{opacity:.2}}@media(max-width:690px){.topbar{height:64px;padding:0 20px}.brand{font-size:12px}.header-center{display:none}.hero{min-height:calc(100svh - 64px)}.server-rack{transform:none}.dossier-dialog{width:100%;height:100svh;max-height:none;border:0}.dialog-head{height:64px}.dialog-meta{display:none}.dossier-dialog iframe{height:calc(100% - 64px)}}@media(prefers-reduced-motion:reduce){html{scroll-behavior:auto}*,*::before,*::after{animation:none!important;transition:none!important}}
+    /* Layout: two columns (headline + summary | the vault rack), then a full-width active-record preview. */
+    :root{color-scheme:dark;
+      --bg:#06111c;--bg-2:#0a1a28;--panel:#0b1c2b;--panel-2:#0e2233;--line:#1f3a4f;--line-2:#2c5266;
+      --text:#eaf3fb;--muted:#9fb3c4;--dim:#5f7d92;
+      --cyan:#5fd6e8;--cyan-dim:#3f8fa3;--amber:#f5c584;--amber-ink:#2a1a06;--led:#4ff0c8;
+      --sans:"DM Sans",Inter,ui-sans-serif,system-ui,-apple-system,"Segoe UI",sans-serif;
+      --mono:"IBM Plex Mono",ui-monospace,SFMono-Regular,Consolas,monospace}
+    *{box-sizing:border-box}
+    html{scroll-behavior:smooth;background:var(--bg)}
+    body{margin:0;overflow-x:hidden;background:var(--bg);color:var(--text);font-family:var(--sans)}
+    button{font:inherit}
+    :focus-visible{outline:2px solid var(--amber);outline-offset:3px}
+
+    .topbar{height:64px;padding:0 max(20px,4vw);display:flex;align-items:center;justify-content:space-between;gap:16px;border-bottom:1px solid var(--line);background:#050e18e6;backdrop-filter:blur(12px);position:relative;z-index:2}
+    .brand{display:inline-flex;align-items:center;gap:12px;letter-spacing:.19em;font-weight:800;font-size:13px;white-space:nowrap}
+    .brand em{font-style:normal;color:var(--amber);font-weight:500}
+    .brand-mark{width:30px;height:30px;display:grid;place-items:center;border:1px solid var(--line-2);background:var(--panel)}
+    .brand-mark svg{width:18px;stroke:var(--cyan);fill:none;stroke-width:1.3}
+    .header-center,.status{font-family:var(--mono);font-size:10px;letter-spacing:.17em;color:var(--dim)}
+    .status{color:#b9d6e2;display:flex;align-items:center;gap:9px;letter-spacing:.1em}
+    .live-dot{width:6px;height:6px;background:var(--led);border-radius:50%;box-shadow:0 0 10px var(--led);animation:pulse 2.6s ease-in-out infinite}
+
+    .page{position:relative;isolation:isolate;overflow:hidden;
+      padding:56px max(20px,5vw) 72px;
+      background:
+        radial-gradient(circle at 78% 46%,#0e2a3d 0,transparent 42%),
+        linear-gradient(180deg,var(--bg-2),var(--bg) 60%)}
+    .page:before{content:"";position:absolute;inset:0;z-index:-2;pointer-events:none;
+      background-image:linear-gradient(#7fd3e80b 1px,transparent 1px),linear-gradient(90deg,#7fd3e80b 1px,transparent 1px);
+      background-size:28px 28px;mask-image:linear-gradient(180deg,#000 30%,transparent 95%)}
+    .page:after{content:"";position:absolute;z-index:-1;pointer-events:none;width:min(900px,120vw);aspect-ratio:1;border-radius:50%;
+      right:-22%;top:12%;border:1px solid #5fd6e812;background:radial-gradient(circle,#0f2a3c55,transparent 65%)}
+
+    .layout{max-width:1180px;margin:0 auto;display:grid;grid-template-columns:minmax(0,1fr) minmax(0,440px);gap:clamp(28px,5vw,72px);align-items:start}
+
+    /* Left column */
+    .intro{padding-top:56px;display:grid;gap:28px;min-width:0}
+    .eyebrow{display:flex;align-items:center;gap:14px;font-family:var(--mono);font-size:11px;letter-spacing:.2em;color:var(--amber)}
+    .eyebrow:before{content:"";width:22px;height:1px;background:currentColor}
+    .eyebrow.cyan{color:var(--cyan)}
+    h1{margin:0;font-weight:800;font-size:clamp(44px,6.4vw,76px);line-height:.96;letter-spacing:-.02em;text-wrap:balance}
+    h1 .outline{display:block;color:transparent;-webkit-text-stroke:1.5px #6f9fb4;font-weight:600}
+    h1 .files{display:block;color:var(--amber);font-style:italic;font-weight:500;letter-spacing:-.03em}
+    .lede{margin:0;max-width:40ch;color:var(--muted);font-size:15px;line-height:1.65}
+    .cta{justify-self:start;display:inline-flex;align-items:center;gap:16px;padding:15px 18px;border:0;background:var(--amber);color:var(--amber-ink);font:700 11px var(--mono);letter-spacing:.16em;cursor:pointer;text-decoration:none;transition:background .15s}
+    .cta:hover{background:#ffd49c}
+    .cta svg{width:16px;stroke:currentColor;fill:none;stroke-width:1.6}
+    .summary{display:grid;gap:14px;max-width:300px}
+    .summary-label{font-family:var(--mono);font-size:10px;letter-spacing:.18em;color:var(--dim);display:flex;align-items:center;gap:12px}
+    .summary-label:after{content:"";flex:1;height:1px;background:var(--line)}
+    .stats{display:grid;grid-template-columns:auto auto;justify-content:start;border-top:1px solid var(--line);padding-top:18px}
+    .stat{display:grid;gap:6px;padding-right:22px}
+    .stat+.stat{padding-left:22px;padding-right:0;border-left:1px solid var(--line)}
+    .stat b{font-size:24px;font-weight:700;font-variant-numeric:tabular-nums}
+    .stat span{font-family:var(--mono);font-size:9px;letter-spacing:.16em;color:var(--dim)}
+
+    /* Right column: the vault */
+    .vault{display:flex;flex-direction:column;align-items:stretch;gap:14px;min-width:0;scroll-margin-top:24px}
+    .vault-label{display:flex;align-items:center;gap:14px;font-family:var(--mono);font-size:10px;letter-spacing:.2em;color:var(--dim)}
+    .vault-label:before,.vault-label:after{content:"";flex:1;height:1px;background:var(--line-2);max-width:34px}
+    .vault-label:before{margin-right:auto}.vault-label:after{margin-left:auto}
+    .vault-label strong{color:var(--amber);font-weight:500}
+    .rack{position:relative;padding:12px 14px 14px;border:1px solid var(--line-2);background:linear-gradient(180deg,#0b1f2f,#081725);box-shadow:0 0 0 4px #06121d,0 0 0 5px #5fd6e81f,0 30px 90px #000a}
+    .rack:before,.rack:after{content:"";position:absolute;top:10px;bottom:10px;width:6px;pointer-events:none;
+      background:repeating-linear-gradient(180deg,transparent 0 22px,#5fd6e84d 22px 23px)}
+    .rack:before{left:3px}.rack:after{right:3px}
+    .rack-cap{display:flex;justify-content:space-between;align-items:flex-start;gap:12px;padding:14px 16px;border:1px solid var(--line-2);background:var(--panel)}
+    .rack-title{font-family:var(--mono);font-size:15px;font-weight:600;letter-spacing:.22em;color:var(--text)}
+    .rack-title span{color:var(--cyan)}
+    .rack-sub{margin-top:6px;font-family:var(--mono);font-size:8.5px;letter-spacing:.16em;color:var(--dim)}
+    .cabinet{text-align:right;font-family:var(--mono);font-size:9px;letter-spacing:.14em;color:var(--amber)}
+    .cabinet i{display:block;margin:8px 0 0 auto;width:38px;height:3px;background:repeating-linear-gradient(90deg,var(--cyan) 0 3px,transparent 3px 5px);opacity:.8}
+    .rack-slots{display:flex;flex-direction:column;gap:7px;margin-top:12px}
+    .unit{height:44px;width:100%;border:1px solid var(--line);border-left:3px solid var(--line-2);background:linear-gradient(180deg,#0c2131,#081827);color:var(--text);padding:0 12px 0 10px;cursor:pointer;display:grid;grid-template-columns:24px minmax(0,1fr) auto;gap:10px;align-items:center;text-align:left;transition:border-color .15s,background .15s}
+    .unit:hover{border-color:var(--cyan-dim);background:linear-gradient(180deg,#10293b,#0a1e2e)}
+    .unit[aria-current="true"]{border-color:var(--amber);border-left-color:var(--amber);background:linear-gradient(180deg,#13283a,#0c1f2f);box-shadow:inset 0 0 18px #f5c58414}
+    .unit-num{font-family:var(--mono);font-size:10px;color:var(--dim)}
+    .unit[aria-current="true"] .unit-num{color:var(--amber)}
+    .unit-label{font-size:11.5px;font-weight:600;color:#cfe0ec;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+    .unit-hw{display:flex;align-items:center;gap:10px}
+    .vents{width:24px;height:12px;background:repeating-linear-gradient(90deg,#3d6276 0 2px,transparent 2px 4px)}
+    .led{position:relative;width:16px;height:6px}
+    .led:before{content:"";position:absolute;left:0;top:0;width:6px;height:6px;border-radius:50%;background:var(--led);box-shadow:0 0 8px var(--led)}
+    .led:after{content:"";position:absolute;left:9px;top:2px;width:7px;height:2px;background:#24485a}
+    .unit:nth-child(3n+2) .led:before{animation:ledBlink 2.8s steps(1,end) infinite}
+    .rack-base{display:flex;justify-content:space-between;padding:14px 4px 0;font-family:var(--mono);font-size:9px;letter-spacing:.14em;color:var(--dim)}
+    .rack-base .ready{color:var(--cyan);display:inline-flex;align-items:center;gap:8px}
+    .rack-base .ready:before{content:"";width:6px;height:6px;border-radius:50%;background:var(--led);box-shadow:0 0 8px var(--led)}
+    .stage-hint{text-align:center;font-family:var(--mono);font-size:9px;letter-spacing:.14em;color:var(--dim);margin-top:14px}
+    .stage-hint b{color:var(--amber);font-weight:500}
+
+    /* Active record preview */
+    .preview{max-width:1180px;margin:64px auto 0;display:grid;gap:18px}
+    .record{position:relative;border:1px solid var(--line-2);background:#0a1a28cc;padding:24px clamp(18px,3vw,28px);display:grid;gap:18px}
+    .record:before{content:"";position:absolute;left:-1px;top:-1px;width:64px;height:2px;background:var(--amber)}
+    .record-head{display:flex;justify-content:space-between;gap:12px;font-family:var(--mono);font-size:10px;letter-spacing:.16em;color:var(--dim)}
+    .record-head .pos{color:var(--amber)}
+    .record h2{margin:0;font-size:clamp(22px,3vw,30px);font-weight:700;text-wrap:balance}
+    .record-meta{display:flex;flex-wrap:wrap;gap:10px 28px;margin:0}
+    .record-meta div{display:grid;gap:4px}
+    .record-meta dt{font-family:var(--mono);font-size:9px;letter-spacing:.16em;color:var(--dim)}
+    .record-meta dd{margin:0;font-family:var(--mono);font-size:13px;color:var(--text)}
+    .open-record{justify-self:start;display:inline-flex;align-items:center;gap:12px;padding:11px 14px;border:1px solid var(--amber);background:transparent;color:var(--amber);font:600 10px var(--mono);letter-spacing:.16em;cursor:pointer}
+    .open-record:hover{background:#f5c5841a}
+    .open-record svg{width:14px;stroke:currentColor;fill:none;stroke-width:1.6}
+
+    /* Dossier dialog (unchanged behaviour) */
+    .dossier-dialog{width:min(1180px,calc(100% - 32px));height:min(88svh,950px);padding:0;border:1px solid var(--line-2);background:#06111c;color:var(--text);box-shadow:0 28px 110px #000}
+    .dossier-dialog::backdrop{background:#030a12de;backdrop-filter:blur(8px)}
+    .dialog-head{height:58px;padding:0 16px 0 21px;display:flex;align-items:center;justify-content:space-between;gap:18px;border-bottom:1px solid var(--line-2)}
+    .dialog-title{font-weight:700}
+    .dialog-meta{font-family:var(--mono);font-size:10px;letter-spacing:.1em;color:var(--muted)}
+    .close-dialog{padding:9px 12px;border:1px solid var(--amber);background:#f5c5841a;color:var(--amber);font:600 10px var(--mono);letter-spacing:.08em;cursor:pointer}
+    .dossier-dialog iframe{display:block;width:100%;height:calc(100% - 58px);border:0;background:#071420}
+
+    @keyframes pulse{50%{opacity:.35;box-shadow:0 0 3px var(--led)}}
+    @keyframes ledBlink{0%,71%,100%{opacity:1}72%,79%{opacity:.2}}
+    @media(max-width:760px){
+      .header-center{display:none}
+      .page{padding-top:32px}
+      .layout{grid-template-columns:minmax(0,1fr)}
+      .intro{padding-top:8px}
+      .vault{max-width:460px;width:100%;margin:0 auto}
+      .preview{margin-top:44px}
+      .dossier-dialog{width:100%;height:100svh;max-height:none;border:0}
+      .dialog-meta{display:none}
+    }
+    @media(prefers-reduced-motion:reduce){html{scroll-behavior:auto}*,*::before,*::after{animation:none!important;transition:none!important}}
   </style>
 </head>
 <body>
-  <div class="shell">
-    <header class="topbar">
-      <div class="brand" aria-label="FARA Core Nine"><span class="brand-mark" aria-hidden="true"><svg viewBox="0 0 24 24"><rect x="4" y="3.5" width="16" height="5" rx=".6"/><rect x="4" y="10" width="16" height="5" rx=".6"/><rect x="4" y="16.5" width="16" height="5" rx=".6"/><path d="M7 6h2M7 12.5h2M7 19h2"/></svg></span>FARA <em>/</em> NINE</div>
-      <div class="header-center">PUBLIC RECORDS INTERFACE // 001</div>
-      <div class="status"><i class="live-dot" aria-hidden="true"></i> 09 DOSSIERS</div>
-    </header>
-    <main>
-      <section class="hero" aria-label="FARA registrant dossier server rack">
-        <div class="floor-grid" aria-hidden="true"></div>
-        <div class="rack-stage">
-          <div class="stage-halo" aria-hidden="true"></div>
-          <div class="rack-top-label">PRIMARY ARRAY <strong>FARA–09</strong></div>
-          <div class="server-rack">
-            <div class="rack-cap"><div><div class="rack-title">CORE // 09</div><div>FARA REGISTRANT ARRAY</div></div><div class="unit-lights" aria-hidden="true"><i></i><i></i><i></i></div></div>
-            <div class="rack-slots" id="rack-rows" role="group" aria-label="Nine FARA registrant dossier units"></div>
-            <div class="rack-base"><span>ARRAY 001 / 09U</span><span>● RECORDS READY</span></div>
+  <header class="topbar">
+    <div class="brand" aria-label="FARA Core Nine"><span class="brand-mark" aria-hidden="true"><svg viewBox="0 0 24 24"><rect x="4" y="3.5" width="16" height="5" rx=".6"/><rect x="4" y="10" width="16" height="5" rx=".6"/><rect x="4" y="16.5" width="16" height="5" rx=".6"/><path d="M7 6h2M7 12.5h2M7 19h2"/></svg></span>FARA <em>/</em> NINE</div>
+    <div class="header-center">PUBLIC RECORDS INTERFACE // 001</div>
+    <div class="status"><i class="live-dot" aria-hidden="true"></i> 09 DOSSIERS</div>
+  </header>
+
+  <main class="page">
+    <div class="layout">
+      <section class="intro" aria-labelledby="page-title">
+        <div class="eyebrow">FILE SYSTEM / VOLUME 001</div>
+        <h1 id="page-title">BEHIND<br>THE<span class="outline">NAMES.</span><span class="files">The files.</span></h1>
+        <p class="lede">Nine organizations. Nine entry points. Explore the dossier directory through an interactive archive rack.</p>
+        <a class="cta" href="#vault" id="browse-index">BROWSE THE INDEX <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 12h15M13 6l6 6-6 6"/></svg></a>
+        <div class="summary">
+          <div class="summary-label">ARCHIVE SUMMARY</div>
+          <div class="stats">
+            <div class="stat"><b id="entry-count">09</b><span>INDEXED ENTRIES</span></div>
+            <div class="stat"><b>01</b><span>CENTRAL DIRECTORY</span></div>
           </div>
-          <div class="stage-hint">[ <b>SELECT A SERVER ROW</b> TO OPEN A DOSSIER ]</div>
         </div>
       </section>
-    </main>
-  </div>
+
+      <section class="vault" id="vault" aria-label="FARA registrant dossier rack">
+        <div class="vault-label">PRIMARY ARRAY&nbsp;<strong>FARA–09</strong></div>
+        <div class="rack">
+          <div class="rack-cap">
+            <div><div class="rack-title">THE VAULT <span>// 09</span></div><div class="rack-sub">DOSSIER RETRIEVAL SYSTEM</div></div>
+            <div class="cabinet">CABINET 001<i aria-hidden="true"></i></div>
+          </div>
+          <div class="rack-slots" id="rack-rows" role="group" aria-label="Nine FARA registrant dossier modules"></div>
+          <div class="rack-base"><span>RACK / 09U</span><span class="ready">INDEX READY</span></div>
+        </div>
+        <div class="stage-hint">[ SELECT A <b>SERVER MODULE</b> TO OPEN ITS RECORD ]</div>
+      </section>
+    </div>
+
+    <section class="preview" aria-labelledby="record-name" aria-live="polite">
+      <div class="eyebrow cyan">ACTIVE RECORD / PREVIEW</div>
+      <article class="record">
+        <div class="record-head"><span>ARCHIVE / ENTRY</span><span class="pos" id="record-pos">08 / 09</span></div>
+        <h2 id="record-name">PLUS Communications, LLC</h2>
+        <dl class="record-meta">
+          <div><dt>FARA REGISTRATION</dt><dd id="record-reg">#7107</dd></div>
+          <div><dt>MODULE</dt><dd id="record-unit">UNIT 08</dd></div>
+          <div><dt>RECORD FILE</dt><dd id="record-path">agents/plus-communications.html</dd></div>
+        </dl>
+        <button class="open-record" id="open-record" type="button">OPEN RECORD <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 12h15M13 6l6 6-6 6"/></svg></button>
+      </article>
+    </section>
+  </main>
+
   <dialog class="dossier-dialog" id="dossier-dialog" aria-labelledby="dialog-title">
     <div class="dialog-head"><div><div class="dialog-title" id="dialog-title">FARA dossier</div><div class="dialog-meta" id="dialog-meta"></div></div><button class="close-dialog" id="close-dialog" type="button">CLOSE ×</button></div>
     <iframe id="dossier-frame" title="FARA dossier"></iframe>
@@ -40,11 +196,24 @@
   <script>
   (()=>{'use strict';
     const records=[['Clock Tower X LLC','7649','clocktowerx.html'],['Bridges Partners LLC','7652','bridgepartners.html'],['Targeted Communications Global LLC','7553','agents/targeted-communications-global.html'],['Genesis 21 Consulting LLC','7631','agents/genesis-21.html'],['Show Faith by Works, LLC','7653','agents/show-faith-by-works.html'],['Davis Media NY LLC','7662','agents/davis-media-ny.html'],['MMGY Global, LLC','6492','agents/mmgy-global.html'],['PLUS Communications, LLC','7107','agents/plus-communications.html'],['Pearson Unlimited, LLC','7768','agents/pearson-unlimited.html']];
-    const rows=document.getElementById('rack-rows'),dialog=document.getElementById('dossier-dialog'),frame=document.getElementById('dossier-frame'),title=document.getElementById('dialog-title'),meta=document.getElementById('dialog-meta'),n2=value=>String(value).padStart(2,'0');
-    records.forEach(([label],index)=>{const unit=index+1,button=document.createElement('button');button.type='button';button.className='server-unit';button.dataset.unit=unit;button.setAttribute('aria-controls','dossier-dialog');button.setAttribute('aria-pressed','false');button.setAttribute('aria-label','Open '+label+' dossier');button.innerHTML='<span class="unit-num">'+n2(unit)+'</span><span class="unit-label">'+label+'</span><span class="unit-lights" aria-hidden="true"><i></i><i></i></span>';rows.append(button)});
-    function open(unit){const [label,registration,path]=records[unit-1];document.querySelectorAll('.server-unit').forEach(row=>row.setAttribute('aria-pressed',String(Number(row.dataset.unit)===unit)));title.textContent=label;meta.textContent='REGISTRATION #'+registration+' / UNIT '+n2(unit);frame.title=label+' FARA dossier';frame.src=path;dialog.showModal()}
-    rows.addEventListener('click',event=>{const row=event.target.closest('.server-unit');if(row)open(Number(row.dataset.unit))});rows.addEventListener('keydown',event=>{const row=event.target.closest('.server-unit');if(!row||!['ArrowDown','ArrowUp'].includes(event.key))return;event.preventDefault();const next=(Number(row.dataset.unit)-1+(event.key==='ArrowDown'?1:8))%9+1;rows.querySelector('[data-unit="'+next+'"]').focus()});
-    document.getElementById('close-dialog').addEventListener('click',()=>dialog.close());
+    const $=id=>document.getElementById(id),rows=$('rack-rows'),dialog=$('dossier-dialog'),frame=$('dossier-frame'),n2=v=>String(v).padStart(2,'0'),total=records.length;
+    let active=8;
+    $('entry-count').textContent=n2(total);
+    records.forEach(([label],i)=>{const unit=i+1,b=document.createElement('button');b.type='button';b.className='unit';b.dataset.unit=unit;b.setAttribute('aria-controls','dossier-dialog');b.setAttribute('aria-label','Open '+label+' dossier');
+      b.innerHTML='<span class="unit-num">'+n2(unit)+'</span><span class="unit-label"></span><span class="unit-hw" aria-hidden="true"><span class="vents"></span><span class="led"></span></span>';
+      b.querySelector('.unit-label').textContent=label;rows.append(b)});
+    function select(unit){active=unit;const [label,reg,path]=records[unit-1];
+      rows.querySelectorAll('.unit').forEach(r=>r.setAttribute('aria-current',String(Number(r.dataset.unit)===unit)));
+      $('record-pos').textContent=n2(unit)+' / '+n2(total);$('record-name').textContent=label;$('record-reg').textContent='#'+reg;$('record-unit').textContent='UNIT '+n2(unit);$('record-path').textContent=path}
+    function open(unit){select(unit);const [label,reg,path]=records[unit-1];$('dialog-title').textContent=label;$('dialog-meta').textContent='REGISTRATION #'+reg+' / UNIT '+n2(unit);frame.title=label+' FARA dossier';frame.src=path;dialog.showModal()}
+    rows.addEventListener('click',e=>{const r=e.target.closest('.unit');if(r)open(Number(r.dataset.unit))});
+    rows.addEventListener('focusin',e=>{const r=e.target.closest('.unit');if(r)select(Number(r.dataset.unit))});
+    rows.addEventListener('mouseover',e=>{const r=e.target.closest('.unit');if(r&&Number(r.dataset.unit)!==active)select(Number(r.dataset.unit))});
+    rows.addEventListener('keydown',e=>{const r=e.target.closest('.unit');if(!r||!['ArrowDown','ArrowUp'].includes(e.key))return;e.preventDefault();const next=(Number(r.dataset.unit)-1+(e.key==='ArrowDown'?1:total-1))%total+1;rows.querySelector('[data-unit="'+next+'"]').focus()});
+    $('open-record').addEventListener('click',()=>open(active));
+    $('browse-index').addEventListener('click',e=>{e.preventDefault();$('vault').scrollIntoView({block:'start'});rows.querySelector('[data-unit="1"]').focus({preventScroll:true})});
+    $('close-dialog').addEventListener('click',()=>dialog.close());
+    select(active);
   })();
   </script>
 <!-- Influence Atlas cinematic database entrance: add immediately before </body> -->
