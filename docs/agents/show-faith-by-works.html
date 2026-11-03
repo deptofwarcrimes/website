@@ -70,8 +70,7 @@
        - Web Routing & Redirects: Visual funnel of HTTP status transitions (301 -> 404) leading to Squarespace expired state.
        - AS53831 Network & Hosting: Anycast CDN density analysis, multi-tenant IP footprint, BGP prefixes, and latency stats.
        - BBOT Scan Telemetry Data: Fully interactive, filterable table of all 35 telemetry records with context on artifacts (login.windows.net, urlscan.io).
-       - Risk Analysis & Subdomain Takeover: In-depth evaluation of Subdomain Takeover vulnerability for ext-sq.squarespace.com and remediation steps.
-    3. Designed for logical exploration from executive summary to deep technical protocol analysis and actionable defense steps.
+    3. Designed for logical exploration from executive summary to deep technical protocol analysis.
 -->
 
 <!-- Visualization & Content Choices:
@@ -101,10 +100,6 @@
             <span class="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full text-xs font-medium bg-amber-500/10 text-amber-400 border border-amber-500/20">
                 <span class="w-2 h-2 rounded-full bg-amber-400 animate-pulse"></span>
                 Website Expired
-            </span>
-            <span class="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full text-xs font-medium bg-emerald-500/10 text-emerald-400 border border-emerald-500/20">
-                <span class="w-2 h-2 rounded-full bg-emerald-400"></span>
-                Takeover: Not Vulnerable
             </span>
         </div>
     </div>
@@ -185,9 +180,6 @@
             </button>
             <button onclick="switchTab('tab-events')" id="btn-tab-events" class="tab-btn px-4 py-2.5 text-sm font-medium rounded-lg text-slate-400 hover:text-slate-200 hover:bg-slate-800 transition">
                 🔍 Telemetry Data
-            </button>
-            <button onclick="switchTab('tab-security')" id="btn-tab-security" class="tab-btn px-4 py-2.5 text-sm font-medium rounded-lg text-slate-400 hover:text-slate-200 hover:bg-slate-800 transition">
-                🛡️ Risks & Takeover
             </button>
         </nav>
     </div>
@@ -475,72 +467,6 @@
                     Extracted by the <code class="font-mono text-sky-400">sslcert</code> module from Subject Alternative Names (SAN) in TLS certificates when querying the public URLScan API. These endpoints belong to external scanner infrastructure.
                 </p>
             </div>
-        </div>
-    </div>
-
-    <!-- TAB 6: RISK ANALYSIS & SUBDOMAIN TAKEOVER -->
-    <div id="tab-security" class="tab-content space-y-6 hidden">
-        <div class="bg-rose-950/40 border border-rose-800/60 rounded-xl p-4 text-rose-200 text-sm leading-relaxed">
-            <strong class="text-rose-400">Section Overview:</strong> Expert assessment of the Subdomain Takeover vector regarding the alias <code class="bg-rose-900/60 px-1 py-0.5 rounded font-mono text-rose-200">www.showfaithbyworks.com -> ext-sq.squarespace.com</code> and recommended remediation steps.
-        </div>
-
-        <!-- Vulnerability Status Card -->
-        <div class="bg-slate-900 p-6 rounded-xl border border-slate-800 shadow-sm space-y-4">
-            <div class="flex items-center justify-between flex-wrap gap-4 border-b border-slate-800 pb-4">
-                <div>
-                    <h3 class="text-lg font-bold text-slate-100">Subdomain Takeover Assessment</h3>
-                    <p class="text-xs text-slate-400">Target host alias: CNAME ext-sq.squarespace.com</p>
-                </div>
-                <span class="px-3 py-1 rounded-full text-xs font-bold bg-emerald-950 text-emerald-400 border border-emerald-800">
-                    NOT VULNERABLE
-                </span>
-            </div>
-
-            <div class="grid grid-cols-1 md:grid-cols-2 gap-6 text-sm">
-                <div class="space-y-2">
-                    <h4 class="font-bold text-slate-200">Why Exploitation Is Prevented:</h4>
-                    <ul class="list-disc list-inside text-slate-400 space-y-1 text-xs leading-relaxed">
-                        <li><strong>Tenant Lock:</strong> The response <em>"Website Expired"</em> indicates the domain is still linked to an expired Squarespace account, preventing third-party domain claiming.</li>
-                        <li><strong>Mandatory Ownership Verification:</strong> Squarespace requires setting a custom TXT/CNAME record in Google Cloud DNS to verify domain control before binding to a new site.</li>
-                        <li>Validated against the official <code class="text-sky-400">can-i-take-over-xyz</code> repository rules.</li>
-                    </ul>
-                </div>
-                <div class="space-y-2">
-                    <h4 class="font-bold text-slate-200">Residual Operational Risks:</h4>
-                    <ul class="list-disc list-inside text-slate-400 space-y-1 text-xs leading-relaxed">
-                        <li><strong>Brand Reputation Impact:</strong> Displaying a public "Website Expired" notice degrades user trust and organization credibility.</li>
-                        <li><strong>Recon Signal for Attackers:</strong> Orphaned DNS entries signal inactive management, prompting threat actors to probe for credential leaks.</li>
-                    </ul>
-                </div>
-            </div>
-        </div>
-
-        <!-- Step-by-Step Remediation Plan -->
-        <div class="bg-slate-900 p-6 rounded-xl border border-slate-800 shadow-sm space-y-4">
-            <h3 class="text-base font-bold text-slate-100">DNS Perimeter Cleanup Action Plan</h3>
-            <ol class="space-y-3 text-xs text-slate-300">
-                <li class="flex items-start gap-3 p-3 rounded-lg bg-slate-950 border border-slate-800">
-                    <span class="flex-shrink-0 w-6 h-6 rounded-full bg-sky-600 text-white flex items-center justify-center font-bold">1</span>
-                    <div>
-                        <strong class="text-slate-100">Remove Dangling DNS Records:</strong>
-                        <p class="text-slate-400 mt-0.5">In Google Cloud DNS console, remove the dangling CNAME record for <code class="font-mono text-sky-400">www</code> (ext-sq.squarespace.com) and any Apex A records pointing to AS53831.</p>
-                    </div>
-                </li>
-                <li class="flex items-start gap-3 p-3 rounded-lg bg-slate-950 border border-slate-800">
-                    <span class="flex-shrink-0 w-6 h-6 rounded-full bg-sky-600 text-white flex items-center justify-center font-bold">2</span>
-                    <div>
-                        <strong class="text-slate-100">Preserve Corporate Mail Profile:</strong>
-                        <p class="text-slate-400 mt-0.5">Retain all 5 Google Workspace MX records and NS authoritative servers if corporate email remains active.</p>
-                    </div>
-                </li>
-                <li class="flex items-start gap-3 p-3 rounded-lg bg-slate-950 border border-slate-800">
-                    <span class="flex-shrink-0 w-6 h-6 rounded-full bg-sky-600 text-white flex items-center justify-center font-bold">3</span>
-                    <div>
-                        <strong class="text-slate-100">Configure Managed Web Parking (Optional):</strong>
-                        <p class="text-slate-400 mt-0.5">Redirect web traffic to an internal, static maintenance page served with a valid TLS certificate.</p>
-                    </div>
-                </li>
-            </ol>
         </div>
     </div>
 
