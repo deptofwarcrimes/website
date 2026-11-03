@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>OSINT Analysis: showfaithbyworks.com | BBOT Telemetry Dashboard</title>
+    <title>Show Faith by Works, LLC | Public FARA Record & OSINT Dashboard</title>
     <!-- Tailwind CSS CDN -->
     <script src="https://cdn.tailwindcss.com"></script>
     <!-- Chart.js CDN -->
@@ -91,10 +91,10 @@
             <span class="inline-flex items-center justify-center w-9 h-9 rounded-lg bg-sky-600 text-white font-bold text-lg shadow-sm">B</span>
             <div>
                 <h1 class="font-bold text-base sm:text-lg leading-tight flex items-center gap-2 text-slate-100">
-                    OSINT Analysis: showfaithbyworks.com
-                    <span class="text-xs font-normal px-2 py-0.5 rounded bg-sky-950 text-sky-400 border border-sky-800">BBOT 2.x</span>
+                    Show Faith by Works, LLC
+                    <span class="text-xs font-normal px-2 py-0.5 rounded bg-sky-950 text-sky-400 border border-sky-800">DOJ FARA #7653</span>
                 </h1>
-                <p class="text-xs text-slate-400">Scan Session: <span class="text-slate-300 font-mono">derogatory_diana</span> (SCAN:469f471b...)</p>
+                <p class="text-xs text-slate-400">Public-record dossier • FARA filings, public website context, and archived technical telemetry</p>
             </div>
         </div>
         <div class="flex items-center gap-2">
@@ -111,6 +111,33 @@
 </header>
 
 <main class="flex-1 max-w-7xl w-full mx-auto px-4 sm:px-6 lg:px-8 py-6 space-y-6">
+
+    <!-- Public FARA record: primary DOJ filing information, updated independently of the archived scan below. -->
+    <section aria-labelledby="fara-record-heading" class="bg-sky-950/35 border border-sky-800/70 rounded-xl p-5 sm:p-6 shadow-sm">
+        <div class="flex flex-col lg:flex-row lg:items-start lg:justify-between gap-5">
+            <div class="max-w-3xl">
+                <p class="text-xs font-mono uppercase tracking-[0.18em] text-sky-400 mb-2">Public filing record / U.S. Department of Justice</p>
+                <h2 id="fara-record-heading" class="text-xl sm:text-2xl font-bold text-slate-100">FARA registration 7653</h2>
+                <p class="mt-2 text-sm leading-relaxed text-slate-300">Show Faith by Works, LLC filed a registration statement received by the DOJ FARA Registration Unit on September 27, 2025. The filing identifies <strong class="text-white">Israel – Ministry of Foreign Affairs</strong> as the foreign principal and describes the registrant's regular business as “Pro-Israel outreach and marketing to Christians.”</p>
+            </div>
+            <div class="shrink-0 flex flex-wrap gap-2">
+                <a href="https://efile.fara.gov/ords/fara/f?p=1381%3A200%3A%3A%3ANO%3A%3AP200_REG_NUMBER%3A7653" target="_blank" rel="noopener noreferrer" class="inline-flex items-center px-3 py-2 rounded-lg bg-sky-700 hover:bg-sky-600 text-white text-xs font-semibold transition">DOJ filing index ↗</a>
+                <a href="https://efile.fara.gov/docs/7653-Registration-Statement-20250927-1.pdf" target="_blank" rel="noopener noreferrer" class="inline-flex items-center px-3 py-2 rounded-lg bg-slate-800 hover:bg-slate-700 border border-slate-600 text-slate-100 text-xs font-semibold transition">Registration statement ↗</a>
+            </div>
+        </div>
+
+        <div class="mt-5 grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-4 gap-3 text-sm">
+            <div class="rounded-lg border border-slate-700 bg-slate-950/70 p-4"><p class="text-xs uppercase tracking-wide text-slate-500">Registrant</p><p class="mt-1 font-semibold text-slate-100">Show Faith by Works, LLC</p><p class="mt-1 text-xs text-slate-400">Registration no. 7653</p></div>
+            <div class="rounded-lg border border-slate-700 bg-slate-950/70 p-4"><p class="text-xs uppercase tracking-wide text-slate-500">Foreign principal</p><p class="mt-1 font-semibold text-slate-100">Israel – Ministry of Foreign Affairs</p><p class="mt-1 text-xs text-slate-400">Israel • identified in the filing</p></div>
+            <div class="rounded-lg border border-slate-700 bg-slate-950/70 p-4"><p class="text-xs uppercase tracking-wide text-slate-500">Registration received</p><p class="mt-1 font-semibold text-slate-100">September 27, 2025</p><p class="mt-1 text-xs text-slate-400">DOJ FARA Registration Unit</p></div>
+            <div class="rounded-lg border border-slate-700 bg-slate-950/70 p-4"><p class="text-xs uppercase tracking-wide text-slate-500">Latest listed filing</p><p class="mt-1 font-semibold text-slate-100">October 7, 2026</p><p class="mt-1 text-xs text-slate-400">Informational Materials</p></div>
+        </div>
+
+        <div class="mt-5 grid grid-cols-1 lg:grid-cols-2 gap-4 text-sm">
+            <div class="rounded-lg border border-slate-700 bg-slate-950/55 p-4"><h3 class="font-semibold text-slate-100">What the registration discloses</h3><ul class="mt-2 space-y-1.5 text-slate-300 list-disc pl-5"><li>The filing identifies Chad J. Schnitger as the responsible individual and describes a California-based LLC.</li><li>The registration describes Christian outreach in the Western United States and lists informational materials such as advertising campaigns, email, a website, and social media.</li><li>The statement identifies English and Spanish as languages for informational materials and lists churches, Christian colleges, and Christian organizations among the intended audiences.</li></ul></div>
+            <div class="rounded-lg border border-amber-800/70 bg-amber-950/25 p-4"><h3 class="font-semibold text-amber-200">How to read this record</h3><p class="mt-2 text-amber-100/85 leading-relaxed">FARA filings are public disclosures made under federal law. A registration or a filing is not, by itself, a finding of wrongdoing. This page summarizes filed information and links directly to the DOJ record so readers can review the original documents and their dates.</p><p class="mt-2 text-xs text-amber-100/70">Public website context: <a href="https://www.showfaithbyworks.com/" target="_blank" rel="noopener noreferrer" class="underline hover:text-white">showfaithbyworks.com ↗</a></p></div>
+        </div>
+    </section>
 
     <!-- KPI Summary Cards -->
     <section aria-label="Key Summary Metrics" class="grid grid-cols-2 md:grid-cols-5 gap-4">
