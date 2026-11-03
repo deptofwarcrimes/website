@@ -129,6 +129,10 @@
     .link-path.geo { stroke: #0284c7; stroke-dasharray: 4 4; }
     .link-path.sms { stroke: var(--accent-amber); }
     .link-path.reported { stroke: var(--accent-rose); stroke-dasharray: 2 4; }
+    .link-path.official { stroke: var(--accent-emerald); }
+    .link-path.technical { stroke: var(--accent-cyan); stroke-dasharray: 3 3; }
+    .link-path.archive { stroke: var(--accent-amber); stroke-dasharray: 8 3; }
+    .link-path.press { stroke: var(--accent-rose); stroke-dasharray: 2 4; }
 
     .link-text {
       font-family: var(--font-mono);
@@ -259,10 +263,13 @@
       <span class="brand-pill">Topology Explorer</span>
     </div>
     <div class="controls">
-      <button class="btn active" onclick="filterGraph('all')">View All</button>
-      <button class="btn" onclick="filterGraph('fara')">FARA Lineage</button>
-      <button class="btn" onclick="filterGraph('geo')">GEO Mesh</button>
-      <button class="btn" onclick="filterGraph('sms')">SMS / Distribution</button>
+      <button class="btn active" onclick="filterGraph('all', this)">View All</button>
+      <button class="btn" onclick="filterGraph('fara', this)">FARA Lineage</button>
+      <button class="btn" onclick="filterGraph('geo', this)">GEO Mesh</button>
+      <button class="btn" onclick="filterGraph('sms', this)">SMS / Distribution</button>
+      <button class="btn" onclick="filterGraph('official', this)">Official Records</button>
+      <button class="btn" onclick="filterGraph('technical', this)">Technical Links</button>
+      <button class="btn" onclick="filterGraph('pressarchive', this)">Press / Archive</button>
       <button class="btn" onclick="resetZoom()">Reset View</button>
     </div>
   </header>
@@ -341,7 +348,21 @@
             <span class="legend-dot" style="background: #eab308;"></span>
             <span>Campaign Partnerships</span>
           </div>
+          <div class="legend-item">
+            <span class="legend-dot" style="background: var(--accent-emerald);"></span>
+            <span>Official record / nonprofit and corporate links</span>
+          </div>
+          <div class="legend-item">
+            <span class="legend-dot" style="background: var(--accent-rose);"></span>
+            <span>Press reporting / contextual links</span>
+          </div>
         </div>
+      </div>
+
+      <div class="meta-card">
+        <span class="meta-tag" style="color: var(--accent-emerald);">EVIDENCE STANDARD / 01 NOV 2026</span>
+        <div class="meta-prop-val">Today Is America, Influencing America, and Influenceable links are marked in the chart as <strong>official record</strong>, <strong>technical</strong>, <strong>press reporting</strong>, or <strong>web archive</strong>. Home addresses and personal contact data are excluded.</div>
+        <div class="meta-prop" style="font-size:0.75rem;color:var(--text-muted);">Primary references: IRS e-Postcard data for EIN 86-3829359; Texas Tribune reporting (Aug. 14, 2023); Texas Ethics Commission campaign-finance search; Internet Archive captures; and the cited public-domain scans.</div>
       </div>
     </aside>
   </div>
@@ -383,7 +404,23 @@
 
       // External Political / Reported Link
       { id: 126, label: "Campaign Nucleus", cat: "Campaign Service", role: "Platform Founded by B. Parscale", color: "#eab308", x: 130, y: 490, r: 12, aux: "Reported Digital Campaign Provider" },
-      { id: 125, label: "Influenceable LLC", cat: "Influencer Marketing", role: "Conservative Influencer Recruiter", color: "#eab308", x: 130, y: 590, r: 12, aux: "Texas Tribune reported promotional partnership" }
+      { id: 125, label: "Influenceable LLC", cat: "Influencer Marketing", role: "Conservative Influencer Recruiter", color: "#eab308", x: 130, y: 590, r: 12, aux: "Texas Tribune reported promotional partnership" },
+
+      // Today Is America / Influencing America / Influenceable evidence cluster
+      { id: 201, label: "Camron Rafizadeh", cat: "Person", role: "Today Is America / Influenceable executive", color: "var(--accent-emerald)", x: 220, y: 710, r: 13, aux: "Principal officer listed on 2021 990-N; CEO role reported publicly" },
+      { id: 202, label: "Liam Rafizadeh", cat: "Person", role: "Today Is America / Influenceable co-founder", color: "var(--accent-emerald)", x: 90, y: 760, r: 12, aux: "Role identified in Texas Tribune reporting and archived site content" },
+      { id: 203, label: "Tim Korshunov", cat: "Person", role: "Influenceable development lead", color: "var(--accent-emerald)", x: 350, y: 780, r: 11, aux: "Role reported by Texas Tribune" },
+      { id: 204, label: "Today Is America Inc.", cat: "Organization", role: "Social-media company", color: "var(--accent-emerald)", x: 330, y: 670, r: 14, aux: "Founded 2019; press-reported Rafizadeh brothers link" },
+      { id: 205, label: "Today Is America Action", cat: "501(c)(4)", role: "Political nonprofit", color: "var(--accent-emerald)", x: 480, y: 710, r: 14, aux: "EIN 86-3829359 · 2021 Form 990-N principal officer record" },
+      { id: 206, label: "Influencing America", cat: "Marketing Site", role: "Archived marketing site", color: "var(--accent-amber)", x: 510, y: 820, r: 13, aux: "Archived 2021–22 content lists Today Is America as client" },
+      { id: 207, label: "influencingamerica.com", cat: "Domain", role: "Archived Wix site; later parked", color: "var(--accent-cyan)", x: 650, y: 800, r: 11, aux: "Shared SPF and archived Wix identifier with todayisamerica.com" },
+      { id: 208, label: "todayisamerica.com", cat: "Domain", role: "Today Is America web property", color: "var(--accent-cyan)", x: 640, y: 680, r: 11, aux: "Registered Apr. 2020 · shared GoDaddy SPF/Wix archival markers" },
+      { id: 209, label: "Influenceable LLC", cat: "Influencer Marketing", role: "Paid-influencer agency", color: "#eab308", x: 790, y: 740, r: 14, aux: "Formed Aug. 2022 (Delaware); press-reported leadership and client activity" },
+      { id: 210, label: "influenceable.io", cat: "Domain", role: "Influenceable web property", color: "var(--accent-cyan)", x: 920, y: 720, r: 11, aux: "Different technical stack from the two older domains" },
+      { id: 211, label: "Republican Hype House", cat: "Social Account", role: "TikTok account", color: "var(--accent-rose)", x: 90, y: 865, r: 11, aux: "Press reporting attributes account operation to Liam Rafizadeh" },
+      { id: 212, label: "Defend Texas Liberty PAC", cat: "Political Committee", role: "Reported payer", color: "var(--accent-rose)", x: 790, y: 860, r: 13, aux: "Texas Tribune reported $18,000 paid to similarly named Influencable LLC" },
+      { id: 213, label: "Campaign Nucleus", cat: "Campaign Service", role: "Listed partner", color: "#eab308", x: 930, y: 850, r: 12, aux: "Named as a partner in archived Influenceable content" },
+      { id: 214, label: "Film Campaign Clients", cat: "Case Studies", role: "Self-reported marketing clients", color: "var(--accent-amber)", x: 780, y: 960, r: 12, aux: "Archived case studies cite film campaigns; not independently audited here" }
     ];
 
     // Topology Link Definitions
@@ -420,7 +457,27 @@
 
       // External Contextual Connections
       { s: 43, t: 126, lbl: "FOUNDER", type: "reported", marker: "arrow-reported" },
-      { s: 126, t: 125, lbl: "REPORTED PARTNERSHIP", type: "reported", marker: "arrow-reported" }
+      { s: 126, t: 125, lbl: "REPORTED PARTNERSHIP", type: "reported", marker: "arrow-reported" },
+
+      // Today Is America / Influenceable evidence links. Labels identify the evidence category.
+      { s: 201, t: 205, lbl: "OFFICIAL • 990-N PRINCIPAL OFFICER", type: "official", marker: "arrow-infra" },
+      { s: 201, t: 204, lbl: "PRESS • CO-FOUNDED", type: "press", marker: "arrow-reported" },
+      { s: 202, t: 204, lbl: "PRESS • CO-FOUNDER", type: "press", marker: "arrow-reported" },
+      { s: 202, t: 211, lbl: "PRESS • RAN ACCOUNT", type: "press", marker: "arrow-reported" },
+      { s: 201, t: 206, lbl: "ARCHIVE • CONTACT MAILBOX", type: "archive", marker: "arrow-sms" },
+      { s: 202, t: 206, lbl: "ARCHIVE • MAILBOX / AUTHOR", type: "archive", marker: "arrow-sms" },
+      { s: 201, t: 209, lbl: "PRESS • CEO", type: "press", marker: "arrow-reported" },
+      { s: 202, t: 209, lbl: "PRESS • CO-FOUNDER", type: "press", marker: "arrow-reported" },
+      { s: 203, t: 209, lbl: "PRESS • DEVELOPMENT", type: "press", marker: "arrow-reported" },
+      { s: 203, t: 204, lbl: "PRESS • EMPLOYEE", type: "press", marker: "arrow-reported" },
+      { s: 205, t: 208, lbl: "ARCHIVE • SITE FOOTER", type: "archive", marker: "arrow-sms" },
+      { s: 206, t: 205, lbl: "ARCHIVE • LISTED CLIENT", type: "archive", marker: "arrow-sms" },
+      { s: 206, t: 207, lbl: "TECHNICAL • DOMAIN", type: "technical", marker: "arrow-infra" },
+      { s: 209, t: 210, lbl: "TECHNICAL • DOMAIN", type: "technical", marker: "arrow-infra" },
+      { s: 208, t: 207, lbl: "TECHNICAL • SHARED SPF / WIX ID", type: "technical", marker: "arrow-infra" },
+      { s: 209, t: 213, lbl: "ARCHIVE • PARTNER LISTING", type: "archive", marker: "arrow-sms" },
+      { s: 212, t: 209, lbl: "PRESS • $18K REPORTED PAYMENT", type: "press", marker: "arrow-reported" },
+      { s: 214, t: 209, lbl: "ARCHIVE • CASE STUDIES", type: "archive", marker: "arrow-sms" }
     ];
 
     const svg = document.getElementById("canvas");
@@ -519,14 +576,16 @@
       document.getElementById("ent-rel").innerHTML = summary || "No direct links in focused view.";
     }
 
-    function filterGraph(type) {
+    function filterGraph(type, button) {
       document.querySelectorAll(".controls .btn").forEach(b => b.classList.remove("active"));
-      event.target.classList.add("active");
+      if (button) button.classList.add("active");
 
       const paths = document.querySelectorAll(".link-path");
       paths.forEach(p => {
         if (type === "all") {
           p.style.opacity = "1";
+        } else if (type === "pressarchive") {
+          p.style.opacity = (p.classList.contains("press") || p.classList.contains("archive")) ? "1" : "0.08";
         } else {
           p.style.opacity = p.classList.contains(type) ? "1" : "0.08";
         }
