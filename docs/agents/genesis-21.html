@@ -1,1 +1,940 @@
-<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Genesis 21 Consulting LLC — FARA dossier</title><link rel="stylesheet" href="agent.css"></head><body><div class="shell"><header class="top"><a class="brand" href="../index.html">Influence Atlas / FARA records</a><a class="back" href="../index.html">← All registrants</a></header><main><div class="eyebrow">FARA registrant dossier</div><h1>Genesis 21 Consulting LLC</h1><div class="record">Registration #7631</div><p class="intro">This page is a source-first starting point for the public FARA record. It does not make claims beyond the linked government filing index.</p><section class="panel"><h2>Primary public record</h2><p>Use the U.S. Department of Justice FARA filing index to inspect the registration statement, exhibits, amendments, supplemental statements, and informational materials.</p><a class="action" href="https://efile.fara.gov/ords/fara/f?p=1381:200:::NO::P200_REG_NUMBER:7631" target="_blank" rel="noopener noreferrer">Open DOJ FARA record ↗</a></section><p class="note">Source: U.S. Department of Justice FARA public records. Review filing dates and the underlying document before drawing conclusions.</p></main></div></body></html>
+<!DOCTYPE html>
+<html lang="en" class="scroll-smooth dark">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Genesis 21 & Project 545 Analysis</title>
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Chart.js CDN -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script>
+        tailwind.config = {
+            darkMode: 'class',
+            theme: {
+                extend: {
+                    colors: {
+                        darkbg: {
+                            950: '#090d16',
+                            900: '#0f172a',
+                            800: '#1e293b',
+                            700: '#334155'
+                        },
+                        accent: {
+                            gold: '#f59e0b',
+                            goldLight: '#fbbf24',
+                            crimson: '#ef4444',
+                            emerald: '#10b981',
+                            cyan: '#06b6d4',
+                            indigo: '#6366f1'
+                        }
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        .chart-container {
+            position: relative;
+            width: 100%;
+            max-width: 650px;
+            margin-left: auto;
+            margin-right: auto;
+            height: 340px;
+            max-height: 400px;
+        }
+        @media (min-width: 768px) {
+            .chart-container {
+                height: 360px;
+            }
+        }
+        .custom-scrollbar::-webkit-scrollbar {
+            width: 6px;
+            height: 6px;
+        }
+        .custom-scrollbar::-webkit-scrollbar-track {
+            background: #0f172a;
+        }
+        .custom-scrollbar::-webkit-scrollbar-thumb {
+            background: #334155;
+            border-radius: 3px;
+        }
+        .custom-scrollbar::-webkit-scrollbar-thumb:hover {
+            background: #475569;
+        }
+    </style>
+</head>
+<body class="bg-darkbg-950 text-slate-200 font-sans antialiased leading-relaxed min-h-screen flex flex-col">
+
+    <!-- Chosen Palette: Sovereign Midnight & Tactical Gold (Dark Slate 950 base, Deep Slate 900 containers, Amber/Gold and Crimson visual indicators) -->
+
+    <!-- Application Structure Plan:
+        1. Sticky Header & Global Navigation: Dark navigation bar with gold accents, jump-links, FARA Disclaimer launcher.
+        2. Section 1: Executive Dashboard & Legal Status: High-contrast metric cards with status pills, context disclaimer banner, and DOJ index popup trigger.
+        3. Section 2: Principal & Dual-Jurisdiction Corporate Structure: Styled HTML nodes (Delaware LLC vs. Cyprus ISAIAH 60 LTD) with interactive timeline for Yitzhak Tzahi Daboush's career trajectory.
+        4. Section 3: Project 545 Ecosystem Matrix: Chart.js visualization with dark gridlines/text, toggleable bar/doughnut modes, and interactive contractor cards with profile drawer modal.
+        5. Section 4: Operational Typologies & Tactical Deep Dive: Dynamic dark tabs detailing AI Framing, Megachurch Geofencing, and The Esther Project ($7k/post).
+        6. Section 5: FARA & Regulatory Compliance Tracker: Interactive 6-month supplemental delinquency timeline, statutory comparison cards (FARA vs 18 U.S.C. § 951 vs 28 C.F.R. § 5.402).
+        7. Interactive Modals: Dark-themed popups for FARA scope disclaimers, DOJ filing index, and contractor profile details.
+    -->
+
+    <!-- Visualization & Content Choices:
+        - Goal 1 (Inform/Status): Summary metric cards for FARA #7631, $150M Project 545 budget, initial oral agreement status, and delinquency status.
+        - Goal 2 (Compare Budgets): Chart.js horizontal bar & doughnut charts with adapted dark-mode tooltips and axes comparing disclosed budgets across Project 545 registrants.
+        - Goal 3 (Timeline): High-contrast timeline mapping Daboush's career shift from IDF military journalist to advisor, corporate filings, and FARA milestones.
+        - Goal 4 (Organize Structure): Dual-jurisdiction network diagram using styled HTML flex/grid cards to map Delaware LLC, Cyprus ISAIAH 60 LTD, Shoham HQ, and Legal Agent.
+        - Goal 5 (Tactical Analysis): Multi-tab viewer analyzing execution typologies with glowing indicator tags.
+        - Confirming: NO SVG graphics, NO Mermaid JS. All visuals constructed using Chart.js HTML5 Canvas or styled Tailwind HTML elements.
+    -->
+
+    <!-- CONFIRMATION: NO SVG graphics used. NO Mermaid JS used. -->
+
+    <!-- Top Navigation Bar -->
+    <header class="sticky top-0 z-40 bg-darkbg-900/90 backdrop-blur-md text-slate-100 shadow-lg border-b border-darkbg-700">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-16 flex items-center justify-between">
+            <div class="flex items-center space-x-3">
+                <div class="w-8 h-8 rounded-lg bg-gradient-to-br from-amber-500 to-amber-600 text-darkbg-950 font-black flex items-center justify-center text-sm shadow-md shadow-amber-500/20">
+                    G21
+                </div>
+                <div>
+                    <h1 class="text-base sm:text-lg font-bold tracking-tight text-white leading-tight">Genesis 21 & Project 545</h1>
+                    <p class="text-xs text-slate-400 hidden sm:block">FARA Registrant No. 7631 Forensic & Institutional Analysis</p>
+                </div>
+            </div>
+
+            <!-- Navigation Links -->
+            <nav class="hidden md:flex space-x-1 lg:space-x-3 text-xs lg:text-sm font-medium">
+                <a href="#dashboard" class="px-3 py-2 rounded-md hover:bg-darkbg-800 transition text-slate-300 hover:text-white">Overview</a>
+                <a href="#principal" class="px-3 py-2 rounded-md hover:bg-darkbg-800 transition text-slate-300 hover:text-white">Principal & Entities</a>
+                <a href="#ecosystem" class="px-3 py-2 rounded-md hover:bg-darkbg-800 transition text-slate-300 hover:text-white">Project 545 Matrix</a>
+                <a href="#tactics" class="px-3 py-2 rounded-md hover:bg-darkbg-800 transition text-slate-300 hover:text-white">Operational Tactics</a>
+                <a href="#compliance" class="px-3 py-2 rounded-md hover:bg-darkbg-800 transition text-slate-300 hover:text-white">FARA & Legal Tracker</a>
+            </nav>
+
+            <div class="flex items-center space-x-2">
+                <button onclick="toggleDisclaimerModal()" class="px-3 py-1.5 text-xs bg-amber-500/10 text-amber-400 border border-amber-500/30 rounded-lg hover:bg-amber-500/20 transition font-semibold shadow-sm">
+                    Disclaimer & Scope
+                </button>
+            </div>
+        </div>
+    </header>
+
+    <!-- Main Content Container -->
+    <main class="flex-grow max-w-7xl w-full mx-auto px-4 sm:px-6 lg:px-8 py-8 space-y-12">
+
+        <!-- Context Banner & Disclosures -->
+        <div class="bg-amber-950/40 border-l-4 border-amber-500 p-4 rounded-r-lg shadow-md text-amber-200 text-xs sm:text-sm backdrop-blur-sm border-t border-b border-r border-amber-500/20">
+            <div class="flex items-start justify-between">
+                <div>
+                    <span class="font-bold uppercase tracking-wider text-amber-400">Legal Context & Scope Disclaimer:</span>
+                    <p class="mt-1 text-slate-300">
+                        Recon Genesis 21 Consulting LLC is registered under FARA as <strong class="text-white">Registrant No. 7631</strong> (August 11, 2025). This database records a disclosed proposed relationship and scope of work with the Israeli Ministry of Foreign Affairs / Government Advertising Bureau (LAPAM). <em class="text-slate-400">FARA registration constitutes public disclosure of an agency relationship; it does not constitute proof that specific outreach occurred or that any unlawful conduct took place.</em>
+                    </p>
+                </div>
+                <button onclick="this.parentElement.parentElement.remove()" class="ml-4 text-amber-400 hover:text-amber-200 font-bold text-lg">&times;</button>
+            </div>
+        </div>
+
+        <!-- SECTION 1: EXECUTIVE DASHBOARD -->
+        <section id="dashboard" class="space-y-6">
+            <div class="border-b border-darkbg-800 pb-4">
+                <h2 class="text-2xl font-bold text-white tracking-tight">Executive Summary & FARA Registrant Metrics</h2>
+                <p class="text-sm text-slate-400 mt-1">
+                    An overview of Genesis 21 Consulting LLC, its disclosed foreign principal, corporate registration dates, and compliance posture within the broader Project 545 ecosystem.
+                </p>
+            </div>
+
+            <!-- Key Metric Cards Grid -->
+            <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+                <!-- Card 1 -->
+                <div class="bg-darkbg-900 p-5 rounded-xl border border-darkbg-700 shadow-lg hover:border-slate-600 transition group">
+                    <div class="flex justify-between items-start">
+                        <span class="text-xs font-semibold uppercase tracking-wider text-slate-400">FARA ID & Date</span>
+                        <span class="px-2 py-0.5 text-xs font-bold rounded bg-blue-500/20 text-blue-400 border border-blue-500/30">DOJ Registered</span>
+                    </div>
+                    <div class="mt-3">
+                        <div class="text-2xl font-black text-white group-hover:text-amber-400 transition">No. 7631</div>
+                        <div class="text-xs text-slate-400 mt-1">Registered: <strong class="text-slate-200">August 11, 2025</strong></div>
+                    </div>
+                    <div class="mt-4 pt-3 border-t border-darkbg-800 text-xs text-slate-400">
+                        Delaware LLC Formed: May 21, 2025
+                    </div>
+                </div>
+
+                <!-- Card 2 -->
+                <div class="bg-darkbg-900 p-5 rounded-xl border border-darkbg-700 shadow-lg hover:border-slate-600 transition group">
+                    <div class="flex justify-between items-start">
+                        <span class="text-xs font-semibold uppercase tracking-wider text-slate-400">Foreign Principal</span>
+                        <span class="px-2 py-0.5 text-xs font-bold rounded bg-indigo-500/20 text-indigo-400 border border-indigo-500/30">State Principal</span>
+                    </div>
+                    <div class="mt-3">
+                        <div class="text-lg font-bold text-white group-hover:text-amber-400 transition leading-snug">Israeli MFA / LAPAM</div>
+                        <div class="text-xs text-slate-400 mt-1">Govt Advertising Bureau & MFA</div>
+                    </div>
+                    <div class="mt-4 pt-3 border-t border-darkbg-800 text-xs text-slate-400">
+                        Direct State Engagement
+                    </div>
+                </div>
+
+                <!-- Card 3 -->
+                <div class="bg-darkbg-900 p-5 rounded-xl border border-darkbg-700 shadow-lg hover:border-slate-600 transition group">
+                    <div class="flex justify-between items-start">
+                        <span class="text-xs font-semibold uppercase tracking-wider text-slate-400">Parent Project Budget</span>
+                        <span class="px-2 py-0.5 text-xs font-bold rounded bg-amber-500/20 text-amber-400 border border-amber-500/30">Project 545</span>
+                    </div>
+                    <div class="mt-3">
+                        <div class="text-2xl font-black text-white group-hover:text-amber-400 transition">₪545 Million</div>
+                        <div class="text-xs text-slate-400 mt-1">~$145M – $150M USD Total Pool</div>
+                    </div>
+                    <div class="mt-4 pt-3 border-t border-darkbg-800 text-xs text-slate-400">
+                        Genesis 21 Contract: Oral (Fees TBD)
+                    </div>
+                </div>
+
+                <!-- Card 4 -->
+                <div class="bg-darkbg-900 p-5 rounded-xl border border-darkbg-700 shadow-lg hover:border-slate-600 transition group">
+                    <div class="flex justify-between items-start">
+                        <span class="text-xs font-semibold uppercase tracking-wider text-slate-400">DOJ Compliance Status</span>
+                        <span class="px-2 py-0.5 text-xs font-bold rounded bg-rose-500/20 text-rose-400 border border-rose-500/30 animate-pulse">Delinquent</span>
+                    </div>
+                    <div class="mt-3">
+                        <div class="text-lg font-bold text-rose-400">Missing Supplement</div>
+                        <div class="text-xs text-slate-400 mt-1">Due: March 2026 (6-Mo Period)</div>
+                    </div>
+                    <div class="mt-4 pt-3 border-t border-darkbg-800 text-xs text-slate-400 flex justify-between items-center">
+                        <span>4 Documents On Index</span>
+                        <button onclick="openDOJModal()" class="text-amber-400 hover:text-amber-300 font-semibold underline underline-offset-2">View List</button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Overview Context Box -->
+            <div class="bg-darkbg-900 rounded-xl p-6 border border-darkbg-700 shadow-lg space-y-4">
+                <h3 class="text-lg font-bold text-white flex items-center space-x-2">
+                    <span class="w-2.5 h-2.5 rounded-full bg-amber-500"></span>
+                    <span>Operational Context & Background</span>
+                </h3>
+                <p class="text-sm text-slate-300 leading-relaxed">
+                    Following late-2023 geopolitical narrative challenges, the Israeli Ministry of Foreign Affairs (MFA), under Chief of Staff Eran Shayovich, launched <strong class="text-white font-semibold">"Project 545"</strong>—a 545 million shekel ($150 million) program to overhaul international public diplomacy. Rather than expanding internal state channels, Project 545 outsourced strategic digital operations to American micro-contractors and major communications agencies like Havas Media. Genesis 21 Consulting LLC was incorporated in Delaware by Yitzhak Tzahi Daboush in May 2025 to execute strategic messaging, influencer outreach, and digital strategy.
+                </p>
+                <div class="flex flex-wrap gap-3 pt-2">
+                    <button onclick="switchTab('ecosystem')" class="px-4 py-2 bg-amber-500 hover:bg-amber-600 text-darkbg-950 rounded-lg text-xs font-bold transition shadow-md shadow-amber-500/10">
+                        Explore Full $150M Network
+                    </button>
+                    <button onclick="switchTab('principal')" class="px-4 py-2 bg-darkbg-800 hover:bg-darkbg-700 text-slate-200 border border-darkbg-700 rounded-lg text-xs font-bold transition">
+                        View Daboush Background
+                    </button>
+                </div>
+            </div>
+        </section>
+
+        <!-- SECTION 2: PRINCIPAL OPERATOR & CORPORATE ARCHITECTURE -->
+        <section id="principal" class="space-y-6">
+            <div class="border-b border-darkbg-800 pb-4">
+                <h2 class="text-2xl font-bold text-white tracking-tight">Principal Operator & Multi-Jurisdictional Architecture</h2>
+                <p class="text-sm text-slate-400 mt-1">
+                    Tracing Yitzhak Tzahi Daboush’s transition from IDF military journalist and senior ministerial advisor to director of entities in Delaware, Israel, and Cyprus.
+                </p>
+            </div>
+
+            <div class="grid grid-cols-1 lg:grid-cols-12 gap-6">
+                <!-- Career Trajectory Column (5 Cols) -->
+                <div class="lg:col-span-5 bg-darkbg-900 p-6 rounded-xl border border-darkbg-700 shadow-lg flex flex-col justify-between">
+                    <div>
+                        <div class="flex items-center space-x-3 mb-4">
+                            <div class="w-12 h-12 rounded-full bg-darkbg-800 border border-amber-500/40 text-amber-400 flex items-center justify-center font-bold text-xl shadow-inner">
+                                YD
+                            </div>
+                            <div>
+                                <h3 class="font-bold text-lg text-white">Yitzhak Tzahi Daboush</h3>
+                                <p class="text-xs text-slate-400">Sole Owner & Controller, Genesis 21 Consulting LLC</p>
+                            </div>
+                        </div>
+
+                        <p class="text-xs text-slate-300 leading-relaxed mb-6">
+                            Daboush brings intimate knowledge of Israeli state media, military operations, and coalition politics. His background provides a crucial bridge between senior Israeli government officials and US digital public relations execution.
+                        </p>
+
+                        <!-- Timeline Nodes -->
+                        <div class="space-y-4 relative border-l-2 border-darkbg-700 pl-4 ml-2">
+                            <div class="relative">
+                                <div class="absolute -left-[21px] top-1 w-3 h-3 rounded-full bg-slate-600 border-2 border-darkbg-900"></div>
+                                <span class="text-xs font-bold text-slate-400">Pre-2024</span>
+                                <h4 class="text-xs font-bold text-white">Military Correspondent, Army Radio (Galei Tzahal)</h4>
+                                <p class="text-xs text-slate-400">Covered IDF military policy & social issues. Involved in 2018 public dispute with Bezalel Smotrich regarding military rabbinate authority.</p>
+                            </div>
+
+                            <div class="relative">
+                                <div class="absolute -left-[21px] top-1 w-3 h-3 rounded-full bg-blue-500 border-2 border-darkbg-900"></div>
+                                <span class="text-xs font-bold text-blue-400">2022 – late 2024</span>
+                                <h4 class="text-xs font-bold text-white">Senior Ministerial Media Advisor</h4>
+                                <p class="text-xs text-slate-400">Served as Media Advisor to Minister Bezalel Smotrich (Finance) and Minister Nir Barkat (Economy & Industry).</p>
+                            </div>
+
+                            <div class="relative">
+                                <div class="absolute -left-[21px] top-1 w-3 h-3 rounded-full bg-amber-500 border-2 border-darkbg-900"></div>
+                                <span class="text-xs font-bold text-amber-400">December 2024</span>
+                                <h4 class="text-xs font-bold text-white">Private Sector Transition</h4>
+                                <p class="text-xs text-slate-400">Departed government office concurrently with approval of the ₪545M Project 545 diplomacy budget.</p>
+                            </div>
+
+                            <div class="relative">
+                                <div class="absolute -left-[21px] top-1 w-3 h-3 rounded-full bg-emerald-500 border-2 border-darkbg-900"></div>
+                                <span class="text-xs font-bold text-emerald-400">May – August 2025</span>
+                                <h4 class="text-xs font-bold text-white">Delaware & Cyprus Corporate Setup</h4>
+                                <p class="text-xs text-slate-400">Formed Genesis 21 (Delaware) & ISAIAH 60 LTD (Cyprus), followed by DOJ FARA filing on Aug 11, 2025.</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Corporate Architecture Visualizer (7 Cols) -->
+                <div class="lg:col-span-7 bg-darkbg-900 p-6 rounded-xl border border-darkbg-700 shadow-lg flex flex-col justify-between">
+                    <div>
+                        <h3 class="text-base font-bold text-white mb-1">Dual-Jurisdiction Corporate Structure</h3>
+                        <p class="text-xs text-slate-400 mb-6">
+                            Genesis 21 Consulting utilizes Delaware corporate law for US liability protection and anonymity, paired with a Cypriot operational entity formed one day prior to FARA registration.
+                        </p>
+
+                        <!-- Structured HTML Diagram (NO SVG/Mermaid) -->
+                        <div class="space-y-4">
+                            <!-- Top Tier: State Principal -->
+                            <div class="p-3.5 bg-darkbg-800 border border-slate-700 rounded-xl text-center shadow-md">
+                                <span class="text-xs font-bold uppercase tracking-wider text-amber-400">Foreign Principal</span>
+                                <div class="font-bold text-sm text-white mt-0.5">Israeli Ministry of Foreign Affairs / LAPAM</div>
+                                <div class="text-[11px] text-slate-400">Project 545 Approval & Strategy Guidance</div>
+                            </div>
+
+                            <div class="flex justify-center text-amber-400 text-xs font-bold tracking-wide">&darr; Verbal Agreement & Strategy Mandate &darr;</div>
+
+                            <!-- Middle Tier: Principal Controller -->
+                            <div class="p-3.5 bg-darkbg-950 border border-darkbg-700 rounded-xl text-center shadow-inner">
+                                <span class="text-[11px] font-bold text-slate-400 uppercase tracking-wider">Sole Controller / Manager</span>
+                                <div class="font-bold text-amber-400 text-sm mt-0.5">Yitzhak Tzahi Daboush</div>
+                                <div class="text-xs text-slate-400">Shoham, Israel (Operational HQ / Primary Residence)</div>
+                            </div>
+
+                            <div class="grid grid-cols-1 sm:grid-cols-2 gap-4 pt-2">
+                                <!-- Node A: Delaware LLC -->
+                                <div class="p-3.5 bg-blue-950/40 border border-blue-500/30 rounded-xl space-y-1">
+                                    <div class="flex justify-between items-center mb-1">
+                                        <span class="text-[10px] font-bold uppercase text-blue-400">US Registrant Vehicle</span>
+                                        <span class="text-[10px] bg-blue-500/20 text-blue-300 px-1.5 py-0.5 rounded font-mono border border-blue-500/30">May 21, 2025</span>
+                                    </div>
+                                    <h4 class="font-bold text-xs text-white">Genesis 21 Consulting LLC</h4>
+                                    <p class="text-[11px] text-slate-300">Delaware LLC • FARA Reg #7631</p>
+                                    <p class="text-[10px] text-slate-400 mt-2"><strong>Agent Address:</strong> Raskin Legal PLLC, Spring Valley, NY</p>
+                                </div>
+
+                                <!-- Node B: Cyprus Entity -->
+                                <div class="p-3.5 bg-amber-950/40 border border-amber-500/30 rounded-xl space-y-1">
+                                    <div class="flex justify-between items-center mb-1">
+                                        <span class="text-[10px] font-bold uppercase text-amber-400">EU / Offshore Vehicle</span>
+                                        <span class="text-[10px] bg-amber-500/20 text-amber-300 px-1.5 py-0.5 rounded font-mono border border-amber-500/30">Aug 10, 2025</span>
+                                    </div>
+                                    <h4 class="font-bold text-xs text-white">ISAIAH 60 LTD</h4>
+                                    <p class="text-[11px] text-slate-300">Limassol, Cyprus • Reg HE 481586</p>
+                                    <p class="text-[10px] text-slate-400 mt-2"><strong>Thematic Naming:</strong> Biblical imagery ("Isaiah 60: Arise, shine...")</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="mt-6 p-3.5 bg-darkbg-950 rounded-xl border border-darkbg-700 text-xs text-slate-400 leading-relaxed">
+                        <strong class="text-amber-400">Analytical Insight:</strong> The incorporation of ISAIAH 60 LTD in Cyprus exactly 24 hours before Genesis 21 filed under FARA in Washington D.C. demonstrates sophisticated financial structuring tailored for cross-border communications consulting.
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- SECTION 3: PROJECT 545 ECOSYSTEM MATRIX -->
+        <section id="ecosystem" class="space-y-6">
+            <div class="border-b border-darkbg-800 pb-4 flex flex-col md:flex-row md:items-end justify-between gap-4">
+                <div>
+                    <h2 class="text-2xl font-bold text-white tracking-tight">Project 545 Contractor Ecosystem</h2>
+                    <p class="text-sm text-slate-400 mt-1">
+                        Comparative analysis of FARA registrants operating under the ₪545M ($150M) Israeli public diplomacy initiative, routed via Havas Media and direct state agreements.
+                    </p>
+                </div>
+
+                <!-- Visualization Toggle Control -->
+                <div class="flex items-center space-x-2 bg-darkbg-900 p-1 rounded-lg border border-darkbg-700 text-xs font-semibold">
+                    <button id="btn-chart-bar" onclick="setChartType('bar')" class="px-3 py-1.5 rounded-md bg-amber-500 text-darkbg-950 font-bold shadow">Bar View</button>
+                    <button id="btn-chart-doughnut" onclick="setChartType('doughnut')" class="px-3 py-1.5 rounded-md text-slate-400 hover:text-white transition">Share View</button>
+                </div>
+            </div>
+
+            <div class="grid grid-cols-1 lg:grid-cols-12 gap-6">
+                <!-- Chart Container (6 Cols) -->
+                <div class="lg:col-span-6 bg-darkbg-900 p-5 rounded-xl border border-darkbg-700 shadow-lg flex flex-col justify-between">
+                    <div>
+                        <h3 class="text-sm font-bold text-white mb-1">Disclosed Financial Allocations (USD)</h3>
+                        <p class="text-xs text-slate-400 mb-4">Comparing primary network contracts reported in 2025–2026 FARA disclosures.</p>
+                        
+                        <div class="chart-container">
+                            <canvas id="ecosystemChart"></canvas>
+                        </div>
+                    </div>
+                    <p class="text-[11px] text-slate-400 text-center mt-2 italic">
+                        *Note: Genesis 21 operates on an oral agreement with fees TBD. Total budget pool is $150,000,000.
+                    </p>
+                </div>
+
+                <!-- Interactive Entity Matrix Cards (6 Cols) -->
+                <div class="lg:col-span-6 space-y-3">
+                    <div class="flex items-center justify-between">
+                        <span class="text-xs font-bold uppercase text-slate-400 tracking-wider">Select Entity for Profile:</span>
+                        <div class="flex space-x-1" id="filter-pills">
+                            <button onclick="filterEntities('all', this)" class="px-2.5 py-1 text-[11px] rounded bg-amber-500 text-darkbg-950 font-bold">All</button>
+                            <button onclick="filterEntities('tech', this)" class="px-2.5 py-1 text-[11px] rounded bg-darkbg-800 text-slate-300 font-semibold border border-darkbg-700 hover:bg-darkbg-700">AI / Tech</button>
+                            <button onclick="filterEntities('influencer', this)" class="px-2.5 py-1 text-[11px] rounded bg-darkbg-800 text-slate-300 font-semibold border border-darkbg-700 hover:bg-darkbg-700">Influencer</button>
+                        </div>
+                    </div>
+
+                    <!-- Entity Scroll Container -->
+                    <div id="entity-list-container" class="space-y-3 max-h-[380px] overflow-y-auto custom-scrollbar pr-1">
+                        <!-- Rendered by JS -->
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- SECTION 4: OPERATIONAL TYPOLOGIES & TACTICS -->
+        <section id="tactics" class="space-y-6">
+            <div class="border-b border-darkbg-800 pb-4">
+                <h2 class="text-2xl font-bold text-white tracking-tight">Operational Typologies: AI, Geofencing & Influencers</h2>
+                <p class="text-sm text-slate-400 mt-1">
+                    Examining the technical and psychological tactics deployed across the Project 545 network.
+                </p>
+            </div>
+
+            <!-- Tab Buttons -->
+            <div class="flex space-x-2 border-b border-darkbg-700 overflow-x-auto custom-scrollbar">
+                <button onclick="switchTacticTab('ai')" id="tab-ai" class="px-4 py-2.5 text-sm font-bold border-b-2 border-amber-500 text-amber-400 transition">
+                    AI Framing (Clock Tower X)
+                </button>
+                <button onclick="switchTacticTab('geofence')" id="tab-geofence" class="px-4 py-2.5 text-sm font-bold border-b-2 border-transparent text-slate-400 hover:text-slate-200 transition">
+                    Megachurch Geofencing (Show Faith)
+                </button>
+                <button onclick="switchTacticTab('influencer')" id="tab-influencer" class="px-4 py-2.5 text-sm font-bold border-b-2 border-transparent text-slate-400 hover:text-slate-200 transition">
+                    The Esther Project ($7k/Post)
+                </button>
+                <button onclick="switchTacticTab('genesis')" id="tab-genesis" class="px-4 py-2.5 text-sm font-bold border-b-2 border-transparent text-slate-400 hover:text-slate-200 transition">
+                    Genesis 21 Political Strategy
+                </button>
+            </div>
+
+            <!-- Tab Content Display Box -->
+            <div class="bg-darkbg-900 rounded-xl p-6 border border-darkbg-700 shadow-lg" id="tactic-content-box">
+                <!-- Dynamically filled by JS -->
+            </div>
+        </section>
+
+        <!-- SECTION 5: FARA & REGULATORY COMPLIANCE TRACKER -->
+        <section id="compliance" class="space-y-6">
+            <div class="border-b border-darkbg-800 pb-4">
+                <h2 class="text-2xl font-bold text-white tracking-tight">FARA Compliance & Regulatory Exposure</h2>
+                <p class="text-sm text-slate-400 mt-1">
+                    Analyzing Genesis 21’s registration mechanics, statutory supplemental statement delinquency, and legal distinctions under U.S. code.
+                </p>
+            </div>
+
+            <div class="grid grid-cols-1 lg:grid-cols-12 gap-6">
+                <!-- Compliance Timeline & Status (7 Cols) -->
+                <div class="lg:col-span-7 bg-darkbg-900 p-6 rounded-xl border border-darkbg-700 shadow-lg space-y-4">
+                    <h3 class="text-base font-bold text-white">6-Month Supplemental Statement Delinquency</h3>
+                    <p class="text-xs text-slate-400">
+                        Under 22 U.S.C. § 612(b), FARA registrants must file a comprehensive Supplemental Statement every six months detailing all activities, receipts, and disbursements.
+                    </p>
+
+                    <!-- Interactive Step Bar -->
+                    <div class="p-4 bg-darkbg-950 rounded-xl border border-darkbg-800 space-y-4">
+                        <div class="flex justify-between items-center text-xs font-semibold">
+                            <span class="text-emerald-400">✓ Aug 11, 2025 (Initial Registration)</span>
+                            <span class="text-rose-400 font-bold">✗ March 2026 (Supplemental Due)</span>
+                        </div>
+                        <div class="w-full bg-darkbg-800 h-2.5 rounded-full overflow-hidden flex border border-darkbg-700">
+                            <div class="bg-emerald-500 h-full w-1/2"></div>
+                            <div class="bg-rose-500 h-full w-1/2 animate-pulse"></div>
+                        </div>
+                        <div class="text-[11px] text-slate-400 flex justify-between">
+                            <span>Initial Exhibits A, B & Short Form Submitted</span>
+                            <span class="text-rose-400 font-bold">No Supplemental Statement On DOJ Public Index</span>
+                        </div>
+                    </div>
+
+                    <div class="space-y-2 pt-2">
+                        <h4 class="text-xs font-bold text-white uppercase tracking-wider">Legal Exposure under FARA Jurisprudence:</h4>
+                        <ul class="text-xs text-slate-300 space-y-2 list-disc list-inside">
+                            <li><strong class="text-white">Continuing Violation:</strong> Omission to file supplemental reports constitutes a continuing offense for as long as the failure persists (22 U.S.C. § 612).</li>
+                            <li><strong class="text-white">DOJ Notice of Deficiency:</strong> Formal deficiency notices bar registrants from legally continuing agency activities until resolved.</li>
+                            <li><strong class="text-white">Proposed Penalty Reforms:</strong> Legislative initiatives seek fines up to $10,000 per violation for untimely supplemental filings.</li>
+                        </ul>
+                    </div>
+                </div>
+
+                <!-- Statute Comparison Matrix (5 Cols) -->
+                <div class="lg:col-span-5 bg-darkbg-900 p-6 rounded-xl border border-darkbg-700 shadow-lg flex flex-col justify-between">
+                    <div>
+                        <h3 class="text-base font-bold text-white mb-3">Statutory Framework Matrix</h3>
+                        
+                        <div class="space-y-3">
+                            <div class="p-3.5 bg-blue-950/30 border border-blue-500/30 rounded-xl text-xs">
+                                <span class="font-bold text-blue-400 block mb-1">FARA (22 U.S.C. § 611 et seq.)</span>
+                                <p class="text-slate-300 text-[11px]">Transparency & disclosure statute. Covers political activities, PR, and strategic communications conducted on behalf of foreign principals.</p>
+                            </div>
+
+                            <div class="p-3.5 bg-rose-950/30 border border-rose-500/30 rounded-xl text-xs">
+                                <span class="font-bold text-rose-400 block mb-1">18 U.S.C. § 951 (Foreign Agents Statute)</span>
+                                <p class="text-slate-300 text-[11px]">Criminal statute prohibiting acting as an agent of a foreign government without prior notification to the Attorney General (up to 10 years imprisonment).</p>
+                            </div>
+
+                            <div class="p-3.5 bg-amber-950/30 border border-amber-500/30 rounded-xl text-xs">
+                                <span class="font-bold text-amber-400 block mb-1">28 C.F.R. § 5.402 (Conspicuous Labeling)</span>
+                                <p class="text-slate-300 text-[11px]">Requires visible disclosure on all social/digital materials disseminated for foreign principals. Essential point of scrutiny in $7,000/post influencer programs.</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <button onclick="toggleDisclaimerModal()" class="mt-4 w-full py-2.5 bg-darkbg-800 hover:bg-darkbg-700 text-slate-200 text-xs font-bold rounded-lg border border-darkbg-700 transition">
+                        View Full Registration Summary
+                    </button>
+                </div>
+            </div>
+        </section>
+
+    </main>
+
+    <!-- Footer -->
+    <footer class="bg-darkbg-900 text-slate-400 border-t border-darkbg-800 py-6 mt-12 text-xs">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex flex-col sm:flex-row justify-between items-center gap-4">
+            <div>
+                <p class="font-bold text-white">Recon Genesis 21 & Project 545 Analytical Web Application</p>
+                <p class="text-slate-400 text-[11px] mt-0.5">Based on US DOJ FARA Public Filings (Registrant No. 7631) & Institutional Research.</p>
+            </div>
+            <div class="text-slate-400 text-[11px] text-right">
+                <span>Single-Page Architecture</span> • <span class="text-amber-400">Dark Theme</span> • <span>Chart.js Engine</span>
+            </div>
+        </div>
+    </footer>
+
+    <!-- MODAL 1: Disclaimer & Scope Detail -->
+    <div id="disclaimerModal" class="fixed inset-0 z-50 bg-black/80 backdrop-blur-md hidden flex items-center justify-center p-4">
+        <div class="bg-darkbg-900 rounded-xl max-w-xl w-full p-6 shadow-2xl border border-darkbg-700 relative space-y-4 text-slate-200">
+            <div class="flex justify-between items-start border-b border-darkbg-700 pb-3">
+                <h3 class="text-lg font-bold text-white">Scope & Disclosed Basis</h3>
+                <button onclick="toggleDisclaimerModal()" class="text-slate-400 hover:text-white font-bold text-xl">&times;</button>
+            </div>
+
+            <div class="space-y-3 text-xs text-slate-300 leading-relaxed max-h-[60vh] overflow-y-auto custom-scrollbar">
+                <p>
+                    <strong class="text-white">FARA Registration Standard:</strong> Registration under the Foreign Agents Registration Act (22 U.S.C. § 611 et seq.) is a statutory transparency requirement for entities engaging in strategic communications, political consulting, or public relations on behalf of foreign governments or entities.
+                </p>
+                <p>
+                    <strong class="text-white">Oral Agreement Basis:</strong> Genesis 21 Consulting LLC registered on August 11, 2025, reporting an oral agreement / verbal discussions with the Israeli Ministry of Foreign Affairs / Government Advertising Bureau (LAPAM). At registration, fees were reported as TBD, with no prior receipts or registrable activity reported for the initial period.
+                </p>
+                <p class="p-3 bg-amber-950/40 rounded-lg border border-amber-500/30 text-amber-300 font-semibold">
+                    Important Analytical Note: Registration records a disclosed proposed relationship and scope of work; it does not constitute proof that specific outreach occurred or that any unlawful act was committed.
+                </p>
+            </div>
+
+            <div class="pt-2 text-right">
+                <button onclick="toggleDisclaimerModal()" class="px-4 py-2 bg-amber-500 text-darkbg-950 font-bold rounded-lg text-xs hover:bg-amber-400 transition">Close</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- MODAL 2: DOJ Public Document Index Modal -->
+    <div id="dojModal" class="fixed inset-0 z-50 bg-black/80 backdrop-blur-md hidden flex items-center justify-center p-4">
+        <div class="bg-darkbg-900 rounded-xl max-w-xl w-full p-6 shadow-2xl border border-darkbg-700 relative space-y-4 text-slate-200">
+            <div class="flex justify-between items-start border-b border-darkbg-700 pb-3">
+                <div>
+                    <h3 class="text-lg font-bold text-white">DOJ FARA Index: Registrant No. 7631</h3>
+                    <p class="text-xs text-slate-400">Filed Documents as of Record (August 11, 2025)</p>
+                </div>
+                <button onclick="closeDOJModal()" class="text-slate-400 hover:text-white font-bold text-xl">&times;</button>
+            </div>
+
+            <div class="space-y-2.5 text-xs">
+                <div class="p-3 bg-darkbg-950 rounded-lg border border-darkbg-700 flex justify-between items-center">
+                    <div>
+                        <div class="font-bold text-white">Registration Statement</div>
+                        <div class="text-[11px] text-slate-400">Filed: Aug 11, 2025 • Primary LLC Filing</div>
+                    </div>
+                    <span class="px-2 py-1 bg-emerald-500/20 text-emerald-400 font-mono text-[10px] font-bold rounded border border-emerald-500/30">DOC 1</span>
+                </div>
+
+                <div class="p-3 bg-darkbg-950 rounded-lg border border-darkbg-700 flex justify-between items-center">
+                    <div>
+                        <div class="font-bold text-white">Exhibit AB</div>
+                        <div class="text-[11px] text-slate-400">Filed: Aug 11, 2025 • Discloses Israeli MFA / LAPAM Principal</div>
+                    </div>
+                    <span class="px-2 py-1 bg-emerald-500/20 text-emerald-400 font-mono text-[10px] font-bold rounded border border-emerald-500/30">DOC 2</span>
+                </div>
+
+                <div class="p-3 bg-darkbg-950 rounded-lg border border-darkbg-700 flex justify-between items-center">
+                    <div>
+                        <div class="font-bold text-white">Short-Form Registration</div>
+                        <div class="text-[11px] text-slate-400">Filed: Aug 11, 2025 • Yitzhak Tzahi Daboush</div>
+                    </div>
+                    <span class="px-2 py-1 bg-emerald-500/20 text-emerald-400 font-mono text-[10px] font-bold rounded border border-emerald-500/30">DOC 3</span>
+                </div>
+
+                <div class="p-3 bg-darkbg-950 rounded-lg border border-darkbg-700 flex justify-between items-center">
+                    <div>
+                        <div class="font-bold text-white">Authorization / Filing Receipt</div>
+                        <div class="text-[11px] text-slate-400">Filed: Aug 11, 2025 • Filing Acknowledgement</div>
+                    </div>
+                    <span class="px-2 py-1 bg-emerald-500/20 text-emerald-400 font-mono text-[10px] font-bold rounded border border-emerald-500/30">DOC 4</span>
+                </div>
+
+                <div class="p-3 bg-rose-950/40 rounded-lg border border-rose-500/30 flex justify-between items-center mt-3">
+                    <div>
+                        <div class="font-bold text-rose-300">Supplemental Statement (6-Month)</div>
+                        <div class="text-[11px] text-rose-400">Status: MISSING FROM PUBLIC INDEX (Due March 2026)</div>
+                    </div>
+                    <span class="px-2 py-1 bg-rose-500/20 text-rose-400 font-mono text-[10px] font-bold rounded border border-rose-500/30">DELINQUENT</span>
+                </div>
+            </div>
+
+            <div class="pt-2 text-right">
+                <button onclick="closeDOJModal()" class="px-4 py-2 bg-amber-500 text-darkbg-950 font-bold rounded-lg text-xs hover:bg-amber-400 transition">Close</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- MODAL 3: Interactive Entity Details Modal -->
+    <div id="entityModal" class="fixed inset-0 z-50 bg-black/80 backdrop-blur-md hidden flex items-center justify-center p-4">
+        <div class="bg-darkbg-900 rounded-xl max-w-lg w-full p-6 shadow-2xl border border-darkbg-700 relative space-y-4 text-slate-200">
+            <div class="flex justify-between items-start border-b border-darkbg-700 pb-3">
+                <div>
+                    <h3 id="modalEntityTitle" class="text-lg font-bold text-white">Entity Profile</h3>
+                    <p id="modalEntityLead" class="text-xs text-amber-400 font-semibold"></p>
+                </div>
+                <button onclick="closeEntityModal()" class="text-slate-400 hover:text-white font-bold text-xl">&times;</button>
+            </div>
+
+            <div class="space-y-3 text-xs leading-relaxed">
+                <div class="flex justify-between items-center p-3 bg-darkbg-950 rounded-lg border border-darkbg-800">
+                    <span class="text-slate-400">Disclosed Funding:</span>
+                    <span id="modalEntityFunding" class="font-mono font-bold text-amber-400 text-sm"></span>
+                </div>
+
+                <div>
+                    <h4 class="font-bold text-white uppercase text-[10px] tracking-wider mb-1">Role & Operational Mandate</h4>
+                    <p id="modalEntityDescription" class="text-slate-300 bg-darkbg-950 p-3.5 rounded-lg border border-darkbg-800 leading-relaxed"></p>
+                </div>
+            </div>
+
+            <div class="pt-2 text-right">
+                <button onclick="closeEntityModal()" class="px-4 py-2 bg-amber-500 text-darkbg-950 font-bold rounded-lg text-xs hover:bg-amber-400 transition">Close</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- JAVASCRIPT LOGIC -->
+    <script>
+        // Data Objects
+        const ecosystemData = [
+            {
+                id: 'clock-tower',
+                name: 'Clock Tower X',
+                principal: 'Brad Parscale',
+                budget: 46500000,
+                budgetText: '$46.5 Million',
+                category: 'tech',
+                role: 'AI Framing, Synthetic Domains (Paxpoint.org, Allyvia.org)',
+                description: 'Awarded $46.5M to create synthetic domains and train AI generative models (e.g., ChatGPT responses) to naturally favor state strategic narratives.'
+            },
+            {
+                id: 'targeted-comms',
+                name: 'Targeted Comms Global',
+                principal: 'SKDK Affiliates',
+                budget: 9890000,
+                budgetText: '$9.89 Million',
+                category: 'tech',
+                role: 'Legacy Media & Rapid Response PR',
+                description: 'Retroactive registration covering major US television bookings, tier-1 media placements, and emergency narrative response.'
+            },
+            {
+                id: 'show-faith',
+                name: 'Show Faith by Works',
+                principal: 'Chad Schnitger',
+                budget: 3260000,
+                budgetText: '$3.26 Million',
+                category: 'tech',
+                role: 'Geofencing 303 U.S. Megachurches',
+                description: 'Utilized mobile location geofencing technology to deliver targeted digital video ads to congregants physically inside 303 evangelical megachurches.'
+            },
+            {
+                id: 'bridges',
+                name: 'Bridges Partners',
+                principal: 'Uri Steinberg',
+                budget: 900000,
+                budgetText: '$900,000',
+                category: 'influencer',
+                role: 'The Esther Project ($7,000/post)',
+                description: 'Managed transactional influencer project paying US Christian social media creators $7,000 per post to produce pro-Israel digital content.'
+            },
+            {
+                id: 'piro',
+                name: 'Piro, Inc.',
+                principal: 'Daniel Rosenberg',
+                budget: 900000,
+                budgetText: '$900,000',
+                category: 'influencer',
+                role: 'Digital Storytelling Pilot Programs',
+                description: 'Produced specialized micro-documentary storytelling content focused on strategic emotional messaging.'
+            },
+            {
+                id: 'genesis-21',
+                name: 'Genesis 21 Consulting',
+                principal: 'Yitzhak Tzahi Daboush',
+                budget: 0,
+                budgetText: 'Fees TBD (Oral Agreement)',
+                category: 'influencer',
+                role: 'Message Crafting & Strategic Consulting',
+                description: 'Delaware LLC serving as the political/strategic consulting link between senior Israeli ministry leadership and American digital execution teams.'
+            }
+        ];
+
+        const tacticDetails = {
+            ai: {
+                title: 'AI Framing & Algorithmic Manipulation',
+                contractor: 'Clock Tower X ($46.5 Million)',
+                description: 'Clock Tower X deployed AI framing operations designed to alter the training baseline of generative artificial intelligence platforms. By publishing thousands of structured articles across custom synthetic web domains (such as Paxpoint.org and Allyvia.org), the project sought to ensure AI chatbots output favorable narrative framing when queried about Middle Eastern geopolitical topics.',
+                tag: 'Synthetic Web Scraping Target'
+            },
+            geofence: {
+                title: 'Mobile Megachurch Geofencing',
+                contractor: 'Show Faith by Works LLC ($3.26 Million)',
+                description: 'Using high-precision virtual perimeter geofencing, digital advertisements were pushed directly to smartphone mobile ad IDs located inside 303 American evangelical megachurches during Sunday services. This tactic bypassed public media channels to directly reach highly sympathetic demographic cohorts while physically gathered.',
+                tag: 'Hyper-Local Spatial Targeting'
+            },
+            influencer: {
+                title: 'The Esther Project ($7,000 per Post)',
+                contractor: 'Bridges Partners ($900,000 via Havas)',
+                description: 'The Esther Project recruited prominent Christian digital influencers, offering $7,000 cash payments per post. The core regulatory conflict stems from influencers failing to include required FARA disclosures (28 C.F.R. § 5.402), triggering formal complaints by watchdog groups like the Quincy Institute and Public Citizen demanding mandatory foreign agent registration for sponsored creators.',
+                tag: 'Transactional Parasocial Advocacy'
+            },
+            genesis: {
+                title: 'Genesis 21 Strategic Consulting',
+                contractor: 'Genesis 21 Consulting LLC (Yitzhak Tzahi Daboush)',
+                description: 'Genesis 21 provides high-level message formulation and political coordination directly for the Israeli Ministry of Foreign Affairs and LAPAM. Leveraging Daboush’s prior experience as Media Advisor to Israeli cabinet ministers, Genesis 21 ensures American public relations firms accurately execute the strategic intent of government leaders.',
+                tag: 'Direct State Strategy Link'
+            }
+        };
+
+        // Chart Reference & State
+        let myChart = null;
+
+        // Initialize Application
+        document.addEventListener('DOMContentLoaded', () => {
+            initEcosystemChart('bar');
+            renderEntityCards(ecosystemData);
+            switchTacticTab('ai');
+        });
+
+        // Dark-Themed Chart Initialization
+        function initEcosystemChart(type) {
+            const ctx = document.getElementById('ecosystemChart').getContext('2d');
+            
+            const labels = ecosystemData.map(item => item.name);
+            const dataValues = ecosystemData.map(item => item.budget);
+            const backgroundColors = [
+                '#3b82f6', // Clock Tower
+                '#6366f1', // Targeted Comms
+                '#f59e0b', // Show Faith
+                '#10b981', // Bridges
+                '#a855f7', // Piro
+                '#ef4444'  // Genesis 21
+            ];
+
+            if (myChart) {
+                myChart.destroy();
+            }
+
+            myChart = new Chart(ctx, {
+                type: type,
+                data: {
+                    labels: labels,
+                    datasets: [{
+                        label: 'Disclosed Budget (USD)',
+                        data: dataValues,
+                        backgroundColor: backgroundColors,
+                        borderRadius: type === 'bar' ? 6 : 0,
+                        borderWidth: 1,
+                        borderColor: '#0f172a'
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: {
+                        legend: {
+                            display: type === 'doughnut',
+                            position: 'right',
+                            labels: {
+                                color: '#cbd5e1',
+                                font: { size: 11 },
+                                boxWidth: 12
+                            }
+                        },
+                        tooltip: {
+                            backgroundColor: '#090d16',
+                            titleColor: '#ffffff',
+                            bodyColor: '#fbbf24',
+                            borderColor: '#334155',
+                            borderWidth: 1,
+                            padding: 10,
+                            callbacks: {
+                                label: function(context) {
+                                    const val = context.raw;
+                                    if (val === 0) return context.label + ': Fees TBD (Oral Agreement)';
+                                    return context.label + ': $' + val.toLocaleString();
+                                }
+                            }
+                        }
+                    },
+                    scales: type === 'bar' ? {
+                        y: {
+                            beginAtZero: true,
+                            grid: {
+                                color: '#1e293b'
+                            },
+                            ticks: {
+                                color: '#94a3b8',
+                                callback: function(value) {
+                                    return '$' + (value / 1000000) + 'M';
+                                },
+                                font: { size: 11 }
+                            }
+                        },
+                        x: {
+                            grid: {
+                                display: false
+                            },
+                            ticks: {
+                                color: '#94a3b8',
+                                callback: function(val, index) {
+                                    let label = this.getLabelForValue(val);
+                                    return label.length > 12 ? label.substring(0, 10) + '..' : label;
+                                },
+                                font: { size: 10 }
+                            }
+                        }
+                    } : {}
+                }
+            });
+        }
+
+        function setChartType(type) {
+            document.getElementById('btn-chart-bar').className = type === 'bar' 
+                ? 'px-3 py-1.5 rounded-md bg-amber-500 text-darkbg-950 font-bold shadow' 
+                : 'px-3 py-1.5 rounded-md text-slate-400 hover:text-white transition';
+            document.getElementById('btn-chart-doughnut').className = type === 'doughnut' 
+                ? 'px-3 py-1.5 rounded-md bg-amber-500 text-darkbg-950 font-bold shadow' 
+                : 'px-3 py-1.5 rounded-md text-slate-400 hover:text-white transition';
+            initEcosystemChart(type);
+        }
+
+        // Entity Card Rendering & Filtering
+        function renderEntityCards(data) {
+            const container = document.getElementById('entity-list-container');
+            container.innerHTML = '';
+
+            data.forEach(item => {
+                const card = document.createElement('div');
+                card.className = 'p-3.5 bg-darkbg-950 rounded-xl border border-darkbg-800 hover:border-amber-500/50 transition shadow-md cursor-pointer group';
+                card.onclick = () => showEntityDetail(item);
+
+                card.innerHTML = `
+                    <div class="flex justify-between items-start">
+                        <div>
+                            <h4 class="font-bold text-xs text-white group-hover:text-amber-400 transition">${item.name}</h4>
+                            <p class="text-[11px] text-slate-400">Lead: ${item.principal}</p>
+                        </div>
+                        <span class="px-2 py-0.5 text-[10px] font-bold rounded ${item.budget > 0 ? 'bg-amber-500/20 text-amber-400 border border-amber-500/30' : 'bg-rose-500/20 text-rose-400 border border-rose-500/30'} font-mono">
+                            ${item.budgetText}
+                        </span>
+                    </div>
+                    <p class="text-[11px] text-slate-300 mt-2 line-clamp-2">${item.role}</p>
+                `;
+                container.appendChild(card);
+            });
+        }
+
+        function filterEntities(cat, btn) {
+            const btns = document.querySelectorAll('#filter-pills button');
+            btns.forEach(b => b.className = 'px-2.5 py-1 text-[11px] rounded bg-darkbg-800 text-slate-300 font-semibold border border-darkbg-700 hover:bg-darkbg-700');
+            btn.className = 'px-2.5 py-1 text-[11px] rounded bg-amber-500 text-darkbg-950 font-bold';
+
+            if (cat === 'all') {
+                renderEntityCards(ecosystemData);
+            } else {
+                const filtered = ecosystemData.filter(d => d.category === cat);
+                renderEntityCards(filtered);
+            }
+        }
+
+        function showEntityDetail(item) {
+            document.getElementById('modalEntityTitle').innerText = item.name;
+            document.getElementById('modalEntityLead').innerText = `Lead Principal: ${item.principal}`;
+            document.getElementById('modalEntityFunding').innerText = item.budgetText;
+            document.getElementById('modalEntityDescription').innerText = item.description;
+            document.getElementById('entityModal').classList.remove('hidden');
+        }
+
+        function closeEntityModal() {
+            document.getElementById('entityModal').classList.add('hidden');
+        }
+
+        // Tactical Tabs Switcher
+        function switchTacticTab(tacticKey) {
+            const tactic = tacticDetails[tacticKey];
+            const box = document.getElementById('tactic-content-box');
+            
+            // Update tab styles
+            ['ai', 'geofence', 'influencer', 'genesis'].forEach(k => {
+                const tabEl = document.getElementById(`tab-${k}`);
+                if (k === tacticKey) {
+                    tabEl.className = 'px-4 py-2.5 text-sm font-bold border-b-2 border-amber-500 text-amber-400 transition';
+                } else {
+                    tabEl.className = 'px-4 py-2.5 text-sm font-bold border-b-2 border-transparent text-slate-400 hover:text-slate-200 transition';
+                }
+            });
+
+            box.innerHTML = `
+                <div class="flex flex-col md:flex-row justify-between items-start md:items-center gap-2 mb-3">
+                    <h3 class="text-lg font-bold text-white">${tactic.title}</h3>
+                    <span class="px-2.5 py-1 bg-amber-500/20 text-amber-400 border border-amber-500/30 rounded-full text-xs font-bold">${tactic.tag}</span>
+                </div>
+                <div class="text-xs font-semibold text-slate-400 mb-3">Primary Operator: <span class="text-slate-200">${tactic.contractor}</span></div>
+                <p class="text-xs sm:text-sm text-slate-300 leading-relaxed">${tactic.description}</p>
+            `;
+        }
+
+        // Section Jump Helper
+        function switchTab(sectionId) {
+            const el = document.getElementById(sectionId);
+            if (el) {
+                el.scrollIntoView({ behavior: 'smooth' });
+            }
+        }
+
+        // Modals
+        function toggleDisclaimerModal() {
+            const m = document.getElementById('disclaimerModal');
+            m.classList.toggle('hidden');
+        }
+
+        function openDOJModal() {
+            document.getElementById('dojModal').classList.remove('hidden');
+        }
+
+        function closeDOJModal() {
+            document.getElementById('dojModal').classList.add('hidden');
+        }
+    </script>
+</body>
+</html>
