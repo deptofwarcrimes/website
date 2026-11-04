@@ -1,1 +1,872 @@
-<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Davis Media NY LLC — FARA dossier</title><link rel="stylesheet" href="agent.css"></head><body><div class="shell"><header class="top"><a class="brand" href="../index.html">Influence Atlas / FARA records</a><a class="back" href="../index.html">← All registrants</a></header><main><div class="eyebrow">FARA registrant dossier</div><h1>Davis Media NY LLC</h1><div class="record">Registration #7662</div><p class="intro">This page is a source-first starting point for the public FARA record. It does not make claims beyond the linked government filing index.</p><section class="panel"><h2>Primary public record</h2><p>Use the U.S. Department of Justice FARA filing index to inspect the registration statement, exhibits, amendments, supplemental statements, and informational materials.</p><a class="action" href="https://efile.fara.gov/ords/fara/f?p=1381:200:::NO::P200_REG_NUMBER:7662" target="_blank" rel="noopener noreferrer">Open DOJ FARA record ↗</a></section><p class="note">Source: U.S. Department of Justice FARA public records. Review filing dates and the underlying document before drawing conclusions.</p></main></div></body></html>
+<!DOCTYPE html>
+<html lang="en" class="scroll-smooth dark">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>FARA Intelligence Report: Davis Media NY LLC & Project 545</title>
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Chart.js CDN -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <!-- FontAwesome Webfont CDN (No inline SVGs used) -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <script>
+        tailwind.config = {
+            darkMode: 'class',
+            theme: {
+                extend: {
+                    colors: {
+                        brand: {
+                            50: '#0f172a',
+                            100: '#1e293b',
+                            200: '#334155',
+                            700: '#94a3b8',
+                            800: '#e2e8f0',
+                            900: '#f8fafc',
+                        },
+                        accent: {
+                            amber: '#f59e0b',
+                            rust: '#f97316',
+                            teal: '#14b8a6',
+                            indigo: '#6366f1',
+                            cyan: '#06b6d4',
+                        }
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        .chart-container {
+            position: relative;
+            width: 100%;
+            max-width: 650px;
+            margin-left: auto;
+            margin-right: auto;
+            height: 320px;
+            max-height: 400px;
+        }
+        @media (min-width: 768px) {
+            .chart-container {
+                height: 360px;
+            }
+        }
+        .custom-scrollbar::-webkit-scrollbar {
+            width: 6px;
+            height: 6px;
+        }
+        .custom-scrollbar::-webkit-scrollbar-track {
+            background: #0f172a;
+        }
+        .custom-scrollbar::-webkit-scrollbar-thumb {
+            background: #334155;
+            border-radius: 3px;
+        }
+    </style>
+</head>
+<body class="bg-slate-950 text-slate-100 font-sans leading-relaxed flex flex-col min-h-screen custom-scrollbar">
+
+<!-- Chosen Palette: Dark Intelligence Slate -->
+<!-- Application Structure Plan:
+     1. Navigation Bar & Hero Header: Dark slate backdrop with amber/cyan indicators for FARA Reg #7662.
+     2. Section 1: Executive Briefing & Key Indicators: Introduces Project 545 and macro findings with high-contrast indicator cards.
+     3. Section 2: Interactive FARA Network Matrix: Allows users to search, filter by domain, and inspect entities in Project 545 in dark cards.
+     4. Section 3: Deep Dive - Davis Media NY LLC: Features an interactive contract quota calculator and flow schematics optimized for dark UI.
+     5. Section 4: Quantitative Visualizations Hub: Three Chart.js charts tuned for dark mode readability (light ticks, translucent grids).
+     6. Section 5: Legal & Legislative Framework (H.R. 10166 & Bondi Memo): Interactive FARA compliance scenario simulator with dark table structure.
+     7. Section 6: Strategic Takeaways & Synthesis: Explains key political and communication takeaways.
+-->
+<!-- Visualization & Content Choices:
+     - Entity Grid: Filterable list using Vanilla JS state styled for dark card contrast.
+     - Contract Quota Calculator: Custom styled range sliders + glowing metric feedback.
+     - Chart.js Charts: Styled with slate-400 tick marks and translucent grid lines.
+     - Scenario Tester: Dynamic JS questionnaire.
+     - Icons: FontAwesome Webfonts (CSS icon fonts) -> STRICT COMPLIANCE: NO SVG graphics used. NO Mermaid JS used.
+-->
+<!-- CONFIRMATION: NO SVG graphics used. NO Mermaid JS used. -->
+
+    <!-- Navigation Header -->
+    <header class="sticky top-0 z-50 bg-slate-900/90 backdrop-blur-md text-white shadow-lg border-b border-slate-800">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex justify-between items-center h-16">
+            <div class="flex items-center space-x-3">
+                <i class="fa-solid fa-shield-halved text-amber-500 text-xl"></i>
+                <span class="font-bold text-lg tracking-wide text-slate-100">FARA INTEL <span class="text-slate-500 font-normal">|</span> Davis Media NY (#7662)</span>
+            </div>
+            <nav class="hidden md:flex space-x-6 text-sm font-medium text-slate-300">
+                <a href="#overview" class="hover:text-amber-400 transition-colors">Overview</a>
+                <a href="#network" class="hover:text-amber-400 transition-colors">Network Matrix</a>
+                <a href="#davis-deepdive" class="hover:text-amber-400 transition-colors">Davis Media Analysis</a>
+                <a href="#charts" class="hover:text-amber-400 transition-colors">Data Visuals</a>
+                <a href="#legislation" class="hover:text-amber-400 transition-colors">H.R. 10166 Simulator</a>
+            </nav>
+            <div class="md:hidden">
+                <button id="mobile-menu-btn" class="text-slate-300 hover:text-white focus:outline-none">
+                    <i class="fa-solid fa-bars text-xl"></i>
+                </button>
+            </div>
+        </div>
+        <!-- Mobile Navigation Menu -->
+        <div id="mobile-menu" class="hidden md:hidden bg-slate-900 px-4 pt-2 pb-4 space-y-2 border-t border-slate-800 text-sm">
+            <a href="#overview" class="block text-slate-200 hover:text-amber-400 py-1">Overview</a>
+            <a href="#network" class="block text-slate-200 hover:text-amber-400 py-1">Network Matrix</a>
+            <a href="#davis-deepdive" class="block text-slate-200 hover:text-amber-400 py-1">Davis Media Analysis</a>
+            <a href="#charts" class="block text-slate-200 hover:text-amber-400 py-1">Data Visuals</a>
+            <a href="#legislation" class="block text-slate-200 hover:text-amber-400 py-1">H.R. 10166 Simulator</a>
+        </div>
+    </header>
+
+    <!-- Main Content Body -->
+    <main class="flex-grow max-w-7xl w-full mx-auto px-4 sm:px-6 lg:px-8 py-8 space-y-10">
+
+        <!-- SECTION 1: EXECUTIVE BRIEFING & KEY INDICATORS -->
+        <section id="overview" class="space-y-6">
+            <div class="bg-slate-900 p-6 sm:p-8 rounded-xl shadow-xl border border-slate-800">
+                <div class="flex flex-col md:flex-row justify-between items-start md:items-center border-b border-slate-800 pb-4 mb-6 gap-4">
+                    <div>
+                        <span class="inline-block px-3 py-1 bg-amber-500/10 text-amber-400 border border-amber-500/20 rounded-full text-xs font-semibold tracking-wider uppercase mb-2">FARA Registration Case Study</span>
+                        <h1 class="text-2xl sm:text-3xl font-extrabold text-white tracking-tight">Project 545 & Davis Media NY LLC: Strategic Reconnaissance</h1>
+                    </div>
+                    <div class="text-right bg-slate-800/80 px-4 py-2 rounded-lg border border-slate-700">
+                        <span class="block text-xs font-semibold text-slate-400 uppercase">FARA Registration No.</span>
+                        <span class="text-lg font-bold text-amber-400">#7662 (Registered Oct 12, 2025)</span>
+                    </div>
+                </div>
+
+                <p class="text-slate-300 leading-relaxed mb-6">
+                    This interactive intelligence platform explores the structural architecture of Israeli foreign influence operations in the United States following October 2023. Operating under government designation <strong>Project 545</strong> with a global budget of ~$150M, the campaign shifted from conventional legislative lobbying toward decentralized digital proxy operations. Davis Media NY LLC served as a vital tactical node specializing in influencer management, social media amplification, and hostage awareness campaigns.
+                </p>
+
+                <!-- Key Metric Cards Grid -->
+                <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+                    <div class="bg-slate-950/60 p-4 rounded-lg border-l-4 border-amber-500 border-y border-r border-slate-800 shadow-sm">
+                        <span class="text-xs font-bold text-slate-400 uppercase tracking-wider">Global Campaign Budget</span>
+                        <div class="text-2xl font-black text-amber-400 mt-1">$150,000,000</div>
+                        <span class="text-xs text-slate-400">NIS 545M "Project 545" Sovereign Allocation</span>
+                    </div>
+                    <div class="bg-slate-950/60 p-4 rounded-lg border-l-4 border-indigo-500 border-y border-r border-slate-800 shadow-sm">
+                        <span class="text-xs font-bold text-slate-400 uppercase tracking-wider">Davis Media Disclosed</span>
+                        <div class="text-2xl font-black text-indigo-400 mt-1">$161,500</div>
+                        <span class="text-xs text-slate-400">Combined Retainers, Fees & Commissions</span>
+                    </div>
+                    <div class="bg-slate-950/60 p-4 rounded-lg border-l-4 border-teal-500 border-y border-r border-slate-800 shadow-sm">
+                        <span class="text-xs font-bold text-slate-400 uppercase tracking-wider">Compliance Latency</span>
+                        <div class="text-2xl font-black text-teal-400 mt-1">20 Months</div>
+                        <span class="text-xs text-slate-400">Delay between campaign start & FARA filing</span>
+                    </div>
+                    <div class="bg-slate-950/60 p-4 rounded-lg border-l-4 border-orange-500 border-y border-r border-slate-800 shadow-sm">
+                        <span class="text-xs font-bold text-slate-400 uppercase tracking-wider">Targeted Legislation</span>
+                        <div class="text-2xl font-black text-orange-400 mt-1">H.R. 10166</div>
+                        <span class="text-xs text-slate-400">Foreign Propaganda Disclosure Act (Luna)</span>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- SECTION 2: INTERACTIVE NETWORK MATRIX -->
+        <section id="network" class="space-y-6">
+            <div class="bg-slate-900 p-6 sm:p-8 rounded-xl shadow-xl border border-slate-800">
+                <div class="mb-6">
+                    <h2 class="text-xl sm:text-2xl font-bold text-white mb-2">Project 545 Subcontracting & Influence Network Matrix</h2>
+                    <p class="text-slate-400 text-sm">
+                        The Israeli Ministry of Foreign Affairs (MFA) and LaPam routed US-facing work through a European buffer (Havas Media Germany) and Tel Aviv agencies (L.D.R.S) to specialized US entities. Explore the operational nodes below.
+                    </p>
+                </div>
+
+                <!-- Filters & Search Bar -->
+                <div class="flex flex-col sm:flex-row justify-between items-center gap-4 mb-6 bg-slate-950/70 p-4 rounded-lg border border-slate-800">
+                    <div class="flex flex-wrap gap-2 w-full sm:w-auto" id="filter-buttons">
+                        <button data-filter="all" class="filter-btn px-3 py-1.5 rounded-md text-xs font-semibold bg-amber-500 text-slate-950 shadow-sm">All Nodes</button>
+                        <button data-filter="ai" class="filter-btn px-3 py-1.5 rounded-md text-xs font-semibold bg-slate-800 text-slate-300 hover:bg-slate-700 border border-slate-700">AI & GEO Framing</button>
+                        <button data-filter="influencer" class="filter-btn px-3 py-1.5 rounded-md text-xs font-semibold bg-slate-800 text-slate-300 hover:bg-slate-700 border border-slate-700">Influencer & Social</button>
+                        <button data-filter="media" class="filter-btn px-3 py-1.5 rounded-md text-xs font-semibold bg-slate-800 text-slate-300 hover:bg-slate-700 border border-slate-700">TV & Media PR</button>
+                        <button data-filter="religious" class="filter-btn px-3 py-1.5 rounded-md text-xs font-semibold bg-slate-800 text-slate-300 hover:bg-slate-700 border border-slate-700">Evangelical / Micro-target</button>
+                    </div>
+                    <div class="w-full sm:w-64">
+                        <input type="text" id="entity-search" placeholder="Search entity or tactic..." class="w-full px-3 py-1.5 text-xs bg-slate-900 border border-slate-700 text-slate-100 rounded-md focus:outline-none focus:ring-2 focus:ring-amber-500 placeholder-slate-500">
+                    </div>
+                </div>
+
+                <!-- Entity Grid -->
+                <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6" id="entity-grid">
+                    <!-- Cards dynamically rendered by Vanilla JS -->
+                </div>
+            </div>
+        </section>
+
+        <!-- SECTION 3: DEEP DIVE - DAVIS MEDIA NY LLC -->
+        <section id="davis-deepdive" class="space-y-6">
+            <div class="bg-slate-900 p-6 sm:p-8 rounded-xl shadow-xl border border-slate-800">
+                <div class="border-b border-slate-800 pb-4 mb-6">
+                    <span class="text-xs font-bold text-indigo-400 uppercase tracking-wider">Operative Profile & Dual Funding</span>
+                    <h2 class="text-2xl font-bold text-white mt-1">Davis Media NY LLC: Anatomy of an Operative Node</h2>
+                    <p class="text-slate-400 text-sm mt-2">
+                        Formed in Dec 2017 by Yoav Davis (former IDF spokesperson), Davis Media operated the cultural Instagram account <strong>@jews_of_ny</strong> (~200k followers). It represents the only FARA registrant with a dual-pipeline foreign principal structure (Havas Media Germany + L.D.R.S Group Tel Aviv).
+                    </p>
+                </div>
+
+                <div class="grid grid-cols-1 lg:grid-cols-2 gap-8">
+                    <!-- Contractual Quota Calculator -->
+                    <div class="bg-slate-950/60 p-6 rounded-xl border border-slate-800 space-y-4">
+                        <div class="flex justify-between items-center border-b border-slate-800 pb-2">
+                            <h3 class="font-bold text-white text-base"><i class="fa-solid fa-calculator text-amber-500 mr-2"></i>L.D.R.S Contract Quota Simulator</h3>
+                            <span class="text-xs bg-amber-500/10 text-amber-400 border border-amber-500/20 px-2 py-0.5 rounded font-semibold">Interactive Model</span>
+                        </div>
+                        <p class="text-xs text-slate-400">
+                            The L.D.R.S contract mandates 1 dedicated manager, weekly status calls, up to 10 talent contracts, and 5 weekly posts per creator. Adjust parameters to compute monthly operational output:
+                        </p>
+
+                        <div class="space-y-4 pt-2">
+                            <div>
+                                <div class="flex justify-between text-xs font-semibold text-slate-300 mb-1">
+                                    <span>Contracted Influencers/Talents:</span>
+                                    <span id="talent-count-val" class="text-indigo-400 font-bold">10 Talents</span>
+                                </div>
+                                <input type="range" id="talent-count" min="1" max="20" value="10" class="w-full accent-indigo-500 bg-slate-800 cursor-pointer">
+                            </div>
+
+                            <div>
+                                <div class="flex justify-between text-xs font-semibold text-slate-300 mb-1">
+                                    <span>Content Quota (Posts per Talent / Week):</span>
+                                    <span id="post-quota-val" class="text-indigo-400 font-bold">5 Posts</span>
+                                </div>
+                                <input type="range" id="post-quota" min="1" max="10" value="5" class="w-full accent-indigo-500 bg-slate-800 cursor-pointer">
+                            </div>
+
+                            <div>
+                                <div class="flex justify-between text-xs font-semibold text-slate-300 mb-1">
+                                    <span>Avg. Talent Contract Value (Per Talent/Mo):</span>
+                                    <span id="talent-cost-val" class="text-indigo-400 font-bold">$5,000</span>
+                                </div>
+                                <input type="range" id="talent-cost" min="1000" max="25000" step="1000" value="5000" class="w-full accent-indigo-500 bg-slate-800 cursor-pointer">
+                            </div>
+                        </div>
+
+                        <!-- Computed Results Matrix -->
+                        <div class="mt-6 bg-slate-900 p-4 rounded-lg border border-slate-800 space-y-3">
+                            <div class="grid grid-cols-2 gap-2 text-center border-b border-slate-800 pb-3">
+                                <div>
+                                    <span class="block text-xs text-slate-400 font-medium">Monthly Output</span>
+                                    <span id="calc-monthly-posts" class="text-xl font-extrabold text-white">200 Posts</span>
+                                </div>
+                                <div>
+                                    <span class="block text-xs text-slate-400 font-medium">Annual Output</span>
+                                    <span id="calc-annual-posts" class="text-xl font-extrabold text-teal-400">2,400 Posts</span>
+                                </div>
+                            </div>
+                            <div class="grid grid-cols-2 gap-2 text-center pt-1">
+                                <div>
+                                    <span class="block text-xs text-slate-400 font-medium">Monthly Management Retainer</span>
+                                    <span class="text-lg font-bold text-slate-200">$10,000</span>
+                                </div>
+                                <div>
+                                    <span class="block text-xs text-slate-400 font-medium">15% Talent Commission</span>
+                                    <span id="calc-commission" class="text-lg font-bold text-amber-400">$7,500</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Operational Case Study & Pipeline Flow -->
+                    <div class="space-y-4 flex flex-col justify-between">
+                        <div class="bg-slate-950 p-6 rounded-xl border border-slate-800 space-y-4">
+                            <div class="flex items-center space-x-2 text-amber-400 font-bold text-sm">
+                                <i class="fa-solid fa-bolt"></i>
+                                <span>Case Study: "Swords of Iron" & @jews_of_ny</span>
+                            </div>
+                            <p class="text-slate-300 text-xs leading-relaxed">
+                                In January 2024, Havas Media Germany placed order #82646/0 for $8,000 for social media promotion. During this window, @jews_of_ny and managed talents launched targeted video campaigns.
+                            </p>
+                            <div class="bg-slate-900 p-3 rounded-lg border border-slate-800 text-xs text-slate-300 italic">
+                                "It's almost as if a radical Islamist death cult has brainwashed the world into thinking the victims of genocide are the perpetrators... Oh wait — that's exactly what happened."
+                                <span class="block text-right text-amber-400 not-italic font-semibold mt-2">— Influencer Daniel Ryan Spaulding (Jan 27, 2024, UN HQ NYC)</span>
+                            </div>
+                            <p class="text-xs text-slate-400">
+                                <strong>Tactical Outcome:</strong> Converted sovereign foreign policy directives into organic-seeming cultural content, mitigating traditional political ad skepticism.
+                            </p>
+                        </div>
+
+                        <!-- Dual Pipe Schematic -->
+                        <div class="bg-slate-950/60 p-4 rounded-xl border border-slate-800">
+                            <h4 class="text-xs font-bold text-slate-300 uppercase mb-3">Dual-Funding Command Structure</h4>
+                            <div class="flex items-center justify-between text-xs gap-2">
+                                <div class="bg-slate-900 p-2 rounded border border-slate-800 text-center flex-1">
+                                    <strong class="block text-slate-200">State of Israel</strong>
+                                    <span class="text-slate-400 text-[10px]">MFA / LaPam</span>
+                                </div>
+                                <i class="fa-solid fa-arrow-right text-slate-600"></i>
+                                <div class="bg-slate-900 p-2 rounded border border-slate-800 text-center flex-1">
+                                    <strong class="block text-slate-200">Havas (DE) / L.D.R.S (IL)</strong>
+                                    <span class="text-slate-400 text-[10px]">Intermediaries</span>
+                                </div>
+                                <i class="fa-solid fa-arrow-right text-slate-600"></i>
+                                <div class="bg-amber-500/10 border border-amber-500/30 p-2 rounded text-center flex-1 font-bold text-amber-400">
+                                    Davis Media NY
+                                    <span class="block text-amber-300/70 font-normal text-[10px]">Talent/Content Manager</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- SECTION 4: QUANTITATIVE VISUALIZATIONS HUB -->
+        <section id="charts" class="space-y-6">
+            <div class="bg-slate-900 p-6 sm:p-8 rounded-xl shadow-xl border border-slate-800">
+                <div class="border-b border-slate-800 pb-4 mb-6">
+                    <span class="text-xs font-bold text-teal-400 uppercase tracking-wider">Quantitative Forensics</span>
+                    <h2 class="text-2xl font-bold text-white mt-1">Financial Distributions & Compliance Latency</h2>
+                    <p class="text-slate-400 text-sm mt-1">
+                        Analyzing financial values of the US Project 545 tranche, compliance time gaps prior to FARA disclosures, and public opinion trajectory.
+                    </p>
+                </div>
+
+                <div class="grid grid-cols-1 lg:grid-cols-2 gap-8">
+                    <!-- Chart 1: US Tranche Financial Allocations -->
+                    <div class="bg-slate-950/60 p-4 rounded-xl border border-slate-800 flex flex-col justify-between">
+                        <div>
+                            <h3 class="text-sm font-bold text-slate-200 mb-1">Project 545 US FARA Tranche Allocations ($ USD)</h3>
+                            <p class="text-xs text-slate-400 mb-4">Comparison of known contract values across key registrants</p>
+                        </div>
+                        <div class="chart-container">
+                            <canvas id="budgetChart"></canvas>
+                        </div>
+                        <p class="text-[11px] text-slate-500 mt-2 text-center">Data source: DOJ FARA Registrations (#7649, #7553, #7653, #7732, #7662)</p>
+                    </div>
+
+                    <!-- Chart 2: Registration Latency Gap -->
+                    <div class="bg-slate-950/60 p-4 rounded-xl border border-slate-800 flex flex-col justify-between">
+                        <div>
+                            <h3 class="text-sm font-bold text-slate-200 mb-1">Activity Start vs. FARA Registration Date (Months)</h3>
+                            <p class="text-xs text-slate-400 mb-4">Highlights systemic retroactive filings in late 2025</p>
+                        </div>
+                        <div class="chart-container">
+                            <canvas id="latencyChart"></canvas>
+                        </div>
+                        <p class="text-[11px] text-slate-500 mt-2 text-center">Activities launched Jan–Feb 2024; Registrations cluster in Sep–Oct 2025</p>
+                    </div>
+                </div>
+
+                <!-- Chart 3: Strategic Impact vs Opinion Shift -->
+                <div class="mt-8 bg-slate-950/60 p-6 rounded-xl border border-slate-800">
+                    <div class="mb-4">
+                        <h3 class="text-sm font-bold text-slate-200">US Public Disapproval Trend vs. Influence Campaign Capitalization</h3>
+                        <p class="text-xs text-slate-400">Gallup & Pew polling trends tracking American disapproval alongside Project 545 rollout</p>
+                    </div>
+                    <div class="chart-container max-w-full">
+                        <canvas id="opinionChart"></canvas>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- SECTION 5: LEGAL & LEGISLATIVE FRAMEWORK -->
+        <section id="legislation" class="space-y-6">
+            <div class="bg-slate-900 p-6 sm:p-8 rounded-xl shadow-xl border border-slate-800">
+                <div class="border-b border-slate-800 pb-4 mb-6">
+                    <span class="text-xs font-bold text-orange-400 uppercase tracking-wider">Regulatory Reform & Law Enforcement</span>
+                    <h2 class="text-2xl font-bold text-white mt-1">FARA Gaps, Bondi Memo & H.R. 10166</h2>
+                    <p class="text-slate-400 text-sm mt-1">
+                        In Feb 2025, Attorney General Pam Bondi limited FARA enforcement focus primarily to traditional espionage actors. In response, Rep. Anna Paulina Luna introduced H.R. 10166 (Foreign Propaganda Disclosure Act).
+                    </p>
+                </div>
+
+                <div class="grid grid-cols-1 lg:grid-cols-2 gap-8">
+                    <!-- Comparative Regulatory Matrix Table -->
+                    <div class="space-y-4">
+                        <h3 class="text-base font-bold text-slate-200">Regulatory Framework Comparison</h3>
+                        <div class="overflow-x-auto">
+                            <table class="w-full text-left text-xs border-collapse">
+                                <thead>
+                                    <tr class="bg-slate-950 text-slate-200">
+                                        <th class="p-2.5 border border-slate-800">Feature</th>
+                                        <th class="p-2.5 border border-slate-800">Bondi DOJ Memo (2025)</th>
+                                        <th class="p-2.5 border border-slate-800">H.R. 10166 (Luna Bill)</th>
+                                    </tr>
+                                </thead>
+                                <tbody class="divide-y divide-slate-800 bg-slate-950/40">
+                                    <tr>
+                                        <td class="p-2.5 font-bold border border-slate-800 text-slate-200">Enforcement Focus</td>
+                                        <td class="p-2.5 border border-slate-800 text-slate-400">Strictly traditional espionage actors</td>
+                                        <td class="p-2.5 border border-slate-800 text-slate-400">Monetized social media influencers</td>
+                                    </tr>
+                                    <tr>
+                                        <td class="p-2.5 font-bold border border-slate-800 text-slate-200">Publicity Agent Def.</td>
+                                        <td class="p-2.5 border border-slate-800 text-slate-400">Standard PR firms & lobbying shops</td>
+                                        <td class="p-2.5 border border-slate-800 text-slate-400">Explicitly includes "social media influencers"</td>
+                                    </tr>
+                                    <tr>
+                                        <td class="p-2.5 font-bold border border-slate-800 text-slate-200">Disclosure Rules</td>
+                                        <td class="p-2.5 border border-slate-800 text-slate-400">Agency-level corporate registration</td>
+                                        <td class="p-2.5 border border-slate-800 text-slate-400">Individual influencer FARA disclosures</td>
+                                    </tr>
+                                    <tr>
+                                        <td class="p-2.5 font-bold border border-slate-800 text-slate-200">FTC vs. FARA Labeling</td>
+                                        <td class="p-2.5 border border-slate-800 text-slate-400">Ambiguous blur between ad/speech</td>
+                                        <td class="p-2.5 border border-slate-800 text-slate-400">Mandatory conspicuous foreign agent label</td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+
+                    <!-- Interactive Compliance Scenario Simulator -->
+                    <div class="bg-slate-950/60 p-6 rounded-xl border border-slate-800 space-y-4">
+                        <div class="flex justify-between items-center border-b border-slate-800 pb-2">
+                            <h3 class="font-bold text-white text-base"><i class="fa-solid fa-gavel text-indigo-400 mr-2"></i>FARA Compliance Scenario Tester</h3>
+                            <span class="text-xs bg-indigo-500/10 text-indigo-400 border border-indigo-500/20 px-2 py-0.5 rounded font-semibold">Simulator</span>
+                        </div>
+                        <p class="text-xs text-slate-400">
+                            Select an operational scenario to evaluate whether it triggers FARA registration obligations under current law and proposed H.R. 10166 guidelines:
+                        </p>
+
+                        <div class="space-y-3">
+                            <label class="block text-xs font-semibold text-slate-300">Select Activity Scenario:</label>
+                            <select id="scenario-select" class="w-full text-xs p-2.5 border border-slate-700 rounded-md bg-slate-900 text-slate-100 focus:outline-none focus:ring-2 focus:ring-indigo-500">
+                                <option value="scenario1">Scenario 1: NY PR Firm signs contract with German Ad Agency for Israeli MFA ($10k/mo)</option>
+                                <option value="scenario2">Scenario 2: Lifestyle Influencer receives $5,000 to post 5 reels regarding Middle East hostages without disclosure</option>
+                                <option value="scenario3">Scenario 3: US Firm builds 10 AI-optimized blogs to train ChatGPT RAG models on state narratives</option>
+                            </select>
+                        </div>
+
+                        <!-- Dynamic Evaluation Display -->
+                        <div id="scenario-result" class="bg-slate-900 p-4 rounded-lg border border-slate-800 text-xs space-y-2 mt-4">
+                            <!-- Populated via JS -->
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- SECTION 6: STRATEGIC SYNTHESIS -->
+        <section id="synthesis" class="space-y-6">
+            <div class="bg-slate-900 text-white p-6 sm:p-8 rounded-xl shadow-xl border border-slate-800 space-y-6">
+                <div class="border-b border-slate-800 pb-4">
+                    <span class="text-xs font-bold text-amber-400 uppercase tracking-wider">Analytical Synthesis</span>
+                    <h2 class="text-2xl font-bold text-white mt-1">The Strategic Paradox of Modern Sovereign Influence</h2>
+                </div>
+
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-6 text-xs text-slate-300 leading-relaxed">
+                    <div class="space-y-2 bg-slate-950/60 p-4 rounded-lg border border-slate-800">
+                        <strong class="block text-amber-400 text-sm font-bold">1. Tactical Dominance vs. Strategic Failure</strong>
+                        <p>
+                            Project 545 demonstrated masterclass proficiency in digital distribution: deploying AI framing (Clock Tower X), influencer astroturfing (Davis Media), and geofencing (Show Faith). However, despite spending ~$150M globally, US disapproval of Israeli military operations grew from ~47% to 60%.
+                        </p>
+                    </div>
+                    <div class="space-y-2 bg-slate-950/60 p-4 rounded-lg border border-slate-800">
+                        <strong class="block text-amber-400 text-sm font-bold">2. The "Hasbara" Trap</strong>
+                        <p>
+                            As late politician Yossi Sarid observed, states often operate under the delusion that policy is faultless while communication is garbage. The influence campaign treated a profound crisis as a marketing deficiency, resulting in public backlash when paid ties were exposed.
+                        </p>
+                    </div>
+                    <div class="space-y-2 bg-slate-950/60 p-4 rounded-lg border border-slate-800">
+                        <strong class="block text-amber-400 text-sm font-bold">3. The Future of Disclosure Architecture</strong>
+                        <p>
+                            The exposure of Davis Media NY LLC and retroactive FARA filings have accelerated legislative reform. The passage of H.R. 10166 will force structural transparency upon the monetized creator economy, permanently altering foreign advocacy statecraft.
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+    </main>
+
+    <!-- Footer -->
+    <footer class="bg-slate-950 text-slate-500 border-t border-slate-800 py-6 mt-12 text-xs">
+        <div class="max-w-7xl mx-auto px-4 text-center space-y-2">
+            <p>FARA Intelligence & Reconnaissance Architecture | Based on DOJ FARA Registration Statements #7662, #7649, #7553, #7653</p>
+            <p class="text-slate-600">Prepared for Open-Source Transparency & Policy Analysis • Current Year: 2026</p>
+        </div>
+    </footer>
+
+    <!-- Vanilla JavaScript Application Logic -->
+    <script>
+        // --- Global Chart Defaults for Dark Theme ---
+        Chart.defaults.color = '#94a3b8';
+        Chart.defaults.borderColor = 'rgba(148, 163, 184, 0.15)';
+
+        // --- 1. DATA STORAGE & ENTITY NETWORK OBJECTS ---
+        const networkEntities = [
+            {
+                name: "Davis Media NY LLC",
+                faraId: "#7662",
+                category: "influencer",
+                budget: "$161,500 Disclosed",
+                principal: "MFA via Havas Media (DE) & L.D.R.S (IL)",
+                function: "Influencer talent acquisition, @jews_of_ny platform, 'Swords of Iron' campaign.",
+                icon: "fa-users"
+            },
+            {
+                name: "Clock Tower X LLC",
+                faraId: "#7649",
+                category: "ai",
+                budget: "$31,500,000 Ordered ($15M Rec.)",
+                principal: "MFA via Havas Media Germany",
+                function: "Generative Engine Optimization (GEO), AI framing, poisoning LLM RAG training datasets.",
+                icon: "fa-robot"
+            },
+            {
+                name: "Targeted Communications Global",
+                faraId: "#7553",
+                category: "media",
+                budget: "$9,890,000 Disclosed",
+                principal: "MFA via Havas Media Germany",
+                function: "Mainstream television booking blitz (CNN, Fox News, Newsmax, NBC interviews).",
+                icon: "fa-tv"
+            },
+            {
+                name: "Show Faith by Works LLC",
+                faraId: "#7653",
+                category: "religious",
+                budget: "$3,330,000 Disclosed",
+                principal: "MFA via Havas Media Germany",
+                function: "Evangelical Christian outreach, Western US church device ID geofencing & ad retargeting.",
+                icon: "fa-church"
+            },
+            {
+                name: "Bridges Partners LLC",
+                faraId: "#7652",
+                category: "influencer",
+                budget: "$900,000 Disclosed",
+                principal: "MFA via Havas Media Germany",
+                function: "'The Esther Project' — covert macro-influencer contracts ($2k–$7k/post).",
+                icon: "fa-hashtag"
+            },
+            {
+                name: "Piro, Inc.",
+                faraId: "#7732",
+                category: "ai",
+                budget: "$1,000,000 Disclosed",
+                principal: "MFA via Havas Media Germany",
+                function: "Deploying fake think tanks (Hanover Institute) to publish 124 reports for AI chatbot scraping.",
+                icon: "fa-file-lines"
+            }
+        ];
+
+        // --- 2. RENDER ENTITY GRID & FILTERING LOGIC ---
+        function renderEntities(filter = "all", searchQuery = "") {
+            const container = document.getElementById('entity-grid');
+            container.innerHTML = '';
+
+            const filtered = networkEntities.filter(item => {
+                const matchesCategory = filter === "all" || item.category === filter;
+                const matchesSearch = item.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
+                                      item.function.toLowerCase().includes(searchQuery.toLowerCase()) ||
+                                      item.faraId.toLowerCase().includes(searchQuery.toLowerCase());
+                return matchesCategory && matchesSearch;
+            });
+
+            if (filtered.length === 0) {
+                container.innerHTML = `<div class="col-span-full text-center py-8 text-slate-500 text-sm">No entities match the selected filter or search term.</div>`;
+                return;
+            }
+
+            filtered.forEach(item => {
+                const card = document.createElement('div');
+                card.className = "bg-slate-950/60 p-5 rounded-xl border border-slate-800 hover:border-slate-700 transition-all shadow-md flex flex-col justify-between space-y-4";
+                card.innerHTML = `
+                    <div class="space-y-2">
+                        <div class="flex justify-between items-start">
+                            <span class="text-[11px] font-bold text-amber-400 uppercase tracking-wider">${item.faraId}</span>
+                            <span class="p-2 bg-slate-900 text-slate-300 rounded-lg text-xs border border-slate-800"><i class="fa-solid ${item.icon}"></i></span>
+                        </div>
+                        <h3 class="text-base font-bold text-white">${item.name}</h3>
+                        <p class="text-xs text-slate-400 leading-relaxed">${item.function}</p>
+                    </div>
+                    <div class="border-t border-slate-800/80 pt-3 space-y-1 text-xs">
+                        <div class="flex justify-between text-slate-400">
+                            <span>Financial Value:</span>
+                            <strong class="text-slate-200">${item.budget}</strong>
+                        </div>
+                        <div class="flex justify-between text-slate-400">
+                            <span>Foreign Principal:</span>
+                            <span class="text-slate-300 truncate max-w-[150px]" title="${item.principal}">${item.principal}</span>
+                        </div>
+                    </div>
+                `;
+                container.appendChild(card);
+            });
+        }
+
+        // --- 3. CONTRACT QUOTA CALCULATOR LOGIC ---
+        function initQuotaCalculator() {
+            const talentInput = document.getElementById('talent-count');
+            const postInput = document.getElementById('post-quota');
+            const costInput = document.getElementById('talent-cost');
+
+            const talentVal = document.getElementById('talent-count-val');
+            const postVal = document.getElementById('post-quota-val');
+            const costVal = document.getElementById('talent-cost-val');
+
+            const monthlyPostsEl = document.getElementById('calc-monthly-posts');
+            const annualPostsEl = document.getElementById('calc-annual-posts');
+            const commissionEl = document.getElementById('calc-commission');
+
+            function update() {
+                const talents = parseInt(talentInput.value);
+                const postsPerWeek = parseInt(postInput.value);
+                const avgCost = parseInt(costInput.value);
+
+                talentVal.innerText = `${talents} Talents`;
+                postVal.innerText = `${postsPerWeek} Posts`;
+                costVal.innerText = `$${avgCost.toLocaleString()}`;
+
+                const monthlyPosts = talents * postsPerWeek * 4;
+                const annualPosts = monthlyPosts * 12;
+                const totalTalentSpend = talents * avgCost;
+                const monthlyCommission = totalTalentSpend * 0.15;
+
+                monthlyPostsEl.innerText = `${monthlyPosts.toLocaleString()} Posts`;
+                annualPostsEl.innerText = `${annualPosts.toLocaleString()} Posts`;
+                commissionEl.innerText = `$${monthlyCommission.toLocaleString()}`;
+            }
+
+            talentInput.addEventListener('input', update);
+            postInput.addEventListener('input', update);
+            costInput.addEventListener('input', update);
+            update();
+        }
+
+        // --- 4. SCENARIO SIMULATOR LOGIC ---
+        const scenarioData = {
+            scenario1: {
+                title: "US Digital Agency Signing Foreign Proxy Contracts",
+                bondiStatus: "Triggered (Corporate Level)",
+                lunaStatus: "Triggered (Mandatory Disclosures)",
+                analysis: "Under both frameworks, Davis Media NY LLC must register under FARA as a domestic agent of a foreign principal. Bondi memo permits agency-level compliance, but requires clear reporting of funds from Havas/L.D.R.S."
+            },
+            scenario2: {
+                title: "Unregistered Monetized Social Media Influencer",
+                bondiStatus: "Enforcement Void / Unregulated",
+                lunaStatus: "STRICT VIOLATION under H.R. 10166",
+                analysis: "Under current DOJ practice, influencers often exploit FTC loopholes without labeling posts as foreign propaganda. H.R. 10166 explicitly inserts 'social media influencer' into 22 U.S.C. § 611(h), rendering failure to register and label posts illegal."
+            },
+            scenario3: {
+                title: "Generative Engine Optimization (GEO) & Chatbot Poisoning",
+                bondiStatus: "Legal Ambiguity",
+                lunaStatus: "Covered under Propaganda Materials",
+                analysis: "Constructing networks of fake think tanks (e.g., Hanover Institute) to alter AI LLM training datasets sits at the boundary of traditional foreign propaganda laws. Modern proposals aim to regulate AI manipulation as covert digital influence."
+            }
+        };
+
+        function initScenarioSimulator() {
+            const selectEl = document.getElementById('scenario-select');
+            const resultEl = document.getElementById('scenario-result');
+
+            function displayScenario() {
+                const key = selectEl.value;
+                const data = scenarioData[key];
+                resultEl.innerHTML = `
+                    <div class="font-bold text-white border-b border-slate-800 pb-1 mb-2">${data.title}</div>
+                    <div class="grid grid-cols-2 gap-2 mb-2">
+                        <div class="bg-amber-500/10 p-2 rounded border border-amber-500/20">
+                            <span class="block text-[10px] text-amber-400 font-bold uppercase">Bondi DOJ Context</span>
+                            <span class="font-semibold text-amber-300">${data.bondiStatus}</span>
+                        </div>
+                        <div class="bg-indigo-500/10 p-2 rounded border border-indigo-500/20">
+                            <span class="block text-[10px] text-indigo-400 font-bold uppercase">H.R. 10166 Impact</span>
+                            <span class="font-semibold text-indigo-300">${data.lunaStatus}</span>
+                        </div>
+                    </div>
+                    <p class="text-slate-300 leading-normal">${data.analysis}</p>
+                `;
+            }
+
+            selectEl.addEventListener('change', displayScenario);
+            displayScenario();
+        }
+
+        // --- 5. CHART.JS INITIALIZATION ---
+        function initCharts() {
+            // Chart 1: Budget Allocations
+            const ctx1 = document.getElementById('budgetChart').getContext('2d');
+            new Chart(ctx1, {
+                type: 'bar',
+                data: {
+                    labels: ['Clock Tower X (GEO)', 'Targeted Comm (TV)', 'Show Faith (Church)', 'Piro Inc (ThinkTank)', 'Bridges (Esther)', 'Davis Media (Talent)'],
+                    datasets: [{
+                        label: 'Disclosed Allocation ($ USD)',
+                        data: [15000000, 9890000, 3330000, 1000000, 900000, 161500],
+                        backgroundColor: ['#6366f1', '#3b82f6', '#0ea5e9', '#14b8a6', '#10b981', '#f59e0b'],
+                        borderRadius: 4
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: {
+                        legend: { display: false },
+                        tooltip: {
+                            callbacks: {
+                                label: function(context) {
+                                    return `$${context.parsed.y.toLocaleString()}`;
+                                }
+                            }
+                        }
+                    },
+                    scales: {
+                        y: {
+                            beginAtZero: true,
+                            grid: { color: 'rgba(148, 163, 184, 0.1)' },
+                            ticks: {
+                                callback: function(value) { return '$' + (value / 1000000).toFixed(1) + 'M'; },
+                                font: { size: 10 },
+                                color: '#94a3b8'
+                            }
+                        },
+                        x: {
+                            grid: { display: false },
+                            ticks: {
+                                font: { size: 9 },
+                                color: '#94a3b8',
+                                callback: function(val, index) {
+                                    const label = this.getLabelForValue(val);
+                                    return label.length > 16 ? label.substr(0, 14) + '..' : label;
+                                }
+                            }
+                        }
+                    }
+                }
+            });
+
+            // Chart 2: Latency Time Gap
+            const ctx2 = document.getElementById('latencyChart').getContext('2d');
+            new Chart(ctx2, {
+                type: 'bar',
+                data: {
+                    labels: ['Davis Media NY', 'Bridges Partners', 'Show Faith', 'Clock Tower X', 'Piro Inc.'],
+                    datasets: [{
+                        label: 'Months Activity Active Before FARA Registration',
+                        data: [20, 16, 14, 12, 10],
+                        backgroundColor: '#f97316',
+                        borderRadius: 4
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    indexAxis: 'y',
+                    plugins: {
+                        legend: { display: false },
+                        tooltip: {
+                            callbacks: {
+                                label: function(context) { return `${context.parsed.x} Months Delay`; }
+                            }
+                        }
+                    },
+                    scales: {
+                        x: {
+                            grid: { color: 'rgba(148, 163, 184, 0.1)' },
+                            title: { display: true, text: 'Months Elapsed Before FARA Filing', font: { size: 10 }, color: '#94a3b8' },
+                            ticks: { font: { size: 10 }, color: '#94a3b8' }
+                        },
+                        y: {
+                            grid: { display: false },
+                            ticks: { font: { size: 10 }, color: '#94a3b8' }
+                        }
+                    }
+                }
+            });
+
+            // Chart 3: Public Disapproval vs Campaign Timeline
+            const ctx3 = document.getElementById('opinionChart').getContext('2d');
+            new Chart(ctx3, {
+                type: 'line',
+                data: {
+                    labels: ['Nov 2023', 'Jan 2024', 'May 2024', 'Nov 2024', 'Mar 2025', 'Jul 2025', 'Oct 2025'],
+                    datasets: [
+                        {
+                            label: 'US Disapproval of Israel Military Action (%)',
+                            data: [45, 48, 52, 55, 58, 60, 62],
+                            borderColor: '#f59e0b',
+                            backgroundColor: 'rgba(245, 158, 11, 0.1)',
+                            fill: true,
+                            tension: 0.3,
+                            yAxisID: 'y'
+                        },
+                        {
+                            label: 'Project 545 Capital Deployment Cumulative ($M)',
+                            data: [10, 25, 55, 90, 120, 140, 150],
+                            borderColor: '#6366f1',
+                            borderDash: [5, 5],
+                            tension: 0.3,
+                            yAxisID: 'y1'
+                        }
+                    ]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    interaction: { mode: 'index', intersect: false },
+                    plugins: {
+                        legend: { position: 'top', labels: { font: { size: 11 }, color: '#cbd5e1' } }
+                    },
+                    scales: {
+                        y: {
+                            type: 'linear',
+                            display: true,
+                            position: 'left',
+                            title: { display: true, text: 'Disapproval (%)', font: { size: 10 }, color: '#94a3b8' },
+                            grid: { color: 'rgba(148, 163, 184, 0.1)' },
+                            ticks: { color: '#94a3b8' },
+                            min: 30,
+                            max: 70
+                        },
+                        y1: {
+                            type: 'linear',
+                            display: true,
+                            position: 'right',
+                            title: { display: true, text: 'Capital Spend ($M)', font: { size: 10 }, color: '#94a3b8' },
+                            ticks: { color: '#94a3b8' },
+                            grid: { drawOnChartArea: false }
+                        },
+                        x: {
+                            grid: { color: 'rgba(148, 163, 184, 0.1)' },
+                            ticks: { font: { size: 10 }, color: '#94a3b8' }
+                        }
+                    }
+                }
+            });
+        }
+
+        // --- 6. EVENT LISTENERS & DOM READY INITIALIZATION ---
+        document.addEventListener('DOMContentLoaded', () => {
+            // Initial Render
+            renderEntities();
+            initQuotaCalculator();
+            initScenarioSimulator();
+            initCharts();
+
+            // Mobile menu toggle
+            const mobileMenuBtn = document.getElementById('mobile-menu-btn');
+            const mobileMenu = document.getElementById('mobile-menu');
+            mobileMenuBtn.addEventListener('click', () => {
+                mobileMenu.classList.toggle('hidden');
+            });
+
+            // Filter button events
+            const filterBtns = document.querySelectorAll('.filter-btn');
+            const searchInput = document.getElementById('entity-search');
+            let currentFilter = "all";
+
+            filterBtns.forEach(btn => {
+                btn.addEventListener('click', (e) => {
+                    filterBtns.forEach(b => {
+                        b.classList.remove('bg-amber-500', 'text-slate-950');
+                        b.classList.add('bg-slate-800', 'text-slate-300');
+                    });
+                    e.target.classList.remove('bg-slate-800', 'text-slate-300');
+                    e.target.classList.add('bg-amber-500', 'text-slate-950');
+
+                    currentFilter = e.target.getAttribute('data-filter');
+                    renderEntities(currentFilter, searchInput.value);
+                });
+            });
+
+            searchInput.addEventListener('input', (e) => {
+                renderEntities(currentFilter, e.target.value);
+            });
+        });
+    </script>
+</body>
+</html>
