@@ -11,7 +11,7 @@
     :root{color-scheme:dark;
       --bg:#06111c;--bg-2:#0a1a28;--panel:#0b1c2b;--panel-2:#0e2233;--line:#1f3a4f;--line-2:#2c5266;
       --text:#eaf3fb;--muted:#9fb3c4;--dim:#5f7d92;
-      --cyan:#5fd6e8;--cyan-dim:#3f8fa3;--amber:#f5c584;--amber-ink:#2a1a06;--led:#4ff0c8;
+      --cyan:#5fd6e8;--cyan-dim:#3f8fa3;--amber:#f5c584;--amber-ink:#2a1a06;--led:#4ff0c8;--neon:#ff5877;--violet:#af70ff;
       --sans:"DM Sans",Inter,ui-sans-serif,system-ui,-apple-system,"Segoe UI",sans-serif;
       --mono:"IBM Plex Mono",ui-monospace,SFMono-Regular,Consolas,monospace}
     *{box-sizing:border-box}
@@ -135,6 +135,29 @@
       .dossier-dialog{width:100%;height:100svh;max-height:none;border:0}
       .dialog-meta{display:none}
     }
+    /* Neon-noir archive layer: atmosphere sits behind the evidence interface, never over its controls. */
+    .city-rain{position:absolute;inset:0;z-index:-1;pointer-events:none;overflow:hidden;opacity:.62;background:
+      linear-gradient(112deg,transparent 0 45%,#5fd6e810 45.2% 45.34%,transparent 45.5%),
+      repeating-linear-gradient(100deg,transparent 0 36px,#77dff20a 37px 38px,transparent 39px 78px),
+      linear-gradient(180deg,#08081744 0%,transparent 31%,#08030f33 100%);mask-image:linear-gradient(180deg,#000 0%,#000 86%,transparent)}
+    .city-rain:before,.city-rain:after{content:"";position:absolute;inset:-18% -6%;background:repeating-linear-gradient(100deg,transparent 0 54px,rgba(122,237,255,.22) 55px 56px,transparent 57px 108px);animation:rainfall 1.9s linear infinite;transform:skewX(-12deg)}
+    .city-rain:after{opacity:.48;animation-duration:2.7s;animation-direction:reverse;background:repeating-linear-gradient(100deg,transparent 0 84px,rgba(255,88,119,.16) 85px 86px,transparent 87px 165px)}
+    @keyframes rainfall{from{translate:0 -6%}to{translate:-7% 14%}}
+    .topbar{border-bottom-color:#ff587755;background:linear-gradient(90deg,#050e18ef,#140b20e8 48%,#061a26ed);box-shadow:0 8px 36px #0009}
+    .brand em{color:var(--neon)}.brand-mark{border-color:#ff587799;box-shadow:0 0 22px #ff587733}.brand-mark svg{stroke:var(--cyan)}
+    .status{color:#d9eaf2}.live-dot{background:var(--neon);box-shadow:0 0 13px var(--neon)}
+    .page{background:radial-gradient(circle at 77% 40%,#f52a5b20 0,transparent 26%),radial-gradient(circle at 22% 86%,#4d5dff1b 0,transparent 36%),linear-gradient(180deg,#090b1b 0%,var(--bg) 69%)}
+    .page:after{border-color:#ff587744;background:radial-gradient(circle,#4b1d4740,transparent 65%);box-shadow:0 0 140px #ff345522}
+    .eyebrow{color:#ff8b9d}.eyebrow.cyan{color:var(--cyan)}.eyebrow:before{box-shadow:0 0 10px currentColor}
+    h1 .outline{-webkit-text-stroke-color:#7ebbd0}h1 .files{color:#ff7890;text-shadow:0 0 32px #ff45674d}
+    .cta{background:linear-gradient(110deg,#ff5a73,#df3d69);box-shadow:0 12px 30px #d925503d}.cta:hover{background:linear-gradient(110deg,#ff8291,#ef5479);transform:translateY(-2px)}
+    .telemetry{position:relative;overflow:hidden;display:grid;gap:10px;max-width:420px;padding:13px 15px;border:1px solid #ff58775c;background:linear-gradient(115deg,#160e1bd9,#0a1e2bd9);box-shadow:inset 0 0 34px #ff58770d,0 18px 50px #0003}
+    .telemetry:before{content:"";position:absolute;inset:0;background:linear-gradient(90deg,transparent,#ff8e9b20,transparent);translate:-120% 0;animation:scan 4.8s ease-in-out infinite}.telemetry-head,.telemetry-readout{position:relative;z-index:1;display:flex;justify-content:space-between;gap:12px;font:700 9px var(--mono);letter-spacing:.15em}.telemetry-head{color:#ff9ba9}.telemetry-readout{color:#d8e7ee}.telemetry-readout b{color:var(--cyan);font-weight:600;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}.signal-bars{position:relative;z-index:1;display:flex;align-items:end;gap:4px;height:23px}.signal-bars i{display:block;flex:1;min-width:3px;background:linear-gradient(180deg,var(--cyan),#304d6a);height:var(--level);box-shadow:0 0 8px #5fd6e866;animation:equalize 2.2s ease-in-out infinite;animation-delay:var(--delay)}.signal-bars i:nth-child(3n){background:linear-gradient(180deg,#ff6982,#6b2949)}.signal-bars i.active{background:linear-gradient(180deg,#fff4cc,var(--amber));box-shadow:0 0 14px #f5c584bb}
+    @keyframes scan{0%,38%{translate:-120% 0}62%,100%{translate:120% 0}}@keyframes equalize{50%{scale:1 .36;transform-origin:bottom}}
+    .vault-label strong{color:#ff8396}.rack{border-color:#73425a;background:linear-gradient(180deg,#1a1020,#091725);box-shadow:0 0 0 4px #06121d,0 0 0 5px #ff587733,0 30px 90px #000a,0 0 75px #ef31511c}.rack:before,.rack:after{background:repeating-linear-gradient(180deg,transparent 0 22px,#ff8e9b66 22px 23px)}.rack-cap{border-color:#674158;background:linear-gradient(100deg,#151426,#0b2030)}.rack-title span{color:#ff7f92;text-shadow:0 0 16px #ff587799}.cabinet{color:var(--cyan)}.cabinet i{background:repeating-linear-gradient(90deg,#ff7e91 0 3px,transparent 3px 5px)}
+    .unit{border-color:#243e52;border-left-color:#62405b;background:linear-gradient(100deg,#101829,#0a1726)}.unit:hover{border-color:#ff7188;background:linear-gradient(100deg,#261827,#102534);box-shadow:inset 3px 0 #ff6e85}.unit[aria-current="true"]{border-color:#ff7990;border-left-color:#ff7990;background:linear-gradient(100deg,#332034,#102634);box-shadow:inset 0 0 22px #ff587729,0 0 16px #ff58771a}.unit[aria-current="true"] .unit-num{color:#ffacb7}.led:before{background:#ff6680;box-shadow:0 0 9px #ff6680}.rack-base .ready{color:var(--cyan)}.rack-base .ready:before{background:var(--neon);box-shadow:0 0 8px var(--neon)}
+    .record{border-color:#70445b;background:linear-gradient(105deg,#101928e8,#1a0e1ddd)}.record:before{background:linear-gradient(90deg,#ff5877,#af70ff)}.open-record{border-color:#ff7c92;color:#ffacb8}.open-record:hover{background:#ff58771c}.dossier-dialog{border-color:#784b62}.dialog-head{border-bottom-color:#6b415a}.close-dialog{border-color:#ff8295;color:#ffacb8;background:#ff58771a}
+    @media(max-width:760px){.telemetry{max-width:none}.city-rain{opacity:.35}}
     @media(prefers-reduced-motion:reduce){html{scroll-behavior:auto}*,*::before,*::after{animation:none!important;transition:none!important}}
   </style>
 </head>
@@ -146,11 +169,17 @@
   </header>
 
   <main class="page">
+    <div class="city-rain" aria-hidden="true"></div>
     <div class="layout">
       <section class="intro" aria-labelledby="page-title">
         <div class="eyebrow">FILE SYSTEM / VOLUME 001</div>
         <h1 id="page-title">BEHIND<br>THE<span class="outline">NAMES.</span><span class="files">The files.</span></h1>
         <p class="lede">Ten organizations and research files. Ten entry points. Explore the dossier directory through an interactive archive rack.</p>
+        <div class="telemetry" aria-live="polite" aria-atomic="true">
+          <div class="telemetry-head"><span>LIVE ARCHIVE SIGNAL</span><span id="signal-unit">UNIT 08</span></div>
+          <div class="signal-bars" id="signal-bars" aria-hidden="true"></div>
+          <div class="telemetry-readout"><span>ACTIVE FILE</span><b id="signal-name">PLUS COMMUNICATIONS, LLC</b></div>
+        </div>
         <a class="cta" href="#vault" id="browse-index">BROWSE THE INDEX <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 12h15M13 6l6 6-6 6"/></svg></a>
         <div class="summary">
           <div class="summary-label">ARCHIVE SUMMARY</div>
@@ -200,13 +229,15 @@
     const $=id=>document.getElementById(id),rows=$('rack-rows'),dialog=$('dossier-dialog'),frame=$('dossier-frame'),n2=v=>String(v).padStart(2,'0'),total=records.length;
     let active=8;
     $('entry-count').textContent=n2(total);
+    const signalBars=$('signal-bars');
+    records.forEach((_,i)=>{const bar=document.createElement('i');bar.style.setProperty('--level',(7+(i*11)%17)+'px');bar.style.setProperty('--delay',(-i*.16)+'s');signalBars.append(bar)});
     records.forEach(([label],i)=>{const unit=i+1,b=document.createElement('button');b.type='button';b.className='unit';b.dataset.unit=unit;b.setAttribute('aria-controls','dossier-dialog');b.setAttribute('aria-label','Open '+label+' dossier');
       b.innerHTML='<span class="unit-num">'+n2(unit)+'</span><span class="unit-label"></span><span class="unit-hw" aria-hidden="true"><span class="vents"></span><span class="led"></span></span>';
       b.querySelector('.unit-label').textContent=label;rows.append(b)});
     const displayId=id=>/^\d+$/.test(id)?'#'+id:id;
     function select(unit){active=unit;const [label,reg,path]=records[unit-1];
       rows.querySelectorAll('.unit').forEach(r=>r.setAttribute('aria-current',String(Number(r.dataset.unit)===unit)));
-      $('record-pos').textContent=n2(unit)+' / '+n2(total);$('record-name').textContent=label;$('record-reg').textContent=displayId(reg);$('record-unit').textContent='UNIT '+n2(unit);$('record-path').textContent=path}
+      $('record-pos').textContent=n2(unit)+' / '+n2(total);$('record-name').textContent=label;$('record-reg').textContent=displayId(reg);$('record-unit').textContent='UNIT '+n2(unit);$('record-path').textContent=path;$('signal-unit').textContent='UNIT '+n2(unit);$('signal-name').textContent=label.toUpperCase();[...signalBars.children].forEach((bar,i)=>bar.classList.toggle('active',i===unit-1))}
     function open(unit){select(unit);const [label,reg,path]=records[unit-1];$('dialog-title').textContent=label;$('dialog-meta').textContent='RECORD '+displayId(reg)+' / UNIT '+n2(unit);frame.title=label+' dossier';frame.src=path;dialog.showModal()}
     rows.addEventListener('click',e=>{const r=e.target.closest('.unit');if(r)open(Number(r.dataset.unit))});
     rows.addEventListener('focusin',e=>{const r=e.target.closest('.unit');if(r)select(Number(r.dataset.unit))});

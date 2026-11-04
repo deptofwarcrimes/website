@@ -1,14 +1,15 @@
 ---
 version: alpha
 colors:
-  primary: "#54d4f3"
-  background: "#070e19"
-  surface: "#0c1624"
-  surfaceRaised: "#111e30"
-  text: "#eef4ff"
-  muted: "#94a5bc"
-  accent: "#54d4f3"
-  evidence: "#9acbe0"
+  primary: "#ff5877"
+  background: "#06111c"
+  surface: "#0b1c2b"
+  surfaceRaised: "#0e2233"
+  text: "#eaf3fb"
+  muted: "#9fb3c4"
+  accent: "#5fd6e8"
+  evidence: "#8fb9d4"
+  signal: "#f5c584"
 typography:
   body:
     fontFamily: "DM Sans, Inter, system-ui, sans-serif"
@@ -26,17 +27,21 @@ components:
     backgroundColor: "surface"
     textColor: "text"
     rounded: "panel"
+  archiveSignal:
+    backgroundColor: "surfaceRaised"
+    textColor: "text"
+    rounded: "control"
 ---
 
 ## Overview
 
-Influence Atlas is a dense public-record research interface for readers tracing declared relationships. Its register is investigative product UI: dark, restrained, and legible under high information density. Its visual reference is a case-file evidence board, not a generic data dashboard.
+Influence Atlas is a dense public-record research interface for readers tracing declared relationships. Its register is investigative product UI: dark, restrained, and legible under high information density. Its visual reference is a rain-lit evidence terminal: neon-noir atmosphere at the edges, precise records at the center—not a generic data dashboard.
 
-The signature is the guided evidence map. In directional stages, relationship lanes should make the reading order explicit: inputs at left, focal entities at center, and supporting context at right.
+The signatures are the guided evidence map and the landing-page archive signal: a restrained live readout that follows the currently selected record. In directional stages, relationship lanes should make the reading order explicit: inputs at left, focal entities at center, and supporting context at right.
 
 ## Colors
 
-Use `background` and `surface` for the layered night-blue workspace. Cyan is reserved for active controls and navigation. Evidence connections use the subdued blue `evidence`, so they do not compete with entity colors. Do not use shared infrastructure color as proof of affiliation.
+Use `background` and `surface` for the layered night-blue workspace. `primary` is the magenta-red signal used for archival urgency and active record illumination; `accent` cyan marks navigation and active technical state; `signal` amber is reserved for identifiers and caution. Evidence connections use the subdued blue `evidence`, so they do not compete with entity colors. Do not use shared infrastructure color as proof of affiliation.
 
 ## Typography
 
@@ -48,7 +53,7 @@ The persistent sidebar supports filtering; the canvas owns exploration. Guided s
 
 ## Elevation & Depth
 
-Panels use subtle borders and translucent dark fills. Avoid decorative shadows inside the graph; depth comes from spatial separation and line weight.
+Panels use subtle borders and translucent dark fills. Use a neon glow only for an active physical metaphor—an active rack module, status signal, or transit layer—not for ordinary content. Avoid decorative shadows inside the graph; depth comes from spatial separation and line weight.
 
 ## Shapes
 
@@ -62,4 +67,4 @@ The native connection-visibility select remains the canonical selector because i
 
 Do use directional spacing and muted evidence lines to make relationships traceable. Do expose names at readable zoom levels in guided stages. Do preserve visible keyboard focus and reduced-motion behavior.
 
-Do not imply ownership, funding, or coordination from shared infrastructure. Do not turn the evidence map into a decorative constellation or rely on color alone to communicate the pathway.
+Do not imply ownership, funding, or coordination from shared infrastructure. Do not turn the evidence map into a decorative constellation, use neon as a substitute for hierarchy, or rely on color alone to communicate the pathway.
