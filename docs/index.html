@@ -4,8 +4,8 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <meta name="theme-color" content="#06111c">
-  <meta name="description" content="Nine public FARA registrant dossiers, indexed in an interactive archive rack.">
-  <title>FARA Core / Nine — Registrant Dossiers</title>
+  <meta name="description" content="Ten public-record dossiers, indexed in an interactive archive rack.">
+  <title>FARA Core / Ten — Public-Record Dossiers</title>
   <style>
     /* Layout: two columns (headline + summary | the vault rack), then a full-width active-record preview. */
     :root{color-scheme:dark;
@@ -140,9 +140,9 @@
 </head>
 <body>
   <header class="topbar">
-    <div class="brand" aria-label="FARA Core Nine"><span class="brand-mark" aria-hidden="true"><svg viewBox="0 0 24 24"><rect x="4" y="3.5" width="16" height="5" rx=".6"/><rect x="4" y="10" width="16" height="5" rx=".6"/><rect x="4" y="16.5" width="16" height="5" rx=".6"/><path d="M7 6h2M7 12.5h2M7 19h2"/></svg></span>FARA <em>/</em> NINE</div>
+    <div class="brand" aria-label="FARA Core Ten"><span class="brand-mark" aria-hidden="true"><svg viewBox="0 0 24 24"><rect x="4" y="3.5" width="16" height="5" rx=".6"/><rect x="4" y="10" width="16" height="5" rx=".6"/><rect x="4" y="16.5" width="16" height="5" rx=".6"/><path d="M7 6h2M7 12.5h2M7 19h2"/></svg></span>FARA <em>/</em> TEN</div>
     <div class="header-center">PUBLIC RECORDS INTERFACE // 001</div>
-    <div class="status"><i class="live-dot" aria-hidden="true"></i> 09 DOSSIERS</div>
+    <div class="status"><i class="live-dot" aria-hidden="true"></i> 10 DOSSIERS</div>
   </header>
 
   <main class="page">
@@ -150,26 +150,26 @@
       <section class="intro" aria-labelledby="page-title">
         <div class="eyebrow">FILE SYSTEM / VOLUME 001</div>
         <h1 id="page-title">BEHIND<br>THE<span class="outline">NAMES.</span><span class="files">The files.</span></h1>
-        <p class="lede">Nine organizations. Nine entry points. Explore the dossier directory through an interactive archive rack.</p>
+        <p class="lede">Ten organizations and research files. Ten entry points. Explore the dossier directory through an interactive archive rack.</p>
         <a class="cta" href="#vault" id="browse-index">BROWSE THE INDEX <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 12h15M13 6l6 6-6 6"/></svg></a>
         <div class="summary">
           <div class="summary-label">ARCHIVE SUMMARY</div>
           <div class="stats">
-            <div class="stat"><b id="entry-count">09</b><span>INDEXED ENTRIES</span></div>
+            <div class="stat"><b id="entry-count">10</b><span>INDEXED ENTRIES</span></div>
             <div class="stat"><b>01</b><span>CENTRAL DIRECTORY</span></div>
           </div>
         </div>
       </section>
 
       <section class="vault" id="vault" aria-label="FARA registrant dossier rack">
-        <div class="vault-label">PRIMARY ARRAY&nbsp;<strong>FARA–09</strong></div>
+        <div class="vault-label">PRIMARY ARRAY&nbsp;<strong>FARA–10</strong></div>
         <div class="rack">
           <div class="rack-cap">
-            <div><div class="rack-title">THE VAULT <span>// 09</span></div><div class="rack-sub">DOSSIER RETRIEVAL SYSTEM</div></div>
+            <div><div class="rack-title">THE VAULT <span>// 10</span></div><div class="rack-sub">DOSSIER RETRIEVAL SYSTEM</div></div>
             <div class="cabinet">CABINET 001<i aria-hidden="true"></i></div>
           </div>
-          <div class="rack-slots" id="rack-rows" role="group" aria-label="Nine FARA registrant dossier modules"></div>
-          <div class="rack-base"><span>RACK / 09U</span><span class="ready">INDEX READY</span></div>
+          <div class="rack-slots" id="rack-rows" role="group" aria-label="Ten public-record dossier modules"></div>
+          <div class="rack-base"><span>RACK / 10U</span><span class="ready">INDEX READY</span></div>
         </div>
         <div class="stage-hint">[ SELECT A <b>SERVER MODULE</b> TO OPEN ITS RECORD ]</div>
       </section>
@@ -178,10 +178,10 @@
     <section class="preview" aria-labelledby="record-name" aria-live="polite">
       <div class="eyebrow cyan">ACTIVE RECORD / PREVIEW</div>
       <article class="record">
-        <div class="record-head"><span>ARCHIVE / ENTRY</span><span class="pos" id="record-pos">08 / 09</span></div>
+        <div class="record-head"><span>ARCHIVE / ENTRY</span><span class="pos" id="record-pos">08 / 10</span></div>
         <h2 id="record-name">PLUS Communications, LLC</h2>
         <dl class="record-meta">
-          <div><dt>FARA REGISTRATION</dt><dd id="record-reg">#7107</dd></div>
+          <div><dt>RECORD ID</dt><dd id="record-reg">#7107</dd></div>
           <div><dt>MODULE</dt><dd id="record-unit">UNIT 08</dd></div>
           <div><dt>RECORD FILE</dt><dd id="record-path">agents/plus-communications.html</dd></div>
         </dl>
@@ -196,17 +196,18 @@
   </dialog>
   <script>
   (()=>{'use strict';
-    const records=[['Clock Tower X LLC','7649','clocktowerx.html'],['Bridges Partners LLC','7652','bridgepartners.html'],['Targeted Communications Global LLC','7553','agents/targeted-communications-global.html'],['Genesis 21 Consulting LLC','7631','agents/genesis-21.html'],['Show Faith by Works, LLC','7653','agents/show-faith-by-works.html'],['Davis Media NY LLC','7662','agents/davis-media-ny.html'],['MMGY Global, LLC','6492','agents/mmgy-global.html'],['PLUS Communications, LLC','7107','agents/plus-communications.html'],['Pearson Unlimited, LLC','7768','agents/pearson-unlimited.html']];
+    const records=[['Clock Tower X LLC','7649','clocktowerx.html'],['Bridges Partners LLC','7652','bridgepartners.html'],['Targeted Communications Global LLC','7553','agents/targeted-communications-global.html'],['Genesis 21 Consulting LLC','7631','agents/genesis-21.html'],['Show Faith by Works, LLC','7653','agents/show-faith-by-works.html'],['Davis Media NY LLC','7662','agents/davis-media-ny.html'],['MMGY Global, LLC','6492','agents/mmgy-global.html'],['PLUS Communications, LLC','7107','agents/plus-communications.html'],['Pearson Unlimited, LLC','7768','agents/pearson-unlimited.html'],['Parscale Ecosystem','CASEFILE 26.11','agents/parscale-network.html']];
     const $=id=>document.getElementById(id),rows=$('rack-rows'),dialog=$('dossier-dialog'),frame=$('dossier-frame'),n2=v=>String(v).padStart(2,'0'),total=records.length;
     let active=8;
     $('entry-count').textContent=n2(total);
     records.forEach(([label],i)=>{const unit=i+1,b=document.createElement('button');b.type='button';b.className='unit';b.dataset.unit=unit;b.setAttribute('aria-controls','dossier-dialog');b.setAttribute('aria-label','Open '+label+' dossier');
       b.innerHTML='<span class="unit-num">'+n2(unit)+'</span><span class="unit-label"></span><span class="unit-hw" aria-hidden="true"><span class="vents"></span><span class="led"></span></span>';
       b.querySelector('.unit-label').textContent=label;rows.append(b)});
+    const displayId=id=>/^\d+$/.test(id)?'#'+id:id;
     function select(unit){active=unit;const [label,reg,path]=records[unit-1];
       rows.querySelectorAll('.unit').forEach(r=>r.setAttribute('aria-current',String(Number(r.dataset.unit)===unit)));
-      $('record-pos').textContent=n2(unit)+' / '+n2(total);$('record-name').textContent=label;$('record-reg').textContent='#'+reg;$('record-unit').textContent='UNIT '+n2(unit);$('record-path').textContent=path}
-    function open(unit){select(unit);const [label,reg,path]=records[unit-1];$('dialog-title').textContent=label;$('dialog-meta').textContent='REGISTRATION #'+reg+' / UNIT '+n2(unit);frame.title=label+' FARA dossier';frame.src=path;dialog.showModal()}
+      $('record-pos').textContent=n2(unit)+' / '+n2(total);$('record-name').textContent=label;$('record-reg').textContent=displayId(reg);$('record-unit').textContent='UNIT '+n2(unit);$('record-path').textContent=path}
+    function open(unit){select(unit);const [label,reg,path]=records[unit-1];$('dialog-title').textContent=label;$('dialog-meta').textContent='RECORD '+displayId(reg)+' / UNIT '+n2(unit);frame.title=label+' dossier';frame.src=path;dialog.showModal()}
     rows.addEventListener('click',e=>{const r=e.target.closest('.unit');if(r)open(Number(r.dataset.unit))});
     rows.addEventListener('focusin',e=>{const r=e.target.closest('.unit');if(r)select(Number(r.dataset.unit))});
     rows.addEventListener('mouseover',e=>{const r=e.target.closest('.unit');if(r&&Number(r.dataset.unit)!==active)select(Number(r.dataset.unit))});
