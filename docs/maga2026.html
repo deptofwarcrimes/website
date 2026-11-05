@@ -162,6 +162,7 @@ let visible=[];
 let activeIndex=-1;
 let lastClicked=null;
 let terminalTimer;
+const TERMINAL_CHAR_MS=35;
 function render(){
   const q=search.value.trim().toLocaleLowerCase();
   visible=PEOPLE.filter(p=>(filter==='all'||p.group===filter)&&p.name.toLocaleLowerCase().includes(q));
@@ -194,7 +195,7 @@ function updateModal(){
   const record='NAME: '+person.name.toUpperCase()+'\nOCCUPATION: '+(KNOWN_FOR[person.name]||'TBD').toUpperCase()+'\nKNOWN FOR: TBD';
   terminalOutput.textContent='';terminalOutput.classList.add('typing');
   if(matchMedia('(prefers-reduced-motion: reduce)').matches){terminalOutput.textContent=record;terminalOutput.classList.remove('typing');return;}
-  let cursor=0;const type=()=>{terminalOutput.textContent=record.slice(0,cursor++);if(cursor<=record.length)terminalTimer=setTimeout(type,15);else terminalOutput.classList.remove('typing');};type();
+  let cursor=0;const type=()=>{terminalOutput.textContent=record.slice(0,cursor++);if(cursor<=record.length)terminalTimer=setTimeout(type,TERMINAL_CHAR_MS);else terminalOutput.classList.remove('typing');};type();
 }
 function openAt(index){activeIndex=index;updateModal();if(!viewer.open)viewer.showModal();}
 function navigate(delta){if(visible.length){activeIndex=(activeIndex+delta+visible.length)%visible.length;updateModal()}}
