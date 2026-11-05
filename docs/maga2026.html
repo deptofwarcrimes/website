@@ -37,18 +37,18 @@ h1{font-family:Georgia,"Times New Roman",serif;font-size:clamp(44px,6.5vw,82px);
 .zoomhint svg{width:13px;height:13px;fill:none;stroke:currentColor;stroke-width:2}
 .empty{border:1px dashed var(--stroke);padding:40px;text-align:center;border-radius:12px;color:var(--muted)}
 footer{margin-top:32px;color:#8390ab;font-size:12px;text-align:center;line-height:1.65}
-dialog{border:1px solid rgba(255,255,255,.17);padding:0;background:#151b2c;color:var(--ink);border-radius:18px;box-shadow:0 30px 100px rgba(0,0,0,.75);width:min(94vw,640px);max-height:94dvh;overflow:auto}
+dialog{border:1px solid rgba(226,201,144,.42);padding:0;background:#101528;color:var(--ink);border-radius:18px;box-shadow:0 30px 100px rgba(0,0,0,.75),0 0 0 1px #ffffff0d;width:min(94vw,980px);max-height:94dvh;overflow:auto}
 dialog::backdrop{background:rgba(1,4,11,.88);backdrop-filter:blur(5px)}
 .modal-head{display:flex;align-items:center;justify-content:space-between;gap:16px;padding:18px 20px 10px}
 .modal-title{font:700 clamp(20px,3vw,29px)/1.1 Georgia,"Times New Roman",serif;margin:0}
 .modal-button{cursor:pointer;display:inline-flex;justify-content:center;align-items:center;gap:6px;border:1px solid rgba(255,255,255,.19);color:var(--ink);border-radius:10px;background:#293148;min-width:43px;min-height:42px;padding:9px 14px;font:600 14px system-ui,sans-serif}
 .modal-button:hover{background:#3b4665}
-.modal-img{display:block;width:calc(100% - 40px);max-height:min(60dvh,545px);object-fit:contain;margin:6px 20px 0;background:#0c1020;border-radius:10px}
+.viewer-body{display:grid;grid-template-columns:minmax(0,1.06fr) minmax(280px,.94fr);gap:16px;padding:6px 20px 0}.modal-img{display:block;width:100%;height:min(60dvh,545px);object-fit:contain;background:#0c1020;border-radius:10px}.terminal{position:relative;min-height:260px;overflow:hidden;border:1px solid #5cbc7a99;border-radius:10px;background:linear-gradient(135deg,#07130d,#030806);box-shadow:inset 0 0 35px #2dff7a16,0 0 25px #20bc6530;color:#a7f7bb;padding:18px;font:14px/1.68 ui-monospace,SFMono-Regular,Consolas,monospace;text-shadow:0 0 8px #71f69a80}.terminal:before{content:"ARCHIVE TERMINAL / RECORD LOOKUP";display:block;margin:-4px 0 15px;color:#d4ffd9;font-size:10px;letter-spacing:.12em;border-bottom:1px solid #55c97866;padding-bottom:10px}.terminal:after{content:"";position:absolute;inset:0;pointer-events:none;background:repeating-linear-gradient(0deg,#0000 0 3px,#82f8a108 4px 5px);mix-blend-mode:screen}.terminal-output{position:relative;z-index:1;white-space:pre-wrap;min-height:12em}.terminal-output.typing:after{content:"▋";display:inline-block;margin-left:2px;color:#e1ffe5;animation:terminal-cursor .85s steps(1,end) infinite}@keyframes terminal-cursor{50%{opacity:0}}
 .modal-footer{display:flex;align-items:center;justify-content:space-between;gap:10px;padding:15px 20px 18px}
 .position{font-size:13px;color:var(--muted);text-align:center}
 .modal-nav{display:flex;gap:8px}
 @media(max-width:1050px){.grid{grid-template-columns:repeat(4,minmax(0,1fr))}.name{font-size:16px}}
-@media(max-width:640px){main{padding-top:27px}.grid{grid-template-columns:repeat(2,minmax(0,1fr));gap:12px}.profile{padding:8px}.name{font-size:15px;min-height:39px}.toolbar{align-items:stretch}.search{width:100%;max-width:none}.filters{width:100%}.filters button{flex:1;padding:10px 8px}.zoomhint{font-size:10px}dialog{width:calc(100vw - 20px)}.modal-img{width:calc(100% - 28px);margin-inline:14px}.modal-head{padding-inline:14px}.modal-footer{padding-inline:14px}.modal-button{padding:8px 10px}}
+@media(max-width:640px){main{padding-top:27px}.grid{grid-template-columns:repeat(2,minmax(0,1fr));gap:12px}.profile{padding:8px}.name{font-size:15px;min-height:39px}.toolbar{align-items:stretch}.search{width:100%;max-width:none}.filters{width:100%}.filters button{flex:1;padding:10px 8px}.zoomhint{font-size:10px}dialog{width:calc(100vw - 20px)}.viewer-body{grid-template-columns:1fr;padding-inline:14px}.modal-img{height:auto;max-height:46dvh}.terminal{min-height:215px}.modal-head{padding-inline:14px}.modal-footer{padding-inline:14px}.modal-button{padding:8px 10px}}
 @media(prefers-reduced-motion:reduce){*,*:before,*:after{scroll-behavior:auto!important;transition:none!important}}
 /* Cinematic entrance: a corridor of records leading into the existing gallery. */
 #archive-hall{position:fixed;inset:0;z-index:1000;overflow:hidden;background:#050713;color:#f6f0e4;isolation:isolate;transition:opacity .7s ease,visibility .7s}
@@ -79,7 +79,7 @@ dialog::backdrop{background:rgba(1,4,11,.88);backdrop-filter:blur(5px)}
 </main>
 <dialog id="viewer" aria-labelledby="modal-title">
 <div class="modal-head"><h2 class="modal-title" id="modal-title"></h2><button class="modal-button" id="close" type="button" aria-label="Close enlarged image">✕</button></div>
-<img class="modal-img" id="modal-img" alt="">
+<div class="viewer-body"><img class="modal-img" id="modal-img" alt=""><section class="terminal" aria-label="Person record terminal"><div class="terminal-output" id="terminal-output" aria-live="polite"></div></section></div>
 <div class="modal-footer">
 <div class="modal-nav"><button class="modal-button" id="previous" type="button" aria-label="Previous person">← Prev</button><button class="modal-button" id="next" type="button" aria-label="Next person">Next →</button></div>
 <span id="position" class="position"></span>
@@ -155,11 +155,13 @@ const empty=document.getElementById('empty');
 const viewer=document.getElementById('viewer');
 const modalTitle=document.getElementById('modal-title');
 const modalImg=document.getElementById('modal-img');
+const terminalOutput=document.getElementById('terminal-output');
 const position=document.getElementById('position');
 let filter='all';
 let visible=[];
 let activeIndex=-1;
 let lastClicked=null;
+let terminalTimer;
 function render(){
   const q=search.value.trim().toLocaleLowerCase();
   visible=PEOPLE.filter(p=>(filter==='all'||p.group===filter)&&p.name.toLocaleLowerCase().includes(q));
@@ -171,18 +173,12 @@ function render(){
     const name=document.createElement('span');name.className='name';name.textContent=p.name;
     const toggle=document.createElement('button');
     toggle.className='portrait-toggle';toggle.type='button';
-    const expanded=expandedName===p.name;
-    toggle.setAttribute('aria-expanded',String(expanded));
-    toggle.setAttribute('aria-label',(expanded?'Hide':'Show')+' basic information for '+p.name);
+    toggle.setAttribute('aria-label','Open enlarged portrait and record terminal for '+p.name);
     const publicBreak=PUBLIC_BREAKS[p.name];
     if(publicBreak){toggle.classList.add('is-public-break');toggle.title='Documented public break with Trump or the MAGA coalition';}
     const img=document.createElement('img');img.className='portrait';img.src=p.image;img.alt='Portrait of '+p.name;img.loading=i<12?'eager':'lazy';img.decoding='async';
-    const details=document.createElement('div');details.className='profile-details';details.hidden=!expanded;
-    details.innerHTML='<strong>Known for</strong><p>'+ (KNOWN_FOR[p.name]||'Public figure featured in this gallery.') +'</p>'+(publicBreak?'<p class="break-note"><strong>Public break</strong>'+publicBreak.note+' <a href="'+publicBreak.url+'" target="_blank" rel="noopener">'+publicBreak.source+' ↗</a></p>':'')+'<p class="zoomhint">Collection: '+(p.group==='original'?'Original screenshot':'Added name')+'</p>';
-    const view=document.createElement('button');view.className='view-button';view.type='button';view.textContent='View enlarged portrait';
-    toggle.append(img);toggle.addEventListener('click',()=>{expandedName=expanded?null:p.name;render()});
-    view.addEventListener('click',()=>{lastClicked=view;openAt(i)});
-    card.append(name,toggle,details,view);
+    toggle.append(img);toggle.addEventListener('click',()=>{lastClicked=toggle;openAt(i)});
+    card.append(name,toggle);
     frag.appendChild(card);
   }
   gallery.appendChild(frag);
@@ -194,6 +190,11 @@ function updateModal(){
   const person=visible[activeIndex];
   modalTitle.textContent=person.name;modalImg.src=person.image;modalImg.alt='Enlarged portrait of '+person.name;
   position.textContent=(activeIndex+1)+' / '+visible.length;
+  clearTimeout(terminalTimer);
+  const record='NAME: '+person.name.toUpperCase()+'\nOCCUPATION: '+(KNOWN_FOR[person.name]||'TBD').toUpperCase()+'\nKNOWN FOR: TBD';
+  terminalOutput.textContent='';terminalOutput.classList.add('typing');
+  if(matchMedia('(prefers-reduced-motion: reduce)').matches){terminalOutput.textContent=record;terminalOutput.classList.remove('typing');return;}
+  let cursor=0;const type=()=>{terminalOutput.textContent=record.slice(0,cursor++);if(cursor<=record.length)terminalTimer=setTimeout(type,15);else terminalOutput.classList.remove('typing');};type();
 }
 function openAt(index){activeIndex=index;updateModal();if(!viewer.open)viewer.showModal();}
 function navigate(delta){if(visible.length){activeIndex=(activeIndex+delta+visible.length)%visible.length;updateModal()}}
@@ -207,7 +208,7 @@ document.getElementById('close').addEventListener('click',()=>viewer.close());
 document.getElementById('previous').addEventListener('click',()=>navigate(-1));
 document.getElementById('next').addEventListener('click',()=>navigate(1));
 viewer.addEventListener('click',e=>{if(e.target===viewer)viewer.close()});
-viewer.addEventListener('close',()=>{lastClicked?.focus()});
+viewer.addEventListener('close',()=>{clearTimeout(terminalTimer);terminalOutput.classList.remove('typing');lastClicked?.focus()});
 document.addEventListener('keydown',e=>{
   if(!viewer.open)return;
   if(e.key==='ArrowRight'){e.preventDefault();navigate(1)}
