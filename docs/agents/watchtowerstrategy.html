@@ -1,0 +1,1009 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <!-- Chosen Palette: Tactical Obsidian & Cyber Amber (Slate-950 deep background, Slate-900 glass cards, Amber-500 primary accents, Indigo-400 secondary highlights, Emerald & Rose indicator badges) -->
+    <!-- Application Structure Plan:
+         The application is designed as an Interactive Security & Corporate Reconnaissance Intelligence Portal formatted in a dark tactical theme suitable for SOC and OSINT analysts.
+         It is structured into four command tabs:
+         1. Executive Overview: High-level metrics, firm identity, core operating posture, and strategic footprint summary in high-contrast dark panels.
+         2. Personnel & Network Matrix: Interactive grid and career matrix mapping personnel across Capitol Hill, WH, Media, and K-Street nodes with dark-mode filters and detail modal.
+         3. Technical Footprint & Attack Surface: Visualized infrastructure topology, an interactive Cloudflare open-port analyzer (13 TCP edge listeners), and technical vulnerability breakdown.
+         4. Commercial Practice & Regulatory Risks: Interactive risk assessment calculator, LDA compliance analysis, client retainer scrutiny (Lockheed Martin, healthcare policy), and strategic vulnerability simulation. -->
+    <!-- Visualization & Content Choices:
+         - Leadership Matrix: Dark styled HTML/CSS card grid with domain filters and dynamic detail modal. (Goal: Organize & Compare)
+         - Infrastructure Flow Map: Structured HTML dark grid layout showing edge-to-origin data flow without SVG. (Goal: Inform & Process Flow)
+         - Technical Attack Surface: Chart.js Radar & Donut charts with dark-mode gridlines, crisp text contrasts, and custom legend formatting. (Goal: Compare & Inform)
+         - Port Inspector Tool: Interactive JS matrix allowing users to test HTTP vs HTTPS response logic for Cloudflare reverse proxy listeners. (Goal: Interactive Exploration)
+         - CONFIRMATION: NO SVG graphics used. NO Mermaid JS used. All visual indicators rely on Canvas (Chart.js), CSS styling, and Unicode icons. -->
+    <!-- CONFIRMATION: NO SVG graphics used. NO Mermaid JS used. -->
+
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Watchtower Strategy LLC - Technical Reconnaissance & Corporate Intelligence</title>
+    <!-- Tailwind CSS via CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Chart.js via CDN -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        tactical: {
+                            950: '#030712',
+                            900: '#0f172a',
+                            800: '#1e293b',
+                            700: '#334155',
+                            border: '#1e293b',
+                            accent: '#f59e0b',
+                            highlight: '#6366f1',
+                            warn: '#ef4444',
+                            safe: '#10b981'
+                        }
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        .chart-container {
+            position: relative;
+            width: 100%;
+            max-width: 650px;
+            margin-left: auto;
+            margin-right: auto;
+            height: 320px;
+            max-height: 400px;
+        }
+        @media (min-width: 768px) {
+            .chart-container {
+                height: 350px;
+            }
+        }
+        .tab-active {
+            border-bottom: 3px solid #f59e0b;
+            color: #f59e0b;
+            font-weight: 700;
+            background-color: rgba(30, 41, 59, 0.5);
+        }
+        .scrollbar-thin::-webkit-scrollbar {
+            width: 6px;
+            height: 6px;
+        }
+        .scrollbar-thin::-webkit-scrollbar-thumb {
+            background-color: #334155;
+            border-radius: 3px;
+        }
+    </style>
+</head>
+<body class="bg-slate-950 text-slate-100 font-sans antialiased min-h-screen flex flex-col selection:bg-amber-500 selection:text-slate-950">
+
+    <!-- Top Tactical Header -->
+    <header class="bg-slate-900 border-b border-slate-800 sticky top-0 z-50 shadow-2xl">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex flex-col md:flex-row justify-between items-center py-3">
+            <div class="flex items-center space-x-3">
+                <div class="bg-amber-500 text-slate-950 p-2 rounded font-black text-xl tracking-wider shadow-lg shadow-amber-500/20">WS</div>
+                <div>
+                    <h1 class="text-lg font-bold tracking-tight text-white flex items-center gap-2">
+                        WATCHTOWER STRATEGY LLC
+                        <span class="text-xs font-mono bg-slate-950 border border-slate-700 text-amber-400 px-2 py-0.5 rounded">SCAN:9ed23428c13fe14c48182f8206c0f2b9141a9814</span>
+                    </h1>
+                    <p class="text-xs text-slate-400">Corporate Reconnaissance & Technical Infrastructure Assessment • Washington, D.C.</p>
+                </div>
+            </div>
+            <div class="mt-2 md:mt-0 flex items-center space-x-4 text-xs font-mono">
+                <div class="bg-slate-950 px-3 py-1.5 rounded border border-slate-800">
+                    <span class="text-slate-500">STATUS:</span> <span class="text-emerald-400 font-semibold animate-pulse">● ACTIVE RECON</span>
+                </div>
+                <div class="bg-slate-950 px-3 py-1.5 rounded border border-slate-800">
+                    <span class="text-slate-500">TARGET:</span> <span class="text-amber-400">watchtowerstrategy.com</span>
+                </div>
+            </div>
+        </div>
+
+        <!-- Tab Navigation Bar -->
+        <nav class="bg-slate-900/80 border-t border-slate-800/80 px-4 sm:px-6 lg:px-8 backdrop-blur">
+            <div class="max-w-7xl mx-auto flex space-x-4 sm:space-x-8 overflow-x-auto scrollbar-thin">
+                <button onclick="switchTab('overview')" id="tab-overview" class="tab-btn py-3 px-3 text-sm font-medium text-amber-400 tab-active transition-colors rounded-t">
+                    Executive Overview
+                </button>
+                <button onclick="switchTab('leadership')" id="tab-leadership" class="tab-btn py-3 px-3 text-sm font-medium text-slate-400 hover:text-amber-400 transition-colors rounded-t">
+                    Personnel & Network Matrix
+                </button>
+                <button onclick="switchTab('technical')" id="tab-technical" class="tab-btn py-3 px-3 text-sm font-medium text-slate-400 hover:text-amber-400 transition-colors rounded-t">
+                    Technical Footprint & Attack Surface
+                </button>
+                <button onclick="switchTab('risk')" id="tab-risk" class="tab-btn py-3 px-3 text-sm font-medium text-slate-400 hover:text-amber-400 transition-colors rounded-t">
+                    Commercial & Regulatory Risks
+                </button>
+            </div>
+        </nav>
+    </header>
+
+    <!-- Main Content Container -->
+    <main class="flex-grow max-w-7xl w-full mx-auto px-4 sm:px-6 lg:px-8 py-6">
+
+        <!-- SECTION 1: EXECUTIVE OVERVIEW -->
+        <section id="sec-overview" class="tab-content block space-y-6">
+            
+            <!-- Context Banner -->
+            <div class="bg-slate-900 border-l-4 border-amber-500 rounded-r-lg p-5 shadow-xl border-t border-b border-r border-slate-800">
+                <h2 class="text-lg font-bold text-white mb-1 flex items-center gap-2">
+                    <span class="text-amber-400">🛡️</span> Executive Summary & Intelligence Assessment
+                </h2>
+                <p class="text-sm text-slate-300 leading-relaxed">
+                    Watchtower Strategy LLC is a high-profile boutique public affairs, crisis communications, and corporate positioning firm founded in January 2025 in Washington, D.C. The firm is led by former House Speaker Kevin McCarthy alongside top political directors, White House communicators, and senior committee counsel. Operating outside the statutory scope of the Lobbying Disclosure Act (LDA), Watchtower provides corporate boards and defense contractors with strategic counsel, parallel legal communications, and public policy advocacy without public disclosure requirements.
+                </p>
+            </div>
+
+            <!-- Key Metric Cards Grid -->
+            <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+                <div class="bg-slate-900 p-5 rounded-lg border border-slate-800 shadow-lg flex flex-col justify-between">
+                    <div>
+                        <div class="text-xs font-semibold text-slate-400 uppercase tracking-wider">Formation & Location</div>
+                        <div class="text-xl font-bold text-white mt-1">Jan 2025 • Wash D.C.</div>
+                        <div class="text-xs text-slate-400 mt-1">801 Pennsylvania Ave NW</div>
+                    </div>
+                    <div class="mt-4 pt-2 border-t border-slate-800 flex items-center justify-between text-xs">
+                        <span class="text-slate-500">Co-located Entity:</span>
+                        <span class="font-semibold text-amber-400">Miller Strategies LLC</span>
+                    </div>
+                </div>
+
+                <div class="bg-slate-900 p-5 rounded-lg border border-slate-800 shadow-lg flex flex-col justify-between">
+                    <div>
+                        <div class="text-xs font-semibold text-slate-400 uppercase tracking-wider">LDA Registration Status</div>
+                        <div class="text-xl font-bold text-amber-400 mt-1">Non-Registered PR</div>
+                        <div class="text-xs text-slate-400 mt-1">Strategic Advocacy Counsel</div>
+                    </div>
+                    <div class="mt-4 pt-2 border-t border-slate-800 flex items-center justify-between text-xs">
+                        <span class="text-slate-500">Public Disclosure:</span>
+                        <span class="font-semibold text-emerald-400">Exempt (Non-Lobbying)</span>
+                    </div>
+                </div>
+
+                <div class="bg-slate-900 p-5 rounded-lg border border-slate-800 shadow-lg flex flex-col justify-between">
+                    <div>
+                        <div class="text-xs font-semibold text-slate-400 uppercase tracking-wider">Technical Perimeter</div>
+                        <div class="text-xl font-bold text-indigo-400 mt-1">Cloudflare WAF</div>
+                        <div class="text-xs text-slate-400 mt-1">PaaS Origin via Cloudways</div>
+                    </div>
+                    <div class="mt-4 pt-2 border-t border-slate-800 flex items-center justify-between text-xs">
+                        <span class="text-slate-500">Exposed Edge Ports:</span>
+                        <span class="font-semibold text-indigo-300">13 Reverse Proxies</span>
+                    </div>
+                </div>
+
+                <div class="bg-slate-900 p-5 rounded-lg border border-slate-800 shadow-lg flex flex-col justify-between">
+                    <div>
+                        <div class="text-xs font-semibold text-slate-400 uppercase tracking-wider">Primary Risk Vector</div>
+                        <div class="text-xl font-bold text-rose-500 mt-1">Revolving Door & Scrutiny</div>
+                        <div class="text-xs text-slate-400 mt-1">Executive/Defense Retainers</div>
+                    </div>
+                    <div class="mt-4 pt-2 border-t border-slate-800 flex items-center justify-between text-xs">
+                        <span class="text-slate-500">High Scrutiny Client:</span>
+                        <span class="font-semibold text-rose-400">Lockheed Martin</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Dashboard Analytics & Interactive Summary Grid -->
+            <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
+                <!-- Left 2 Columns: Operational Blueprint & Capabilities -->
+                <div class="lg:col-span-2 bg-slate-900 p-6 rounded-lg border border-slate-800 shadow-xl space-y-4">
+                    <h3 class="text-base font-bold text-white border-b border-slate-800 pb-2 flex items-center justify-between">
+                        <span>Operational Model & Core Strategic Nodes</span>
+                        <span class="text-xs font-normal text-slate-400 font-mono">4 Power Vectors</span>
+                    </h3>
+                    
+                    <p class="text-sm text-slate-300 leading-relaxed">
+                        Watchtower Strategy functions as an elite advisory conduit designed to shape policy narratives and assist corporate C-suites in managing congressional inquiries, federal regulatory threats, and public crises. The firm intentionally integrates four key strategic domains:
+                    </p>
+
+                    <div class="grid grid-cols-1 sm:grid-cols-2 gap-4 pt-2">
+                        <div class="p-4 rounded-lg bg-slate-950 border border-slate-800 hover:border-slate-700 transition">
+                            <div class="flex items-center space-x-2 text-indigo-400 font-bold text-sm">
+                                <span>🏛️ Capitol Hill Leadership</span>
+                            </div>
+                            <p class="text-xs text-slate-400 mt-2 leading-relaxed">
+                                Headed by former Speaker Kevin McCarthy and senior House Judiciary Committee staffers (Russell Dye, Arielle Dumalac). Leverages legislative oversight experience to defend clients against congressional subpoenas and investigations.
+                            </p>
+                        </div>
+                        <div class="p-4 rounded-lg bg-slate-950 border border-slate-800 hover:border-slate-700 transition">
+                            <div class="flex items-center space-x-2 text-indigo-400 font-bold text-sm">
+                                <span>🏛️ Executive Branch Access</span>
+                            </div>
+                            <p class="text-xs text-slate-400 mt-2 leading-relaxed">
+                                Embedded connections across national security and executive messaging. Co-founder Cliff Sims served as WH Message Strategy Director before transitioning to Vice President J.D. Vance's National Security Adviser in May 2026.
+                            </p>
+                        </div>
+                        <div class="p-4 rounded-lg bg-slate-950 border border-slate-800 hover:border-slate-700 transition">
+                            <div class="flex items-center space-x-2 text-indigo-400 font-bold text-sm">
+                                <span>💼 K Street & Commercial Advocacy</span>
+                            </div>
+                            <p class="text-xs text-slate-400 mt-2 leading-relaxed">
+                                Co-located with Jeff Miller's registered lobbying firm (Miller Strategies LLC). Provides corporate clients with non-lobbying narrative insulation, grassroots mobilization, and commercial strategy.
+                            </p>
+                        </div>
+                        <div class="p-4 rounded-lg bg-slate-950 border border-slate-800 hover:border-slate-700 transition">
+                            <div class="flex items-center space-x-2 text-indigo-400 font-bold text-sm">
+                                <span>📡 National Media Distribution</span>
+                            </div>
+                            <p class="text-xs text-slate-400 mt-2 leading-relaxed">
+                                Directed by Arthur Schwartz, Brooke Singman (former Fox News Digital), and Alex Pfeiffer (former WH Deputy Comms Director). Deploys rapid response, press placement, and aggressive crisis pushback.
+                            </p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Right 1 Column: Chart - Personnel Domain Breakdown -->
+                <div class="bg-slate-900 p-6 rounded-lg border border-slate-800 shadow-xl flex flex-col justify-between">
+                    <div>
+                        <h3 class="text-base font-bold text-white border-b border-slate-800 pb-2">Firm Personnel Distribution</h3>
+                        <p class="text-xs text-slate-400 mt-1 mb-3">Categorization of firm partners and key directors by background focus.</p>
+                        <div class="chart-container">
+                            <canvas id="personnelChart"></canvas>
+                        </div>
+                    </div>
+                    <div class="text-xs text-slate-500 text-center mt-2 border-t border-slate-800 pt-2 font-mono">
+                        Data derived from public disclosures and firm team structure.
+                    </div>
+                </div>
+            </div>
+        </section>
+
+
+        <!-- SECTION 2: LEADERSHIP & REVOLVING DOOR NETWORK -->
+        <section id="sec-leadership" class="tab-content hidden space-y-6">
+            
+            <div class="bg-slate-900 border-l-4 border-indigo-500 rounded-r-lg p-5 shadow-xl border-t border-b border-r border-slate-800">
+                <h2 class="text-lg font-bold text-white mb-1">Leadership & Revolving Door Network Mapping</h2>
+                <p class="text-sm text-slate-300 leading-relaxed">
+                    This section maps the key principals, partners, and senior directors of Watchtower Strategy. Use the controls below to filter personnel by their primary background domain or search for specific individuals. The operational flow between government offices (Congressional Committees, White House) and Watchtower Strategy highlights the firm's strategic access.
+                </p>
+            </div>
+
+            <!-- Search & Filter Controls Bar -->
+            <div class="bg-slate-900 p-4 rounded-lg border border-slate-800 shadow-lg flex flex-col md:flex-row gap-4 items-center justify-between">
+                <div class="flex items-center space-x-2 w-full md:w-auto">
+                    <span class="text-sm font-medium text-slate-300">Filter Domain:</span>
+                    <select id="domainFilter" onchange="filterPersonnel()" class="border border-slate-700 rounded px-3 py-1.5 text-sm bg-slate-950 text-slate-200 focus:outline-none focus:ring-2 focus:ring-amber-500">
+                        <option value="all">All Domains</option>
+                        <option value="Capitol Hill">Capitol Hill / Congress</option>
+                        <option value="Executive">Executive / White House</option>
+                        <option value="K-Street">K-Street / Corporate</option>
+                        <option value="Media">Media / Journalism</option>
+                    </select>
+                </div>
+
+                <div class="w-full md:w-72">
+                    <input type="text" id="personnelSearch" onkeyup="filterPersonnel()" placeholder="Search name, title, or background..." class="w-full border border-slate-700 rounded px-3 py-1.5 text-sm bg-slate-950 text-slate-200 placeholder-slate-500 focus:outline-none focus:ring-2 focus:ring-amber-500">
+                </div>
+            </div>
+
+            <!-- Personnel Cards Grid -->
+            <div id="personnelGrid" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                <!-- Javascript will dynamically populate cards here -->
+            </div>
+
+            <!-- Revolving Door Special Context Callout -->
+            <div class="bg-slate-900 text-white p-6 rounded-lg shadow-xl border border-slate-800 space-y-4">
+                <h3 class="text-base font-bold text-amber-400 flex items-center gap-2">
+                    <span>⚡ Executive & Congressional Revolving Door Dynamics</span>
+                </h3>
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-6 text-sm">
+                    <div class="bg-slate-950 p-4 rounded border border-slate-800">
+                        <h4 class="font-bold text-white mb-2 border-b border-slate-800 pb-1 text-xs uppercase tracking-wider text-amber-400">Cliff Sims Transition (May 2026)</h4>
+                        <p class="text-slate-300 text-xs leading-relaxed">
+                            Co-founding partner Cliff Sims departed Watchtower Strategy in May 2026 following his appointment as National Security Adviser to Vice President J.D. Vance. This direct transition underscores Watchtower's tight connectivity with high-level executive branch decision-makers.
+                        </p>
+                    </div>
+                    <div class="bg-slate-950 p-4 rounded border border-slate-800">
+                        <h4 class="font-bold text-white mb-2 border-b border-slate-800 pb-1 text-xs uppercase tracking-wider text-amber-400">Judiciary Committee Oversight Pipeline</h4>
+                        <p class="text-slate-300 text-xs leading-relaxed">
+                            Senior Director Russell M. Dye and Associate Arielle G. Dumalac were recruited directly from Chairman Jim Jordan's House Judiciary Committee staff. Their deep background in congressional subpoenas and oversight equips Watchtower to manage high-stakes legal communications.
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+
+        <!-- SECTION 3: TECHNICAL FOOTPRINT & ATTACK SURFACE -->
+        <section id="sec-technical" class="tab-content hidden space-y-6">
+            
+            <div class="bg-slate-900 border-l-4 border-amber-500 rounded-r-lg p-5 shadow-xl border-t border-b border-r border-slate-800">
+                <h2 class="text-lg font-bold text-white mb-1">Technical Reconnaissance & Perimeter Vulnerability Analysis</h2>
+                <p class="text-sm text-slate-300 leading-relaxed">
+                    Active and passive network reconnaissance against <code class="bg-slate-950 text-amber-400 px-1.5 py-0.5 rounded font-mono border border-slate-800">watchtowerstrategy.com</code> reveals a managed cloud web application proxied through Cloudflare's Web Application Firewall (WAF). The origin application runs WordPress hosted on Cloudways infrastructure, while enterprise communications rely on Google Workspace and identity governance is managed via Microsoft Entra ID (Azure AD).
+                </p>
+            </div>
+
+            <!-- Technical Architecture Blueprint Card (HTML Flow, NO SVG) -->
+            <div class="bg-slate-900 p-6 rounded-lg border border-slate-800 shadow-xl space-y-4">
+                <h3 class="text-base font-bold text-white border-b border-slate-800 pb-2">Target Enterprise Architecture Topology</h3>
+                <p class="text-xs text-slate-400">Visual mapping of edge proxying, cloud hosting, CMS administrative layers, and enterprise identity endpoints.</p>
+
+                <div class="grid grid-cols-1 md:grid-cols-4 gap-4 text-center text-xs">
+                    <div class="p-4 bg-slate-950 text-white rounded-lg border border-slate-800 flex flex-col justify-between hover:border-amber-500/50 transition">
+                        <div>
+                            <span class="bg-amber-500 text-slate-950 font-bold px-2 py-0.5 rounded uppercase text-[10px]">1. Edge WAF / Proxy</span>
+                            <h4 class="font-bold text-sm mt-2 text-white">Cloudflare WAF</h4>
+                            <p class="text-slate-400 mt-1">AS13335 (Cloudflare Inc)</p>
+                            <p class="text-slate-400 mt-2 text-[11px]">Terminating TLS, mitigating L3/L7 attacks across 13 exposed TCP ports.</p>
+                        </div>
+                        <div class="mt-3 pt-2 border-t border-slate-800 font-mono text-[11px] text-amber-400">cpe:/a:cloudflare</div>
+                    </div>
+
+                    <div class="p-4 bg-slate-950 border border-slate-800 rounded-lg flex flex-col justify-between hover:border-indigo-500/50 transition">
+                        <div>
+                            <span class="bg-indigo-600 text-white font-bold px-2 py-0.5 rounded uppercase text-[10px]">2. Origin PaaS Host</span>
+                            <h4 class="font-bold text-sm mt-2 text-white">Cloudways Cloud</h4>
+                            <p class="text-slate-400 mt-1">CNAME Stub:</p>
+                            <code class="text-indigo-400 block font-mono text-[11px] my-1">secure.cloudways.cloud</code>
+                            <p class="text-slate-400 mt-1 text-[11px]">Virtual compute instance executing Apache/Nginx + PHP.</p>
+                        </div>
+                        <div class="mt-3 pt-2 border-t border-slate-800 font-mono text-[11px] text-slate-400">Origin Isolation Risk</div>
+                    </div>
+
+                    <div class="p-4 bg-slate-950 border border-slate-800 rounded-lg flex flex-col justify-between hover:border-amber-500/50 transition">
+                        <div>
+                            <span class="bg-slate-800 text-white font-bold px-2 py-0.5 rounded uppercase text-[10px]">3. CMS Application</span>
+                            <h4 class="font-bold text-sm mt-2 text-white">WordPress Core</h4>
+                            <p class="text-slate-400 mt-1">Exposed Endpoints:</p>
+                            <code class="text-slate-300 block font-mono text-[10px]">/wp-admin/</code>
+                            <code class="text-slate-300 block font-mono text-[10px]">/wp-login.php</code>
+                            <p class="text-slate-400 mt-1 text-[11px]">Active user handles detected (e.g., <span class="text-rose-400 font-semibold">bonnie</span>).</p>
+                        </div>
+                        <div class="mt-3 pt-2 border-t border-slate-800 font-mono text-[11px] text-slate-400">Public Login Portal</div>
+                    </div>
+
+                    <div class="p-4 bg-slate-950 border border-slate-800 rounded-lg flex flex-col justify-between hover:border-emerald-500/50 transition">
+                        <div>
+                            <span class="bg-emerald-600 text-white font-bold px-2 py-0.5 rounded uppercase text-[10px]">4. Identity & Mail</span>
+                            <h4 class="font-bold text-sm mt-2 text-white">Google + Microsoft</h4>
+                            <p class="text-slate-400 mt-1 text-[11px]">MX: <code class="font-mono text-emerald-400">smtp.google.com</code></p>
+                            <p class="text-slate-400 text-[11px]">IdP: <code class="font-mono text-emerald-400">sts.windows.net</code></p>
+                            <p class="text-slate-400 mt-1 text-[11px]">Bulk Engines: Amazon SES & SparkPost.</p>
+                        </div>
+                        <div class="mt-3 pt-2 border-t border-slate-800 font-mono text-[11px] text-slate-400">Entra ID (Azure AD) SSO</div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Two Column Section: Interactive Port Scanner & Threat Severity Radar Chart -->
+            <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
+                
+                <!-- Left Column: Interactive Cloudflare Open Port Analyzer -->
+                <div class="bg-slate-900 p-6 rounded-lg border border-slate-800 shadow-xl flex flex-col justify-between">
+                    <div>
+                        <h3 class="text-base font-bold text-white border-b border-slate-800 pb-2 flex items-center justify-between">
+                            <span>Cloudflare Reverse Proxy Port Matrix</span>
+                            <span class="text-xs bg-slate-950 text-amber-400 border border-slate-800 font-mono px-2 py-0.5 rounded">13 TCP Ports</span>
+                        </h3>
+                        <p class="text-xs text-slate-400 mt-1 mb-4">
+                            Click any exposed TCP port discovered in scan output <code class="font-mono text-slate-300">9ed23428c13...</code> to inspect protocol behaviors and HTTP vs HTTPS status.
+                        </p>
+
+                        <!-- Port Buttons Grid -->
+                        <div class="grid grid-cols-4 sm:grid-cols-7 gap-2 mb-4" id="portButtonGrid">
+                            <!-- Populated by JS -->
+                        </div>
+
+                        <!-- Port Detail Box -->
+                        <div id="portDetailBox" class="p-4 rounded-md bg-slate-950 border border-slate-800 text-white font-mono text-xs space-y-2 min-h-[140px] flex flex-col justify-center">
+                            <div class="text-amber-400 font-bold">▶ Select a port above to inspect scan details.</div>
+                            <div class="text-slate-400">Analysis will show port standard service, transport security, and HTTP status code response.</div>
+                        </div>
+                    </div>
+                    <div class="text-[11px] text-slate-500 mt-4 border-t border-slate-800 pt-2">
+                        Note: Probing HTTPS-only ports (e.g., 2083, 8443) via cleartext HTTP yields <code class="text-rose-400 font-mono">400 The plain HTTP request was sent to HTTPS port</code>, confirming standard Cloudflare proxy behavior.
+                    </div>
+                </div>
+
+                <!-- Right Column: Chart - Technical Vulnerability Risk Profile -->
+                <div class="bg-slate-900 p-6 rounded-lg border border-slate-800 shadow-xl flex flex-col justify-between">
+                    <div>
+                        <h3 class="text-base font-bold text-white border-b border-slate-800 pb-2">Technical Attack Surface Scorecard</h3>
+                        <p class="text-xs text-slate-400 mt-1 mb-3">Threat exposure evaluation across core infrastructure components.</p>
+                        <div class="chart-container">
+                            <canvas id="threatChart"></canvas>
+                        </div>
+                    </div>
+                    <div class="text-xs text-slate-500 text-center mt-2 border-t border-slate-800 pt-2 font-mono">
+                        Evaluation parameters based on reconnaissance artifacts and architecture pattern risks.
+                    </div>
+                </div>
+            </div>
+
+            <!-- Vulnerability Detail Cards -->
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+                <div class="bg-slate-900 p-5 rounded-lg border-t-4 border-rose-500 border-x border-b border-slate-800 shadow-lg">
+                    <div class="flex items-center justify-between">
+                        <h4 class="font-bold text-white text-sm">Origin IP Discovery & Bypass</h4>
+                        <span class="bg-rose-950 text-rose-400 border border-rose-800 text-[10px] font-bold px-2 py-0.5 rounded uppercase">High Risk</span>
+                    </div>
+                    <p class="text-xs text-slate-400 mt-2 leading-relaxed">
+                        Cloudways hosting (`secure.cloudways.cloud`) creates potential avenues for origin server IP exposure. If the origin server does not strictly enforce Authenticated Origin Pulls (AOP) or restrict incoming firewall rules solely to Cloudflare IP ranges, attackers can bypass WAF protections entirely.
+                    </p>
+                </div>
+
+                <div class="bg-slate-900 p-5 rounded-lg border-t-4 border-amber-500 border-x border-b border-slate-800 shadow-lg">
+                    <div class="flex items-center justify-between">
+                        <h4 class="font-bold text-white text-sm">WordPress Admin Portal Exposure</h4>
+                        <span class="bg-amber-950 text-amber-400 border border-amber-800 text-[10px] font-bold px-2 py-0.5 rounded uppercase">Medium Risk</span>
+                    </div>
+                    <p class="text-xs text-slate-400 mt-2 leading-relaxed">
+                        Public access to `/wp-login.php` combined with discovered usernames (e.g., author profile `bonnie`) enables automated brute-force attacks and targeted credential stuffing. Lack of IP-restricted access or zero-trust gateway protection leaves authentication dependent solely on application password policies.
+                    </p>
+                </div>
+
+                <div class="bg-slate-900 p-5 rounded-lg border-t-4 border-indigo-500 border-x border-b border-slate-800 shadow-lg">
+                    <div class="flex items-center justify-between">
+                        <h4 class="font-bold text-white text-sm">Bulk Mail & API Hijacking Risk</h4>
+                        <span class="bg-indigo-950 text-indigo-400 border border-indigo-800 text-[10px] font-bold px-2 py-0.5 rounded uppercase">Medium Risk</span>
+                    </div>
+                    <p class="text-xs text-slate-400 mt-2 leading-relaxed">
+                        The inclusion of Amazon SES (`amazonses.com`) and SparkPost (`sparkpostmail.com`) in DNS TXT/SPF records authorizes third-party bulk distribution engines. Compromise of local developer credentials or API tokens could allow adversaries to hijack firm sending domain reputation for spear-phishing.
+                    </p>
+                </div>
+            </div>
+        </section>
+
+
+        <!-- SECTION 4: COMMERCIAL & REGULATORY RISKS -->
+        <section id="sec-risk" class="tab-content hidden space-y-6">
+            
+            <div class="bg-slate-900 border-l-4 border-rose-500 rounded-r-lg p-5 shadow-xl border-t border-b border-r border-slate-800">
+                <h2 class="text-lg font-bold text-white mb-1">Commercial Engagements, LDA Compliance & Regulatory Vulnerabilities</h2>
+                <p class="text-sm text-slate-300 leading-relaxed">
+                    Watchtower Strategy's business model relies on strategic communications, crisis insulation, and policy advocacy without registering under the Lobbying Disclosure Act (LDA). While legally permissible, this posture creates heightened regulatory, reputational, and political risk when commercial defense retainers intersect with high-profile public offices.
+                </p>
+            </div>
+
+            <!-- Interactive Risk Simulation Tool & Retainer Breakdown -->
+            <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
+                
+                <!-- Left 2 Columns: Client Engagements & Ethics Case Studies -->
+                <div class="lg:col-span-2 bg-slate-900 p-6 rounded-lg border border-slate-800 shadow-xl space-y-6">
+                    <h3 class="text-base font-bold text-white border-b border-slate-800 pb-2">High-Profile Client Retainers & Public Affairs Initiatives</h3>
+
+                    <!-- Lockheed Martin & Hegseth Conflict Scrutiny -->
+                    <div class="p-4 rounded-lg bg-slate-950 border border-slate-800 space-y-3">
+                        <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-2 border-b border-slate-800 pb-2">
+                            <span class="font-bold text-white text-sm">🚀 Lockheed Martin Retainer & Executive Scrutiny</span>
+                            <span class="bg-rose-950 text-rose-400 border border-rose-800 text-xs font-bold px-2.5 py-0.5 rounded">High Reputational Exposure</span>
+                        </div>
+                        <p class="text-xs text-slate-300 leading-relaxed">
+                            National investigative reporting and federal financial ethics disclosures filed in November 2026 revealed that Watchtower Strategy represented major aerospace and defense contractor **Lockheed Martin**. Concurrently, disclosures showed that Jennifer Hegseth—spouse of Defense Secretary Pete Hegseth—had been compensated for consulting services by Watchtower Strategy during the same operating year.
+                        </p>
+                        <div class="bg-slate-900 p-3 rounded border border-slate-800 text-xs text-slate-400">
+                            <strong class="text-amber-400">Impact:</strong> Highlights how enterprise contractors utilize high-level non-registered strategic firms as intermediaries near executive decision-making nodes, drawing congressional oversight interest and opposition research.
+                        </div>
+                    </div>
+
+                    <!-- Healthcare Policy Public Advocacy -->
+                    <div class="p-4 rounded-lg bg-slate-950 border border-slate-800 space-y-3">
+                        <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-2 border-b border-slate-800 pb-2">
+                            <span class="font-bold text-white text-sm">🩺 Healthcare & Hormonal Diagnostic Policy Campaigns</span>
+                            <span class="bg-indigo-950 text-indigo-400 border border-indigo-800 text-xs font-bold px-2.5 py-0.5 rounded">Public Advocacy Coalition</span>
+                        </div>
+                        <p class="text-xs text-slate-300 leading-relaxed">
+                            Web excavation across Watchtower campaign infrastructure revealed dedicated public affairs operations targeting federal healthcare regulations. Specifically, the firm executes public education and grasstops mobilization initiatives advocating for expanded access to routine testosterone diagnostic testing and regulatory reforms for hormone management therapies.
+                        </p>
+                        <div class="bg-slate-900 p-3 rounded border border-slate-800 text-xs text-slate-400">
+                            <strong class="text-indigo-400">Impact:</strong> Demonstrates modern public affairs tradecraft—building third-party advocacy coalitions to shape FDA and Department of Health and Human Services (HHS) clinical coverage guidelines without registering as legislative lobbyists.
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Right 1 Column: Interactive LDA Regulatory Exposure Calculator -->
+                <div class="bg-slate-900 p-6 rounded-lg border border-slate-800 shadow-xl flex flex-col justify-between">
+                    <div>
+                        <h3 class="text-base font-bold text-white border-b border-slate-800 pb-2">LDA vs. Strategic PR Exposure</h3>
+                        <p class="text-xs text-slate-400 mt-1 mb-4">
+                            Simulate regulatory exposure factors based on firm activity types.
+                        </p>
+
+                        <div class="space-y-4 text-xs">
+                            <div>
+                                <label class="block font-medium text-slate-300 mb-1">Direct Legislative Contact %</label>
+                                <input type="range" id="sliderContact" min="0" max="100" value="15" oninput="calculateRisk()" class="w-full accent-amber-500">
+                                <div class="flex justify-between text-[11px] text-slate-400">
+                                    <span>0% (Pure PR)</span>
+                                    <span id="valContact" class="font-bold text-amber-400">15%</span>
+                                    <span>100% (Direct Lobby)</span>
+                                </div>
+                            </div>
+
+                            <div>
+                                <label class="block font-medium text-slate-300 mb-1">Executive Department Focus</label>
+                                <select id="selectExec" onchange="calculateRisk()" class="w-full border border-slate-700 rounded p-1.5 bg-slate-950 text-slate-200 text-xs focus:ring-amber-500">
+                                    <option value="10">General Public Affairs</option>
+                                    <option value="25">HHS / Healthcare Regulatory</option>
+                                    <option value="45" selected>DoD / Defense Procurement (Lockheed)</option>
+                                </select>
+                            </div>
+
+                            <div>
+                                <label class="block font-medium text-slate-300 mb-1">Former Government Staff on Account</label>
+                                <select id="selectStaff" onchange="calculateRisk()" class="w-full border border-slate-700 rounded p-1.5 bg-slate-950 text-slate-200 text-xs focus:ring-amber-500">
+                                    <option value="10">Standard Media Consultants</option>
+                                    <option value="30" selected>Former House Judiciary Counsel (Dye/Dumalac)</option>
+                                    <option value="50">Former Cabinet / WH Officials (Sims)</option>
+                                </select>
+                            </div>
+
+                            <div class="p-4 bg-slate-950 text-white rounded-lg border border-slate-800 mt-4 space-y-2">
+                                <div class="flex justify-between items-center">
+                                    <span class="text-slate-400">Scrutiny Exposure Index:</span>
+                                    <span id="riskScore" class="text-lg font-bold text-amber-400 font-mono">68 / 100</span>
+                                </div>
+                                <div class="w-full bg-slate-800 h-2 rounded-full overflow-hidden">
+                                    <div id="riskBar" class="bg-amber-500 h-full w-[68%] transition-all duration-300"></div>
+                                </div>
+                                <p id="riskRecommendation" class="text-[11px] text-slate-400 pt-1 leading-relaxed">
+                                    High media scrutiny expected due to defense retainer overlaps and former committee staff involvement.
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="text-[11px] text-slate-500 text-center mt-4 border-t border-slate-800 pt-2 font-mono">
+                        Interactive risk model based on LDA non-registration thresholds & ethics watchdog criteria.
+                    </div>
+                </div>
+            </div>
+
+            <!-- Risk Mitigation & Strategic Vulnerability Matrix Table -->
+            <div class="bg-slate-900 p-6 rounded-lg border border-slate-800 shadow-xl space-y-4">
+                <h3 class="text-base font-bold text-white border-b border-slate-800 pb-2">Strategic Vulnerability Matrix Summary</h3>
+                <div class="overflow-x-auto">
+                    <table class="w-full text-left border-collapse text-xs">
+                        <thead>
+                            <tr class="bg-slate-950 text-slate-400 uppercase font-semibold border-b border-slate-800">
+                                <th class="p-3">Risk Domain</th>
+                                <th class="p-3">Core Vector</th>
+                                <th class="p-3">Operational Impact</th>
+                                <th class="p-3">Target Severity</th>
+                            </tr>
+                        </thead>
+                        <tbody class="divide-y divide-slate-800/60">
+                            <tr class="hover:bg-slate-950/40">
+                                <td class="p-3 font-bold text-white">LDA Non-Registration</td>
+                                <td class="p-3 text-slate-400">Unregistered PR vs Direct Policy Counsel</td>
+                                <td class="p-3 text-slate-300">Watchdog investigations, congressional inquiries, and public demands for client disclosure.</td>
+                                <td class="p-3"><span class="bg-amber-950 text-amber-400 border border-amber-800 font-bold px-2 py-0.5 rounded">MODERATE</span></td>
+                            </tr>
+                            <tr class="hover:bg-slate-950/40">
+                                <td class="p-3 font-bold text-white">Defense Retainer Intersect</td>
+                                <td class="p-3 text-slate-400">Lockheed Martin / Hegseth Financial Disclosures</td>
+                                <td class="p-3 text-slate-300">High-visibility ethics reporting in national press, political opposition research attacks.</td>
+                                <td class="p-3"><span class="bg-rose-950 text-rose-400 border border-rose-800 font-bold px-2 py-0.5 rounded">CRITICAL</span></td>
+                            </tr>
+                            <tr class="hover:bg-slate-950/40">
+                                <td class="p-3 font-bold text-white">Revolving Door Access</td>
+                                <td class="p-3 text-slate-400">Cliff Sims WH NSA appointment & House Staff intake</td>
+                                <td class="p-3 text-slate-300">Perception of backdoor access to national security decisions and judiciary investigations.</td>
+                                <td class="p-3"><span class="bg-rose-950 text-rose-400 border border-rose-800 font-bold px-2 py-0.5 rounded">HIGH</span></td>
+                            </tr>
+                            <tr class="hover:bg-slate-950/40">
+                                <td class="p-3 font-bold text-white">Origin IP Bypass</td>
+                                <td class="p-3 text-slate-400">Cloudways PaaS origin exposure behind Cloudflare</td>
+                                <td class="p-3 text-slate-300">Potential WAF bypass, direct L7 DDoS attacks, WordPress administrative compromise.</td>
+                                <td class="p-3"><span class="bg-amber-950 text-amber-400 border border-amber-800 font-bold px-2 py-0.5 rounded">MODERATE</span></td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </section>
+
+    </main>
+
+    <!-- Personnel Modal Window -->
+    <div id="personnelModal" class="fixed inset-0 bg-slate-950/80 backdrop-blur-md z-50 hidden flex items-center justify-center p-4">
+        <div class="bg-slate-900 rounded-lg max-w-lg w-full p-6 space-y-4 shadow-2xl border border-slate-700">
+            <div class="flex justify-between items-start border-b border-slate-800 pb-3">
+                <div>
+                    <h3 id="modalName" class="text-lg font-bold text-white"></h3>
+                    <p id="modalTitle" class="text-xs text-amber-400 font-semibold mt-0.5"></p>
+                </div>
+                <button onclick="closeModal()" class="text-slate-400 hover:text-white font-bold text-lg">&times;</button>
+            </div>
+            <div class="space-y-3 text-xs">
+                <div>
+                    <span class="font-bold text-slate-300 block">Prior Public & Commercial Affiliations:</span>
+                    <p id="modalAffiliations" class="text-slate-300 bg-slate-950 p-3 rounded border border-slate-800 mt-1 leading-relaxed"></p>
+                </div>
+                <div>
+                    <span class="font-bold text-slate-300 block">Functional Domain & Expertise:</span>
+                    <p id="modalExpertise" class="text-slate-300 bg-slate-950 p-3 rounded border border-slate-800 mt-1 leading-relaxed"></p>
+                </div>
+            </div>
+            <div class="pt-3 border-t border-slate-800 text-right">
+                <button onclick="closeModal()" class="px-4 py-2 bg-amber-500 text-slate-950 text-xs font-bold rounded hover:bg-amber-400 transition">Close Profile</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Footer -->
+    <footer class="bg-slate-900 text-slate-400 border-t border-slate-800 py-6 mt-12 text-xs">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex flex-col sm:flex-row justify-between items-center gap-4">
+            <div>
+                <span class="font-bold text-white">Watchtower Strategy Reconnaissance Portal</span> • Source Target SCAN: <code class="text-amber-400 font-mono">9ed23428c13fe14c48182f8206c0f2b9141a9814</code>
+            </div>
+            <div class="text-slate-500">
+                Tactical Dark Theme • Single-Page Interactive Intelligence Application
+            </div>
+        </div>
+    </footer>
+
+    <!-- JavaScript Data Storage & Application Logic -->
+    <script>
+        // Personnel Data Store
+        const teamData = [
+            {
+                name: "Kevin McCarthy",
+                title: "Chairman",
+                domain: "Capitol Hill",
+                affiliations: "55th Speaker of the U.S. House of Representatives; Member of Congress (CA-20, 2007–2023); Board Member, C3 AI and Anivive Lifesciences.",
+                expertise: "Executive C-suite consulting, political risk forecasting, congressional navigation, and major corporate board positioning."
+            },
+            {
+                name: "Dan Conston",
+                title: "Chief Executive Officer",
+                domain: "Capitol Hill",
+                affiliations: "President, Congressional Leadership Fund (CLF) & American Action Network (AAN) (2019–2025); Board Member, WinRed and America Rising.",
+                expertise: "Firm operations, national public affairs campaigns, empirical polling, and major donor alignment."
+            },
+            {
+                name: "Jeff Miller",
+                title: "Partner",
+                domain: "K-Street",
+                affiliations: "Founder and CEO, Miller Strategies LLC; Finance Chair, 2020 RNC; Principal, Ryan, LLC.",
+                expertise: "Commercial advocacy coordination, federal fundraising, tax policy, and corporate strategy."
+            },
+            {
+                name: "Arthur Schwartz",
+                title: "Partner",
+                domain: "Media",
+                affiliations: "Independent strategic advisor; outside communications counsel to Vice President J.D. Vance and Donald Trump Jr.",
+                expertise: "Crisis containment, rapid-response press operations, and high-stakes media confrontation."
+            },
+            {
+                name: "Cliff Sims",
+                title: "Partner (Jan 2025–May 2026)",
+                domain: "Executive",
+                affiliations: "Deputy Director of National Intelligence for Strategy; WH Director of Message Strategy; Appointed National Security Adviser to VP Vance (May 2026).",
+                expertise: "National security policy, executive branch transitions, and high-level messaging strategy."
+            },
+            {
+                name: "Brian O. Walsh",
+                title: "Partner",
+                domain: "Capitol Hill",
+                affiliations: "President, Red Elephant Strategy; former President, America First Action SuperPAC; former NRCC Political Director.",
+                expertise: "Multi-channel advocacy campaigns, independent expenditure management, and voter modeling."
+            },
+            {
+                name: "Alex Pfeiffer",
+                title: "Managing Director",
+                domain: "Executive",
+                affiliations: "Principal Deputy Communications Director, The White House; Communications Director, Make America Great Again Inc.",
+                expertise: "Rapid response, administrative messaging alignment, and national broadcast placement."
+            },
+            {
+                name: "Brooke Singman",
+                title: "Managing Director",
+                domain: "Media",
+                affiliations: "Political Correspondent and Reporter, Fox News Digital; investigative journalist covering DOJ, WH, and Capitol Hill.",
+                expertise: "Media strategy, press corps relations, investigative response, and corporate reputation."
+            },
+            {
+                name: "Russell M. Dye",
+                title: "Senior Director",
+                domain: "Capitol Hill",
+                affiliations: "Communications Director & Senior Counsel, House Judiciary Committee under Chairman Jim Jordan.",
+                expertise: "Congressional investigations, oversight defense, litigation communications, and legal strategy."
+            },
+            {
+                name: "Will Reinert",
+                title: "Senior Director",
+                domain: "Capitol Hill",
+                affiliations: "National Press Secretary, NRCC; Regional Press Secretary, RGA; Communications Director, Rep. Tom Reed.",
+                expertise: "Legislative messaging, Capitol Hill communications, and regional media syndication."
+            },
+            {
+                name: "Arielle G. Dumalac",
+                title: "Associate",
+                domain: "Capitol Hill",
+                affiliations: "Press Assistant, House Judiciary Committee under Chairman Jim Jordan.",
+                expertise: "Congressional tracking, media monitoring, and tactical press coordination."
+            }
+        ];
+
+        // Cloudflare Open Port Scanner Data Store
+        const portData = [
+            { port: 80, proto: "HTTP", status: "301 Permanent Redirect", desc: "Standard cleartext web port. Redirects instantly to https://watchtowerstrategy.com/." },
+            { port: 443, proto: "HTTPS", status: "200 OK", desc: "Standard secure web application listener. Serves primary WordPress platform behind WAF." },
+            { port: 2052, proto: "HTTP", status: "200 / 301", desc: "Cloudflare standard HTTP proxy port." },
+            { port: 2053, proto: "HTTPS", status: "400 Error (HTTP sent to HTTPS)", desc: "Encrypted Cloudflare proxy port. Probing via HTTP yields Cloudflare 400 response." },
+            { port: 2082, proto: "HTTP", status: "200 / 301", desc: "Cloudflare alternate HTTP proxy port." },
+            { port: 2083, proto: "HTTPS", status: "400 Error (HTTP sent to HTTPS)", desc: "Encrypted Cloudflare proxy port (traditionally cPanel SSL, proxied by WAF)." },
+            { port: 2086, proto: "HTTP", status: "200 / 301", desc: "Cloudflare alternate HTTP proxy listener." },
+            { port: 2087, proto: "HTTPS", status: "400 Error (HTTP sent to HTTPS)", desc: "Encrypted Cloudflare proxy port (traditionally WHM SSL, proxied by WAF)." },
+            { port: 2095, proto: "HTTP", status: "200 / 301", desc: "Cloudflare alternate HTTP proxy port." },
+            { port: 2096, proto: "HTTPS", status: "400 Error (HTTP sent to HTTPS)", desc: "Encrypted Cloudflare proxy listener." },
+            { port: 8080, proto: "HTTP", status: "200 / 301", desc: "Standard alternate web cache port proxied by Cloudflare." },
+            { port: 8443, proto: "HTTPS", status: "400 Error (HTTP sent to HTTPS)", desc: "Alternate HTTPS web port. Probing via cleartext HTTP confirms SSL enforcement." },
+            { port: 8880, proto: "HTTP", status: "200 / 301", desc: "Cloudflare alternate cleartext proxy listener." }
+        ];
+
+        // Chart instances
+        let personnelChartInstance = null;
+        let threatChartInstance = null;
+
+        // TAB SWITCHING LOGIC
+        function switchTab(tabId) {
+            document.querySelectorAll('.tab-content').forEach(el => el.classList.add('hidden'));
+            document.querySelectorAll('.tab-content').forEach(el => el.classList.remove('block'));
+
+            document.querySelectorAll('.tab-btn').forEach(btn => {
+                btn.classList.remove('tab-active', 'text-amber-400');
+                btn.classList.add('text-slate-400');
+            });
+
+            const activeSec = document.getElementById('sec-' + tabId);
+            if (activeSec) {
+                activeSec.classList.remove('hidden');
+                activeSec.classList.add('block');
+            }
+
+            const activeBtn = document.getElementById('tab-' + tabId);
+            if (activeBtn) {
+                activeBtn.classList.add('tab-active', 'text-amber-400');
+                activeBtn.classList.remove('text-slate-400');
+            }
+        }
+
+        // PERSONNEL FILTER & GRID RENDER
+        function renderPersonnel(data) {
+            const grid = document.getElementById('personnelGrid');
+            grid.innerHTML = '';
+
+            if (data.length === 0) {
+                grid.innerHTML = `<div class="col-span-full p-8 text-center text-slate-500 font-mono">No personnel matching criteria found.</div>`;
+                return;
+            }
+
+            data.forEach(p => {
+                let domainBadgeClass = "bg-slate-800 text-slate-300 border-slate-700";
+                if(p.domain === "Capitol Hill") domainBadgeClass = "bg-blue-950 text-blue-400 border-blue-800";
+                if(p.domain === "Executive") domainBadgeClass = "bg-purple-950 text-purple-400 border-purple-800";
+                if(p.domain === "K-Street") domainBadgeClass = "bg-amber-950 text-amber-400 border-amber-800";
+                if(p.domain === "Media") domainBadgeClass = "bg-emerald-950 text-emerald-400 border-emerald-800";
+
+                const card = document.createElement('div');
+                card.className = "bg-slate-900 p-5 rounded-lg border border-slate-800 shadow-xl flex flex-col justify-between hover:border-slate-700 transition";
+                card.innerHTML = `
+                    <div>
+                        <div class="flex items-start justify-between">
+                            <div>
+                                <h3 class="font-bold text-white text-base">${p.name}</h3>
+                                <div class="text-xs font-semibold text-amber-400 mt-0.5">${p.title}</div>
+                            </div>
+                            <span class="text-[10px] font-bold px-2 py-0.5 rounded border ${domainBadgeClass}">${p.domain}</span>
+                        </div>
+                        <div class="mt-3 text-xs text-slate-400">
+                            <strong class="text-slate-300">Prior Role:</strong>
+                            <p class="text-slate-400 line-clamp-2 mt-0.5">${p.affiliations}</p>
+                        </div>
+                    </div>
+                    <div class="mt-4 pt-3 border-t border-slate-800 flex justify-end">
+                        <button onclick='openModal(${JSON.stringify(p).replace(/'/g, "&apos;")})' class="text-xs text-indigo-400 font-semibold hover:text-indigo-300 flex items-center gap-1">
+                            View Profile Details →
+                        </button>
+                    </div>
+                `;
+                grid.appendChild(card);
+            });
+        }
+
+        function filterPersonnel() {
+            const domain = document.getElementById('domainFilter').value;
+            const query = document.getElementById('personnelSearch').value.toLowerCase();
+
+            const filtered = teamData.filter(p => {
+                const matchDomain = (domain === 'all' || p.domain === domain);
+                const matchQuery = (
+                    p.name.toLowerCase().includes(query) ||
+                    p.title.toLowerCase().includes(query) ||
+                    p.affiliations.toLowerCase().includes(query) ||
+                    p.expertise.toLowerCase().includes(query)
+                );
+                return matchDomain && matchQuery;
+            });
+
+            renderPersonnel(filtered);
+        }
+
+        // MODAL LOGIC
+        function openModal(person) {
+            document.getElementById('modalName').innerText = person.name;
+            document.getElementById('modalTitle').innerText = person.title + " • " + person.domain + " Domain";
+            document.getElementById('modalAffiliations').innerText = person.affiliations;
+            document.getElementById('modalExpertise').innerText = person.expertise;
+            document.getElementById('personnelModal').classList.remove('hidden');
+        }
+
+        function closeModal() {
+            document.getElementById('personnelModal').classList.add('hidden');
+        }
+
+        // PORT INSPECTOR LOGIC
+        function initPortInspector() {
+            const grid = document.getElementById('portButtonGrid');
+            grid.innerHTML = '';
+            portData.forEach((pd) => {
+                const btn = document.createElement('button');
+                btn.className = `p-2 text-xs font-mono font-bold rounded border transition-all text-center ${pd.proto === 'HTTPS' ? 'bg-indigo-950/60 border-indigo-800 text-indigo-300 hover:bg-indigo-900/80' : 'bg-slate-950 border-slate-800 text-slate-300 hover:bg-slate-800'}`;
+                btn.innerText = pd.port;
+                btn.onclick = () => selectPort(pd);
+                grid.appendChild(btn);
+            });
+            // Select default port 443
+            selectPort(portData[1]);
+        }
+
+        function selectPort(pd) {
+            const detailBox = document.getElementById('portDetailBox');
+            detailBox.innerHTML = `
+                <div class="flex justify-between items-center text-amber-400 border-b border-slate-800 pb-1">
+                    <span class="font-bold text-sm">PORT ${pd.port} / TCP (${pd.proto})</span>
+                    <span class="text-[10px] bg-slate-900 text-slate-300 px-2 py-0.5 rounded border border-slate-700">STATUS: ${pd.status}</span>
+                </div>
+                <div class="text-slate-300 pt-1 leading-relaxed">${pd.desc}</div>
+                <div class="text-[10px] text-slate-500 font-mono mt-2 pt-1 border-t border-slate-800">
+                    Probing Target: watchtowerstrategy.com:${pd.port} • CPE: cpe:/a:cloudflare:cloudflare
+                </div>
+            `;
+        }
+
+        // LDA RISK CALCULATOR LOGIC
+        function calculateRisk() {
+            const contact = parseInt(document.getElementById('sliderContact').value);
+            const exec = parseInt(document.getElementById('selectExec').value);
+            const staff = parseInt(document.getElementById('selectStaff').value);
+
+            document.getElementById('valContact').innerText = contact + "%";
+
+            let total = Math.min(100, Math.round((contact * 0.35) + exec + staff));
+            
+            document.getElementById('riskScore').innerText = total + " / 100";
+            document.getElementById('riskBar').style.width = total + "%";
+
+            const rec = document.getElementById('riskRecommendation');
+            const bar = document.getElementById('riskBar');
+
+            if(total > 70) {
+                bar.className = "bg-rose-500 h-full transition-all duration-300";
+                rec.innerHTML = "<strong class='text-rose-400'>CRITICAL:</strong> Heavy regulatory scrutiny expected. Cross-reference with LDA reporting thresholds and federal conflict-of-interest guidelines recommended.";
+            } else if(total > 45) {
+                bar.className = "bg-amber-500 h-full transition-all duration-300";
+                rec.innerHTML = "<strong class='text-amber-400'>HIGH:</strong> Significant press and watchdog inquiry risk regarding defense client retainers and non-registered advocacy counsel.";
+            } else {
+                bar.className = "bg-emerald-500 h-full transition-all duration-300";
+                rec.innerHTML = "<strong class='text-emerald-400'>MODERATE:</strong> Baseline operational risk. Standard public affairs narrative positioning with minimal legislative contact.";
+            }
+        }
+
+        // INITIALIZE CHARTS IN DARK MODE
+        function initCharts() {
+            // Chart 1: Personnel Background Distribution Donut
+            const ctx1 = document.getElementById('personnelChart').getContext('2d');
+            personnelChartInstance = new Chart(ctx1, {
+                type: 'doughnut',
+                data: {
+                    labels: ['Capitol Hill / Leg.', 'Executive / WH', 'K-Street / Corporate', 'Media / Journalism'],
+                    datasets: [{
+                        data: [6, 2, 1, 2],
+                        backgroundColor: ['#3b82f6', '#a855f7', '#f59e0b', '#10b981'],
+                        borderWidth: 2,
+                        borderColor: '#0f172a'
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: {
+                        legend: {
+                            position: 'bottom',
+                            labels: {
+                                color: '#94a3b8',
+                                font: { size: 11 },
+                                boxWidth: 12
+                            }
+                        },
+                        tooltip: {
+                            backgroundColor: '#030712',
+                            titleColor: '#f59e0b',
+                            bodyColor: '#e2e8f0',
+                            borderColor: '#334155',
+                            borderWidth: 1,
+                            callbacks: {
+                                label: function(context) {
+                                    return ' ' + context.label + ': ' + context.raw + ' Key Members';
+                                }
+                            }
+                        }
+                    }
+                }
+            });
+
+            // Chart 2: Threat Surface Radar Chart (Dark Styled)
+            const ctx2 = document.getElementById('threatChart').getContext('2d');
+            threatChartInstance = new Chart(ctx2, {
+                type: 'radar',
+                data: {
+                    labels: [
+                        'Origin IP Bypass',
+                        'WP Login Exposure',
+                        'Revolving Door Scrutiny',
+                        'LDA Non-Registration',
+                        'Defense Conflict Exposure',
+                        'Bulk Mail Domain Hijack'
+                    ],
+                    datasets: [{
+                        label: 'Evaluated Exposure Level (0-100)',
+                        data: [75, 65, 90, 80, 85, 60],
+                        backgroundColor: 'rgba(245, 158, 11, 0.25)',
+                        borderColor: '#f59e0b',
+                        pointBackgroundColor: '#f59e0b',
+                        pointBorderColor: '#0f172a',
+                        pointHoverBackgroundColor: '#ffffff',
+                        pointHoverBorderColor: '#f59e0b'
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    scales: {
+                        r: {
+                            angleLines: { color: 'rgba(255, 255, 255, 0.1)' },
+                            grid: { color: 'rgba(255, 255, 255, 0.1)' },
+                            pointLabels: {
+                                color: '#cbd5e1',
+                                font: { size: 10 }
+                            },
+                            suggestedMin: 0,
+                            suggestedMax: 100,
+                            ticks: { display: false }
+                        }
+                    },
+                    plugins: {
+                        legend: {
+                            position: 'bottom',
+                            labels: { color: '#94a3b8', font: { size: 11 }, boxWidth: 12 }
+                        },
+                        tooltip: {
+                            backgroundColor: '#030712',
+                            titleColor: '#f59e0b',
+                            bodyColor: '#e2e8f0',
+                            borderColor: '#334155',
+                            borderWidth: 1
+                        }
+                    }
+                }
+            });
+        }
+
+        // DOM LOAD INITIALIZATION
+        document.addEventListener('DOMContentLoaded', () => {
+            renderPersonnel(teamData);
+            initPortInspector();
+            initCharts();
+            calculateRisk();
+        });
+    </script>
+</body>
+</html>
