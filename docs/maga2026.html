@@ -163,6 +163,7 @@ let activeIndex=-1;
 let lastClicked=null;
 let terminalTimer;
 const TERMINAL_CHAR_MS=35;
+const TERMINAL_KNOWN_FOR={"Dan Bongino":"GIVING UP AFTER A FEW MONTHS"};
 function render(){
   const q=search.value.trim().toLocaleLowerCase();
   visible=PEOPLE.filter(p=>(filter==='all'||p.group===filter)&&p.name.toLocaleLowerCase().includes(q));
@@ -192,7 +193,7 @@ function updateModal(){
   modalTitle.textContent=person.name;modalImg.src=person.image;modalImg.alt='Enlarged portrait of '+person.name;
   position.textContent=(activeIndex+1)+' / '+visible.length;
   clearTimeout(terminalTimer);
-  const record='NAME: '+person.name.toUpperCase()+'\nOCCUPATION: '+(KNOWN_FOR[person.name]||'TBD').toUpperCase()+'\nKNOWN FOR: TBD';
+  const record='NAME: '+person.name.toUpperCase()+'\nOCCUPATION: '+(KNOWN_FOR[person.name]||'TBD').toUpperCase()+'\nKNOWN FOR: '+(TERMINAL_KNOWN_FOR[person.name]||'TBD');
   terminalOutput.textContent='';terminalOutput.classList.add('typing');
   if(matchMedia('(prefers-reduced-motion: reduce)').matches){terminalOutput.textContent=record;terminalOutput.classList.remove('typing');return;}
   let cursor=0;const type=()=>{terminalOutput.textContent=record.slice(0,cursor++);if(cursor<=record.length)terminalTimer=setTimeout(type,TERMINAL_CHAR_MS);else terminalOutput.classList.remove('typing');};type();
