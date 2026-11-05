@@ -4,7 +4,7 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <meta name="theme-color" content="#06111c">
-  <meta name="description" content="Ten public-record dossiers, indexed in an interactive archive rack.">
+  <meta name="description" content="Eleven public-record dossiers, indexed in an interactive archive rack.">
   <title>FARA Core / Ten — Public-Record Dossiers</title>
   <style>
     /* Layout: two columns (headline + summary | the vault rack), then a full-width active-record preview. */
@@ -165,7 +165,7 @@
   <header class="topbar">
     <div class="brand" aria-label="FARA Core Ten"><span class="brand-mark" aria-hidden="true"><svg viewBox="0 0 24 24"><rect x="4" y="3.5" width="16" height="5" rx=".6"/><rect x="4" y="10" width="16" height="5" rx=".6"/><rect x="4" y="16.5" width="16" height="5" rx=".6"/><path d="M7 6h2M7 12.5h2M7 19h2"/></svg></span>FARA <em>/</em> TEN</div>
     <div class="header-center">PUBLIC RECORDS INTERFACE // 001</div>
-    <div class="status"><i class="live-dot" aria-hidden="true"></i> 10 DOSSIERS</div>
+    <div class="status"><i class="live-dot" aria-hidden="true"></i> 11 DOSSIERS</div>
   </header>
 
   <main class="page">
@@ -184,21 +184,21 @@
         <div class="summary">
           <div class="summary-label">ARCHIVE SUMMARY</div>
           <div class="stats">
-            <div class="stat"><b id="entry-count">10</b><span>INDEXED ENTRIES</span></div>
+            <div class="stat"><b id="entry-count">11</b><span>INDEXED ENTRIES</span></div>
             <div class="stat"><b>01</b><span>CENTRAL DIRECTORY</span></div>
           </div>
         </div>
       </section>
 
       <section class="vault" id="vault" aria-label="FARA registrant dossier rack">
-        <div class="vault-label">PRIMARY ARRAY&nbsp;<strong>FARA–10</strong></div>
+        <div class="vault-label">PRIMARY ARRAY&nbsp;<strong>FARA–11</strong></div>
         <div class="rack">
           <div class="rack-cap">
-            <div><div class="rack-title">THE VAULT <span>// 10</span></div><div class="rack-sub">DOSSIER RETRIEVAL SYSTEM</div></div>
+            <div><div class="rack-title">THE VAULT <span>// 11</span></div><div class="rack-sub">DOSSIER RETRIEVAL SYSTEM</div></div>
             <div class="cabinet">CABINET 001<i aria-hidden="true"></i></div>
           </div>
-          <div class="rack-slots" id="rack-rows" role="group" aria-label="Ten public-record dossier modules"></div>
-          <div class="rack-base"><span>RACK / 10U</span><span class="ready">INDEX READY</span></div>
+          <div class="rack-slots" id="rack-rows" role="group" aria-label="Eleven public-record dossier modules"></div>
+          <div class="rack-base"><span>RACK / 11U</span><span class="ready">INDEX READY</span></div>
         </div>
         <div class="stage-hint">[ SELECT A <b>SERVER MODULE</b> TO OPEN ITS RECORD ]</div>
       </section>
@@ -207,7 +207,7 @@
     <section class="preview" aria-labelledby="record-name" aria-live="polite">
       <div class="eyebrow cyan">ACTIVE RECORD / PREVIEW</div>
       <article class="record">
-        <div class="record-head"><span>ARCHIVE / ENTRY</span><span class="pos" id="record-pos">08 / 10</span></div>
+        <div class="record-head"><span>ARCHIVE / ENTRY</span><span class="pos" id="record-pos">08 / 11</span></div>
         <h2 id="record-name">PLUS Communications, LLC</h2>
         <dl class="record-meta">
           <div><dt>RECORD ID</dt><dd id="record-reg">#7107</dd></div>
@@ -225,7 +225,7 @@
   </dialog>
   <script>
   (()=>{'use strict';
-    const records=[['Clock Tower X LLC','7649','clocktowerx.html'],['Bridges Partners LLC','7652','bridgepartners.html'],['Targeted Communications Global LLC','7553','agents/targeted-communications-global.html'],['Genesis 21 Consulting LLC','7631','agents/genesis-21.html'],['Show Faith by Works, LLC','7653','agents/show-faith-by-works.html'],['Davis Media NY LLC','7662','agents/davis-media-ny.html'],['MMGY Global, LLC','6492','agents/mmgy-global.html'],['PLUS Communications, LLC','7107','agents/plus-communications.html'],['Pearson Unlimited, LLC','7768','agents/pearson-unlimited.html'],['Parscale Ecosystem','CASEFILE 26.11','agents/parscale-network.html']];
+    const records=[['Clock Tower X LLC','7649','clocktowerx.html'],['Bridges Partners LLC','7652','bridgepartners.html'],['Targeted Communications Global LLC','7553','agents/targeted-communications-global.html'],['Genesis 21 Consulting LLC','7631','agents/genesis-21.html'],['Show Faith by Works, LLC','7653','agents/show-faith-by-works.html'],['Davis Media NY LLC','7662','agents/davis-media-ny.html'],['MMGY Global, LLC','6492','agents/mmgy-global.html'],['PLUS Communications, LLC','7107','agents/plus-communications.html'],['Pearson Unlimited, LLC','7768','agents/pearson-unlimited.html'],['Parscale Ecosystem','CASEFILE 26.11','agents/parscale-network.html'],['Watchtower Strategy LLC','LDA NON-REG','agents/watchtowerstrategy.html']];
     const $=id=>document.getElementById(id),rows=$('rack-rows'),dialog=$('dossier-dialog'),frame=$('dossier-frame'),n2=v=>String(v).padStart(2,'0'),total=records.length;
     let active=8;
     $('entry-count').textContent=n2(total);
