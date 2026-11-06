@@ -24,14 +24,397 @@ footer{display:flex;justify-content:space-between;gap:18px;margin-top:12px;color
 @media(prefers-reduced-motion:reduce){*,*:before,*:after{scroll-behavior:auto!important;transition:none!important;animation:none!important}.feature-body.exiting,.feature-body.entering{opacity:1;transform:none}.ticker-window{overflow-x:auto}.ticker-track{animation:none!important}body:after{opacity:.4;transform:rotate(-15deg)}}
 /* Neon Dial intro — scoped so the briefing retains its existing visual system. */
 #neon-dial-intro{position:fixed;inset:0;z-index:1000;display:grid;place-items:center;overflow:auto;background:radial-gradient(ellipse 58% 42% at 50% 38%,#693326 0%,#17202c 48%,#03070b 100%);color:#f9e7d5;font-family:Arial,Helvetica,sans-serif;transition:opacity .5s ease,visibility .5s ease}#neon-dial-intro[hidden]{display:none}#neon-dial-intro.is-leaving{opacity:0;visibility:hidden;pointer-events:none}#neon-dial-intro:before{content:"";position:fixed;inset:0;pointer-events:none;opacity:.2;background:repeating-linear-gradient(0deg,transparent 0 3px,#0004 4px 5px)}
-.dial-city,.dial-city:before,.dial-city:after{position:absolute;inset:auto 0 0;pointer-events:none}.dial-city{height:50%;overflow:hidden;background:linear-gradient(0deg,#02070d 0%,#071725e8 38%,#132c3a5c 100%)}.dial-city:before{content:"";height:88%;background:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='86' height='64' viewBox='0 0 86 64'%3E%3Cg fill='%23f6ae62'%3E%3Crect x='12' y='10' width='5' height='8'/%3E%3Crect x='31' y='10' width='5' height='8'/%3E%3Crect x='12' y='29' width='5' height='8'/%3E%3Crect x='31' y='29' width='5' height='8'/%3E%3Crect x='59' y='19' width='5' height='8'/%3E%3C/g%3E%3Cg fill='%236ed6d1'%3E%3Crect x='21' y='19' width='5' height='8'/%3E%3Crect x='40' y='19' width='5' height='8'/%3E%3Crect x='21' y='48' width='5' height='8'/%3E%3Crect x='68' y='38' width='5' height='8'/%3E%3C/g%3E%3C/svg%3E") 0 5px/86px 64px repeat,linear-gradient(90deg,#08131d 0 7%,#142431 7% 11%,#08121d 11% 17%,#192a34 17% 22%,#09131d 22% 30%,#152631 30% 35%,#07111b 35% 43%,#192832 43% 49%,#08121c 49% 58%,#162733 58% 63%,#07111b 63% 71%,#182934 71% 77%,#09131d 77% 85%,#172631 85% 91%,#08121c 91% 100%);clip-path:polygon(0 52%,5% 52%,5% 31%,10% 31%,10% 47%,15% 47%,15% 9%,21% 9%,21% 38%,27% 38%,27% 0,34% 0,34% 45%,40% 45%,40% 22%,46% 22%,46% 51%,52% 51%,52% 14%,58% 14%,58% 39%,64% 39%,64% 5%,71% 5%,71% 46%,77% 46%,77% 26%,83% 26%,83% 8%,89% 8%,89% 41%,95% 41%,95% 18%,100% 18%,100% 100%,0 100%);opacity:.94;box-shadow:0 -18px 42px #071f2a88,inset 0 -34px 32px #02070dbd}.dial-city:after{content:"";height:28%;background:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='112' height='54' viewBox='0 0 112 54'%3E%3Cg fill='%23f4ac61'%3E%3Crect x='19' y='13' width='4' height='7'/%3E%3Crect x='19' y='34' width='4' height='7'/%3E%3Crect x='74' y='23' width='4' height='7'/%3E%3C/g%3E%3Cg fill='%2356c8c1'%3E%3Crect x='42' y='13' width='4' height='7'/%3E%3Crect x='96' y='34' width='4' height='7'/%3E%3C/g%3E%3C/svg%3E") 10px 0/112px 54px repeat,linear-gradient(90deg,#030912 0 8%,#08141d 8% 15%,#030912 15% 25%,#0a1720 25% 34%,#030912 34% 46%,#08151e 46% 55%,#030912 55% 67%,#09161f 67% 75%,#030912 75% 87%,#08141d 87% 100%);clip-path:polygon(0 35%,7% 35%,7% 0,13% 0,13% 54%,20% 54%,20% 20%,27% 20%,27% 42%,35% 42%,35% 8%,42% 8%,42% 50%,50% 50%,50% 15%,58% 15%,58% 40%,65% 40%,65% 0,73% 0,73% 48%,81% 48%,81% 23%,89% 23%,89% 44%,95% 44%,95% 12%,100% 12%,100% 100%,0 100%);box-shadow:0 -18px 38px #05101a,inset 0 -12px 20px #01050bd9;opacity:.96}
-.dial-shell{position:relative;width:min(900px,94vw);padding:28px 15px 32px;text-align:center}.dial-kicker{margin:0 0 12px;color:#ffb777;font:700 10px/1.2 "Courier New",monospace;letter-spacing:4px;text-shadow:0 0 15px #f870527d}.dial-title{margin:0;color:#f9e3cc;font-family:Impact,"Arial Narrow",Arial,sans-serif;font-size:clamp(33px,6vw,70px);font-weight:900;letter-spacing:1px;line-height:.98;text-shadow:0 3px 0 #612a2c,0 0 40px #f2704c85}.dial-title span{color:#ffab69}.dial-sub{max-width:600px;margin:14px auto 0;color:#bed0d0;font:12px/1.6 "Courier New",monospace;letter-spacing:.8px}
-.dial-monitor{position:relative;width:min(690px,100%);margin:28px auto 0;filter:drop-shadow(0 34px 28px #000c)}.dial-case{padding:24px 29px 13px;border:1px solid #b1896d;border-radius:31px 31px 42px 42px;background:linear-gradient(127deg,#77736b,#353c43 25%,#1b252d 63%,#5a514e);box-shadow:inset 3px 3px 4px #bdc5bb75,inset -6px -8px 14px #080e16e6,0 0 43px #ff80442c}.dial-frame{padding:6px;border:7px solid #131a20;border-radius:18px;background:#050b12;box-shadow:inset 0 0 0 2px #606666}.dial-screen{position:relative;display:grid;place-items:center;min-height:330px;overflow:hidden;border-radius:12px;background:radial-gradient(ellipse at 67% 21%,#a63d30 0%,transparent 38%),linear-gradient(155deg,#0b1c31,#11212d 52%,#050d1c);box-shadow:inset 0 0 38px #030e18e0;color:#ffe0c3}.dial-screen:before{content:"";position:absolute;inset:0;pointer-events:none;background:repeating-linear-gradient(0deg,transparent 0 2px,#0005 3px);opacity:.65}.dial-window{position:relative;width:min(77%,470px);min-height:220px;border:2px solid #847f71;background:#17242c;box-shadow:2px 2px #ffae714b,7px 12px #0008;text-align:left}.dial-bar{display:flex;justify-content:space-between;gap:10px;padding:6px 8px;background:linear-gradient(90deg,#7d2d25,#bf5536 50%,#e68b47);color:#fff6da;font:bold 12px Tahoma,Arial,sans-serif}.dial-body{padding:24px 26px 20px;text-align:center}.dial-logo{color:#ffd0a4;font:900 clamp(20px,4vw,34px)/1 Arial,sans-serif;letter-spacing:-1px;text-shadow:0 0 12px #ff7c576b}.dial-logo small{display:block;margin-top:6px;color:#82dbd5;font:700 9px "Courier New",monospace;letter-spacing:2px}.dial-rule{height:1px;margin:17px 0;background:#8e604a}.dial-status{min-height:21px;color:#ffe0c3;font:bold clamp(11px,1.8vw,14px) Tahoma,Arial,sans-serif}.dial-detail{min-height:18px;margin-top:8px;color:#76ccc6;font:10px "Courier New",monospace}.dial-progress{display:flex;gap:2px;height:20px;margin:17px auto 14px;padding:3px;border:2px inset #546c76;background:#08131b}.dial-progress i{flex:1;background:transparent}.dial-progress i.on{background:linear-gradient(#ffd18e,#f37942);box-shadow:0 0 7px #f58845ad}.dial-controls{padding:0 18px 17px;text-align:center}.dial-action{min-height:39px;padding:0 17px;border:1px solid #ffbd7d;background:#cf754b;color:#100f13;border-radius:2px;box-shadow:0 0 25px #ec7c4263;font:700 11px "Courier New",monospace;letter-spacing:1px;cursor:pointer}.dial-action:hover{background:#ff9a62}.dial-action:focus-visible{outline:3px solid #8df7e0;outline-offset:3px}.dial-crawl{display:none;position:relative;height:232px;overflow:hidden;background:#050b19;text-align:left}.dial-window.is-crawl{min-height:290px}.dial-window.is-crawl .dial-body{display:none}.dial-window.is-crawl .dial-crawl{display:block}.dial-crawl:after{content:"";position:absolute;inset:0;pointer-events:none;background:linear-gradient(to bottom,#050b1900 76%,#050b19dc 100%)}.dial-crawl-tilt{position:relative;height:100%;transform:none}.dial-crawl-text{position:relative;z-index:1;width:auto;margin:0;padding:22px 25px;transform:none;animation:none;color:#bfe7e5;font:700 clamp(10px,1.45vw,14px)/1.65 "Courier New",monospace;letter-spacing:.01em}.dial-crawl-text p{display:none;margin:0 0 7px;text-shadow:0 0 12px #66d7d359}.dial-crawl-text p.typed{display:block}.dial-crawl-text p:before{content:"> ";color:#ffb875}.dial-crawl-text p.typing:after{content:"";display:inline-block;width:.58em;height:1.05em;margin-left:4px;vertical-align:-.16em;background:#8df7e0;box-shadow:0 0 8px #8df7e0;animation:terminal-cursor .72s steps(1,end) infinite}@keyframes terminal-cursor{50%{opacity:0}}.dial-brand{display:flex;justify-content:space-between;align-items:center;padding:9px 3px 0;color:#e0b184;font:900 9px "Courier New",monospace;letter-spacing:1.4px}.dial-light{width:7px;height:7px;border-radius:50%;background:#fca466;box-shadow:0 0 9px #ff6e29}.dial-skip{margin-top:18px;border:0;background:transparent;color:#b7e6e1;text-decoration:underline;text-underline-offset:4px;font:700 11px "Courier New",monospace;letter-spacing:1px;cursor:pointer}.dial-skip:focus-visible{outline:2px solid #8df7e0;outline-offset:4px}@media(max-width:560px){.dial-shell{padding-top:17px}.dial-monitor{margin-top:21px}.dial-case{padding:13px 14px 9px}.dial-frame{border-width:5px;padding:4px}.dial-screen{min-height:282px}.dial-window{width:84%;min-height:202px}.dial-body{padding:20px 16px 15px}.dial-title{font-size:clamp(35px,11vw,52px)}.dial-crawl-text{padding:16px 17px;font-size:10px;line-height:1.55}}@media(prefers-reduced-motion:reduce){#neon-dial-intro{transition:none}.dial-progress i.on{box-shadow:none}.dial-crawl{height:auto;overflow:visible}.dial-crawl-text p{display:block}.dial-crawl-text p:after{display:none!important}}
+/* Cinematic 3-layer skyline. All artwork is inline: no external assets or image requests. */
+.dial-city{position:absolute;inset:0;z-index:0;overflow:hidden;pointer-events:none;background:#050c16}
+.dial-city::before{content:"";position:absolute;inset:0;z-index:2;background:linear-gradient(180deg,#03071380 0%,transparent 26%,transparent 62%,#02060bb0 100%),radial-gradient(ellipse 42% 50% at 50% 53%,#07111b94 0%,transparent 100%);pointer-events:none}
+.dial-city::after{content:"";position:absolute;inset:0;z-index:3;pointer-events:none;background:repeating-linear-gradient(0deg,transparent 0 3px,#02060c20 4px 5px);opacity:.23}
+.city-art{position:absolute;inset:0;width:100%;height:100%;display:block}
+.dial-shell{z-index:1}
+.city-flicker{animation:city-sign-pulse 7s step-end infinite}
+.city-beacon{animation:city-beacon-pulse 3.8s ease-in-out infinite}
+.city-stars{animation:city-stars-breathe 12s ease-in-out infinite alternate}
+.city-flight-one{animation:city-flight-a 20s linear infinite;transform:translate(-180px,355px);will-change:transform}
+.city-flight-two{animation:city-flight-b 26s linear infinite;transform:translate(1750px,510px);will-change:transform}
+@keyframes city-sign-pulse{0%,73%,76%,79%,100%{opacity:1}74%,78%{opacity:.32}}
+@keyframes city-beacon-pulse{0%,64%,100%{opacity:.18}67%,72%{opacity:1}}
+@keyframes city-stars-breathe{from{opacity:.42}to{opacity:.90}}
+@keyframes city-flight-a{0%{transform:translate(-180px,355px);opacity:0}8%{opacity:.75}85%{opacity:.75}100%{transform:translate(1800px,306px);opacity:0}}
+@keyframes city-flight-b{0%{transform:translate(1750px,518px);opacity:0}12%{opacity:.65}86%{opacity:.65}100%{transform:translate(-180px,467px);opacity:0}}
+@media(max-width:650px){.city-art{width:180%;max-width:none;left:-40%}.dial-city::before{background:linear-gradient(180deg,#030713ab,transparent 30%,#02060b95 100%),radial-gradient(ellipse 65% 45% at 50% 50%,#07111ba8,transparent)}}
+@media(prefers-reduced-motion:reduce){.city-flicker,.city-beacon,.city-stars,.city-flight{animation:none!important}.city-flight{display:none}}
+.dial-shell{position:relative;width:min(1160px,97vw);padding:20px 15px 23px;text-align:center}.dial-kicker{margin:0 0 12px;color:#ffb777;font:700 10px/1.2 "Courier New",monospace;letter-spacing:4px;text-shadow:0 0 15px #f870527d}.dial-title{margin:0;color:#f9e3cc;font-family:Impact,"Arial Narrow",Arial,sans-serif;font-size:clamp(33px,6vw,70px);font-weight:900;letter-spacing:1px;line-height:.98;text-shadow:0 3px 0 #612a2c,0 0 40px #f2704c85}.dial-title span{color:#ffab69}.dial-sub{max-width:600px;margin:14px auto 0;color:#bed0d0;font:12px/1.6 "Courier New",monospace;letter-spacing:.8px}
+.dial-monitor{position:relative;width:min(1000px,100%);margin:23px auto 0;filter:drop-shadow(0 42px 38px #000e)}.dial-case{padding:27px 34px 15px;border:1px solid #b1896d;border-radius:31px 31px 42px 42px;background:linear-gradient(127deg,#77736b,#353c43 25%,#1b252d 63%,#5a514e);box-shadow:inset 3px 3px 4px #bdc5bb75,inset -6px -8px 14px #080e16e6,0 0 43px #ff80442c}.dial-frame{padding:6px;border:7px solid #131a20;border-radius:18px;background:#050b12;box-shadow:inset 0 0 0 2px #606666}.dial-screen{position:relative;display:grid;place-items:center;min-height:425px;overflow:hidden;border-radius:12px;background:radial-gradient(ellipse at 67% 21%,#a63d30 0%,transparent 38%),linear-gradient(155deg,#0b1c31,#11212d 52%,#050d1c);box-shadow:inset 0 0 38px #030e18e0;color:#ffe0c3}.dial-screen:before{content:"";position:absolute;inset:0;pointer-events:none;background:repeating-linear-gradient(0deg,transparent 0 2px,#0005 3px);opacity:.65}.dial-window{position:relative;width:min(82%,710px);min-height:255px;border:2px solid #847f71;background:#17242c;box-shadow:2px 2px #ffae714b,7px 12px #0008;text-align:left}.dial-bar{display:flex;justify-content:space-between;gap:10px;padding:6px 8px;background:linear-gradient(90deg,#7d2d25,#bf5536 50%,#e68b47);color:#fff6da;font:bold 12px Tahoma,Arial,sans-serif}.dial-body{padding:30px 34px 25px;text-align:center}.dial-logo{color:#ffd0a4;font:900 clamp(20px,4vw,34px)/1 Arial,sans-serif;letter-spacing:-1px;text-shadow:0 0 12px #ff7c576b}.dial-logo small{display:block;margin-top:6px;color:#82dbd5;font:700 9px "Courier New",monospace;letter-spacing:2px}.dial-rule{height:1px;margin:17px 0;background:#8e604a}.dial-status{min-height:21px;color:#ffe0c3;font:bold clamp(11px,1.8vw,14px) Tahoma,Arial,sans-serif}.dial-detail{min-height:18px;margin-top:8px;color:#76ccc6;font:10px "Courier New",monospace}.dial-progress{display:flex;gap:2px;height:20px;margin:17px auto 14px;padding:3px;border:2px inset #546c76;background:#08131b}.dial-progress i{flex:1;background:transparent}.dial-progress i.on{background:linear-gradient(#ffd18e,#f37942);box-shadow:0 0 7px #f58845ad}.dial-controls{padding:0 18px 17px;text-align:center}.dial-action{min-height:39px;padding:0 17px;border:1px solid #ffbd7d;background:#cf754b;color:#100f13;border-radius:2px;box-shadow:0 0 25px #ec7c4263;font:700 11px "Courier New",monospace;letter-spacing:1px;cursor:pointer}.dial-action:hover{background:#ff9a62}.dial-action:focus-visible{outline:3px solid #8df7e0;outline-offset:3px}.dial-crawl{display:none;position:relative;height:290px;overflow:hidden;background:#050b19;text-align:left}.dial-window.is-crawl{min-height:347px}.dial-window.is-crawl .dial-body{display:none}.dial-window.is-crawl .dial-crawl{display:block}.dial-crawl:after{content:"";position:absolute;inset:0;pointer-events:none;background:linear-gradient(to bottom,#050b1900 76%,#050b19dc 100%)}.dial-crawl-tilt{position:relative;height:100%;transform:none}.dial-crawl-text{position:relative;z-index:1;width:auto;margin:0;padding:22px 25px;transform:none;animation:none;color:#bfe7e5;font:700 clamp(10px,1.45vw,14px)/1.65 "Courier New",monospace;letter-spacing:.01em}.dial-crawl-text p{display:none;margin:0 0 7px;text-shadow:0 0 12px #66d7d359}.dial-crawl-text p.typed{display:block}.dial-crawl-text p:before{content:"> ";color:#ffb875}.dial-crawl-text p.typing:after{content:"";display:inline-block;width:.58em;height:1.05em;margin-left:4px;vertical-align:-.16em;background:#8df7e0;box-shadow:0 0 8px #8df7e0;animation:terminal-cursor .72s steps(1,end) infinite}@keyframes terminal-cursor{50%{opacity:0}}.dial-brand{display:flex;justify-content:space-between;align-items:center;padding:9px 3px 0;color:#e0b184;font:900 9px "Courier New",monospace;letter-spacing:1.4px}.dial-light{width:7px;height:7px;border-radius:50%;background:#fca466;box-shadow:0 0 9px #ff6e29}.dial-skip{margin-top:18px;border:0;background:transparent;color:#b7e6e1;text-decoration:underline;text-underline-offset:4px;font:700 11px "Courier New",monospace;letter-spacing:1px;cursor:pointer}.dial-skip:focus-visible{outline:2px solid #8df7e0;outline-offset:4px}@media(max-width:560px){.dial-shell{width:100%;padding:14px 9px 20px}.dial-monitor{width:100%;margin-top:19px}.dial-case{padding:13px 12px 10px}.dial-frame{border-width:5px;padding:4px}.dial-screen{min-height:315px}.dial-window{width:90%;min-height:215px}.dial-body{padding:22px 16px 17px}.dial-title{font-size:clamp(35px,11vw,52px)}.dial-crawl-text{padding:16px 17px;font-size:10px;line-height:1.55}}@media(prefers-reduced-motion:reduce){#neon-dial-intro{transition:none}.dial-progress i.on{box-shadow:none}.dial-crawl{height:auto;overflow:visible}.dial-crawl-text p{display:block}.dial-crawl-text p:after{display:none!important}}
 </style>
 </head>
 <body>
 <section id="neon-dial-intro" aria-labelledby="dial-title">
-  <div class="dial-city" aria-hidden="true"></div>
+  <div class="dial-city" aria-hidden="true">
+<svg class="city-art" viewBox="0 0 1600 950" preserveAspectRatio="xMidYMax slice" xmlns="http://www.w3.org/2000/svg" role="presentation" aria-hidden="true">
+<defs>
+  <linearGradient id="city-sky" x1="0" y1="0" x2="0" y2="1"><stop stop-color="#02060f"/><stop offset=".3" stop-color="#0b1525"/><stop offset=".62" stop-color="#1c2031"/><stop offset=".88" stop-color="#14232d"/><stop offset="1" stop-color="#040b12"/></linearGradient>
+  <radialGradient id="city-haze-amber"><stop stop-color="#ff704d" stop-opacity=".37"/><stop offset=".55" stop-color="#de5368" stop-opacity=".10"/><stop offset="1" stop-color="#dd4969" stop-opacity="0"/></radialGradient>
+  <radialGradient id="city-haze-cyan"><stop stop-color="#36d6d2" stop-opacity=".23"/><stop offset="1" stop-color="#12c6cb" stop-opacity="0"/></radialGradient>
+  <linearGradient id="city-far" x1="0" y1="0" x2="0" y2="1"><stop stop-color="#1d3444"/><stop offset="1" stop-color="#070e1a"/></linearGradient>
+  <linearGradient id="city-mid" x1="0" y1="0" x2="1" y2="1"><stop stop-color="#1a303e"/><stop offset=".38" stop-color="#12202e"/><stop offset="1" stop-color="#050b17"/></linearGradient>
+  <linearGradient id="city-near" x1="0" y1="0" x2=".3" y2="1"><stop stop-color="#172633"/><stop offset=".58" stop-color="#0d1823"/><stop offset="1" stop-color="#030712"/></linearGradient>
+  <linearGradient id="city-floor" x1="0" y1="0" x2="0" y2="1"><stop stop-color="#14252c" stop-opacity="0"/><stop offset="1" stop-color="#01050c" stop-opacity=".92"/></linearGradient>
+  <linearGradient id="city-sun" x1="0" y1="0" x2="0" y2="1"><stop stop-color="#ffb77b" stop-opacity=".56"/><stop offset=".7" stop-color="#e65c6e" stop-opacity=".37"/><stop offset="1" stop-color="#8b4b85" stop-opacity=".02"/></linearGradient>
+  <pattern id="city-far-win" width="23" height="29" patternUnits="userSpaceOnUse"><rect x="6" y="8" width="2.5" height="3.5" fill="#57c3c9" opacity=".32"/><rect x="15" y="19" width="2.5" height="3.5" fill="#ffae7a" opacity=".27"/></pattern>
+  <pattern id="city-mid-win" width="39" height="42" patternUnits="userSpaceOnUse"><rect x="8" y="9" width="4" height="7" rx=".5" fill="#59ddd2" opacity=".58"/><rect x="18" y="9" width="4" height="7" rx=".5" fill="#f49c71" opacity=".16"/><rect x="28" y="9" width="4" height="7" rx=".5" fill="#a6e5db" opacity=".45"/><rect x="8" y="25" width="4" height="7" rx=".5" fill="#ffad79" opacity=".62"/><rect x="28" y="25" width="4" height="7" rx=".5" fill="#65d1d0" opacity=".33"/></pattern>
+  <pattern id="city-near-win" width="48" height="53" patternUnits="userSpaceOnUse"><rect x="9" y="12" width="6" height="10" fill="#e38e6a" opacity=".75"/><rect x="23" y="12" width="6" height="10" fill="#61d6d8" opacity=".22"/><rect x="37" y="12" width="5" height="10" fill="#ffd8a2" opacity=".55"/><rect x="9" y="33" width="6" height="10" fill="#4ed1cf" opacity=".55"/><rect x="37" y="33" width="5" height="10" fill="#eaa47c" opacity=".23"/></pattern>
+  <pattern id="city-lines" width="100" height="11" patternUnits="userSpaceOnUse"><path d="M0 10.5H100" stroke="#6fc8d4" stroke-opacity=".11"/></pattern>
+  <filter id="city-soft-glow" x="-70%" y="-70%" width="240%" height="240%"><feGaussianBlur stdDeviation="3" result="glow"/><feMerge><feMergeNode in="glow"/><feMergeNode in="SourceGraphic"/></feMerge></filter>
+  <filter id="city-ambient-blur"><feGaussianBlur stdDeviation="24"/></filter>
+  <clipPath id="city-sun-mask"><circle cx="1207" cy="454" r="134"/></clipPath>
+</defs>
+<rect width="1600" height="950" fill="url(#city-sky)"/>
+<ellipse cx="1103" cy="430" rx="620" ry="400" fill="url(#city-haze-amber)"/>
+<ellipse cx="270" cy="500" rx="550" ry="390" fill="url(#city-haze-cyan)"/>
+<ellipse cx="760" cy="610" rx="800" ry="100" fill="#ef7758" opacity=".12" filter="url(#city-ambient-blur)"/>
+<g class="city-stars" fill="#d7f5f1">
+<circle cx="930" cy="50" r="0.7" opacity="0.35"/>
+<circle cx="59" cy="148" r="0.7" opacity="0.35"/>
+<circle cx="1492" cy="182" r="0.7" opacity="0.35"/>
+<circle cx="1100" cy="262" r="1" opacity="0.16"/>
+<circle cx="1445" cy="358" r="0.7" opacity="0.22"/>
+<circle cx="1461" cy="125" r="0.7" opacity="0.22"/>
+<circle cx="854" cy="195" r="0.7" opacity="0.28"/>
+<circle cx="1490" cy="116" r="1" opacity="0.16"/>
+<circle cx="552" cy="132" r="0.7" opacity="0.16"/>
+<circle cx="917" cy="38" r="0.7" opacity="0.12"/>
+<circle cx="1303" cy="252" r="0.7" opacity="0.35"/>
+<circle cx="429" cy="38" r="0.7" opacity="0.16"/>
+<circle cx="1265" cy="228" r="0.7" opacity="0.28"/>
+<circle cx="422" cy="437" r="0.7" opacity="0.16"/>
+<circle cx="1186" cy="378" r="1.3" opacity="0.22"/>
+<circle cx="43" cy="466" r="0.7" opacity="0.28"/>
+<circle cx="472" cy="35" r="0.7" opacity="0.16"/>
+<circle cx="85" cy="466" r="1.3" opacity="0.22"/>
+<circle cx="1486" cy="46" r="1" opacity="0.12"/>
+<circle cx="1359" cy="217" r="0.7" opacity="0.22"/>
+<circle cx="796" cy="330" r="1.3" opacity="0.22"/>
+<circle cx="414" cy="314" r="0.7" opacity="0.28"/>
+<circle cx="666" cy="56" r="1.3" opacity="0.16"/>
+<circle cx="1279" cy="443" r="1.3" opacity="0.35"/>
+<circle cx="119" cy="138" r="1.3" opacity="0.22"/>
+<circle cx="302" cy="89" r="0.7" opacity="0.28"/>
+<circle cx="1083" cy="178" r="0.7" opacity="0.22"/>
+<circle cx="1172" cy="147" r="1" opacity="0.28"/>
+<circle cx="1511" cy="289" r="1.3" opacity="0.16"/>
+<circle cx="1491" cy="147" r="0.7" opacity="0.22"/>
+<circle cx="200" cy="155" r="0.7" opacity="0.28"/>
+<circle cx="46" cy="137" r="1" opacity="0.22"/>
+<circle cx="176" cy="248" r="0.7" opacity="0.22"/>
+<circle cx="592" cy="475" r="1.3" opacity="0.35"/>
+<circle cx="475" cy="48" r="1" opacity="0.12"/>
+<circle cx="69" cy="87" r="1" opacity="0.28"/>
+<circle cx="741" cy="99" r="1" opacity="0.16"/>
+<circle cx="802" cy="105" r="1.3" opacity="0.28"/>
+<circle cx="459" cy="501" r="1.3" opacity="0.35"/>
+<circle cx="1478" cy="27" r="1" opacity="0.35"/>
+<circle cx="332" cy="170" r="0.7" opacity="0.12"/>
+<circle cx="965" cy="286" r="1" opacity="0.16"/>
+<circle cx="1265" cy="445" r="1.3" opacity="0.12"/>
+<circle cx="71" cy="314" r="0.7" opacity="0.12"/>
+<circle cx="926" cy="398" r="1.3" opacity="0.35"/>
+<circle cx="1184" cy="396" r="1" opacity="0.22"/>
+<circle cx="265" cy="111" r="1" opacity="0.28"/>
+<circle cx="456" cy="170" r="0.7" opacity="0.12"/>
+<circle cx="995" cy="505" r="1" opacity="0.28"/>
+<circle cx="594" cy="148" r="0.7" opacity="0.16"/>
+<circle cx="689" cy="174" r="1" opacity="0.22"/>
+<circle cx="985" cy="189" r="1" opacity="0.12"/>
+<circle cx="256" cy="391" r="0.7" opacity="0.16"/>
+<circle cx="904" cy="326" r="1.3" opacity="0.12"/>
+<circle cx="870" cy="251" r="0.7" opacity="0.22"/>
+<circle cx="355" cy="488" r="1.3" opacity="0.22"/>
+<circle cx="95" cy="155" r="1.3" opacity="0.28"/>
+<circle cx="1045" cy="489" r="1.3" opacity="0.28"/>
+<circle cx="1212" cy="51" r="0.7" opacity="0.28"/>
+<circle cx="829" cy="250" r="1.3" opacity="0.16"/>
+<circle cx="370" cy="67" r="0.7" opacity="0.12"/>
+<circle cx="496" cy="251" r="0.7" opacity="0.12"/>
+<circle cx="988" cy="471" r="1.3" opacity="0.35"/>
+<circle cx="1089" cy="460" r="0.7" opacity="0.22"/>
+<circle cx="1443" cy="270" r="0.7" opacity="0.12"/>
+<circle cx="0" cy="196" r="0.7" opacity="0.22"/>
+<circle cx="966" cy="392" r="1.3" opacity="0.16"/>
+<circle cx="1353" cy="313" r="1" opacity="0.12"/>
+<circle cx="349" cy="263" r="0.7" opacity="0.16"/>
+<circle cx="34" cy="218" r="0.7" opacity="0.12"/>
+<circle cx="444" cy="457" r="1.3" opacity="0.16"/>
+<circle cx="887" cy="240" r="1" opacity="0.12"/>
+<circle cx="108" cy="158" r="0.7" opacity="0.16"/>
+<circle cx="686" cy="453" r="0.7" opacity="0.16"/>
+<circle cx="8" cy="365" r="1.3" opacity="0.12"/>
+<circle cx="658" cy="154" r="0.7" opacity="0.16"/>
+<circle cx="1469" cy="360" r="0.7" opacity="0.16"/>
+<circle cx="371" cy="293" r="0.7" opacity="0.12"/>
+<circle cx="458" cy="436" r="0.7" opacity="0.28"/>
+<circle cx="309" cy="459" r="1.3" opacity="0.35"/>
+</g>
+<g class="city-sun" clip-path="url(#city-sun-mask)"><circle cx="1207" cy="454" r="134" fill="url(#city-sun)"/>
+<rect x="1050" y="473" width="320" height="8" fill="#1b2230" opacity=".54"/>
+<rect x="1050" y="494" width="320" height="11" fill="#1b2230" opacity=".54"/>
+<rect x="1050" y="520" width="320" height="13" fill="#1b2230" opacity=".54"/>
+<rect x="1050" y="551" width="320" height="16" fill="#1b2230" opacity=".54"/>
+<rect x="1050" y="584" width="320" height="19" fill="#1b2230" opacity=".54"/>
+</g>
+<path d="M0 595Q360 565 820 601T1600 575" stroke="#ff9b78" stroke-width="1" opacity=".22" fill="none"/>
+<g class="city-distance">
+<rect x="-25" y="552" width="80" height="398" fill="url(#city-far)" stroke="#396073" stroke-opacity=".19" stroke-width="1"/>
+<rect x="-6" y="540" width="42" height="12" fill="#213e4e" opacity=".7"/>
+<path d="M15 524V552" stroke="#5a9aab" stroke-opacity=".55"/>
+<rect x="-22" y="560" width="74" height="388" fill="url(#city-far-win)" opacity=".62"/>
+<rect x="57" y="614" width="68" height="336" fill="url(#city-far)" stroke="#396073" stroke-opacity=".19" stroke-width="1"/>
+<rect x="73" y="602" width="35" height="12" fill="#213e4e" opacity=".7"/>
+<rect x="60" y="622" width="62" height="326" fill="url(#city-far-win)" opacity=".62"/>
+<rect x="129" y="617" width="44" height="333" fill="url(#city-far)" stroke="#396073" stroke-opacity=".19" stroke-width="1"/>
+<rect x="132" y="625" width="38" height="323" fill="url(#city-far-win)" opacity=".62"/>
+<rect x="177" y="489" width="47" height="461" fill="url(#city-far)" stroke="#396073" stroke-opacity=".19" stroke-width="1"/>
+<rect x="180" y="497" width="41" height="451" fill="url(#city-far-win)" opacity=".62"/>
+<rect x="226" y="656" width="46" height="294" fill="url(#city-far)" stroke="#396073" stroke-opacity=".19" stroke-width="1"/>
+<rect x="237" y="644" width="24" height="12" fill="#213e4e" opacity=".7"/>
+<rect x="229" y="664" width="40" height="284" fill="url(#city-far-win)" opacity=".62"/>
+<rect x="275" y="543" width="70" height="407" fill="url(#city-far)" stroke="#396073" stroke-opacity=".19" stroke-width="1"/>
+<path d="M310 515V543" stroke="#5a9aab" stroke-opacity=".55"/>
+<rect x="278" y="551" width="64" height="397" fill="url(#city-far-win)" opacity=".62"/>
+<rect x="350" y="539" width="39" height="411" fill="url(#city-far)" stroke="#396073" stroke-opacity=".19" stroke-width="1"/>
+<rect x="353" y="547" width="33" height="401" fill="url(#city-far-win)" opacity=".62"/>
+<rect x="394" y="517" width="65" height="433" fill="url(#city-far)" stroke="#396073" stroke-opacity=".19" stroke-width="1"/>
+<rect x="410" y="505" width="34" height="12" fill="#213e4e" opacity=".7"/>
+<rect x="397" y="525" width="59" height="423" fill="url(#city-far-win)" opacity=".62"/>
+<rect x="463" y="668" width="63" height="282" fill="url(#city-far)" stroke="#396073" stroke-opacity=".19" stroke-width="1"/>
+<rect x="466" y="676" width="57" height="272" fill="url(#city-far-win)" opacity=".62"/>
+<rect x="528" y="536" width="85" height="414" fill="url(#city-far)" stroke="#396073" stroke-opacity=".19" stroke-width="1"/>
+<rect x="531" y="544" width="79" height="404" fill="url(#city-far-win)" opacity=".62"/>
+<rect x="615" y="659" width="47" height="291" fill="url(#city-far)" stroke="#396073" stroke-opacity=".19" stroke-width="1"/>
+<rect x="618" y="667" width="41" height="281" fill="url(#city-far-win)" opacity=".62"/>
+<rect x="664" y="533" width="63" height="417" fill="url(#city-far)" stroke="#396073" stroke-opacity=".19" stroke-width="1"/>
+<path d="M695 505V533" stroke="#5a9aab" stroke-opacity=".55"/>
+<rect x="667" y="541" width="57" height="407" fill="url(#city-far-win)" opacity=".62"/>
+<rect x="732" y="657" width="38" height="293" fill="url(#city-far)" stroke="#396073" stroke-opacity=".19" stroke-width="1"/>
+<rect x="735" y="665" width="32" height="283" fill="url(#city-far-win)" opacity=".62"/>
+<rect x="775" y="500" width="42" height="450" fill="url(#city-far)" stroke="#396073" stroke-opacity=".19" stroke-width="1"/>
+<rect x="778" y="508" width="36" height="440" fill="url(#city-far-win)" opacity=".62"/>
+<rect x="822" y="682" width="49" height="268" fill="url(#city-far)" stroke="#396073" stroke-opacity=".19" stroke-width="1"/>
+<rect x="834" y="670" width="25" height="12" fill="#213e4e" opacity=".7"/>
+<rect x="825" y="690" width="43" height="258" fill="url(#city-far-win)" opacity=".62"/>
+<rect x="873" y="689" width="85" height="261" fill="url(#city-far)" stroke="#396073" stroke-opacity=".19" stroke-width="1"/>
+<path d="M915 661V689" stroke="#5a9aab" stroke-opacity=".55"/>
+<rect x="876" y="697" width="79" height="251" fill="url(#city-far-win)" opacity=".62"/>
+<rect x="962" y="565" width="52" height="385" fill="url(#city-far)" stroke="#396073" stroke-opacity=".19" stroke-width="1"/>
+<rect x="974" y="553" width="27" height="12" fill="#213e4e" opacity=".7"/>
+<rect x="965" y="573" width="46" height="375" fill="url(#city-far-win)" opacity=".62"/>
+<rect x="1017" y="491" width="64" height="459" fill="url(#city-far)" stroke="#396073" stroke-opacity=".19" stroke-width="1"/>
+<rect x="1032" y="479" width="33" height="12" fill="#213e4e" opacity=".7"/>
+<rect x="1020" y="499" width="58" height="449" fill="url(#city-far-win)" opacity=".62"/>
+<rect x="1085" y="578" width="59" height="372" fill="url(#city-far)" stroke="#396073" stroke-opacity=".19" stroke-width="1"/>
+<rect x="1099" y="566" width="31" height="12" fill="#213e4e" opacity=".7"/>
+<rect x="1088" y="586" width="53" height="362" fill="url(#city-far-win)" opacity=".62"/>
+<rect x="1151" y="617" width="43" height="333" fill="url(#city-far)" stroke="#396073" stroke-opacity=".19" stroke-width="1"/>
+<rect x="1154" y="625" width="37" height="323" fill="url(#city-far-win)" opacity=".62"/>
+<rect x="1201" y="537" width="72" height="413" fill="url(#city-far)" stroke="#396073" stroke-opacity=".19" stroke-width="1"/>
+<rect x="1204" y="545" width="66" height="403" fill="url(#city-far-win)" opacity=".62"/>
+<rect x="1278" y="476" width="52" height="474" fill="url(#city-far)" stroke="#396073" stroke-opacity=".19" stroke-width="1"/>
+<rect x="1290" y="464" width="27" height="12" fill="#213e4e" opacity=".7"/>
+<rect x="1281" y="484" width="46" height="464" fill="url(#city-far-win)" opacity=".62"/>
+<rect x="1333" y="657" width="46" height="293" fill="url(#city-far)" stroke="#396073" stroke-opacity=".19" stroke-width="1"/>
+<rect x="1344" y="645" width="24" height="12" fill="#213e4e" opacity=".7"/>
+<rect x="1336" y="665" width="40" height="283" fill="url(#city-far-win)" opacity=".62"/>
+<rect x="1381" y="687" width="75" height="263" fill="url(#city-far)" stroke="#396073" stroke-opacity=".19" stroke-width="1"/>
+<rect x="1384" y="695" width="69" height="253" fill="url(#city-far-win)" opacity=".62"/>
+<rect x="1461" y="606" width="49" height="344" fill="url(#city-far)" stroke="#396073" stroke-opacity=".19" stroke-width="1"/>
+<rect x="1473" y="594" width="25" height="12" fill="#213e4e" opacity=".7"/>
+<rect x="1464" y="614" width="43" height="334" fill="url(#city-far-win)" opacity=".62"/>
+<rect x="1517" y="567" width="47" height="383" fill="url(#city-far)" stroke="#396073" stroke-opacity=".19" stroke-width="1"/>
+<rect x="1528" y="555" width="24" height="12" fill="#213e4e" opacity=".7"/>
+<rect x="1520" y="575" width="41" height="373" fill="url(#city-far-win)" opacity=".62"/>
+<rect x="1567" y="623" width="64" height="327" fill="url(#city-far)" stroke="#396073" stroke-opacity=".19" stroke-width="1"/>
+<path d="M1599 595V623" stroke="#5a9aab" stroke-opacity=".55"/>
+<rect x="1570" y="631" width="58" height="317" fill="url(#city-far-win)" opacity=".62"/>
+</g>
+<g class="city-airlane" opacity=".42"><path d="M0 559Q400 505 800 553T1600 526" stroke="#77dcda" stroke-width="1" stroke-dasharray="18 26 1 50" fill="none"/><path d="M0 603Q500 558 900 597T1600 573" stroke="#fa9e82" stroke-width="1" stroke-dasharray="10 50" fill="none"/></g>
+<g class="city-middle">
+<rect x="-42" y="580" width="79" height="370" fill="url(#city-mid)" stroke="#5c98a1" stroke-opacity=".19"/>
+<rect x="-29" y="565" width="53" height="15" fill="#1a3241" stroke="#54b9bb" stroke-opacity=".25"/>
+<rect x="-38" y="594" width="71" height="365" fill="url(#city-mid-win)" opacity="0.71"/>
+<path d="M-40 586V950" stroke="#e78079" stroke-opacity=".22" stroke-width="1.4"/>
+<rect x="44" y="648" width="74" height="302" fill="url(#city-mid)" stroke="#5c98a1" stroke-opacity=".19"/>
+<rect x="58" y="633" width="46" height="15" fill="#1a3241" stroke="#54b9bb" stroke-opacity=".25"/>
+<rect x="48" y="662" width="66" height="297" fill="url(#city-mid-win)" opacity="0.63"/>
+<path d="M46 654V950" stroke="#57d0ca" stroke-opacity=".22" stroke-width="1.4"/>
+<rect x="119" y="467" width="87" height="483" fill="url(#city-mid)" stroke="#5c98a1" stroke-opacity=".19"/>
+<rect x="123" y="481" width="79" height="478" fill="url(#city-mid-win)" opacity="0.50"/>
+<path d="M121 473V950" stroke="#7cbad8" stroke-opacity=".22" stroke-width="1.4"/>
+<rect x="214" y="558" width="127" height="392" fill="url(#city-mid)" stroke="#5c98a1" stroke-opacity=".19"/>
+<rect x="218" y="572" width="119" height="387" fill="url(#city-mid-win)" opacity="0.78"/>
+<path d="M216 564V950" stroke="#7cbad8" stroke-opacity=".22" stroke-width="1.4"/>
+<path d="M334 567V950" stroke="#5fd3cb" stroke-opacity=".21"/>
+<rect x="342" y="539" width="131" height="411" fill="url(#city-mid)" stroke="#5c98a1" stroke-opacity=".19"/>
+<rect x="361" y="524" width="93" height="15" fill="#1a3241" stroke="#54b9bb" stroke-opacity=".25"/>
+<rect x="346" y="553" width="123" height="406" fill="url(#city-mid-win)" opacity="0.73"/>
+<path d="M344 545V950" stroke="#7cbad8" stroke-opacity=".22" stroke-width="1.4"/>
+<rect x="481" y="594" width="79" height="356" fill="url(#city-mid)" stroke="#5c98a1" stroke-opacity=".19"/>
+<rect x="493" y="579" width="55" height="15" fill="#1a3241" stroke="#54b9bb" stroke-opacity=".25"/>
+<rect x="485" y="608" width="71" height="351" fill="url(#city-mid-win)" opacity="0.76"/>
+<path d="M483 600V950" stroke="#7cbad8" stroke-opacity=".22" stroke-width="1.4"/>
+<rect x="564" y="653" width="105" height="297" fill="url(#city-mid)" stroke="#5c98a1" stroke-opacity=".19"/>
+<rect x="568" y="667" width="97" height="292" fill="url(#city-mid-win)" opacity="0.44"/>
+<path d="M566 659V950" stroke="#7cbad8" stroke-opacity=".22" stroke-width="1.4"/>
+<rect x="676" y="585" width="103" height="365" fill="url(#city-mid)" stroke="#5c98a1" stroke-opacity=".19"/>
+<rect x="690" y="570" width="75" height="15" fill="#1a3241" stroke="#54b9bb" stroke-opacity=".25"/>
+<rect x="680" y="599" width="95" height="360" fill="url(#city-mid-win)" opacity="0.64"/>
+<path d="M678 591V950" stroke="#7cbad8" stroke-opacity=".22" stroke-width="1.4"/>
+<rect x="781" y="683" width="105" height="267" fill="url(#city-mid)" stroke="#5c98a1" stroke-opacity=".19"/>
+<rect x="785" y="697" width="97" height="262" fill="url(#city-mid-win)" opacity="0.62"/>
+<path d="M783 689V950" stroke="#7cbad8" stroke-opacity=".22" stroke-width="1.4"/>
+<path d="M879 692V950" stroke="#5fd3cb" stroke-opacity=".21"/>
+<rect x="892" y="479" width="72" height="471" fill="url(#city-mid)" stroke="#5c98a1" stroke-opacity=".19"/>
+<rect x="896" y="493" width="64" height="466" fill="url(#city-mid-win)" opacity="0.64"/>
+<path d="M894 485V950" stroke="#e78079" stroke-opacity=".22" stroke-width="1.4"/>
+<rect x="972" y="674" width="104" height="276" fill="url(#city-mid)" stroke="#5c98a1" stroke-opacity=".19"/>
+<rect x="976" y="688" width="96" height="271" fill="url(#city-mid-win)" opacity="0.50"/>
+<path d="M974 680V950" stroke="#7cbad8" stroke-opacity=".22" stroke-width="1.4"/>
+<rect x="1078" y="645" width="116" height="305" fill="url(#city-mid)" stroke="#5c98a1" stroke-opacity=".19"/>
+<rect x="1082" y="659" width="108" height="300" fill="url(#city-mid-win)" opacity="0.43"/>
+<path d="M1080 651V950" stroke="#7cbad8" stroke-opacity=".22" stroke-width="1.4"/>
+<rect x="1202" y="654" width="86" height="296" fill="url(#city-mid)" stroke="#5c98a1" stroke-opacity=".19"/>
+<rect x="1206" y="668" width="78" height="291" fill="url(#city-mid-win)" opacity="0.46"/>
+<path d="M1204 660V950" stroke="#57d0ca" stroke-opacity=".22" stroke-width="1.4"/>
+<path d="M1281 663V950" stroke="#5fd3cb" stroke-opacity=".21"/>
+<rect x="1289" y="613" width="78" height="337" fill="url(#city-mid)" stroke="#5c98a1" stroke-opacity=".19"/>
+<rect x="1307" y="598" width="42" height="15" fill="#1a3241" stroke="#54b9bb" stroke-opacity=".25"/>
+<rect x="1293" y="627" width="70" height="332" fill="url(#city-mid-win)" opacity="0.44"/>
+<path d="M1291 619V950" stroke="#57d0ca" stroke-opacity=".22" stroke-width="1.4"/>
+<rect x="1368" y="585" width="115" height="365" fill="url(#city-mid)" stroke="#5c98a1" stroke-opacity=".19"/>
+<rect x="1381" y="570" width="89" height="15" fill="#1a3241" stroke="#54b9bb" stroke-opacity=".25"/>
+<rect x="1372" y="599" width="107" height="360" fill="url(#city-mid-win)" opacity="0.67"/>
+<path d="M1370 591V950" stroke="#7cbad8" stroke-opacity=".22" stroke-width="1.4"/>
+<path d="M1476 594V950" stroke="#5fd3cb" stroke-opacity=".21"/>
+<rect x="1486" y="627" width="70" height="323" fill="url(#city-mid)" stroke="#5c98a1" stroke-opacity=".19"/>
+<rect x="1502" y="612" width="38" height="15" fill="#1a3241" stroke="#54b9bb" stroke-opacity=".25"/>
+<rect x="1490" y="641" width="62" height="318" fill="url(#city-mid-win)" opacity="0.62"/>
+<path d="M1488 633V950" stroke="#e78079" stroke-opacity=".22" stroke-width="1.4"/>
+<path d="M1549 636V950" stroke="#5fd3cb" stroke-opacity=".21"/>
+<rect x="1563" y="512" width="130" height="438" fill="url(#city-mid)" stroke="#5c98a1" stroke-opacity=".19"/>
+<rect x="1576" y="497" width="104" height="15" fill="#1a3241" stroke="#54b9bb" stroke-opacity=".25"/>
+<rect x="1567" y="526" width="122" height="433" fill="url(#city-mid-win)" opacity="0.67"/>
+<path d="M1565 518V950" stroke="#7cbad8" stroke-opacity=".22" stroke-width="1.4"/>
+<path d="M1686 521V950" stroke="#5fd3cb" stroke-opacity=".21"/>
+</g>
+<g class="city-landmarks">
+<!-- West needle tower -->
+<path d="M70 746V418H97V371H117V308H132V267H143V226H154V267H165V308H180V371H198V418H224V746Z" fill="#09131e" stroke="#65bec6" stroke-opacity=".41" stroke-width="2"/>
+<path d="M143 225V160M130 309H157M118 370H169" stroke="#76e6dc" stroke-width="2" opacity=".58"/>
+<path d="M112 420H182V740H112Z" fill="url(#city-mid-win)" opacity=".95"/>
+<path d="M93 428H203M112 393H183M118 316H170" stroke="#ff996e" stroke-opacity=".64" stroke-width="3"/>
+<circle class="city-beacon" cx="143" cy="158" r="3" fill="#ff9687" filter="url(#city-soft-glow)"/>
+<!-- Glass stepped tower east -->
+<path d="M1304 770V403H1328V365H1346V321H1372V286H1403V321H1420V365H1443V403H1476V770Z" fill="#0b1925" stroke="#4b8b9c" stroke-opacity=".55" stroke-width="2"/>
+<path d="M1326 421H1451V769H1326Z" fill="url(#city-mid-win)" opacity=".78"/>
+<path d="M1331 366H1417M1349 322H1401M1358 293H1391" stroke="#72e6d7" stroke-width="2" opacity=".65"/>
+<path d="M1375 287V239M1386 287V259" stroke="#5c9cac" stroke-width="2"/>
+<circle class="city-beacon" cx="1375" cy="238" r="3" fill="#ff8f85" filter="url(#city-soft-glow)"/>
+<!-- Left tower edge lighting and antenna -->
+<rect x="266" y="453" width="122" height="415" fill="#0a1521" stroke="#274455"/>
+<rect x="273" y="475" width="108" height="370" fill="url(#city-mid-win)" opacity=".65"/>
+<path d="M267 455H388M275 446H381" stroke="#e38574" stroke-width="3" opacity=".55"/>
+<path d="M294 452V414H361V452M326 415V377" fill="none" stroke="#477c8c" stroke-width="2"/>
+<circle class="city-beacon" cx="326" cy="375" r="2.8" fill="#ffac79"/>
+<!-- Bright crown right -->
+<rect x="1512" y="406" width="108" height="500" fill="#0b1622" stroke="#385b6b"/>
+<path d="M1512 408H1600M1521 396H1600" stroke="#ed7b73" stroke-width="3" opacity=".65"/>
+<rect x="1522" y="431" width="78" height="469" fill="url(#city-mid-win)" opacity=".71"/>
+</g>
+<g class="city-neon-signs">
+<g transform="translate(22 515)"><rect width="168" height="77" rx="3" fill="#0a1420" stroke="#376b7c" stroke-width="3"/><rect x="7" y="7" width="154" height="63" fill="#09202a" stroke="#64d2cb" stroke-opacity=".44"/><text x="84" y="34" text-anchor="middle" font-family="monospace" font-size="17" font-weight="900" fill="#66f4e2" letter-spacing="4" class="city-flicker">NEXUS</text><text x="84" y="53" text-anchor="middle" font-family="monospace" font-size="9" fill="#ed9d81" letter-spacing="3">SECTOR 09</text></g>
+<g transform="translate(1460 513)"><rect width="123" height="74" fill="#111827" stroke="#87516e" stroke-width="2"/><text x="62" y="30" text-anchor="middle" font-size="17" font-weight="800" font-family="monospace" fill="#ff8b89" letter-spacing="2" class="city-flicker">ON AIR</text><path d="M14 42H109" stroke="#f2859b" opacity=".75"/><text x="62" y="58" text-anchor="middle" font-size="9" font-family="monospace" fill="#7cddde" letter-spacing="1.5">ALL NIGHT</text></g>
+</g>
+<!-- Foreground towers darken lower sightline and add stronger dimensional contrast -->
+<g class="city-foreground">
+<rect x="-40" y="790" width="116" height="160" fill="url(#city-near)" stroke="#426172" stroke-opacity=".38"/>
+<rect x="-32" y="803" width="100" height="142" fill="url(#city-near-win)" opacity="0.48"/>
+<rect x="-37" y="794" width="110" height="156" fill="url(#city-lines)" opacity=".42"/>
+<rect x="82" y="804" width="136" height="146" fill="url(#city-near)" stroke="#426172" stroke-opacity=".38"/>
+<rect x="92" y="792" width="116" height="12" fill="#11212a"/>
+<path d="M84 809H216" stroke="#ff9772" stroke-opacity=".52" stroke-width="2"/>
+<rect x="90" y="817" width="120" height="128" fill="url(#city-near-win)" opacity="0.42"/>
+<rect x="85" y="808" width="130" height="142" fill="url(#city-lines)" opacity=".42"/>
+<rect x="222" y="691" width="140" height="259" fill="url(#city-near)" stroke="#426172" stroke-opacity=".38"/>
+<rect x="232" y="679" width="120" height="12" fill="#11212a"/>
+<rect x="230" y="704" width="124" height="241" fill="url(#city-near-win)" opacity="0.48"/>
+<rect x="225" y="695" width="134" height="255" fill="url(#city-lines)" opacity=".42"/>
+<rect x="371" y="695" width="134" height="255" fill="url(#city-near)" stroke="#426172" stroke-opacity=".38"/>
+<rect x="379" y="708" width="118" height="237" fill="url(#city-near-win)" opacity="0.56"/>
+<rect x="374" y="699" width="128" height="251" fill="url(#city-lines)" opacity=".42"/>
+<rect x="509" y="756" width="102" height="194" fill="url(#city-near)" stroke="#426172" stroke-opacity=".38"/>
+<rect x="519" y="744" width="82" height="12" fill="#11212a"/>
+<rect x="517" y="769" width="86" height="176" fill="url(#city-near-win)" opacity="0.51"/>
+<rect x="512" y="760" width="96" height="190" fill="url(#city-lines)" opacity=".42"/>
+<rect x="616" y="802" width="93" height="148" fill="url(#city-near)" stroke="#426172" stroke-opacity=".38"/>
+<rect x="624" y="815" width="77" height="130" fill="url(#city-near-win)" opacity="0.45"/>
+<rect x="619" y="806" width="87" height="144" fill="url(#city-lines)" opacity=".42"/>
+<rect x="717" y="756" width="95" height="194" fill="url(#city-near)" stroke="#426172" stroke-opacity=".38"/>
+<rect x="727" y="744" width="75" height="12" fill="#11212a"/>
+<rect x="725" y="769" width="79" height="176" fill="url(#city-near-win)" opacity="0.38"/>
+<rect x="720" y="760" width="89" height="190" fill="url(#city-lines)" opacity=".42"/>
+<rect x="816" y="720" width="99" height="230" fill="url(#city-near)" stroke="#426172" stroke-opacity=".38"/>
+<rect x="824" y="733" width="83" height="212" fill="url(#city-near-win)" opacity="0.49"/>
+<rect x="819" y="724" width="93" height="226" fill="url(#city-lines)" opacity=".42"/>
+<rect x="925" y="762" width="80" height="188" fill="url(#city-near)" stroke="#426172" stroke-opacity=".38"/>
+<rect x="935" y="750" width="60" height="12" fill="#11212a"/>
+<rect x="933" y="775" width="64" height="170" fill="url(#city-near-win)" opacity="0.63"/>
+<rect x="928" y="766" width="74" height="184" fill="url(#city-lines)" opacity=".42"/>
+<rect x="1009" y="819" width="126" height="131" fill="url(#city-near)" stroke="#426172" stroke-opacity=".38"/>
+<rect x="1019" y="807" width="106" height="12" fill="#11212a"/>
+<path d="M1011 824H1133" stroke="#ff9772" stroke-opacity=".52" stroke-width="2"/>
+<rect x="1017" y="832" width="110" height="113" fill="url(#city-near-win)" opacity="0.50"/>
+<rect x="1012" y="823" width="120" height="127" fill="url(#city-lines)" opacity=".42"/>
+<rect x="1140" y="718" width="124" height="232" fill="url(#city-near)" stroke="#426172" stroke-opacity=".38"/>
+<rect x="1150" y="706" width="104" height="12" fill="#11212a"/>
+<rect x="1148" y="731" width="108" height="214" fill="url(#city-near-win)" opacity="0.42"/>
+<rect x="1143" y="722" width="118" height="228" fill="url(#city-lines)" opacity=".42"/>
+<rect x="1274" y="757" width="83" height="193" fill="url(#city-near)" stroke="#426172" stroke-opacity=".38"/>
+<path d="M1276 762H1355" stroke="#ff9772" stroke-opacity=".52" stroke-width="2"/>
+<rect x="1282" y="770" width="67" height="175" fill="url(#city-near-win)" opacity="0.54"/>
+<rect x="1277" y="761" width="77" height="189" fill="url(#city-lines)" opacity=".42"/>
+<rect x="1362" y="762" width="81" height="188" fill="url(#city-near)" stroke="#426172" stroke-opacity=".38"/>
+<rect x="1370" y="775" width="65" height="170" fill="url(#city-near-win)" opacity="0.42"/>
+<rect x="1365" y="766" width="75" height="184" fill="url(#city-lines)" opacity=".42"/>
+<rect x="1446" y="818" width="136" height="132" fill="url(#city-near)" stroke="#426172" stroke-opacity=".38"/>
+<rect x="1454" y="831" width="120" height="114" fill="url(#city-near-win)" opacity="0.51"/>
+<rect x="1449" y="822" width="130" height="128" fill="url(#city-lines)" opacity=".42"/>
+<rect x="1590" y="779" width="139" height="171" fill="url(#city-near)" stroke="#426172" stroke-opacity=".38"/>
+<rect x="1600" y="767" width="119" height="12" fill="#11212a"/>
+<rect x="1598" y="792" width="123" height="153" fill="url(#city-near-win)" opacity="0.58"/>
+<rect x="1593" y="783" width="133" height="167" fill="url(#city-lines)" opacity=".42"/>
+</g>
+<!-- Elevated neon-lit skywalk -->
+<g opacity=".82"><path d="M0 834H1600" stroke="#0a1a22" stroke-width="25"/><path d="M0 824H1600" stroke="#53b9bb" stroke-width="1.5" opacity=".7"/><path d="M0 846H1600" stroke="#fa8f70" stroke-width="1" opacity=".32"/>
+<path d="M30 835V950" stroke="#08151e" stroke-width="7"/>
+<path d="M134 835V950" stroke="#08151e" stroke-width="7"/>
+<path d="M238 835V950" stroke="#08151e" stroke-width="7"/>
+<path d="M342 835V950" stroke="#08151e" stroke-width="7"/>
+<path d="M446 835V950" stroke="#08151e" stroke-width="7"/>
+<path d="M550 835V950" stroke="#08151e" stroke-width="7"/>
+<path d="M654 835V950" stroke="#08151e" stroke-width="7"/>
+<path d="M758 835V950" stroke="#08151e" stroke-width="7"/>
+<path d="M862 835V950" stroke="#08151e" stroke-width="7"/>
+<path d="M966 835V950" stroke="#08151e" stroke-width="7"/>
+<path d="M1070 835V950" stroke="#08151e" stroke-width="7"/>
+<path d="M1174 835V950" stroke="#08151e" stroke-width="7"/>
+<path d="M1278 835V950" stroke="#08151e" stroke-width="7"/>
+<path d="M1382 835V950" stroke="#08151e" stroke-width="7"/>
+<path d="M1486 835V950" stroke="#08151e" stroke-width="7"/>
+<path d="M1590 835V950" stroke="#08151e" stroke-width="7"/>
+</g>
+<path d="M0 630H1600V950H0Z" fill="url(#city-floor)" opacity=".55"/>
+<g class="city-flight city-flight-one"><path d="M-40 0H80" stroke="#70e6df" stroke-opacity=".68" stroke-width="1.3"/><path d="M75 0H127" stroke="#bffaf1" stroke-opacity=".19" stroke-width="1"/><ellipse cx="0" cy="0" rx="10" ry="2" fill="#9ef8f0" filter="url(#city-soft-glow)"/><circle cx="10" cy="0" r="2.2" fill="#fff1d5"/></g>
+<g class="city-flight city-flight-two"><path d="M-70 0H50" stroke="#f6a48e" stroke-opacity=".7" stroke-width="1.5"/><ellipse cx="42" cy="0" rx="6" ry="2" fill="#ffab8f" filter="url(#city-soft-glow)"/></g>
+<g class="city-low-fog"><ellipse cx="820" cy="821" rx="1050" ry="95" fill="#428e99" opacity=".11" filter="url(#city-ambient-blur)"/></g>
+</svg>
+</div>
   <div class="dial-shell">
     <p class="dial-kicker">DWC NETWORK // SECURE SIGNAL UPLINK</p>
     <h1 class="dial-title" id="dial-title">NEON <span>DIAL</span></h1>
