@@ -21,22 +21,143 @@
 @media(max-width:1000px){.middle-grid{grid-template-columns:1fr}.stats{grid-template-columns:repeat(2,minmax(0,1fr))}.status{max-width:260px}}
 @media(max-width:650px){.shell{padding:0 14px}.top-inner{align-items:flex-start;padding:14px 0;flex-wrap:wrap}.top h1{font-size:17px}.top-right{flex-wrap:wrap}.hero{align-items:flex-start;flex-direction:column;gap:15px;padding-top:25px}.hero h2{font-size:30px}.status{max-width:100%}.stats{gap:9px}.stat{padding:13px}.stat .value{font-size:25px}.stat .sub{font-size:10px}.panel-head{padding:16px;flex-direction:column}.play-area{padding:0 16px 16px}.hero-week .date{font-size:18px}.chart-outer{padding:0 12px 16px}.chart-inner{height:270px}.chart-inner canvas{height:270px}.routes{grid-template-columns:1fr;padding:0 15px 15px}.map-label{padding:10px 15px 15px}.details{padding:0 15px 15px}}
 @media(prefers-reduced-motion:reduce){*,*:before,*:after{animation:none!important;scroll-behavior:auto!important;transition:none!important}}
+
+/* Source-checked bulletin and replay improvements */
+.bulletin{margin:0 0 20px;background:#0e2030;border:1px solid #2b4558;border-radius:13px;overflow:hidden;box-shadow:0 12px 25px #00000018}.bulletin-head{padding:13px 17px;display:flex;align-items:center;justify-content:space-between;gap:14px;border-bottom:1px solid #294457}.bulletin-badge{font:700 10px/1.4 ui-monospace,Consolas,monospace;color:#9bbacf;letter-spacing:.2px}.bulletin-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr))}.bulletin-item{padding:17px 20px 19px;border-right:1px solid #294457}.bulletin-item:last-child{border-right:none}.bulletin-number{font-size:31px;font-weight:850;color:#62daca;line-height:1;font-variant-numeric:tabular-nums}.bulletin-item:nth-child(2) .bulletin-number{color:var(--gold)}.bulletin-item:nth-child(3) .bulletin-number{color:var(--blue)}.bulletin-number small{font-size:12px;font-weight:700;letter-spacing:.4px;color:#b5c9d7}.bulletin-item h3{margin:9px 0 7px;font-size:13px}.bulletin-item p{margin:0 0 8px;font-size:11px;line-height:1.5;color:#a9bdcb;min-height:49px}.bulletin-item a{font-size:11px;font-weight:700;text-decoration:none}.bulletin-item a:hover{text-decoration:underline}.play-progress-track{margin:1px 0 10px;width:100%;height:3px;border-radius:9px;background:#293c4c;overflow:hidden}.play-progress-fill{width:0;height:100%;background:linear-gradient(90deg,#56ddc0,#ffbe55);transition:width .09s linear}.btn.loop{background:#143a38;color:#8fead5;border-color:#3f8c83}.btn.loop[aria-pressed="false"]{background:#1b3043;color:#9fb2c5;border-color:#395267}.event-annotation{margin-top:16px;padding:12px 13px;border:1px solid #3c5a6c;background:#13293b;border-radius:8px}.event-annotation[hidden]{display:none}.event-annotation p{margin:6px 0 6px;color:#d3e5f2;font-size:12px;line-height:1.55}.event-annotation a{font-size:11px;font-weight:700;text-decoration:none}.chart-legend-inline{display:flex;gap:14px;flex-wrap:wrap;color:#b2c6d3;font-size:10px;align-items:center}.chart-legend-inline i{display:inline-block;width:9px;height:9px;border-radius:2px;margin-right:5px}.chart-legend-inline i.portwatch{background:#4696cc}.chart-legend-inline i.lloyds{background:#4ddcbd}.map-clip{position:relative}.map-canvas{height:auto}.tab{white-space:nowrap}.week{transition:background .2s,box-shadow .2s}.week.current{box-shadow:0 0 15px #ffbe5555}.stat .value{transition:color .35s}
+@media(max-width:850px){.bulletin-grid{grid-template-columns:1fr}.bulletin-item{border-right:0;border-bottom:1px solid #294457}.bulletin-item:last-child{border-bottom:0}.bulletin-item p{min-height:0}.bulletin-head{flex-wrap:wrap}}@media(prefers-reduced-motion:reduce){.play-progress-fill{transition:none}}
+
+
+/* Cinematic opening overlay: fades into existing data replay, no external assets */
+body.intro-active{overflow:hidden}
+.intro-overlay{position:fixed;inset:0;z-index:9999;background:#030b15;overflow:hidden;isolation:isolate;color:#f1f7fc;display:flex;flex-direction:column;opacity:1;visibility:visible;transition:opacity .85s ease,visibility .85s ease}
+.intro-overlay[hidden]{display:none!important}
+.intro-overlay.is-leaving{opacity:0;visibility:hidden;pointer-events:none}
+.intro-map-wrap{position:absolute;inset:0;z-index:-2;overflow:hidden;background:radial-gradient(ellipse at 70% 50%,#16384c,#071623 62%,#030b14)}
+.intro-map-wrap::before{content:"";position:absolute;z-index:2;inset:0;background:linear-gradient(90deg,#030b15 0%,#05111eea 21%,#06111bb9 39%,#07152148 62%,#06132135 100%),linear-gradient(0deg,#030b15 0%,transparent 19%,transparent 78%,#030b15 100%);pointer-events:none}
+.intro-map-wrap::after{content:"";position:absolute;inset:-60%;z-index:1;background:repeating-linear-gradient(0deg,transparent 0 3px,#c7f3ff07 4px 5px);mix-blend-mode:screen;pointer-events:none}
+.intro-map{position:absolute;right:-5%;top:50%;transform:translateY(-50%) scale(1.08);width:max(105vw,1180px);height:100%;min-height:650px;filter:saturate(1.1);animation:intro-map-drift 19s ease-in-out infinite alternate}
+.intro-land{stroke:#6992a0;stroke-width:1.7;fill:#193548}
+.intro-ship{opacity:.85;transition:opacity 1.1s ease}
+.intro-ship--lead{opacity:1}
+.intro-overlay[data-scene="1"] .intro-ship:not(.intro-ship--lead){opacity:.08}
+.intro-overlay[data-scene="2"] .intro-ship:not(.intro-ship--lead){opacity:.34}
+.intro-overlay[data-scene="3"] .intro-ship{opacity:.9}
+.intro-ship path{fill:#ffd58a;stroke:#fff3ca;stroke-width:.6}
+.intro-ship--in path{fill:#69e6d2;stroke:#d8fffa}
+.intro-radar{fill:none;stroke:#f7c579;stroke-width:1.6;transform-origin:644px 355px;animation:intro-radar-pulse 4.4s ease-out infinite}
+.intro-radar--second{animation-delay:-2.2s}
+.intro-overlay[data-scene="1"] .intro-radar{stroke:#fb858b;animation-duration:2.2s}
+.intro-overlay[data-scene="2"] .intro-radar{stroke:#68dff1}
+.intro-hud-top{position:relative;z-index:3;display:flex;align-items:center;justify-content:space-between;gap:20px;padding:27px clamp(18px,4.3vw,70px)}
+.intro-brand{display:flex;align-items:center;gap:11px;color:#cee4f3;font:800 12px/1.4 ui-monospace,SFMono-Regular,Consolas,monospace;letter-spacing:2px}
+.intro-brand-mark{width:24px;height:24px;display:inline-flex;align-items:center;justify-content:center;border:1px solid #e7af63;border-radius:50%;color:#ffcb7b;font-size:15px;box-shadow:0 0 28px #e9b35c45}
+.intro-utility{display:flex;align-items:center;gap:14px;color:#a3bccd;font:700 10px ui-monospace,monospace;letter-spacing:1.5px}
+.intro-skip{border:1px solid #638398;color:#e5f3fa;background:#112a3abf;border-radius:6px;font:800 11px ui-monospace,monospace;letter-spacing:1px;min-height:37px;padding:10px 15px;cursor:pointer}
+.intro-skip:hover{background:#264559;border-color:#b3ccda}
+.intro-main{position:relative;z-index:3;flex:1;display:flex;align-items:center;max-width:800px;width:100%;padding:0 clamp(18px,6vw,100px) 10px}
+.intro-copy{position:relative;width:100%;height:390px;max-width:630px}
+.intro-slide{position:absolute;inset:0;opacity:0;pointer-events:none;transform:translateY(25px);filter:blur(8px);transition:opacity .75s ease,transform .75s ease,filter .75s ease}
+.intro-slide.is-active{opacity:1;pointer-events:auto;transform:translateY(0);filter:blur(0)}
+.intro-kicker{display:flex;gap:11px;align-items:center;color:#f9c77e;font:800 12px ui-monospace,Consolas,monospace;letter-spacing:2.1px;text-transform:uppercase;margin:0 0 24px}
+.intro-kicker::before{content:"";width:24px;height:1px;background:#f9c77e}
+.intro-copy h2{font-size:clamp(44px,4.25vw,66px);font-weight:820;letter-spacing:-3.4px;line-height:1.02;margin:0 0 22px;max-width:680px;text-wrap:balance;text-shadow:0 12px 50px #000c}
+.intro-copy h2 em{font-style:normal;color:#ffca74}
+.intro-copy h2 .teal{color:#6ce9d5}
+.intro-copy p{font-size:clamp(14px,1.38vw,17px);max-width:510px;color:#bbd1df;line-height:1.72;margin:0;text-shadow:0 1px 7px #000}
+.intro-readout{margin-top:28px;display:inline-flex;gap:13px;align-items:baseline;padding:10px 14px;border:1px solid #637c8066;background:#091d2d9c;border-radius:6px}
+.intro-readout strong{font-size:clamp(22px,3vw,33px);color:#fbd590;font-variant-numeric:tabular-nums;line-height:1}
+.intro-readout span{font:700 10px/1.5 ui-monospace,Consolas,monospace;color:#afc4d0;letter-spacing:.6px;text-transform:uppercase}
+.intro-slide[data-intro-slide="1"] .intro-readout strong{color:#ff8b91}
+.intro-slide[data-intro-slide="2"] .intro-readout strong{color:#8af2e0}
+.intro-bottom{z-index:3;position:relative;padding:18px clamp(18px,4.3vw,70px) 30px}
+.intro-divider{height:1px;width:100%;background:linear-gradient(90deg,#75aec099,#7697a055);margin-bottom:22px}
+.intro-footer-line{display:flex;justify-content:space-between;align-items:center;gap:20px;margin-bottom:15px}
+.intro-foot-note{font:700 10px/1.6 ui-monospace,Consolas,monospace;color:#a9bfd0;letter-spacing:1.1px;text-transform:uppercase}
+.intro-enter{border:1px solid #f9be66;color:#112131;background:#ffca7d;padding:12px 19px;min-height:43px;font:800 12px ui-monospace,Consolas,monospace;letter-spacing:.7px;border-radius:6px;box-shadow:0 4px 35px #ffbe5550;cursor:pointer}
+.intro-enter:hover{background:#ffe0a0;transform:translateY(-1px)}
+.intro-progress-list{display:grid;grid-template-columns:repeat(4,1fr);gap:8px}
+.intro-progress-step{height:4px;background:#335061;border-radius:8px;overflow:hidden;position:relative}
+.intro-progress-step::after{content:"";position:absolute;inset:0;background:#f6c477;transform:scaleX(0);transform-origin:left;transition:transform .55s ease}
+.intro-progress-step.is-done::after,.intro-progress-step.is-now::after{transform:scaleX(1)}
+.intro-progress-step.is-now::after{background:#8fe8d5}
+.intro-scenes-labels{display:grid;grid-template-columns:repeat(4,1fr);gap:8px;margin-top:10px}
+.intro-scenes-labels span{font:700 9px ui-monospace,Consolas,monospace;letter-spacing:1px;text-transform:uppercase;color:#91aab9}
+.intro-scenes-labels span.is-now{color:#f8d69d}
+.intro-corner-tag{position:absolute;z-index:2;right:6%;top:22%;color:#d0e9ef;font:700 10px ui-monospace,Consolas,monospace;letter-spacing:1.6px;text-shadow:0 0 15px #000}
+.intro-corner-tag b{display:block;font-size:11px;color:#fbd18c;margin:8px 0}
+@keyframes intro-map-drift{from{transform:translateY(-50%) scale(1.05) translateX(-11px)}to{transform:translateY(-50%) scale(1.13) translateX(15px)}}
+@keyframes intro-radar-pulse{0%{transform:scale(.22);opacity:.9}75%{opacity:.25}100%{transform:scale(2.4);opacity:0}}
+@media(max-width:800px){.intro-map{right:-87%;width:max(155vw,950px);opacity:.8}.intro-map-wrap::before{background:linear-gradient(90deg,#030b15 0%,#06111de5 45%,#06111d66 100%),linear-gradient(0deg,#030b15 0%,transparent 22%,transparent 77%,#030b15 100%)}.intro-copy{height:365px}.intro-main{padding-left:25px;padding-right:25px}.intro-copy h2{font-size:clamp(42px,9vw,70px);letter-spacing:-2.2px}.intro-corner-tag{display:none}}
+@media(max-width:500px){.intro-hud-top{padding:19px}.intro-brand{letter-spacing:1px;font-size:10px}.intro-utility>span{display:none}.intro-main{padding:0 22px;align-items:center}.intro-copy{height:390px}.intro-kicker{font-size:10px;letter-spacing:1.2px;margin-bottom:17px}.intro-copy h2{font-size:clamp(40px,10.5vw,58px);line-height:1.07;margin-bottom:17px}.intro-copy p{font-size:14px;line-height:1.55}.intro-readout{margin-top:20px}.intro-bottom{padding:10px 19px 22px}.intro-footer-line{align-items:flex-start;flex-direction:column;gap:13px}.intro-enter{width:100%}.intro-scenes-labels{font-size:8px}.intro-scenes-labels span{letter-spacing:0;font-size:8px}}
+@media(prefers-reduced-motion:reduce){.intro-overlay,.intro-slide,.intro-ship,.intro-progress-step::after{transition:none!important}.intro-map,.intro-radar{animation:none!important}}
+
 </style>
 </head>
 <body>
-<header class="top"><div class="shell top-inner"><div><div class="eyebrow"><span class="orb"></span>ENERGY FLOW INTELLIGENCE / 2026</div><h1>STRAIT OF HORMUZ <span style="color:#87aabe;font-weight:450">/ Vessels & Oil Flow</span></h1></div><div class="top-right"><span class="tag">01 FEB — 31 OCT 2026</span><span class="tag gold">OBSERVED AIS + PUBLISHED FLOW ESTIMATES</span></div></div></header>
+<section class="intro-overlay" id="introOverlay" data-scene="0" hidden role="dialog" aria-modal="true" aria-label="Introduction to the Strait of Hormuz maritime replay">
+  <div class="intro-map-wrap" aria-hidden="true">
+    <svg class="intro-map" viewBox="0 0 1280 760" preserveAspectRatio="xMidYMid slice" xmlns="http://www.w3.org/2000/svg">
+      <defs>
+        <radialGradient id="introOcean"><stop stop-color="#1b5162"/><stop offset=".62" stop-color="#0c2e43"/><stop offset="1" stop-color="#061728"/></radialGradient>
+        <pattern id="introGrid" patternUnits="userSpaceOnUse" width="48" height="48"><path d="M48 0H0V48" fill="none" stroke="#8bb4c8" stroke-opacity=".14" stroke-width=".75"/></pattern>
+        <linearGradient id="introCoast" x1="0" y1="0" x2="1" y2="1"><stop stop-color="#1b394d"/><stop offset="1" stop-color="#183142"/></linearGradient>
+        <filter id="introGlow"><feGaussianBlur stdDeviation="5" result="blur"/><feMerge><feMergeNode in="blur"/><feMergeNode in="SourceGraphic"/></feMerge></filter>
+      </defs>
+      <rect width="1280" height="760" fill="url(#introOcean)"/>
+      <rect width="1280" height="760" fill="url(#introGrid)"/>
+      <path class="intro-land" fill="url(#introCoast)" d="M0 0H1280V258C1123 231 1099 276 952 266C824 261 778 214 678 243C560 290 521 269 410 256C256 239 149 285 0 260Z"/>
+      <path class="intro-land" fill="url(#introCoast)" d="M0 760H1280V490C1105 475 1020 513 910 497C817 482 750 465 684 486C603 513 568 502 542 445L517 375L495 431C456 488 347 513 238 502C148 497 75 523 0 518Z"/>
+      <path d="M 40 365 C 225 335 354 351 472 319 C 582 288 672 308 755 332 C 934 379 1025 368 1200 342" fill="none" stroke="#e3bb69" stroke-width="12" stroke-opacity=".11"/>
+      <path d="M 1200 391 C 1030 427 920 416 745 369 C 651 344 594 335 467 362 C 348 396 222 392 40 415" fill="none" stroke="#68dcc7" stroke-width="12" stroke-opacity=".10"/>
+      <path d="M 40 365 C 225 335 354 351 472 319 C 582 288 672 308 755 332 C 934 379 1025 368 1200 342" fill="none" stroke="#e3bc82" stroke-width="1.6" stroke-dasharray="8 12" stroke-opacity=".8"/>
+      <path d="M 1200 391 C 1030 427 920 416 745 369 C 651 344 594 335 467 362 C 348 396 222 392 40 415" fill="none" stroke="#71e5d2" stroke-width="1.6" stroke-dasharray="8 12" stroke-opacity=".85"/>
+      <circle class="intro-radar" cx="644" cy="355" r="48"/><circle class="intro-radar intro-radar--second" cx="644" cy="355" r="48"/>
+      <g filter="url(#introGlow)">
+      <g class="intro-ship intro-ship--out intro-ship--lead" aria-hidden="true"><path d="M -13,-4 L 7,-4 L 13,0 L 7,4 L -13,4 L -10,0 Z"/><animateMotion dur="10s" begin="-0.00s" repeatCount="indefinite" rotate="auto" path="M 40 365 C 225 335 354 351 472 319 C 582 288 672 308 755 332 C 934 379 1025 368 1200 342"/></g>
+      <g class="intro-ship intro-ship--out intro-ship--lead" aria-hidden="true"><path d="M -13,-4 L 7,-4 L 13,0 L 7,4 L -13,4 L -10,0 Z"/><animateMotion dur="12s" begin="-1.73s" repeatCount="indefinite" rotate="auto" path="M 40 365 C 225 335 354 351 472 319 C 582 288 672 308 755 332 C 934 379 1025 368 1200 342"/></g>
+      <g class="intro-ship intro-ship--out" aria-hidden="true"><path d="M -13,-4 L 7,-4 L 13,0 L 7,4 L -13,4 L -10,0 Z"/><animateMotion dur="14s" begin="-3.46s" repeatCount="indefinite" rotate="auto" path="M 40 365 C 225 335 354 351 472 319 C 582 288 672 308 755 332 C 934 379 1025 368 1200 342"/></g>
+      <g class="intro-ship intro-ship--out" aria-hidden="true"><path d="M -13,-4 L 7,-4 L 13,0 L 7,4 L -13,4 L -10,0 Z"/><animateMotion dur="16s" begin="-5.19s" repeatCount="indefinite" rotate="auto" path="M 40 365 C 225 335 354 351 472 319 C 582 288 672 308 755 332 C 934 379 1025 368 1200 342"/></g>
+      <g class="intro-ship intro-ship--out" aria-hidden="true"><path d="M -13,-4 L 7,-4 L 13,0 L 7,4 L -13,4 L -10,0 Z"/><animateMotion dur="10s" begin="-6.92s" repeatCount="indefinite" rotate="auto" path="M 40 365 C 225 335 354 351 472 319 C 582 288 672 308 755 332 C 934 379 1025 368 1200 342"/></g>
+      <g class="intro-ship intro-ship--out" aria-hidden="true"><path d="M -13,-4 L 7,-4 L 13,0 L 7,4 L -13,4 L -10,0 Z"/><animateMotion dur="12s" begin="-8.65s" repeatCount="indefinite" rotate="auto" path="M 40 365 C 225 335 354 351 472 319 C 582 288 672 308 755 332 C 934 379 1025 368 1200 342"/></g>
+      <g class="intro-ship intro-ship--out" aria-hidden="true"><path d="M -13,-4 L 7,-4 L 13,0 L 7,4 L -13,4 L -10,0 Z"/><animateMotion dur="14s" begin="-10.38s" repeatCount="indefinite" rotate="auto" path="M 40 365 C 225 335 354 351 472 319 C 582 288 672 308 755 332 C 934 379 1025 368 1200 342"/></g>
+      <g class="intro-ship intro-ship--out" aria-hidden="true"><path d="M -13,-4 L 7,-4 L 13,0 L 7,4 L -13,4 L -10,0 Z"/><animateMotion dur="16s" begin="-12.11s" repeatCount="indefinite" rotate="auto" path="M 40 365 C 225 335 354 351 472 319 C 582 288 672 308 755 332 C 934 379 1025 368 1200 342"/></g>
+      <g class="intro-ship intro-ship--in intro-ship--lead" aria-hidden="true"><path d="M -13,-4 L 7,-4 L 13,0 L 7,4 L -13,4 L -10,0 Z"/><animateMotion dur="12s" begin="-0.00s" repeatCount="indefinite" rotate="auto" path="M 1200 391 C 1030 427 920 416 745 369 C 651 344 594 335 467 362 C 348 396 222 392 40 415"/></g>
+      <g class="intro-ship intro-ship--in intro-ship--lead" aria-hidden="true"><path d="M -13,-4 L 7,-4 L 13,0 L 7,4 L -13,4 L -10,0 Z"/><animateMotion dur="14s" begin="-2.31s" repeatCount="indefinite" rotate="auto" path="M 1200 391 C 1030 427 920 416 745 369 C 651 344 594 335 467 362 C 348 396 222 392 40 415"/></g>
+      <g class="intro-ship intro-ship--in" aria-hidden="true"><path d="M -13,-4 L 7,-4 L 13,0 L 7,4 L -13,4 L -10,0 Z"/><animateMotion dur="16s" begin="-4.62s" repeatCount="indefinite" rotate="auto" path="M 1200 391 C 1030 427 920 416 745 369 C 651 344 594 335 467 362 C 348 396 222 392 40 415"/></g>
+      <g class="intro-ship intro-ship--in" aria-hidden="true"><path d="M -13,-4 L 7,-4 L 13,0 L 7,4 L -13,4 L -10,0 Z"/><animateMotion dur="12s" begin="-6.93s" repeatCount="indefinite" rotate="auto" path="M 1200 391 C 1030 427 920 416 745 369 C 651 344 594 335 467 362 C 348 396 222 392 40 415"/></g>
+      <g class="intro-ship intro-ship--in" aria-hidden="true"><path d="M -13,-4 L 7,-4 L 13,0 L 7,4 L -13,4 L -10,0 Z"/><animateMotion dur="14s" begin="-9.24s" repeatCount="indefinite" rotate="auto" path="M 1200 391 C 1030 427 920 416 745 369 C 651 344 594 335 467 362 C 348 396 222 392 40 415"/></g>
+      <g class="intro-ship intro-ship--in" aria-hidden="true"><path d="M -13,-4 L 7,-4 L 13,0 L 7,4 L -13,4 L -10,0 Z"/><animateMotion dur="16s" begin="-11.55s" repeatCount="indefinite" rotate="auto" path="M 1200 391 C 1030 427 920 416 745 369 C 651 344 594 335 467 362 C 348 396 222 392 40 415"/></g>
+      <g class="intro-ship intro-ship--in" aria-hidden="true"><path d="M -13,-4 L 7,-4 L 13,0 L 7,4 L -13,4 L -10,0 Z"/><animateMotion dur="12s" begin="-13.86s" repeatCount="indefinite" rotate="auto" path="M 1200 391 C 1030 427 920 416 745 369 C 651 344 594 335 467 362 C 348 396 222 392 40 415"/></g>
+      </g>
+      <g font-family="monospace" font-weight="700" letter-spacing="2" fill="#c0d9df" opacity=".76"><text x="685" y="160" font-size="22">IRAN</text><text x="950" y="577" font-size="19">OMAN</text><text x="200" y="572" font-size="17">UNITED ARAB EMIRATES</text><text x="125" y="325" font-size="17" fill="#80bdd1">PERSIAN GULF</text><text x="942" y="316" font-size="17" fill="#80bdd1">GULF OF OMAN</text></g>
+      <g><circle cx="644" cy="355" r="6" fill="#ffd27b"/><path d="M644 342V320M644 368V391M632 355H605M656 355H682" stroke="#fcd28a" stroke-width="1.6"/><rect x="670" y="282" width="231" height="36" rx="3" fill="#092333" fill-opacity=".86" stroke="#c09b61" stroke-opacity=".65"/><text x="685" y="305" fill="#ffcc88" font-family="monospace" font-size="14" font-weight="700" letter-spacing="1.2">STRAIT OF HORMUZ</text></g>
+    </svg>
+  </div>
+  <div class="intro-corner-tag" aria-hidden="true">MARITIME CHOKEPOINT <b>26.5° N / 56.4° E</b>ILLUSTRATIVE SEA ROUTES</div>
+  <div class="intro-hud-top"><div class="intro-brand"><span class="intro-brand-mark">⌁</span> ENERGY FLOW / INTELLIGENCE <span style="color:#83b3c4;font-weight:500">· 2026</span></div><div class="intro-utility"><span>VISUAL BRIEFING / 04 SCENES</span><button type="button" class="intro-skip" id="skipIntro">SKIP INTRO ↗</button></div></div>
+  <div class="intro-main"><div class="intro-copy" aria-live="polite">
+    <div class="intro-slide is-active" data-intro-slide="0"><div class="intro-kicker">01 / The chokepoint</div><h2>One narrow passage.<br><em>Global consequences.</em></h2><p>Between the Persian Gulf and the Gulf of Oman, vessels pass through one of the world's most consequential energy shipping corridors.</p><div class="intro-readout"><strong>20.0</strong><span>million barrels / day<br>IEA 2025 reference</span></div></div>
+    <div class="intro-slide" data-intro-slide="1"><div class="intro-kicker">02 / Visible traffic collapses</div><h2>Then the <em>traffic changes.</em></h2><p>In the week beginning March 2, 2026, IMF PortWatch recorded just four AIS-visible tanker passages. But a ship count is not an oil-flow measurement.</p><div class="intro-readout"><strong>04</strong><span>AIS-visible tankers<br>week of March 2, 2026</span></div></div>
+    <div class="intro-slide" data-intro-slide="2"><div class="intro-kicker">03 / Reading the evidence</div><h2>Not every vessel leaves <span class="teal">the same trace.</span></h2><p>AIS observations, independently verified vessel movements, and published oil estimates describe different parts of the story. The timeline keeps them separate.</p><div class="intro-readout"><strong>03</strong><span>distinct evidence types<br>no invented weekly oil flow</span></div></div>
+    <div class="intro-slide" data-intro-slide="3"><div class="intro-kicker">04 / Enter the timeline</div><h2>Watch the passages <em>change over time.</em></h2><p>Travel from February through November 2026. Follow the animated vessel routes, select any week, and inspect the source-backed data.</p><div class="intro-readout"><strong>40</strong><span>weekly windows<br>continuous looping replay</span></div></div>
+  </div></div>
+  <div class="intro-bottom"><div class="intro-divider"></div><div class="intro-footer-line"><div class="intro-foot-note">SCHEMATIC VESSEL PATHS · NOT LIVE SHIP POSITIONS<br>Missing observations never mean zero passages</div><button type="button" class="intro-enter" id="enterReplay">ENTER INTERACTIVE REPLAY →</button></div><div class="intro-progress-list" aria-hidden="true"><div class="intro-progress-step is-now"></div><div class="intro-progress-step"></div><div class="intro-progress-step"></div><div class="intro-progress-step"></div></div><div class="intro-scenes-labels" aria-hidden="true"><span class="is-now">01 / Geography</span><span>02 / Disruption</span><span>03 / Evidence</span><span>04 / Replay</span></div></div>
+</section>
+
+<header class="top"><div class="shell top-inner"><div><div class="eyebrow"><span class="orb"></span>ENERGY FLOW INTELLIGENCE / 2026</div><h1>STRAIT OF HORMUZ <span style="color:#87aabe;font-weight:450">/ Vessels & Oil Flow</span></h1></div><div class="top-right"><button type="button" id="replayIntro" class="btn ghost" style="white-space:nowrap">▶ Replay intro</button><span class="tag">01 FEB — 01 NOV 2026</span><span class="tag gold">PORTWATCH AIS + LLOYD’S + PUBLISHED FLOW</span></div></div></header>
 <main class="shell">
-<section class="hero"><div><div class="eyebrow">40 WEEKLY WINDOWS • INTERACTIVE REPLAY</div><h2>See the ships, then <span>the best published oil estimate.</span></h2><p>Weekly ship passages use satellite AIS observations. Oil-flow figures appear only where EIA or IEA has published a period-level estimate; the page does not invent a weekly rate from ship counts.</p></div><div class="status"><strong>DATA TRANSPARENCY</strong>AIS passages and oil volumes are separate datasets. <b>Blank oil values mean no matching published estimate</b>, not zero flow.</div></section>
-<section class="stats" aria-label="Selected week statistics"><div class="stat"><label>Published oil-flow estimate</label><div class="value" id="statRate">—</div><div class="sub" id="statRateSub">No matching published period</div></div><div class="stat"><label>Derived volume for this window</label><div class="value" id="statVolume">—</div><div class="sub" id="statVolumeSub">Only when a period estimate exists</div></div><div class="stat"><label>Vs 2025 reference</label><div class="value" id="statGap">—</div><div class="sub" id="statGapSub">Compared with 20.0 mb/d (IEA)</div></div><div class="stat"><label>AIS-visible tanker crossings</label><div class="value" id="statAis">—</div><div class="sub" id="statAisSub">Observed passages, not cargo manifests</div></div></section>
-<section class="panel" aria-labelledby="timeline-heading"><div class="panel-head"><div><div class="section-id">01 / TIME NAVIGATOR</div><h3 id="timeline-heading">Travel through the weeks</h3><p>Select a week below, or press play to follow the sequence from February through October.</p></div><div class="controls"><button class="btn" id="prevBtn" aria-label="Previous week">◀ Prev</button><button class="btn primary" id="playBtn">▶ Play timeline</button><button class="btn" id="nextBtn" aria-label="Next week">Next ▶</button><label for="speed" class="ctrl-label">Speed</label><select class="speed" id="speed"><option value="3300">0.5×</option><option value="1900" selected>1×</option><option value="900">2×</option><option value="450">4×</option></select></div></div><div class="play-area"><div class="hero-week"><div><small id="weekCounter">WEEK 01 / 40</small><div class="date" id="weekTitle">Feb 01, 2026</div></div><div><small>WINDOW END</small><div class="end" id="weekEnd">Feb 01, 2026</div></div></div><input class="scrub" type="range" id="weekSlider" min="0" max="39" step="1" value="39" aria-label="Select week"><div class="track-overflow" id="trackOverflow"><div class="monthlabels" id="monthLabels"></div><div class="weeks" id="weekCells"></div></div><div class="play-legend"><span><i class="key gold"></i>Selected week</span><span><i class="key dim"></i>Other weeks</span><span>Each cell is a week; the opening window contains only Feb 1.</span></div></div></section>
-<section class="panel" aria-labelledby="chart-heading"><div class="panel-head"><div><div class="section-id">02 / TRANSITS & FLOW ESTIMATES</div><h3 id="chart-heading">Ships passing and published oil flow</h3><p id="chartDescription">Select AIS passages or published period-level oil estimates. Missing oil bars are intentionally blank.</p></div><div class="metrics-tabs" role="group" aria-label="Chart metric"><button class="tab active" data-metric="ais">AIS tanker crossings</button><button class="tab" data-metric="rate">Published oil flow / mb/d</button><button class="tab" data-metric="volume">Derived volume / window</button></div></div><div class="chart-outer"><div class="chart-scroll" id="chartScroll"><div class="chart-inner"><canvas id="flowChart" aria-label="Interactive chart of AIS-visible tanker crossings and published oil-flow estimates; click a bar to select its week" role="img"></canvas></div></div><div class="chart-bottom"><span id="chartFootnote">AIS counts are observed weekly passages. Oil figures are only published period estimates, not weekly measurements.</span><span class="source-pill" id="seriesPill">OBSERVED AIS</span></div></div></section>
-<div class="middle-grid"><section class="panel" aria-labelledby="map-heading"><div class="panel-head"><div><div class="section-id">03 / VISUAL PASSAGES</div><h3 id="map-heading">AIS-visible tanker passages through the chokepoint</h3><p>Marker count responds to the selected week’s AIS tanker passages. It is illustrative, not a vessel-position map.</p></div><span class="tag" style="color:var(--teal);border-color:#397f78">GULF → INDIAN OCEAN</span></div><div class="map-clip"><canvas id="straitMap" class="map-canvas" width="1120" height="350" aria-label="Illustrative map of AIS-visible tanker passages eastward from the Persian Gulf through the Strait of Hormuz" role="img"></canvas></div><div class="map-label"><span><b style="color:var(--gold)">●</b> AIS-passage markers (illustrative)</span><span><b>⇢</b> Direction toward Gulf of Oman</span><span><b>IRAN / OMAN / UAE</b> schematic coastlines, not navigation-grade</span></div></section>
-<section class="panel" aria-labelledby="inspector-heading"><div class="panel-head"><div><div class="section-id">04 / WEEK INSPECTOR</div><h3 id="inspector-heading">What changed this week?</h3><p>Context follows the selected week.</p></div></div><div class="inspect"><div class="inspect-top"><span class="pill" id="weekBadge">WEEK 40</span><span class="mini" id="weekMonth">OCTOBER 2026</span></div><h4 id="inspectorHeading">October outlook</h4><p id="inspectorText">Select a week to inspect the flow.</p><div class="divider"></div><div class="mini">Oil rate against 2024 historical reference</div><div class="compare"><span id="comparisonLabel">Modeled flow</span><b id="comparisonValue">—</b></div><div class="comparison" role="meter" aria-label="Modeled oil flow as percentage of benchmark" aria-valuemin="0" aria-valuemax="100" id="meter"><div id="comparisonFill" style="width:0"></div></div><div class="note" id="aisInsight">AIS readings are only ships broadcasting or detected in the satellite feed. A low count does not prove the equivalent amount of oil ceased flowing.</div></div></section></div>
+<section class="hero"><div><div class="eyebrow">40 WEEKLY WINDOWS • AUTO-LOOP REPLAY • UPDATED 07 NOV 2026</div><h2>See the ships, then <span>the best published oil estimate.</span></h2><p>Follow visible ship passages across the 2026 crisis. PortWatch AIS and Lloyd’s List track different vessel populations and methods; the chart displays them separately. Oil-flow figures are published period estimates, never calculated from ship counts.</p></div><div class="status"><strong>DATA TRANSPARENCY</strong>PortWatch, Lloyd’s List and oil-flow estimates use distinct methods. <b>Missing vessel counts or oil rates are not zeros.</b> This is a historical replay, not a live vessel feed.</div></section>
+<section class="bulletin" aria-label="Latest verified reporting"><div class="bulletin-head"><span class="section-id">LATEST / SOURCE CHECKED 07 NOV 2026</span><span class="bulletin-badge">Historical reporting • not live telemetry</span></div><div class="bulletin-grid"><article class="bulletin-item"><div class="bulletin-number">10.9 <small>mb/d</small></div><h3>Oil through Hormuz, September</h3><p>IEA’s published September estimate; monthly rate, not a weekly measurement.</p><a href="https://www.iea.org/reports/oil-market-report-october-2026" target="_blank" rel="noopener noreferrer">IEA · 14 Oct 2026</a></article><article class="bulletin-item"><div class="bulletin-number">116 <small>transits</small></div><h3>19–25 October / Lloyd’s List</h3><p>Non-Iranian-linked cargo vessel crossings; includes 95 tanker and gas carrier transits. Method differs from PortWatch AIS.</p><a href="https://www.lloydslistintelligence.com/resources/blog/strait-of-hormuz-brief-5-november-2026" target="_blank" rel="noopener noreferrer">Lloyd’s List · 5 Nov 2026</a></article><article class="bulletin-item"><div class="bulletin-number">17.1 <small>mb/d</small></div><h3>October Gulf exports / all routes</h3><p>Preliminary Vortexa figure excluding LPG and Iran. <b>Not a Hormuz-only throughput estimate</b>; includes bypass routes.</p><a href="https://www.reuters.com/business/energy/gulf-oil-flows-dip-october-post-iran-war-high-data-shows-2026-11-03/" target="_blank" rel="noopener noreferrer">Reuters · 3 Nov 2026</a></article></div></section>
+<section class="stats" aria-label="Selected week statistics"><div class="stat"><label>Published oil-flow estimate</label><div class="value" id="statRate">—</div><div class="sub" id="statRateSub">No matching published period</div></div><div class="stat"><label>Derived volume for this window</label><div class="value" id="statVolume">—</div><div class="sub" id="statVolumeSub">Only when a period estimate exists</div></div><div class="stat"><label>Vs 2025 reference</label><div class="value" id="statGap">—</div><div class="sub" id="statGapSub">Compared with 20.0 mb/d (IEA)</div></div><div class="stat"><label id="passageStatLabel">Reported vessel passages</label><div class="value" id="statAis">—</div><div class="sub" id="statAisSub">AIS and verified-tracking counts are not interchangeable</div></div></section>
+<section class="panel" aria-labelledby="timeline-heading"><div class="panel-head"><div><div class="section-id">01 / TIME NAVIGATOR</div><h3 id="timeline-heading">Travel through the weeks</h3><p>The timeline plays automatically and loops from February to November 1. Pause, scrub, or change speed at any time.</p></div><div class="controls"><button class="btn" id="prevBtn" aria-label="Previous week">◀ Prev</button><button class="btn primary" id="playBtn">▶ Play timeline</button><button class="btn" id="nextBtn" aria-label="Next week">Next ▶</button><button class="btn loop" id="loopBtn" aria-pressed="true" title="Replay automatically starts again at the first week">↻ Loop ON</button><label for="speed" class="ctrl-label">Speed</label><select class="speed" id="speed"><option value="3300">0.5×</option><option value="1900" selected>1×</option><option value="900">2×</option><option value="450">4×</option></select></div></div><div class="play-area"><div class="hero-week"><div><small id="weekCounter">WEEK 01 / 40</small><div class="date" id="weekTitle">Feb 01, 2026</div></div><div><small>WINDOW END</small><div class="end" id="weekEnd">Feb 01, 2026</div></div></div><input class="scrub" type="range" id="weekSlider" min="0" max="39" step="1" value="0" aria-label="Select week"><div class="track-overflow" id="trackOverflow"><div class="monthlabels" id="monthLabels"></div><div class="weeks" id="weekCells"></div></div><div class="play-progress-track" aria-label="Progress within the current replay week"><div id="playProgress" class="play-progress-fill"></div></div><div class="play-legend"><span><i class="key gold"></i>Selected week</span><span><i class="key dim"></i>Other weeks</span><span>The first window contains only Feb 1; the last runs Oct 26–Nov 1. No values are invented for missing weeks.</span></div></div></section>
+<section class="panel" aria-labelledby="chart-heading"><div class="panel-head"><div><div class="section-id">02 / TRANSITS & FLOW ESTIMATES</div><h3 id="chart-heading">Ship passages over time + published oil flow</h3><p id="chartDescription">Blue bars = PortWatch AIS observations; teal bars = Lloyd’s List verified non-Iranian-linked transits. They differ in coverage and cannot be spliced into one comparable trend.</p></div><div class="metrics-tabs" role="group" aria-label="Chart metric"><button class="tab active" data-metric="transits">All reported passages</button><button class="tab" data-metric="ais">PortWatch tankers</button><button class="tab" data-metric="lliGas">Lloyd’s tankers + gas</button><button class="tab" data-metric="rate">Oil / mb/d</button><button class="tab" data-metric="volume">Oil / window</button></div></div><div class="chart-outer"><div class="chart-scroll" id="chartScroll"><div class="chart-inner"><canvas id="flowChart" aria-label="Interactive chart of AIS-visible tanker crossings and published oil-flow estimates; click a bar to select its week" role="img"></canvas></div></div><div class="chart-bottom"><span id="chartFootnote">Source break is intentional: PortWatch counts all AIS-visible ships; Lloyd’s covers identified non-Iranian-linked cargo vessels over 10,000 dwt. Do not compare magnitudes directly.</span><span class="source-pill" id="seriesPill">TWO DIFFERENT SOURCES</span></div></div></section>
+<div class="middle-grid"><section class="panel" aria-labelledby="map-heading"><div class="panel-head"><div><div class="section-id">03 / VISUAL PASSAGES</div><h3 id="map-heading">Animated passages through the chokepoint</h3><p>Animated vessels respond to the selected source’s weekly tanker count (PortWatch) or tanker-plus-gas count (Lloyd’s). Not GPS tracks or 1 marker per actual ship.</p></div><span class="tag" style="color:var(--teal);border-color:#397f78">GULF → INDIAN OCEAN</span></div><div class="map-clip"><canvas id="straitMap" class="map-canvas" width="1120" height="350" aria-label="Illustrative map of AIS-visible tanker passages eastward from the Persian Gulf through the Strait of Hormuz" role="img"></canvas></div><div class="map-label"><span><b style="color:var(--gold)">●</b> Ship symbols · schematic only</span><span><b>⇄</b> Two illustrated traffic directions; PortWatch directional split unknown</span><span><b>IRAN / OMAN / UAE</b> schematic coastlines, not navigation-grade</span><span id="mapSourceText">Loading source details</span></div></section>
+<section class="panel" aria-labelledby="inspector-heading"><div class="panel-head"><div><div class="section-id">04 / WEEK INSPECTOR</div><h3 id="inspector-heading">What changed this week?</h3><p>Context follows the selected week.</p></div></div><div class="inspect"><div class="inspect-top"><span class="pill" id="weekBadge">WEEK 40</span><span class="mini" id="weekMonth">OCTOBER 2026</span></div><h4 id="inspectorHeading">October outlook</h4><p id="inspectorText">Select a week to inspect the flow.</p><div class="divider"></div><div class="mini">Oil rate against 2025 historical reference</div><div class="compare"><span id="comparisonLabel">Modeled flow</span><b id="comparisonValue">—</b></div><div class="comparison" role="meter" aria-label="Modeled oil flow as percentage of benchmark" aria-valuemin="0" aria-valuemax="100" id="meter"><div id="comparisonFill" style="width:0"></div></div><div class="event-annotation" id="inspectorEvent" hidden><span class="section-id">WEEKLY CONTEXT</span><p id="eventText"></p><a id="eventLink" target="_blank" rel="noopener noreferrer">Read source ↗</a></div><div class="note" id="aisInsight">AIS readings are only ships broadcasting or detected in the satellite feed. A low count does not prove the equivalent amount of oil ceased flowing.</div></div></section></div>
 <section class="panel" aria-labelledby="routes-heading"><div class="panel-head"><div><div class="section-id">05 / ALTERNATIVE ROUTES</div><h3 id="routes-heading">The difference between transit and bypass</h3><p>Bypass pipelines move crude <b>around</b> Hormuz. Their volumes are separate from the strait estimates shown here.</p></div></div><div class="routes"><div class="route"><div class="route-top"><span class="route-dot"></span> Strait of Hormuz / sea transit</div><p>Crude and petroleum products sail eastward from the Persian Gulf through the narrow waterway into the Gulf of Oman.</p><div class="pipe" style="--route:var(--teal)"></div><small>WHAT THE FLOW ESTIMATES REPRESENT</small></div><div class="route"><div class="route-top"><span class="route-dot"></span> UAE ADCOP → Fujairah</div><p>Onshore crude from Habshan travels by pipeline to Fujairah, on the Gulf of Oman coast, without crossing the Strait.</p><div class="pipe"></div><small>SEPARATE BYPASS • NOT INCLUDED</small></div><div class="route"><div class="route-top"><span class="route-dot"></span> Saudi Petroline → Yanbu</div><p>The East–West pipeline carries crude across Saudi Arabia to Yanbu on the Red Sea, avoiding the chokepoint entirely.</p><div class="pipe"></div><small>SEPARATE BYPASS • NOT INCLUDED</small></div></div></section>
-<section class="panel" aria-labelledby="table-heading"><div class="panel-head"><div><div class="section-id">06 / COMPLETE WEEKLY RECORD</div><h3 id="table-heading">Weekly passages and available oil estimates</h3><p>Oil cells are blank when no published period estimate matches the selected week.</p></div><button class="btn" id="exportBtn">↓ Export weekly CSV</button></div><div class="table-wrap"><table class="data-table"><thead><tr><th>Week</th><th>Date range</th><th>Days</th><th>Oil estimate (mb/d)</th><th>Derived oil / window (M bbl)</th><th>Vs 2025 reference</th><th>AIS tankers</th><th>Oil data source</th></tr></thead><tbody id="tableBody"></tbody></table></div></section>
-<section class="panel" aria-labelledby="source-heading"><div class="panel-head"><div><div class="section-id">07 / DATA SOURCES & EDITING</div><h3 id="source-heading">Methods, evidence and your data</h3><p>Published oil estimates are kept separate from weekly AIS vessel passages.</p></div></div><div class="details"><details class="disclosure" open><summary>How oil-flow figures are shown</summary><div>The page no longer manufactures monthly or weekly oil-flow values. It shows published period averages only: EIA estimates based on Vortexa tracking for 1Q and 2Q 2026, plus the IEA’s published September 2026 estimate. Those averages are displayed across the corresponding source period. The optional “derived volume” is simply the published daily average multiplied by days in the displayed window; it is not a measurement of that particular week. Weeks without a matching published estimate remain blank.</div></details><details class="disclosure"><summary>What the AIS observations do—and do not—tell us</summary><div>Tankers/week represents satellite AIS-visible tanker crossings, not barrels. The external dataset uses IMF PortWatch vessel observations summarized into Monday–Sunday weeks, published through September 20, 2026. The series is absent after that date; blank values are intentionally <b>not</b> zero. Dark transits, AIS interference and different methodologies can cause vessel counts to diverge sharply from actual oil flows. Do not use an AIS count to calculate cargo volume.</div></details><details class="disclosure"><summary>Add a verified weekly oil dataset (CSV)</summary><div>Paste records in <code>week_start,mbd</code> format. Matching dates replace that week’s displayed estimate; unmatched weeks retain published estimates or remain blank. Example: <code>2026-03-02,2.3</code>. Enter the date of the <b>Monday</b> starting the week, except the first displayed window is <code>2026-01-26</code> (February 1 only). Imported figures are marked <b>User CSV</b>; they are not independently verified here.<textarea id="csvInput" aria-label="Weekly oil throughput CSV" spellcheck="false" placeholder="week_start,mbd&#10;2026-03-02,2.3&#10;2026-03-09,2.8"></textarea><div class="import-row"><button class="btn primary" id="importBtn">Apply weekly CSV</button><button class="btn" id="resetBtn">Reset to published estimates</button><span class="msg" id="importMessage" aria-live="polite"></span></div></div></details><div class="sources"><a href="https://www.eia.gov/outlooks/steo/report/energysecurity/article.php" target="_blank" rel="noopener noreferrer">EIA · 2026 Hormuz flow estimates ↗</a><a href="https://www.iea.org/reports/oil-market-report-october-2026" target="_blank" rel="noopener noreferrer">IEA · September 2026 Hormuz flow estimate ↗</a><a href="https://www.iea.org/data-and-statistics/data-tools/middle-east-maritime-chokepoints-shipping-monitor" target="_blank" rel="noopener noreferrer">IEA / IMF PortWatch · AIS traffic monitor ↗</a><a href="https://fold-news.com/data/strait-of-hormuz-ship-transits-2026" target="_blank" rel="noopener noreferrer">The Fold · IMF PortWatch weekly AIS data (CC BY 4.0) ↗</a></div></div></section>
+<section class="panel" aria-labelledby="table-heading"><div class="panel-head"><div><div class="section-id">06 / COMPLETE WEEKLY RECORD</div><h3 id="table-heading">Weekly passages and available oil estimates</h3><p>Blank cells mean unavailable data, not zero. PortWatch and Lloyd’s are separate, incompatible observation methods.</p></div><button class="btn" id="exportBtn">↓ Export weekly CSV</button></div><div class="table-wrap"><table class="data-table"><thead><tr><th>Week</th><th>Date range</th><th>Days</th><th>Oil estimate (mb/d)</th><th>Derived oil / window (M bbl)</th><th>Vs 2025 reference</th><th>PortWatch AIS tankers</th><th>PortWatch all AIS</th><th>Lloyd’s all verified</th><th>Lloyd’s tanker + gas</th><th>Oil data source</th></tr></thead><tbody id="tableBody"></tbody></table></div></section>
+<section class="panel" aria-labelledby="source-heading"><div class="panel-head"><div><div class="section-id">07 / DATA SOURCES & EDITING</div><h3 id="source-heading">Methods, evidence and your data</h3><p>Published oil estimates are kept separate from weekly AIS vessel passages.</p></div></div><div class="details"><details class="disclosure" open><summary>How oil-flow figures are shown</summary><div>This page does not manufacture monthly or weekly oil-flow values. It shows published period averages only: EIA estimates based on Vortexa tracking for 1Q and 2Q 2026, plus the IEA’s published September 2026 estimate. Those averages are displayed across the corresponding source period. The optional “derived volume” is simply the published daily average multiplied by days in the displayed window; it is not a measurement of that particular week. Similarly, any difference from the 2025 baseline is illustrative, not an observed weekly shortfall. Weeks without a matching published estimate remain blank.</div></details><details class="disclosure"><summary>What the AIS observations do—and do not—tell us</summary><div>PortWatch tankers/week represents satellite AIS-visible tanker crossings, not barrels. The PortWatch series uses IMF PortWatch AIS vessel observations summarized into Monday–Sunday weeks, published through September 20, 2026. The separate Lloyd’s List series uses independently tracked non-Iranian-linked cargo vessels over 10,000 dwt and covers selected complete weeks through October 25, 2026. These are not interchangeable series: PortWatch misses dark ships, while Lloyd’s may verify movements using other intelligence and excludes Iranian-linked ships.  The series is absent after that date; blank values are intentionally <b>not</b> zero. Dark transits, AIS interference and different methodologies can cause vessel counts to diverge sharply from actual oil flows. Do not use an AIS count to calculate cargo volume.</div></details><details class="disclosure"><summary>Add a verified weekly oil dataset (CSV)</summary><div>Paste records in <code>week_start,mbd</code> format. Matching dates replace that week’s displayed estimate; unmatched weeks retain published estimates or remain blank. Example: <code>2026-03-02,2.3</code>. Enter the date of the <b>Monday</b> starting the week, except the first displayed window is <code>2026-01-26</code> (February 1 only). Imported figures are marked <b>User CSV</b>; they are not independently verified here.<textarea id="csvInput" aria-label="Weekly oil throughput CSV" spellcheck="false" placeholder="week_start,mbd&#10;2026-03-02,2.3&#10;2026-03-09,2.8"></textarea><div class="import-row"><button class="btn primary" id="importBtn">Apply weekly CSV</button><button class="btn" id="resetBtn">Reset to published estimates</button><span class="msg" id="importMessage" aria-live="polite"></span></div></div></details><div class="sources"><a href="https://www.eia.gov/outlooks/steo/report/energysecurity/article.php" target="_blank" rel="noopener noreferrer">EIA · 2026 Hormuz flow estimates ↗</a><a href="https://www.iea.org/reports/oil-market-report-october-2026" target="_blank" rel="noopener noreferrer">IEA · September 2026 Hormuz flow estimate ↗</a><a href="https://www.iea.org/data-and-statistics/data-tools/middle-east-maritime-chokepoints-shipping-monitor" target="_blank" rel="noopener noreferrer">IEA / IMF PortWatch · AIS traffic monitor ↗</a><a href="https://fold-news.com/data/strait-of-hormuz-ship-transits-2026" target="_blank" rel="noopener noreferrer">The Fold · IMF PortWatch weekly AIS data (CC BY 4.0) ↗</a><a href="https://www.lloydslistintelligence.com/resources/blog/strait-of-hormuz-brief-22-october-2026" target="_blank" rel="noopener noreferrer">Lloyd’s · Oct 5–11 vessel counts ↗</a><a href="https://www.lloydslistintelligence.com/resources/blog/strait-of-hormuz-brief-5-november-2026" target="_blank" rel="noopener noreferrer">Lloyd’s · Oct 19–25 vessel counts ↗</a><a href="https://www.reuters.com/business/energy/gulf-oil-flows-dip-october-post-iran-war-high-data-shows-2026-11-03/" target="_blank" rel="noopener noreferrer">Reuters · October exports across all routes ↗</a></div></div></section>
 </main>
-<footer class="shell foot"><span>STRAIT OF HORMUZ / WEEKLY FLOW TIMELINE</span><span>Offline-ready HTML • No API keys • Canvas animation is representative, not live positions • Data through Oct 31, 2026</span></footer>
+<footer class="shell foot"><span>STRAIT OF HORMUZ / WEEKLY FLOW TIMELINE</span><span>Offline-ready replay • Automatic looping • No API keys • Schematic vessel positions • Last verified full Lloyd’s week Oct 19–25, 2026 • Checked Nov 7, 2026</span></footer>
 <script>
 'use strict';
 const BASELINE = 20.0; // IEA 2025, mb/d
@@ -58,7 +179,34 @@ const AIS_ROWS = [
  ['2026-09-07',10,37],['2026-09-14',4,22]
 ];
 const AIS = Object.fromEntries(AIS_ROWS.map(([date,tankers,all])=>[date,{tankers,all}]));
-const DAY=86400000, start=Date.UTC(2026,1,1), end=Date.UTC(2026,9,31);
+// Lloyd's List Intelligence: non-Iranian-linked cargo vessels >10,000 DWT.
+// NOT a continuation of PortWatch AIS; includes verified dark movements; tankerGas includes gas carriers.
+// Latest complete week reported Nov 5: Oct 19–25. Some older counts were revised by later editions.
+const LLI_ROWS = [
+ ['2026-09-14',122,100,64,58,'https://www.lloydslistintelligence.com/resources/blog/strait-of-hormuz-brief-8-october-2026'],
+ ['2026-09-21',124,106,61,63,'https://www.lloydslistintelligence.com/resources/blog/strait-of-hormuz-brief-8-october-2026'],
+ ['2026-09-28',126,105,68,58,'https://www.lloydslistintelligence.com/resources/blog/strait-of-hormuz-brief-22-october-2026'],
+ ['2026-10-05',104,81,51,53,'https://www.lloydslistintelligence.com/resources/blog/strait-of-hormuz-brief-22-october-2026'],
+ ['2026-10-12',124,99,67,57,'https://www.lloydslistintelligence.com/resources/blog/strait-of-hormuz-brief-5-november-2026'],
+ ['2026-10-19',116,95,43,73,'https://www.lloydslistintelligence.com/resources/blog/strait-of-hormuz-brief-5-november-2026']
+];
+const LLI = Object.fromEntries(LLI_ROWS.map(([date,all,tankerGas,east,west,url])=>[date,{all,tankerGas,east,west,url}]));
+const EVENTS = {
+ '2026-02-23':{text:'Conflict begins at the end of February. Ship movements visible on AIS collapse in the first full March week.',url:'https://fold-news.com/data/strait-of-hormuz-ship-transits-2026',label:'The Fold / IMF PortWatch'},
+ '2026-03-02':{text:'Just 18 AIS-visible ship movements, including 4 tanker movements, were observed March 2–8; this does not count dark transits.',url:'https://fold-news.com/data/strait-of-hormuz-ship-transits-2026',label:'The Fold / IMF PortWatch'},
+ '2026-06-15':{text:'A mid-June memorandum temporarily improved passage conditions. Visible traffic recovered the following week.',url:'https://fold-news.com/data/strait-of-hormuz-ship-transits-2026',label:'The Fold / IMF PortWatch'},
+ '2026-06-22':{text:'A short-lived rebound: 213 AIS-observed ship movements (98 tanker movements) during June 22–28.',url:'https://fold-news.com/data/strait-of-hormuz-ship-transits-2026',label:'The Fold / IMF PortWatch'},
+ '2026-07-06':{text:'The June ceasefire arrangement collapsed July 8; a renewed disruption followed.',url:'https://www.iea.org/reports/oil-market-report-august-2026',label:'IEA · August Oil Market Report'},
+ '2026-07-13':{text:'The US Navy reinstated its blockade of Iranian ports July 14, according to the PortWatch series analysis.',url:'https://fold-news.com/data/strait-of-hormuz-ship-transits-2026',label:'The Fold / IMF PortWatch'},
+ '2026-09-07':{text:'The September 11 attack on the Saudi East–West pipeline complicated Gulf export recovery.',url:'https://www.iea.org/reports/oil-market-report-october-2026',label:'IEA · October Oil Market Report'},
+ '2026-09-28':{text:'The IEA later estimated September flow through Hormuz at 10.9 mb/d, up 3.7 mb/d from August. That is a monthly, not weekly, estimate.',url:'https://www.iea.org/reports/oil-market-report-october-2026',label:'IEA · October Oil Market Report'},
+ '2026-10-05':{text:'Lloyd’s List identified 104 non-Iranian-linked vessel transits for October 5–11, down from 126 the previous week.',url:'https://www.lloydslistintelligence.com/resources/blog/strait-of-hormuz-brief-22-october-2026',label:'Lloyd’s List · 22 October'},
+ '2026-10-12':{text:'Lloyd’s later counted 124 non-Iranian-linked ship transits in October 12–18; its method differs from AIS-only PortWatch.',url:'https://www.lloydslistintelligence.com/resources/blog/strait-of-hormuz-brief-5-november-2026',label:'Lloyd’s List · 5 November'},
+ '2026-10-19':{text:'For October 19–25, Lloyd’s reports 116 non-Iranian-linked transits: 43 eastbound, 73 westbound, including 95 tanker/gas carrier passages.',url:'https://www.lloydslistintelligence.com/resources/blog/strait-of-hormuz-brief-5-november-2026',label:'Lloyd’s List · 5 November'},
+ '2026-10-26':{text:'As of November 5, the latest complete Lloyd’s count was October 19–25. A preliminary October 26–November 1 bulk-carrier partial count is not a complete traffic series and is intentionally not plotted.',url:'https://www.lloydslistintelligence.com/resources/blog/strait-of-hormuz-brief-5-november-2026',label:'Lloyd’s List · 5 November'}
+};
+
+const DAY=86400000, start=Date.UTC(2026,1,1), end=Date.UTC(2026,10,1);
 const iso=d=>new Date(d).toISOString().slice(0,10);
 const short=d=>new Date(d).toLocaleDateString('en-US',{timeZone:'UTC',month:'short',day:'2-digit'});
 const long=d=>new Date(d).toLocaleDateString('en-US',{timeZone:'UTC',month:'short',day:'2-digit',year:'numeric'});
@@ -74,65 +222,105 @@ for(let w=Date.UTC(2026,0,26);w<=end;w+=7*DAY){
     if(first===null)first=date;last=date;
   }
   if(!days)continue;
-  const estimate=estimates.every(e=>e&&e===estimates[0])?estimates[0]:null;const ais=AIS[iso(w)]??null;
-  weeks.push({start:w,first,last,days,estimate,publishedRate:estimate?.rate??null,rate:estimate?.rate??null,source:estimate?.source??'No published estimate',ais,monthBreak:weeks.length===0||new Date(first).getUTCMonth()!==new Date(weeks[weeks.length-1].first).getUTCMonth()});
+  const estimate=estimates.every(e=>e&&e===estimates[0])?estimates[0]:null;const ais=AIS[iso(w)]??null;const lli=LLI[iso(w)]??null;
+  weeks.push({start:w,first,last,days,estimate,publishedRate:estimate?.rate??null,rate:estimate?.rate??null,source:estimate?.source??'No published estimate',ais,lli,monthBreak:weeks.length===0||new Date(first).getUTCMonth()!==new Date(weeks[weeks.length-1].first).getUTCMonth()});
 }
-let selected=weeks.length-1,metric='ais',playing=false,interval=null,speed=1900,phase=0;
+let selected=0,metric='transits',playing=false,interval=null,speed=1900,phase=0,loopEnabled=true,progressStart=0,displayMarkerCount=0,targetMarkerCount=0;
 const el=id=>document.getElementById(id);
 function info(w){return w.rate===null?{volume:null,gap:null,pct:null}:{volume:w.rate*w.days,gap:(BASELINE-w.rate)*w.days,pct:100*w.rate/BASELINE};}
-function setWeek(n,{follow=false}={}){selected=Math.max(0,Math.min(weeks.length-1,n)); const w=weeks[selected],d=info(w),published=w.source==='User CSV'?null:w.estimate;phase=0;
-  el('weekSlider').value=selected;el('weekCounter').textContent=`WEEK ${String(selected+1).padStart(2,'0')} / ${weeks.length}`;
-  el('weekTitle').textContent=long(w.first);el('weekEnd').textContent=long(w.last);el('weekBadge').textContent=`WEEK ${String(selected+1).padStart(2,'0')}`;el('weekMonth').textContent=monthLong(w.last).toUpperCase();
-  el('statRate').textContent=w.rate===null?'N/A':fmt(w.rate,2)+' mb/d';el('statRateSub').textContent=published?published.label:(w.source==='User CSV'?'User-supplied weekly rate':'No matching published period');
-  el('statVolume').textContent=d.volume===null?'N/A':fmt(d.volume,1)+' M bbl';el('statVolumeSub').textContent=d.volume===null?'No weekly oil estimate published':'Rate × days; derived from the cited period average';
-  el('statGap').textContent=d.gap===null?'N/A':(d.gap>=0?'−':'+')+fmt(Math.abs(d.gap),1)+' M';
-  el('statGapSub').textContent=d.gap===null?'No published rate for this window':d.gap>=0?'Below 2025 reference in this window':'Above 2025 reference in this window';
-  el('statAis').textContent=w.ais?fmt(w.ais.tankers,0):'N/A';el('statAisSub').textContent=w.ais?`${w.ais.all} total AIS ship crossings`:'No aligned weekly AIS observation';
-  el('inspectorHeading').textContent=published?'Published flow estimate available':w.source==='User CSV'?'User-supplied flow value':'Ship-passage data only';
-  const extras=[];
-  if(w.start===Date.UTC(2026,1,23))extras.push('The external AIS dataset places the sharpest decline in the first full week of March.');
-  if(iso(w.start)==='2026-03-02')extras.push('This week: 4 AIS-visible tankers among 18 total recorded ship transits.');
-  if(iso(w.start)==='2026-06-22')extras.push('This week: 98 AIS-visible tankers among 213 recorded transits, a temporary rise in visibility.');
-  if(iso(w.start)==='2026-07-20')extras.push('This week: 6 AIS-visible tankers among 25 recorded ship transits.');
-  el('inspectorText').textContent=(published?`${published.label}: ${fmt(w.rate,1)} mb/d, published by ${published.source}. This is a period average, not a measurement for this individual week.`:w.source==='User CSV'?`A user-supplied weekly rate of ${fmt(w.rate,1)} mb/d is displayed for this window; it has not been independently verified here.`:'No published oil-flow estimate matches this window. The page shows the vessel-passage record without manufacturing an oil figure.')+(extras.length?' '+extras.join(' '):'');
-  el('comparisonLabel').textContent=w.rate===null?'Published flow unavailable':'Published flow vs 2025 reference';el('comparisonValue').textContent=d.pct===null?'N/A':fmt(d.pct,1)+'%';el('comparisonFill').style.width=d.pct===null?'0':Math.min(100,Math.max(0,d.pct))+'%';
-  el('meter').setAttribute('aria-valuenow',d.pct===null?'0':fmt(Math.min(100,Math.max(0,d.pct)),0));
-  el('aisInsight').textContent=w.ais?`Recorded: ${w.ais.tankers} AIS-visible tanker passages and ${w.ais.all} passages of all ship types. ${published?`Oil is shown separately as a ${published.label.toLowerCase()}; the ship count is not used to calculate it.`:w.source==='User CSV'?'Oil is shown from a user-supplied value, not calculated from this ship count.':'No matching published oil-flow estimate is displayed for this week.'}`:'No comparable weekly PortWatch observation is included for this window. “N/A” means missing observation, not that no oil or ships moved.';
-  el('weekCells').querySelectorAll('button').forEach((b,i)=>{b.classList.toggle('current',i===selected);b.setAttribute('aria-pressed',String(i===selected))});
-  el('tableBody').querySelectorAll('tr').forEach((tr,i)=>tr.classList.toggle('active',i===selected));
-  if(follow){const cell=el('weekCells').children[selected],r=el('trackOverflow'); if(cell&&r)r.scrollTo({left:cell.offsetLeft-r.clientWidth/2+cell.clientWidth/2,behavior:'smooth'});}
-  renderChart();renderMap();
+function setWeek(n,{follow=false}={}){
+ selected=Math.max(0,Math.min(weeks.length-1,n));
+ const w=weeks[selected],d=info(w),published=w.source==='User CSV'?null:w.estimate;
+ el('weekSlider').value=selected;el('weekCounter').textContent=`WEEK ${String(selected+1).padStart(2,'0')} / ${weeks.length}`;
+ el('weekTitle').textContent=long(w.first);el('weekEnd').textContent=long(w.last);
+ el('weekBadge').textContent=`WEEK ${String(selected+1).padStart(2,'0')}`;el('weekMonth').textContent=monthLong(w.last).toUpperCase();
+ el('statRate').textContent=w.rate===null?'N/A':fmt(w.rate,2)+' mb/d';
+ el('statRateSub').textContent=published?published.label:(w.source==='User CSV'?'User-supplied weekly rate':'No matching published period');
+ el('statVolume').textContent=d.volume===null?'N/A':fmt(d.volume,1)+' M bbl';
+ el('statVolumeSub').textContent=d.volume===null?'No matching published rate':'Period rate × days; not weekly measured cargo';
+ el('statGap').textContent=d.gap===null?'N/A':(d.gap>=0?'−':'+')+fmt(Math.abs(d.gap),1)+' M';
+ el('statGapSub').textContent=d.gap===null?'No matching published rate':d.gap>=0?'Below 2025 reference for displayed days':'Above 2025 reference for displayed days';
+ const hasAis=!!w.ais, hasLli=!!w.lli, hasBoth=hasAis&&hasLli;
+ el('statAis').textContent=hasAis?fmt(w.ais.all,0):hasLli?fmt(w.lli.all,0):'N/A';
+ el('passageStatLabel').textContent=hasAis?'AIS-visible ship passages':hasLli?'Lloyd’s verified ship passages':'Reported ship passages';
+ el('statAisSub').textContent=hasAis?`${w.ais.tankers} AIS tanker transits · PortWatch${hasBoth?' · Lloyd’s also tracked '+w.lli.all+' (different method)':''}`:hasLli?`${w.lli.tankerGas} tanker + gas · ${w.lli.east} out / ${w.lli.west} in · non-Iranian-linked`:'No complete published passage count for this week';
+ const extras=[];
+ if(iso(w.start)==='2026-03-02')extras.push('Four AIS-visible tankers among 18 total recorded movements.');
+ if(iso(w.start)==='2026-07-20')extras.push('Six AIS-visible tankers among 25 recorded transits.');
+ el('inspectorHeading').textContent=w.lli&&!w.ais?'Verified transits continue':w.ais?'Visible AIS vessel traffic':published?'Published oil flow estimate':'No complete observation';
+ el('inspectorText').textContent=((published?`${published.label}: ${fmt(w.rate,1)} mb/d (${published.source}), a period average repeated across its coverage window — not this week’s measured oil flow. `:w.source==='User CSV'?`A user-supplied rate of ${fmt(w.rate,1)} mb/d is unverified. `:'No matching published oil-flow rate for this window. ')+(w.ais?`PortWatch counted ${w.ais.all} AIS-visible ship passages (${w.ais.tankers} tanker passages). `:'')+(w.lli?`Lloyd’s separately verified ${w.lli.all} non-Iranian-linked cargo vessel passages, including ${w.lli.tankerGas} tanker/gas movements (${w.lli.east} eastbound and ${w.lli.west} westbound among all types). `:'')+(!w.ais&&!w.lli?'Complete comparable weekly vessel figures are unavailable. ':'')+extras.join(' ')).trim();
+ const evt=EVENTS[iso(w.start)];el('inspectorEvent').hidden=!evt;
+ if(evt){el('eventText').textContent=evt.text;el('eventLink').textContent=evt.label+' ↗';el('eventLink').href=evt.url;}
+ el('comparisonLabel').textContent=w.rate===null?'Published flow unavailable':'Published period rate vs 2025 reference';
+ el('comparisonValue').textContent=d.pct===null?'N/A':fmt(d.pct,1)+'%';
+ el('comparisonFill').style.width=d.pct===null?'0':Math.min(100,Math.max(0,d.pct))+'%';
+ el('meter').setAttribute('aria-valuenow',d.pct===null?'0':fmt(Math.min(100,Math.max(0,d.pct)),0));
+ el('aisInsight').textContent=w.ais?`PortWatch records only AIS-visible vessels, in either direction; not all cargo-laden outbound tankers. ${hasBoth?'Lloyd’s independently reports additional verified movements with a different vessel scope and method.':''}`:w.lli?'Lloyd’s data include tracked non-Iranian-linked cargo vessels above 10,000 dwt, potentially including dark transits; not equivalent to PortWatch’s AIS counts.':'No published comparable passage count for this window. Blank does not mean zero vessels.';
+ el('weekCells').querySelectorAll('button').forEach((b,i)=>{b.classList.toggle('current',i===selected);b.setAttribute('aria-pressed',String(i===selected))});
+ el('tableBody').querySelectorAll('tr').forEach((tr,i)=>tr.classList.toggle('active',i===selected));
+ if(follow){const cell=el('weekCells').children[selected],r=el('trackOverflow');if(cell&&r)r.scrollTo({left:cell.offsetLeft-r.clientWidth/2+cell.clientWidth/2,behavior:window.matchMedia('(prefers-reduced-motion: reduce)').matches?'instant':'smooth'});}
+ targetMarkerCount=Math.min(38,Math.max(0,Math.round((w.ais?.tankers??w.lli?.tankerGas??0)*.18)));
+ if(window.matchMedia('(prefers-reduced-motion: reduce)').matches)displayMarkerCount=targetMarkerCount;
+ el('mapSourceText').textContent=w.ais?`GOLD / ${w.ais.tankers} PortWatch AIS tanker movements · direction split illustrative${hasBoth?' · Lloyd’s tracked separately':''}`:w.lli?`TEAL / ${w.lli.tankerGas} Lloyd’s tanker + gas · directional share approximated from all vessel transits`:'NO WEEKLY PASSAGE COUNT AVAILABLE';
+ renderChart();renderMap();
 }
 function buildTimeline(){const labels=el('monthLabels'),cells=el('weekCells');let m=-1;
- weeks.forEach((w,i)=>{const mm=new Date(w.first).getUTCMonth();const ml=document.createElement('span');if(mm!==m){ml.textContent=new Date(w.first).toLocaleDateString('en-US',{timeZone:'UTC',month:'short'}).toUpperCase();m=mm}ml.className='monthlabel';labels.appendChild(ml);
- const btn=document.createElement('button');btn.className='week'+(w.monthBreak?' monthstart':'');btn.textContent=String(i+1).padStart(2,'0');btn.title=`Week ${i+1}: ${short(w.first)}–${short(w.last)}`;btn.setAttribute('aria-label',btn.title);btn.onclick=()=>{stop();setWeek(i,{follow:true})};cells.appendChild(btn);});
- el('weekSlider').max=weeks.length-1; el('weekSlider').addEventListener('input',e=>{stop();setWeek(+e.target.value,{follow:true})});
+ weeks.forEach((w,i)=>{const mm=new Date(w.first).getUTCMonth(),ml=document.createElement('span');if(mm!==m){ml.textContent=new Date(w.first).toLocaleDateString('en-US',{timeZone:'UTC',month:'short'}).toUpperCase();m=mm}ml.className='monthlabel';labels.appendChild(ml);
+  const btn=document.createElement('button');btn.className='week'+(w.monthBreak?' monthstart':'');btn.textContent=String(i+1).padStart(2,'0');btn.title=`Week ${i+1}: ${short(w.first)}–${short(w.last)}`;btn.setAttribute('aria-label',btn.title);btn.onclick=()=>{stop();setWeek(i,{follow:true})};cells.appendChild(btn);});
+ el('weekSlider').max=weeks.length-1;el('weekSlider').addEventListener('input',e=>{stop();setWeek(+e.target.value,{follow:true})});
  el('prevBtn').onclick=()=>{stop();setWeek(selected-1,{follow:true})};el('nextBtn').onclick=()=>{stop();setWeek(selected+1,{follow:true})};
- el('playBtn').onclick=()=>playing?stop():play();el('speed').onchange=e=>{speed=+e.target.value;if(playing){stop();play()}};
- document.querySelectorAll('[data-metric]').forEach(btn=>btn.onclick=()=>{metric=btn.dataset.metric;document.querySelectorAll('[data-metric]').forEach(b=>b.classList.toggle('active',b===btn));
-   const d={rate:['Published oil-flow estimates, repeated only across their source period; blank weeks have no matching estimate.','Dashed line: 20.0 million b/d 2025 reference (IEA). Sources: EIA / Vortexa and IEA.','PUBLISHED PERIOD ESTIMATES'],volume:['Window volume derived from a published period average × displayed days; it is not a weekly observation.','Blank bars have no matching published oil-flow estimate.','DERIVED / NOT WEEKLY MEASUREMENT'],ais:['Observed AIS-visible tanker passages per full Monday–Sunday week.','Source: The Fold / IMF PortWatch (CC BY 4.0); coverage ends September 20, 2026. Missing weeks are blank.','OBSERVED AIS']}[metric];
-   el('chartDescription').textContent=d[0];el('chartFootnote').textContent=d[1];el('seriesPill').textContent=d[2];renderChart()});
- el('exportBtn').onclick=exportCsv;el('importBtn').onclick=importCsv;el('resetBtn').onclick=()=>{weeks.forEach(w=>{w.rate=w.publishedRate;w.source=w.estimate?.source??'No published estimate'});el('importMessage').textContent='Reset: published source estimates restored.';rows();setWeek(selected)};
+ el('playBtn').onclick=()=>playing?stop():play();
+ el('speed').onchange=e=>{speed=+e.target.value;if(playing){stop();play()}};
+ el('loopBtn').onclick=()=>{loopEnabled=!loopEnabled;el('loopBtn').textContent=loopEnabled?'↻ Loop ON':'↻ Loop OFF';el('loopBtn').setAttribute('aria-pressed',String(loopEnabled));};
+ document.querySelectorAll('[data-metric]').forEach(btn=>btn.onclick=()=>{metric=btn.dataset.metric;document.querySelectorAll('[data-metric]').forEach(b=>{b.classList.toggle('active',b===btn);b.setAttribute('aria-pressed',String(b===btn))});
+  const d={
+   transits:['Two independent weekly transit-count datasets, shown in different colors and never interpolated across gaps.','Blue = PortWatch all AIS-visible passages (through Sep 20). Teal = Lloyd’s all verified non-Iranian-linked passages (through Oct 25); different populations and detection methods.','TWO SOURCES · NOT COMPARABLE'],
+   ais:['PortWatch AIS-visible tanker passages in each full week; movements in either direction.','Data: IMF PortWatch via The Fold, CC BY 4.0; no updates included after Sep 20.','AIS / TANKERS'],
+   lliGas:['Lloyd’s verified tanker and gas-carrier transits, non-Iranian-linked cargo vessels only.','Source: Lloyd’s List Intelligence; verified weeks Sep 14–Oct 25. This is not PortWatch AIS.','LLOYD’S / TANKER + GAS'],
+   rate:['Published period-level oil rates only, repeated across matching weeks.','Dashed line = IEA 2025 reference of 20 mb/d. EIA/Vortexa (Q1, Q2) and IEA (September).','PUBLISHED PERIOD RATES'],
+   volume:['Derived window volume = period rate × days; NOT a measurement of individual-week cargo.','Blank where no published matching period rate exists.','DERIVED / NOT WEEKLY MEASUREMENT']
+  }[metric];el('chartDescription').textContent=d[0];el('chartFootnote').textContent=d[1];el('seriesPill').textContent=d[2];renderChart()});
+ el('exportBtn').onclick=exportCsv;el('importBtn').onclick=importCsv;
+ el('resetBtn').onclick=()=>{weeks.forEach(w=>{w.rate=w.publishedRate;w.source=w.estimate?.source??'No published estimate'});el('importMessage').textContent='Reset: published source estimates restored.';rows();setWeek(selected)};
 }
-function play(){if(selected===weeks.length-1)setWeek(0,{follow:true});playing=true;el('playBtn').textContent='❚❚ Pause timeline';el('playBtn').classList.add('primary');interval=setInterval(()=>{if(selected===weeks.length-1){stop();return}setWeek(selected+1,{follow:true})},speed)}
-function stop(){if(interval)clearInterval(interval);interval=null;playing=false;el('playBtn').textContent='▶ Play timeline'}
+function play(){
+ if(playing)return;
+ if(selected===weeks.length-1)setWeek(0,{follow:true});
+ playing=true;progressStart=performance.now();
+ el('playBtn').textContent='❚❚ Pause replay';el('playBtn').classList.add('primary');
+ interval=setInterval(()=>{if(document.hidden)return;
+   if(selected===weeks.length-1){if(loopEnabled)setWeek(0,{follow:true});else {stop();return;}}
+   else setWeek(selected+1,{follow:true});
+   progressStart=performance.now();
+ },speed);
+}
+function stop(){if(interval)clearInterval(interval);interval=null;playing=false;el('playBtn').textContent='▶ Play replay';el('playProgress').style.width='0%';}
 function drawText(ctx,text,x,y,color='#9fb7c7',size=11,align='left',weight='500'){ctx.fillStyle=color;ctx.textAlign=align;ctx.font=`${weight} ${size}px system-ui, sans-serif`;ctx.fillText(text,x,y)}
 const chart=el('flowChart'),chartInner=chart.parentElement;
 let chartHit=[];
-function renderChart(){const rect=chartInner.getBoundingClientRect(),width=Math.max(900,Math.round(rect.width||900)),height=rect.height||305,dpr=Math.min(devicePixelRatio||1,2);
- chart.width=Math.round(width*dpr);chart.height=Math.round(height*dpr); const ctx=chart.getContext('2d');ctx.setTransform(dpr,0,0,dpr,0,0);ctx.clearRect(0,0,width,height);
- const left=58,right=24,top=22,bottom=44,plotW=width-left-right,plotH=height-top-bottom;
- const values=weeks.map(w=>metric==='ais'?(w.ais?w.ais.tankers:null):metric==='volume'?(w.rate===null?null:w.rate*w.days):w.rate);
- const peak=Math.max(1,...values.filter(v=>v!==null)); const ymax=metric==='rate'?Math.max(25,Math.ceil(peak/5)*5):metric==='volume'?Math.ceil(peak/25)*25:Math.ceil(peak/50)*50;
- for(let j=0;j<=4;j++){const v=ymax*j/4,y=top+plotH-j*plotH/4;ctx.strokeStyle='#263c4d';ctx.lineWidth=1;ctx.beginPath();ctx.moveTo(left,y);ctx.lineTo(width-right,y);ctx.stroke();drawText(ctx,fmt(v,metric==='rate'?1:0),left-9,y+4,'#9cb0c0',10,'right')}
- if(metric==='rate'){const y=top+plotH-(BASELINE/ymax)*plotH;ctx.save();ctx.strokeStyle='#b3c7d7';ctx.setLineDash([7,5]);ctx.lineWidth=1.4;ctx.beginPath();ctx.moveTo(left,y);ctx.lineTo(width-right,y);ctx.stroke();ctx.restore();drawText(ctx,'2025 reference',width-right-2,y-6,'#bdd1df',10,'right')}
- const step=plotW/weeks.length; chartHit=[];
- weeks.forEach((w,i)=>{const x=left+i*step+step*.17,bw=Math.max(5,step*.67),value=values[i]; chartHit.push([x-2,x+bw+2]);
- if(i===selected){ctx.fillStyle='#ffffff08';ctx.fillRect(left+i*step,top,step,plotH)}
- if(value!==null){const bh=value/ymax*plotH,y=top+plotH-bh;ctx.fillStyle=i===selected?'#ffbf57':metric==='ais'?'#4696cc':'#337e83';ctx.fillRect(x,y,bw,bh);if(i===selected){ctx.fillStyle='#fff7df';ctx.fillRect(x,y,Math.max(1,bw),2)}}
- if(i%4===0||i===weeks.length-1){drawText(ctx,short(w.first),left+(i+.5)*step,height-25,'#97adbb',10,'center')} });
+function renderChart(){
+ const rect=chartInner.getBoundingClientRect(),width=Math.max(900,Math.round(rect.width||900)),height=rect.height||305,dpr=Math.min(devicePixelRatio||1,2);
+ chart.width=Math.round(width*dpr);chart.height=Math.round(height*dpr);
+ const ctx=chart.getContext('2d');ctx.setTransform(dpr,0,0,dpr,0,0);ctx.clearRect(0,0,width,height);
+ const left=58,right=24,top=30,bottom=44,plotW=width-left-right,plotH=height-top-bottom;
+ const vals=weeks.flatMap(w=>metric==='transits'?[w.ais?.all??null,w.lli?.all??null]:[metric==='ais'?w.ais?.tankers??null:metric==='lliGas'?w.lli?.tankerGas??null:metric==='volume'?w.rate===null?null:w.rate*w.days:w.rate]);
+ const peak=Math.max(1,...vals.filter(v=>v!==null));
+ const ymax=metric==='rate'?Math.max(25,Math.ceil(peak/5)*5):metric==='volume'?Math.ceil(peak/25)*25:Math.ceil(peak/50)*50;
+ for(let j=0;j<=4;j++){const v=ymax*j/4,y=top+plotH-j*plotH/4;ctx.strokeStyle='#263c4d';ctx.lineWidth=1;ctx.beginPath();ctx.moveTo(left,y);ctx.lineTo(width-right,y);ctx.stroke();drawText(ctx,fmt(v,metric==='rate'?1:0),left-9,y+4,'#9cb0c0',10,'right');}
+ if(metric==='rate'){const y=top+plotH-(BASELINE/ymax)*plotH;ctx.save();ctx.strokeStyle='#b3c7d7';ctx.setLineDash([7,5]);ctx.beginPath();ctx.moveTo(left,y);ctx.lineTo(width-right,y);ctx.stroke();ctx.restore();drawText(ctx,'IEA 2025 reference',width-right-2,y-6,'#bdd1df',10,'right');}
+ const step=plotW/weeks.length;chartHit=[];
+ function bar(value,x,bw,i,color){if(value===null)return;const bh=value/ymax*plotH,y=top+plotH-bh;ctx.fillStyle=color;ctx.fillRect(x,y,bw,Math.max(1,bh));if(i===selected){ctx.fillStyle='#fff4d9';ctx.fillRect(x,y,bw,2);}}
+ weeks.forEach((w,i)=>{const x=left+i*step,selectedWeek=i===selected;chartHit.push([x,x+step]);
+  if(selectedWeek){ctx.fillStyle='#ffffff0a';ctx.fillRect(x,top,step,plotH);}
+  if(metric==='transits'){const bw=Math.max(3,step*.32);bar(w.ais?.all??null,x+step*.12,bw,i,selectedWeek?'#76cfff':'#438fbf');bar(w.lli?.all??null,x+step*.54,bw,i,selectedWeek?'#a4ffe3':'#4bc8af');}
+  else {const value=metric==='ais'?w.ais?.tankers??null:metric==='lliGas'?w.lli?.tankerGas??null:metric==='volume'?w.rate===null?null:w.rate*w.days:w.rate;
+   bar(value,x+step*.16,Math.max(5,step*.66),i,selectedWeek?'#ffbe55':metric==='ais'?'#4696cc':metric==='lliGas'?'#4ddcbd':'#3f8791');}
+  if(i%4===0||i===weeks.length-1)drawText(ctx,short(w.first),x+step*.5,height-25,'#97adbb',10,'center');
+ });
  const center=left+(selected+.5)*step;ctx.strokeStyle='#ffbf5788';ctx.setLineDash([2,3]);ctx.beginPath();ctx.moveTo(center,top);ctx.lineTo(center,top+plotH);ctx.stroke();ctx.setLineDash([]);
- drawText(ctx,metric==='rate'?'MILLION BARRELS / DAY':metric==='volume'?'MILLION BARRELS / WEEK':'AIS-VISIBLE TANKERS / WEEK',left,12,'#8aa6b9',10,'left','700');
+ const label=metric==='transits'?'VESSEL PASSAGES · TWO DIFFERENT SOURCES':metric==='rate'?'MILLION BARRELS / DAY':metric==='volume'?'MILLION BARRELS / DISPLAY WINDOW':metric==='lliGas'?'LLOYD’S VERIFIED TANKER + GAS CARRIER MOVEMENTS':'PORTWATCH AIS TANKER MOVEMENTS';
+ drawText(ctx,label,left,13,'#8aa6b9',10,'left','700');
+ if(metric==='transits'){ctx.fillStyle='#438fbf';ctx.fillRect(width-282,7,9,9);drawText(ctx,'PortWatch AIS',width-267,15,'#bdd5e4',10);ctx.fillStyle='#4bc8af';ctx.fillRect(width-152,7,9,9);drawText(ctx,'Lloyd’s verified',width-137,15,'#bdd5e4',10);}
 }
 chart.addEventListener('click',e=>{const r=chart.getBoundingClientRect();const x=(e.clientX-r.left)*(chart.width/(devicePixelRatio||1))/r.width;const left=58,right=24; const idx=Math.floor((x-left)/((chart.width/(Math.min(devicePixelRatio||1,2))-left-right)/weeks.length));if(idx>=0&&idx<weeks.length){stop();setWeek(idx,{follow:true})}});
 // Deliberately schematic geography with relative oil markers, not individual ships or GPS locations.
@@ -149,23 +337,116 @@ function drawMapStatic(){const ctx=mctx;ctx.clearRect(0,0,1120,350);let g=ctx.cr
  roundBox(ctx,456,76,210,28,7,'#512a2bcf');drawText(ctx,'STRAIT OF HORMUZ',561,95,'#ffb6a3',12,'center','900');
  drawText(ctx,'Musandam',527,282,'#d1dcde',11,'center','700');
  ctx.strokeStyle='#ecaa5755';ctx.lineWidth=2;ctx.setLineDash([8,7]);ctx.beginPath();ctx.moveTo(502,113);ctx.lineTo(502,233);ctx.stroke();ctx.setLineDash([]);
- // Two parallel sea traffic lanes
+ // Schematic traffic lane spine for both inbound and outbound movements
  const p=new Path2D();p.moveTo(40,213);p.bezierCurveTo(223,192,316,194,460,169);p.bezierCurveTo(520,156,601,164,697,195);p.bezierCurveTo(860,225,963,225,1080,207);ctx.strokeStyle='#8dd4d436';ctx.lineWidth=15;ctx.stroke(p);ctx.strokeStyle='#a0f1df70';ctx.lineWidth=2;ctx.setLineDash([6,10]);ctx.stroke(p);ctx.setLineDash([]);
  // opening/ending labels
- roundBox(ctx,24,231,184,25,6,'#0a2133d8');drawText(ctx,'OIL DEPARTS GULF',116,248,'#bfdad6',10,'center','800');roundBox(ctx,878,236,212,25,6,'#0a2133d8');drawText(ctx,'TO GLOBAL MARKETS →',984,253,'#bfdad6',10,'center','800');
+ roundBox(ctx,24,231,184,25,6,'#0a2133d8');drawText(ctx,'← INBOUND / TO GULF',116,248,'#bfdad6',10,'center','800');roundBox(ctx,878,236,212,25,6,'#0a2133d8');drawText(ctx,'OUTBOUND / OPEN SEA →',984,253,'#bfdad6',10,'center','800');
 }
 function routePoint(t){let A={x:40,y:213},B={x:460,y:169},C={x:697,y:195},D={x:1080,y:207};if(t<.5){let z=t*2;return cubic(A,{x:223,y:192},{x:316,y:194},B,z)}if(t<.78){let z=(t-.5)/.28;return cubic(B,{x:520,y:156},{x:601,y:164},C,z)}let z=(t-.78)/.22;return cubic(C,{x:860,y:225},{x:963,y:225},D,z)}
 function cubic(a,b,c,d,t){let i=1-t;return {x:i*i*i*a.x+3*i*i*t*b.x+3*i*t*t*c.x+t*t*t*d.x,y:i*i*i*a.y+3*i*i*t*b.y+3*i*t*t*c.y+t*t*t*d.y}}
-function renderMap(){drawMapStatic();drawParticles()}
-function drawParticles(){const w=weeks[selected],count=Math.round(Math.max(0,Math.min(39,(w.ais?.tankers??0)*.18)));mctx.save();for(let k=0;k<count;k++){const t=((k/count+phase)%1),pt=routePoint(t),pt2=routePoint(Math.min(.999,t+.005)),angle=Math.atan2(pt2.y-pt.y,pt2.x-pt.x);mctx.save();mctx.translate(pt.x,pt.y);mctx.rotate(angle);mctx.shadowColor='#ffce6e';mctx.shadowBlur=12;mctx.fillStyle='#ffbe55';mctx.beginPath();mctx.roundRect(-9,-3,18,6,2);mctx.fill();mctx.fillStyle='#fcf0c9';mctx.fillRect(1,-1,6,2);mctx.restore()}
- mctx.restore()}
+function renderMap(){drawMapStatic();drawParticles();}
+function drawParticles(){
+ const w=weeks[selected],count=Math.max(0,Math.round(displayMarkerCount)),color=w.ais?'#ffbe55':'#55dfbf';
+ const ctx=mctx;
+ if(!w.ais&&!w.lli){roundBox(ctx,30,21,310,30,7,'#122e43ef');drawText(ctx,'NO COMPLETE WEEKLY PASSAGE DATA',185,41,'#a9c0d1',12,'center','800');return;}
+ roundBox(ctx,26,20,296,31,7,'#112a3ccf');drawText(ctx,w.ais?'PORTWATCH · AIS-VISIBLE TANKERS':'LLOYD’S · TANKERS + GAS',174,40,w.ais?'#facc84':'#74ecd0',11,'center','800');
+ if(count<=0)return;
+ ctx.save();
+ for(let k=0;k<count;k++){
+  // Opposite-moving lanes. Lloyd's east/west share uses counts for ALL tracked vessels,
+  // not a tanker-specific split. PortWatch direction is not supplied: use 50/50 only for illustration.
+  const eastRatio=w.lli?w.lli.east/w.lli.all:.5;
+  const eastCount=Math.round(count*eastRatio),east=k<eastCount;
+  const indexInDirection=east?k:k-eastCount,groupCount=east?eastCount:count-eastCount;
+  const progress=(indexInDirection/Math.max(1,groupCount)+phase)%1;
+  const t=east?progress:1-progress,pt=routePoint(t),pt2=routePoint(Math.max(0,Math.min(.999,t+(east?.003:-.003))));
+  const angle=Math.atan2(pt2.y-pt.y,pt2.x-pt.x),offset=east?17:-16;
+  ctx.save();ctx.translate(pt.x,pt.y+offset);ctx.rotate(angle);
+  ctx.strokeStyle=color;ctx.globalAlpha=.28;ctx.lineWidth=1.5;ctx.beginPath();ctx.moveTo(-24,0);ctx.lineTo(-9,0);ctx.stroke();ctx.globalAlpha=1;
+  ctx.shadowColor=color;ctx.shadowBlur=12;ctx.fillStyle=color;
+  ctx.beginPath();ctx.moveTo(10,0);ctx.lineTo(5,-4);ctx.lineTo(-8,-4);ctx.lineTo(-11,0);ctx.lineTo(-8,4);ctx.lineTo(5,4);ctx.closePath();ctx.fill();
+  ctx.fillStyle='#f3f9e9';ctx.fillRect(0,-1.3,5,2.6);ctx.restore();
+ }
+ ctx.restore();
+}
 let lastTick=0;
-function tick(t){if(!document.hidden){const dt=lastTick?Math.min(60,t-lastTick):16; if(!matchMedia('(prefers-reduced-motion: reduce)').matches){phase=(phase+dt/17500)%1;renderMap()}}lastTick=t;requestAnimationFrame(tick)}
-function rows(){el('tableBody').innerHTML='';weeks.forEach((w,i)=>{const d=info(w),tr=document.createElement('tr');tr.className=i===selected?'active':'';const vals=[String(i+1).padStart(2,'0'),`${short(w.first)} – ${short(w.last)}`,w.days,w.rate===null?'N/A':fmt(w.rate,2),d.volume===null?'N/A':fmt(d.volume,1),d.pct===null?'N/A':(d.pct>=100?'+':'')+fmt(d.pct-100,1)+'%',w.ais?String(w.ais.tankers):'N/A',w.source];vals.forEach((v,j)=>{const td=document.createElement('td');td.textContent=v;if((j===3||j===4||j===5)&&w.rate===null)td.classList.add('missing');if(j===6&&!w.ais)td.classList.add('missing');if(j===5&&d.pct!==null)td.classList.add(d.pct>=100?'positive':'negative');if(j===7)td.classList.add('flag');tr.appendChild(td)});tr.tabIndex=0;tr.setAttribute('aria-label','Select week '+(i+1));tr.addEventListener('click',()=>{stop();setWeek(i,{follow:true})});tr.addEventListener('keydown',e=>{if(e.key==='Enter'||e.key===' '){e.preventDefault();stop();setWeek(i,{follow:true})}});el('tableBody').appendChild(tr)})}
+function tick(t){
+ const reduced=matchMedia('(prefers-reduced-motion: reduce)').matches;
+ if(!document.hidden){
+  const dt=lastTick?Math.min(65,t-lastTick):16;
+  if(!reduced){phase=(phase+dt/16500)%1;displayMarkerCount+=(targetMarkerCount-displayMarkerCount)*Math.min(1,dt/180);renderMap();}
+  if(playing)el('playProgress').style.width=Math.min(100,100*(t-progressStart)/speed)+'%';
+ }
+ lastTick=t;requestAnimationFrame(tick);
+}
+function rows(){el('tableBody').innerHTML='';weeks.forEach((w,i)=>{
+ const d=info(w),tr=document.createElement('tr');tr.className=i===selected?'active':'';
+ const vals=[String(i+1).padStart(2,'0'),`${short(w.first)} – ${short(w.last)}`,w.days,w.rate===null?'N/A':fmt(w.rate,2),d.volume===null?'N/A':fmt(d.volume,1),d.pct===null?'N/A':(d.pct>=100?'+':'')+fmt(d.pct-100,1)+'%',w.ais?String(w.ais.tankers):'N/A',w.ais?String(w.ais.all):'N/A',w.lli?String(w.lli.all):'N/A',w.lli?String(w.lli.tankerGas):'N/A',w.source];
+ vals.forEach((v,j)=>{const td=document.createElement('td');td.textContent=v;if(v==='N/A')td.classList.add('missing');if(j===5&&d.pct!==null)td.classList.add(d.pct>=100?'positive':'negative');if(j===10)td.classList.add('flag');tr.appendChild(td)});
+ tr.tabIndex=0;tr.setAttribute('aria-label','Select week '+(i+1));tr.addEventListener('click',()=>{stop();setWeek(i,{follow:true})});tr.addEventListener('keydown',e=>{if(e.key==='Enter'||e.key===' '){e.preventDefault();stop();setWeek(i,{follow:true})}});el('tableBody').appendChild(tr);
+});}
 function importCsv(){const text=el('csvInput').value.trim();if(!text){el('importMessage').textContent='Paste CSV values first.';return}const parsed=new Map();for(const raw of text.split(/\r?\n/)){const l=raw.trim();if(!l||/^week_start\s*,/i.test(l))continue;const parts=l.split(',');if(parts.length!==2){el('importMessage').textContent='Invalid CSV row: '+l.slice(0,60);return}const date=parts[0].trim(),num=Number(parts[1].trim());if(!/^\d{4}-\d{2}-\d{2}$/.test(date)||!Number.isFinite(num)||num<0||num>80||!weeks.some(w=>iso(w.start)===date)){el('importMessage').textContent='Invalid start date or rate: '+l.slice(0,60);return}parsed.set(date,num)}if(!parsed.size){el('importMessage').textContent='No valid data rows.';return}weeks.forEach(w=>{const date=iso(w.start);if(parsed.has(date)){w.rate=parsed.get(date);w.source='User CSV'}});rows();setWeek(selected);el('importMessage').textContent=`Imported ${parsed.size} week(s); remaining data left unchanged.`}
-function exportCsv(){const hdr=['week_start','visible_start','visible_end','days','oil_mbd','derived_million_barrels','percent_of_2025_reference','ais_tankers','ais_all_transits','oil_source'];const lines=[hdr.join(',')];weeks.forEach(w=>{const d=info(w);lines.push([iso(w.start),iso(w.first),iso(w.last),w.days,w.rate===null?'':w.rate.toFixed(4),d.volume===null?'':d.volume.toFixed(4),d.pct===null?'':d.pct.toFixed(2),w.ais?.tankers??'',w.ais?.all??'',w.source].join(','))});const blob=new Blob([lines.join('\r\n')+'\r\n'],{type:'text/csv;charset=utf-8'});const url=URL.createObjectURL(blob),a=document.createElement('a');a.href=url;a.download='hormuz_weekly_oil_timeline_2026.csv';document.body.appendChild(a);a.click();a.remove();setTimeout(()=>URL.revokeObjectURL(url),1000)}
+function exportCsv(){
+ const hdr=['week_start','visible_start','visible_end','days','oil_mbd','derived_million_barrels','percent_of_2025_reference','portwatch_ais_tankers','portwatch_ais_all_transits','lloyds_verified_non_iran_linked_all','lloyds_tanker_and_gas','lloyds_eastbound_all','lloyds_westbound_all','oil_source','lloyds_source_url'];
+ const lines=[hdr.join(',')];weeks.forEach(w=>{const d=info(w);lines.push([iso(w.start),iso(w.first),iso(w.last),w.days,w.rate===null?'':w.rate.toFixed(4),d.volume===null?'':d.volume.toFixed(4),d.pct===null?'':d.pct.toFixed(2),w.ais?.tankers??'',w.ais?.all??'',w.lli?.all??'',w.lli?.tankerGas??'',w.lli?.east??'',w.lli?.west??'',w.source,w.lli?.url??''].join(','))});
+ const blob=new Blob([lines.join('\r\n')+'\r\n'],{type:'text/csv;charset=utf-8'}),url=URL.createObjectURL(blob),a=document.createElement('a');
+ a.href=url;a.download='hormuz_2026_passages_oil_source_labeled.csv';document.body.appendChild(a);a.click();a.remove();setTimeout(()=>URL.revokeObjectURL(url),1000);
+}
+
+// Storyboard plays on first visit, then hands off to the existing looping weekly replay.
+const introRoot=el('introOverlay');
+const introSlides=[...document.querySelectorAll('[data-intro-slide]')];
+const introSegments=[...document.querySelectorAll('.intro-progress-step')];
+const introSceneLabels=[...document.querySelectorAll('.intro-scenes-labels span')];
+const INTRO_SCENE_MS=2900;
+let introTimers=[];
+let introClosing=false;
+const introReduced=()=>window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+function clearIntroTasks(){introTimers.forEach(clearTimeout);introTimers=[];}
+function setIntroScene(n){
+ introRoot.dataset.scene=String(n);
+ introSlides.forEach((s,i)=>s.classList.toggle('is-active',i===n));
+ introSegments.forEach((s,i)=>{s.classList.toggle('is-now',i===n);s.classList.toggle('is-done',i<n)});
+ introSceneLabels.forEach((s,i)=>s.classList.toggle('is-now',i===n));
+}
+function releaseIntro(){
+ document.body.classList.remove('intro-active');
+ for(const node of [document.querySelector('main'),document.querySelector('header.top'),document.querySelector('footer')]){if(node)node.inert=false;}
+}
+function endIntro(){
+ if(introRoot.hidden || introClosing)return;
+ introClosing=true;
+ clearIntroTasks();
+ introRoot.classList.add('is-leaving');
+ releaseIntro();
+ // Begin the 40-week loop at week one only after the overlay has cleared.
+ introTimers.push(setTimeout(()=>{introRoot.hidden=true;introClosing=false;setWeek(0,{follow:true});if(!introReduced())play();},850));
+}
+function startIntro(){
+ clearIntroTasks();stop();
+ setWeek(0);
+ introClosing=false;
+ introRoot.classList.remove('is-leaving');
+ introRoot.hidden=false;
+ introRoot.dataset.scene='0';
+ document.body.classList.add('intro-active');
+ for(const node of [document.querySelector('main'),document.querySelector('header.top'),document.querySelector('footer')]){if(node)node.inert=true;}
+ setIntroScene(0);
+ el('skipIntro').focus({preventScroll:true});
+ for(let i=1;i<4;i++){introTimers.push(setTimeout(()=>setIntroScene(i),INTRO_SCENE_MS*i));}
+ introTimers.push(setTimeout(endIntro,INTRO_SCENE_MS*4));
+}
+el('skipIntro').addEventListener('click',endIntro);
+el('enterReplay').addEventListener('click',endIntro);
+el('replayIntro').addEventListener('click',()=>{if(introReduced()){stop();setWeek(0,{follow:true});}else startIntro();});
+introRoot.addEventListener('keydown',e=>{if(e.key==='Escape'){e.preventDefault();endIntro();}});
+
 window.addEventListener('resize',()=>renderChart());
-buildTimeline();rows();setWeek(selected,{follow:true});requestAnimationFrame(tick);
+buildTimeline();rows();setWeek(0,{follow:true});
+displayMarkerCount=targetMarkerCount;
+requestAnimationFrame(tick);
+// Play cinematic introduction once on load, then begin the looping weekly history.
+if(!introReduced())startIntro();
 </script>
 </body>
 </html>
