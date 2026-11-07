@@ -3,30 +3,1846 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>U.S. Price Trends — BLS Macro Terminal</title>
-  <!-- Tailwind CSS -->
-  <script src="https://cdn.tailwindcss.com"></script>
+  <title>U.S. Staple Prices | Animated BLS Price Timeline · Sep 2026</title>
+  <!-- Embedded Tailwind utilities: single-file, works without CDN or internet. -->
+  <style>/*! tailwindcss v4.1.10 | MIT License | https://tailwindcss.com */
+@layer properties;
+@layer theme, base, components, utilities;
+:root, :host {
+  --font-sans: 'Inter', system-ui, sans-serif;
+  --font-mono: 'JetBrains Mono', monospace;
+  --color-amber-300: oklch(87.9% 0.169 91.605);
+  --color-amber-400: oklch(82.8% 0.189 84.429);
+  --color-amber-500: oklch(76.9% 0.188 70.08);
+  --color-emerald-300: oklch(84.5% 0.143 164.978);
+  --color-emerald-400: oklch(76.5% 0.177 163.223);
+  --color-emerald-500: oklch(69.6% 0.17 162.48);
+  --color-sky-300: oklch(82.8% 0.111 230.318);
+  --color-sky-400: oklch(74.6% 0.16 232.661);
+  --color-sky-500: oklch(68.5% 0.169 237.323);
+  --color-purple-300: oklch(82.7% 0.119 306.383);
+  --color-purple-400: oklch(71.4% 0.203 305.504);
+  --color-purple-500: oklch(62.7% 0.265 303.9);
+  --color-purple-600: oklch(55.8% 0.288 302.321);
+  --color-fuchsia-200: oklch(90.3% 0.076 319.62);
+  --color-fuchsia-300: oklch(83.3% 0.145 321.434);
+  --color-fuchsia-400: oklch(74% 0.238 322.16);
+  --color-fuchsia-500: oklch(66.7% 0.295 322.15);
+  --color-fuchsia-600: oklch(59.1% 0.293 322.896);
+  --color-fuchsia-950: oklch(29.3% 0.136 325.661);
+  --color-rose-300: oklch(81% 0.117 11.638);
+  --color-rose-400: oklch(71.2% 0.194 13.428);
+  --color-rose-500: oklch(64.5% 0.246 16.439);
+  --color-slate-200: oklch(92.9% 0.013 255.508);
+  --color-slate-300: oklch(86.9% 0.022 252.894);
+  --color-slate-400: oklch(70.4% 0.04 256.788);
+  --color-slate-500: oklch(55.4% 0.046 257.417);
+  --color-slate-600: oklch(44.6% 0.043 257.281);
+  --color-slate-700: oklch(37.2% 0.044 257.287);
+  --color-slate-800: oklch(27.9% 0.041 260.031);
+  --color-slate-900: oklch(20.8% 0.042 265.755);
+  --color-slate-950: oklch(12.9% 0.042 264.695);
+  --color-white: #fff;
+  --spacing: 0.25rem;
+  --container-2xl: 42rem;
+  --text-xs: 0.75rem;
+  --text-xs--line-height: calc(1 / 0.75);
+  --text-sm: 0.875rem;
+  --text-sm--line-height: calc(1.25 / 0.875);
+  --text-base: 1rem;
+  --text-base--line-height: calc(1.5 / 1);
+  --text-lg: 1.125rem;
+  --text-lg--line-height: calc(1.75 / 1.125);
+  --text-xl: 1.25rem;
+  --text-xl--line-height: calc(1.75 / 1.25);
+  --text-2xl: 1.5rem;
+  --text-2xl--line-height: calc(2 / 1.5);
+  --text-3xl: 1.875rem;
+  --text-3xl--line-height: calc(2.25 / 1.875);
+  --text-5xl: 3rem;
+  --text-5xl--line-height: 1;
+  --font-weight-normal: 400;
+  --font-weight-medium: 500;
+  --font-weight-semibold: 600;
+  --font-weight-bold: 700;
+  --font-weight-extrabold: 800;
+  --tracking-tight: -0.025em;
+  --tracking-wider: 0.05em;
+  --tracking-widest: 0.1em;
+  --leading-relaxed: 1.625;
+  --radius-lg: 0.5rem;
+  --radius-xl: 0.75rem;
+  --radius-2xl: 1rem;
+  --ease-out: cubic-bezier(0, 0, 0.2, 1);
+  --animate-ping: ping 1s cubic-bezier(0, 0, 0.2, 1) infinite;
+  --animate-pulse: pulse 2s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+  --blur-xl: 24px;
+  --default-transition-duration: 150ms;
+  --default-transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
+  --default-font-family: var(--font-sans);
+  --default-mono-font-family: var(--font-mono);
+  --font-display: 'Space Grotesk', 'Inter', sans-serif;
+}
+*, ::after, ::before, ::backdrop, ::file-selector-button {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+  border: 0 solid;
+}
+html, :host {
+  line-height: 1.5;
+  -webkit-text-size-adjust: 100%;
+  tab-size: 4;
+  font-family: var(--default-font-family, ui-sans-serif, system-ui, sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol', 'Noto Color Emoji');
+  font-feature-settings: var(--default-font-feature-settings, normal);
+  font-variation-settings: var(--default-font-variation-settings, normal);
+  -webkit-tap-highlight-color: transparent;
+}
+hr {
+  height: 0;
+  color: inherit;
+  border-top-width: 1px;
+}
+abbr:where([title]) {
+  -webkit-text-decoration: underline dotted;
+  text-decoration: underline dotted;
+}
+h1, h2, h3, h4, h5, h6 {
+  font-size: inherit;
+  font-weight: inherit;
+}
+a {
+  color: inherit;
+  -webkit-text-decoration: inherit;
+  text-decoration: inherit;
+}
+b, strong {
+  font-weight: bolder;
+}
+code, kbd, samp, pre {
+  font-family: var(--default-mono-font-family, ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, 'Liberation Mono', 'Courier New', monospace);
+  font-feature-settings: var(--default-mono-font-feature-settings, normal);
+  font-variation-settings: var(--default-mono-font-variation-settings, normal);
+  font-size: 1em;
+}
+small {
+  font-size: 80%;
+}
+sub, sup {
+  font-size: 75%;
+  line-height: 0;
+  position: relative;
+  vertical-align: baseline;
+}
+sub {
+  bottom: -0.25em;
+}
+sup {
+  top: -0.5em;
+}
+table {
+  text-indent: 0;
+  border-color: inherit;
+  border-collapse: collapse;
+}
+:-moz-focusring {
+  outline: auto;
+}
+progress {
+  vertical-align: baseline;
+}
+summary {
+  display: list-item;
+}
+ol, ul, menu {
+  list-style: none;
+}
+img, svg, video, canvas, audio, iframe, embed, object {
+  display: block;
+  vertical-align: middle;
+}
+img, video {
+  max-width: 100%;
+  height: auto;
+}
+button, input, select, optgroup, textarea, ::file-selector-button {
+  font: inherit;
+  font-feature-settings: inherit;
+  font-variation-settings: inherit;
+  letter-spacing: inherit;
+  color: inherit;
+  border-radius: 0;
+  background-color: transparent;
+  opacity: 1;
+}
+:where(select:is([multiple], [size])) optgroup {
+  font-weight: bolder;
+}
+:where(select:is([multiple], [size])) optgroup option {
+  padding-inline-start: 20px;
+}
+::file-selector-button {
+  margin-inline-end: 4px;
+}
+::placeholder {
+  opacity: 1;
+}
+@supports (not (-webkit-appearance: -apple-pay-button))  or (contain-intrinsic-size: 1px) {
+  ::placeholder {
+    color: currentcolor;
+    @supports (color: color-mix(in lab, red, red)) {
+      color: color-mix(in oklab, currentcolor 50%, transparent);
+    }
+  }
+}
+textarea {
+  resize: vertical;
+}
+::-webkit-search-decoration {
+  -webkit-appearance: none;
+}
+::-webkit-date-and-time-value {
+  min-height: 1lh;
+  text-align: inherit;
+}
+::-webkit-datetime-edit {
+  display: inline-flex;
+}
+::-webkit-datetime-edit-fields-wrapper {
+  padding: 0;
+}
+::-webkit-datetime-edit, ::-webkit-datetime-edit-year-field, ::-webkit-datetime-edit-month-field, ::-webkit-datetime-edit-day-field, ::-webkit-datetime-edit-hour-field, ::-webkit-datetime-edit-minute-field, ::-webkit-datetime-edit-second-field, ::-webkit-datetime-edit-millisecond-field, ::-webkit-datetime-edit-meridiem-field {
+  padding-block: 0;
+}
+:-moz-ui-invalid {
+  box-shadow: none;
+}
+button, input:where([type='button'], [type='reset'], [type='submit']), ::file-selector-button {
+  appearance: button;
+}
+::-webkit-inner-spin-button, ::-webkit-outer-spin-button {
+  height: auto;
+}
+[hidden]:where(:not([hidden='until-found'])) {
+  display: none !important;
+}
+.pointer-events-none {
+  pointer-events: none;
+}
+.absolute {
+  position: absolute;
+}
+.fixed {
+  position: fixed;
+}
+.relative {
+  position: relative;
+}
+.sticky {
+  position: sticky;
+}
+.top-0 {
+  top: calc(var(--spacing) * 0);
+}
+.right-5 {
+  right: calc(var(--spacing) * 5);
+}
+.bottom-5 {
+  bottom: calc(var(--spacing) * 5);
+}
+.z-10 {
+  z-index: 10;
+}
+.z-20 {
+  z-index: 20;
+}
+.z-50 {
+  z-index: 50;
+}
+.mx-auto {
+  margin-inline: auto;
+}
+.mt-0 {
+  margin-top: calc(var(--spacing) * 0);
+}
+.mt-0\.5 {
+  margin-top: calc(var(--spacing) * 0.5);
+}
+.mt-1 {
+  margin-top: calc(var(--spacing) * 1);
+}
+.mt-1\.5 {
+  margin-top: calc(var(--spacing) * 1.5);
+}
+.mt-2 {
+  margin-top: calc(var(--spacing) * 2);
+}
+.mt-2\.5 {
+  margin-top: calc(var(--spacing) * 2.5);
+}
+.mt-3 {
+  margin-top: calc(var(--spacing) * 3);
+}
+.mt-3\.5 {
+  margin-top: calc(var(--spacing) * 3.5);
+}
+.mt-8 {
+  margin-top: calc(var(--spacing) * 8);
+}
+.mr-1 {
+  margin-right: calc(var(--spacing) * 1);
+}
+.mr-1\.5 {
+  margin-right: calc(var(--spacing) * 1.5);
+}
+.mb-1 {
+  margin-bottom: calc(var(--spacing) * 1);
+}
+.mb-1\.5 {
+  margin-bottom: calc(var(--spacing) * 1.5);
+}
+.mb-2 {
+  margin-bottom: calc(var(--spacing) * 2);
+}
+.mb-2\.5 {
+  margin-bottom: calc(var(--spacing) * 2.5);
+}
+.mb-3 {
+  margin-bottom: calc(var(--spacing) * 3);
+}
+.mb-4 {
+  margin-bottom: calc(var(--spacing) * 4);
+}
+.mb-5 {
+  margin-bottom: calc(var(--spacing) * 5);
+}
+.mb-6 {
+  margin-bottom: calc(var(--spacing) * 6);
+}
+.ml-1 {
+  margin-left: calc(var(--spacing) * 1);
+}
+.ml-1\.5 {
+  margin-left: calc(var(--spacing) * 1.5);
+}
+.block {
+  display: block;
+}
+.flex {
+  display: flex;
+}
+.grid {
+  display: grid;
+}
+.hidden {
+  display: none;
+}
+.inline-block {
+  display: inline-block;
+}
+.inline-flex {
+  display: inline-flex;
+}
+.h-1 {
+  height: calc(var(--spacing) * 1);
+}
+.h-1\.5 {
+  height: calc(var(--spacing) * 1.5);
+}
+.h-2 {
+  height: calc(var(--spacing) * 2);
+}
+.h-2\.5 {
+  height: calc(var(--spacing) * 2.5);
+}
+.h-3 {
+  height: calc(var(--spacing) * 3);
+}
+.h-3\.5 {
+  height: calc(var(--spacing) * 3.5);
+}
+.h-4 {
+  height: calc(var(--spacing) * 4);
+}
+.h-7 {
+  height: calc(var(--spacing) * 7);
+}
+.h-\[215px\] {
+  height: 215px;
+}
+.h-\[350px\] {
+  height: 350px;
+}
+.h-full {
+  height: 100%;
+}
+.max-h-\[460px\] {
+  max-height: 460px;
+}
+.w-1 {
+  width: calc(var(--spacing) * 1);
+}
+.w-1\.5 {
+  width: calc(var(--spacing) * 1.5);
+}
+.w-2 {
+  width: calc(var(--spacing) * 2);
+}
+.w-2\.5 {
+  width: calc(var(--spacing) * 2.5);
+}
+.w-3 {
+  width: calc(var(--spacing) * 3);
+}
+.w-3\.5 {
+  width: calc(var(--spacing) * 3.5);
+}
+.w-4 {
+  width: calc(var(--spacing) * 4);
+}
+.w-24 {
+  width: calc(var(--spacing) * 24);
+}
+.w-full {
+  width: 100%;
+}
+.max-w-2xl {
+  max-width: var(--container-2xl);
+}
+.max-w-\[1280px\] {
+  max-width: 1280px;
+}
+.min-w-\[100px\] {
+  min-width: 100px;
+}
+.min-w-\[235px\] {
+  min-width: 235px;
+}
+.min-w-\[240px\] {
+  min-width: 240px;
+}
+.min-w-\[760px\] {
+  min-width: 760px;
+}
+.flex-1 {
+  flex: 1;
+}
+.border-collapse {
+  border-collapse: collapse;
+}
+.translate-y-12 {
+  --tw-translate-y: calc(var(--spacing) * 12);
+  translate: var(--tw-translate-x) var(--tw-translate-y);
+}
+.animate-ping {
+  animation: var(--animate-ping);
+}
+.animate-pulse {
+  animation: var(--animate-pulse);
+}
+.cursor-crosshair {
+  cursor: crosshair;
+}
+.cursor-pointer {
+  cursor: pointer;
+}
+.grid-cols-1 {
+  grid-template-columns: repeat(1, minmax(0, 1fr));
+}
+.grid-cols-2 {
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+}
+.flex-col {
+  flex-direction: column;
+}
+.flex-wrap {
+  flex-wrap: wrap;
+}
+.items-baseline {
+  align-items: baseline;
+}
+.items-center {
+  align-items: center;
+}
+.items-end {
+  align-items: flex-end;
+}
+.items-start {
+  align-items: flex-start;
+}
+.items-stretch {
+  align-items: stretch;
+}
+.justify-between {
+  justify-content: space-between;
+}
+.gap-1 {
+  gap: calc(var(--spacing) * 1);
+}
+.gap-1\.5 {
+  gap: calc(var(--spacing) * 1.5);
+}
+.gap-2 {
+  gap: calc(var(--spacing) * 2);
+}
+.gap-2\.5 {
+  gap: calc(var(--spacing) * 2.5);
+}
+.gap-3 {
+  gap: calc(var(--spacing) * 3);
+}
+.gap-3\.5 {
+  gap: calc(var(--spacing) * 3.5);
+}
+.gap-4 {
+  gap: calc(var(--spacing) * 4);
+}
+.gap-6 {
+  gap: calc(var(--spacing) * 6);
+}
+.space-y-0 {
+  :where(& > :not(:last-child)) {
+    --tw-space-y-reverse: 0;
+    margin-block-start: calc(calc(var(--spacing) * 0) * var(--tw-space-y-reverse));
+    margin-block-end: calc(calc(var(--spacing) * 0) * calc(1 - var(--tw-space-y-reverse)));
+  }
+}
+.space-y-0\.5 {
+  :where(& > :not(:last-child)) {
+    --tw-space-y-reverse: 0;
+    margin-block-start: calc(calc(var(--spacing) * 0.5) * var(--tw-space-y-reverse));
+    margin-block-end: calc(calc(var(--spacing) * 0.5) * calc(1 - var(--tw-space-y-reverse)));
+  }
+}
+.space-y-1 {
+  :where(& > :not(:last-child)) {
+    --tw-space-y-reverse: 0;
+    margin-block-start: calc(calc(var(--spacing) * 1) * var(--tw-space-y-reverse));
+    margin-block-end: calc(calc(var(--spacing) * 1) * calc(1 - var(--tw-space-y-reverse)));
+  }
+}
+.space-y-1\.5 {
+  :where(& > :not(:last-child)) {
+    --tw-space-y-reverse: 0;
+    margin-block-start: calc(calc(var(--spacing) * 1.5) * var(--tw-space-y-reverse));
+    margin-block-end: calc(calc(var(--spacing) * 1.5) * calc(1 - var(--tw-space-y-reverse)));
+  }
+}
+.space-y-2 {
+  :where(& > :not(:last-child)) {
+    --tw-space-y-reverse: 0;
+    margin-block-start: calc(calc(var(--spacing) * 2) * var(--tw-space-y-reverse));
+    margin-block-end: calc(calc(var(--spacing) * 2) * calc(1 - var(--tw-space-y-reverse)));
+  }
+}
+.divide-y {
+  :where(& > :not(:last-child)) {
+    --tw-divide-y-reverse: 0;
+    border-bottom-style: var(--tw-border-style);
+    border-top-style: var(--tw-border-style);
+    border-top-width: calc(1px * var(--tw-divide-y-reverse));
+    border-bottom-width: calc(1px * calc(1 - var(--tw-divide-y-reverse)));
+  }
+}
+.divide-slate-800\/60 {
+  :where(& > :not(:last-child)) {
+    border-color: color-mix(in srgb, oklch(27.9% 0.041 260.031) 60%, transparent);
+    @supports (color: color-mix(in lab, red, red)) {
+      border-color: color-mix(in oklab, var(--color-slate-800) 60%, transparent);
+    }
+  }
+}
+.overflow-hidden {
+  overflow: hidden;
+}
+.overflow-visible {
+  overflow: visible;
+}
+.overflow-x-auto {
+  overflow-x: auto;
+}
+.rounded {
+  border-radius: 0.25rem;
+}
+.rounded-2xl {
+  border-radius: var(--radius-2xl);
+}
+.rounded-full {
+  border-radius: calc(infinity * 1px);
+}
+.rounded-lg {
+  border-radius: var(--radius-lg);
+}
+.rounded-xl {
+  border-radius: var(--radius-xl);
+}
+.border {
+  border-style: var(--tw-border-style);
+  border-width: 1px;
+}
+.border-t {
+  border-top-style: var(--tw-border-style);
+  border-top-width: 1px;
+}
+.border-b {
+  border-bottom-style: var(--tw-border-style);
+  border-bottom-width: 1px;
+}
+.border-l-2 {
+  border-left-style: var(--tw-border-style);
+  border-left-width: 2px;
+}
+.border-amber-500\/20 {
+  border-color: color-mix(in srgb, oklch(76.9% 0.188 70.08) 20%, transparent);
+  @supports (color: color-mix(in lab, red, red)) {
+    border-color: color-mix(in oklab, var(--color-amber-500) 20%, transparent);
+  }
+}
+.border-emerald-500\/25 {
+  border-color: color-mix(in srgb, oklch(69.6% 0.17 162.48) 25%, transparent);
+  @supports (color: color-mix(in lab, red, red)) {
+    border-color: color-mix(in oklab, var(--color-emerald-500) 25%, transparent);
+  }
+}
+.border-emerald-500\/30 {
+  border-color: color-mix(in srgb, oklch(69.6% 0.17 162.48) 30%, transparent);
+  @supports (color: color-mix(in lab, red, red)) {
+    border-color: color-mix(in oklab, var(--color-emerald-500) 30%, transparent);
+  }
+}
+.border-emerald-500\/50 {
+  border-color: color-mix(in srgb, oklch(69.6% 0.17 162.48) 50%, transparent);
+  @supports (color: color-mix(in lab, red, red)) {
+    border-color: color-mix(in oklab, var(--color-emerald-500) 50%, transparent);
+  }
+}
+.border-fuchsia-500 {
+  border-color: var(--color-fuchsia-500);
+}
+.border-fuchsia-500\/30 {
+  border-color: color-mix(in srgb, oklch(66.7% 0.295 322.15) 30%, transparent);
+  @supports (color: color-mix(in lab, red, red)) {
+    border-color: color-mix(in oklab, var(--color-fuchsia-500) 30%, transparent);
+  }
+}
+.border-fuchsia-500\/40 {
+  border-color: color-mix(in srgb, oklch(66.7% 0.295 322.15) 40%, transparent);
+  @supports (color: color-mix(in lab, red, red)) {
+    border-color: color-mix(in oklab, var(--color-fuchsia-500) 40%, transparent);
+  }
+}
+.border-fuchsia-500\/50 {
+  border-color: color-mix(in srgb, oklch(66.7% 0.295 322.15) 50%, transparent);
+  @supports (color: color-mix(in lab, red, red)) {
+    border-color: color-mix(in oklab, var(--color-fuchsia-500) 50%, transparent);
+  }
+}
+.border-purple-500\/20 {
+  border-color: color-mix(in srgb, oklch(62.7% 0.265 303.9) 20%, transparent);
+  @supports (color: color-mix(in lab, red, red)) {
+    border-color: color-mix(in oklab, var(--color-purple-500) 20%, transparent);
+  }
+}
+.border-rose-500\/20 {
+  border-color: color-mix(in srgb, oklch(64.5% 0.246 16.439) 20%, transparent);
+  @supports (color: color-mix(in lab, red, red)) {
+    border-color: color-mix(in oklab, var(--color-rose-500) 20%, transparent);
+  }
+}
+.border-rose-500\/30 {
+  border-color: color-mix(in srgb, oklch(64.5% 0.246 16.439) 30%, transparent);
+  @supports (color: color-mix(in lab, red, red)) {
+    border-color: color-mix(in oklab, var(--color-rose-500) 30%, transparent);
+  }
+}
+.border-sky-500\/20 {
+  border-color: color-mix(in srgb, oklch(68.5% 0.169 237.323) 20%, transparent);
+  @supports (color: color-mix(in lab, red, red)) {
+    border-color: color-mix(in oklab, var(--color-sky-500) 20%, transparent);
+  }
+}
+.border-sky-500\/30 {
+  border-color: color-mix(in srgb, oklch(68.5% 0.169 237.323) 30%, transparent);
+  @supports (color: color-mix(in lab, red, red)) {
+    border-color: color-mix(in oklab, var(--color-sky-500) 30%, transparent);
+  }
+}
+.border-sky-500\/40 {
+  border-color: color-mix(in srgb, oklch(68.5% 0.169 237.323) 40%, transparent);
+  @supports (color: color-mix(in lab, red, red)) {
+    border-color: color-mix(in oklab, var(--color-sky-500) 40%, transparent);
+  }
+}
+.border-slate-700 {
+  border-color: var(--color-slate-700);
+}
+.border-slate-800 {
+  border-color: var(--color-slate-800);
+}
+.border-slate-800\/80 {
+  border-color: color-mix(in srgb, oklch(27.9% 0.041 260.031) 80%, transparent);
+  @supports (color: color-mix(in lab, red, red)) {
+    border-color: color-mix(in oklab, var(--color-slate-800) 80%, transparent);
+  }
+}
+.border-slate-800\/90 {
+  border-color: color-mix(in srgb, oklch(27.9% 0.041 260.031) 90%, transparent);
+  @supports (color: color-mix(in lab, red, red)) {
+    border-color: color-mix(in oklab, var(--color-slate-800) 90%, transparent);
+  }
+}
+.border-transparent {
+  border-color: transparent;
+}
+.bg-amber-400 {
+  background-color: var(--color-amber-400);
+}
+.bg-amber-500\/5 {
+  background-color: color-mix(in srgb, oklch(76.9% 0.188 70.08) 5%, transparent);
+  @supports (color: color-mix(in lab, red, red)) {
+    background-color: color-mix(in oklab, var(--color-amber-500) 5%, transparent);
+  }
+}
+.bg-emerald-400 {
+  background-color: var(--color-emerald-400);
+}
+.bg-emerald-500\/10 {
+  background-color: color-mix(in srgb, oklch(69.6% 0.17 162.48) 10%, transparent);
+  @supports (color: color-mix(in lab, red, red)) {
+    background-color: color-mix(in oklab, var(--color-emerald-500) 10%, transparent);
+  }
+}
+.bg-emerald-500\/15 {
+  background-color: color-mix(in srgb, oklch(69.6% 0.17 162.48) 15%, transparent);
+  @supports (color: color-mix(in lab, red, red)) {
+    background-color: color-mix(in oklab, var(--color-emerald-500) 15%, transparent);
+  }
+}
+.bg-fuchsia-400 {
+  background-color: var(--color-fuchsia-400);
+}
+.bg-fuchsia-500\/10 {
+  background-color: color-mix(in srgb, oklch(66.7% 0.295 322.15) 10%, transparent);
+  @supports (color: color-mix(in lab, red, red)) {
+    background-color: color-mix(in oklab, var(--color-fuchsia-500) 10%, transparent);
+  }
+}
+.bg-fuchsia-500\/15 {
+  background-color: color-mix(in srgb, oklch(66.7% 0.295 322.15) 15%, transparent);
+  @supports (color: color-mix(in lab, red, red)) {
+    background-color: color-mix(in oklab, var(--color-fuchsia-500) 15%, transparent);
+  }
+}
+.bg-fuchsia-500\/20 {
+  background-color: color-mix(in srgb, oklch(66.7% 0.295 322.15) 20%, transparent);
+  @supports (color: color-mix(in lab, red, red)) {
+    background-color: color-mix(in oklab, var(--color-fuchsia-500) 20%, transparent);
+  }
+}
+.bg-fuchsia-500\/30 {
+  background-color: color-mix(in srgb, oklch(66.7% 0.295 322.15) 30%, transparent);
+  @supports (color: color-mix(in lab, red, red)) {
+    background-color: color-mix(in oklab, var(--color-fuchsia-500) 30%, transparent);
+  }
+}
+.bg-fuchsia-600 {
+  background-color: var(--color-fuchsia-600);
+}
+.bg-purple-400 {
+  background-color: var(--color-purple-400);
+}
+.bg-purple-500\/5 {
+  background-color: color-mix(in srgb, oklch(62.7% 0.265 303.9) 5%, transparent);
+  @supports (color: color-mix(in lab, red, red)) {
+    background-color: color-mix(in oklab, var(--color-purple-500) 5%, transparent);
+  }
+}
+.bg-rose-500 {
+  background-color: var(--color-rose-500);
+}
+.bg-rose-500\/5 {
+  background-color: color-mix(in srgb, oklch(64.5% 0.246 16.439) 5%, transparent);
+  @supports (color: color-mix(in lab, red, red)) {
+    background-color: color-mix(in oklab, var(--color-rose-500) 5%, transparent);
+  }
+}
+.bg-rose-500\/15 {
+  background-color: color-mix(in srgb, oklch(64.5% 0.246 16.439) 15%, transparent);
+  @supports (color: color-mix(in lab, red, red)) {
+    background-color: color-mix(in oklab, var(--color-rose-500) 15%, transparent);
+  }
+}
+.bg-sky-400 {
+  background-color: var(--color-sky-400);
+}
+.bg-sky-500\/5 {
+  background-color: color-mix(in srgb, oklch(68.5% 0.169 237.323) 5%, transparent);
+  @supports (color: color-mix(in lab, red, red)) {
+    background-color: color-mix(in oklab, var(--color-sky-500) 5%, transparent);
+  }
+}
+.bg-sky-500\/15 {
+  background-color: color-mix(in srgb, oklch(68.5% 0.169 237.323) 15%, transparent);
+  @supports (color: color-mix(in lab, red, red)) {
+    background-color: color-mix(in oklab, var(--color-sky-500) 15%, transparent);
+  }
+}
+.bg-sky-500\/20 {
+  background-color: color-mix(in srgb, oklch(68.5% 0.169 237.323) 20%, transparent);
+  @supports (color: color-mix(in lab, red, red)) {
+    background-color: color-mix(in oklab, var(--color-sky-500) 20%, transparent);
+  }
+}
+.bg-slate-500\/10 {
+  background-color: color-mix(in srgb, oklch(55.4% 0.046 257.417) 10%, transparent);
+  @supports (color: color-mix(in lab, red, red)) {
+    background-color: color-mix(in oklab, var(--color-slate-500) 10%, transparent);
+  }
+}
+.bg-slate-800 {
+  background-color: var(--color-slate-800);
+}
+.bg-slate-800\/70 {
+  background-color: color-mix(in srgb, oklch(27.9% 0.041 260.031) 70%, transparent);
+  @supports (color: color-mix(in lab, red, red)) {
+    background-color: color-mix(in oklab, var(--color-slate-800) 70%, transparent);
+  }
+}
+.bg-slate-800\/80 {
+  background-color: color-mix(in srgb, oklch(27.9% 0.041 260.031) 80%, transparent);
+  @supports (color: color-mix(in lab, red, red)) {
+    background-color: color-mix(in oklab, var(--color-slate-800) 80%, transparent);
+  }
+}
+.bg-slate-800\/90 {
+  background-color: color-mix(in srgb, oklch(27.9% 0.041 260.031) 90%, transparent);
+  @supports (color: color-mix(in lab, red, red)) {
+    background-color: color-mix(in oklab, var(--color-slate-800) 90%, transparent);
+  }
+}
+.bg-slate-900 {
+  background-color: var(--color-slate-900);
+}
+.bg-slate-900\/80 {
+  background-color: color-mix(in srgb, oklch(20.8% 0.042 265.755) 80%, transparent);
+  @supports (color: color-mix(in lab, red, red)) {
+    background-color: color-mix(in oklab, var(--color-slate-900) 80%, transparent);
+  }
+}
+.bg-slate-900\/90 {
+  background-color: color-mix(in srgb, oklch(20.8% 0.042 265.755) 90%, transparent);
+  @supports (color: color-mix(in lab, red, red)) {
+    background-color: color-mix(in oklab, var(--color-slate-900) 90%, transparent);
+  }
+}
+.bg-slate-900\/95 {
+  background-color: color-mix(in srgb, oklch(20.8% 0.042 265.755) 95%, transparent);
+  @supports (color: color-mix(in lab, red, red)) {
+    background-color: color-mix(in oklab, var(--color-slate-900) 95%, transparent);
+  }
+}
+.bg-slate-950\/55 {
+  background-color: color-mix(in srgb, oklch(12.9% 0.042 264.695) 55%, transparent);
+  @supports (color: color-mix(in lab, red, red)) {
+    background-color: color-mix(in oklab, var(--color-slate-950) 55%, transparent);
+  }
+}
+.bg-slate-950\/60 {
+  background-color: color-mix(in srgb, oklch(12.9% 0.042 264.695) 60%, transparent);
+  @supports (color: color-mix(in lab, red, red)) {
+    background-color: color-mix(in oklab, var(--color-slate-950) 60%, transparent);
+  }
+}
+.bg-slate-950\/70 {
+  background-color: color-mix(in srgb, oklch(12.9% 0.042 264.695) 70%, transparent);
+  @supports (color: color-mix(in lab, red, red)) {
+    background-color: color-mix(in oklab, var(--color-slate-950) 70%, transparent);
+  }
+}
+.bg-slate-950\/80 {
+  background-color: color-mix(in srgb, oklch(12.9% 0.042 264.695) 80%, transparent);
+  @supports (color: color-mix(in lab, red, red)) {
+    background-color: color-mix(in oklab, var(--color-slate-950) 80%, transparent);
+  }
+}
+.bg-slate-950\/90 {
+  background-color: color-mix(in srgb, oklch(12.9% 0.042 264.695) 90%, transparent);
+  @supports (color: color-mix(in lab, red, red)) {
+    background-color: color-mix(in oklab, var(--color-slate-950) 90%, transparent);
+  }
+}
+.bg-slate-950\/95 {
+  background-color: color-mix(in srgb, oklch(12.9% 0.042 264.695) 95%, transparent);
+  @supports (color: color-mix(in lab, red, red)) {
+    background-color: color-mix(in oklab, var(--color-slate-950) 95%, transparent);
+  }
+}
+.bg-gradient-to-r {
+  --tw-gradient-position: to right in oklab;
+  background-image: linear-gradient(var(--tw-gradient-stops));
+}
+.from-fuchsia-400 {
+  --tw-gradient-from: var(--color-fuchsia-400);
+  --tw-gradient-stops: var(--tw-gradient-via-stops, var(--tw-gradient-position), var(--tw-gradient-from) var(--tw-gradient-from-position), var(--tw-gradient-to) var(--tw-gradient-to-position));
+}
+.from-fuchsia-600 {
+  --tw-gradient-from: var(--color-fuchsia-600);
+  --tw-gradient-stops: var(--tw-gradient-via-stops, var(--tw-gradient-position), var(--tw-gradient-from) var(--tw-gradient-from-position), var(--tw-gradient-to) var(--tw-gradient-to-position));
+}
+.via-sky-400 {
+  --tw-gradient-via: var(--color-sky-400);
+  --tw-gradient-via-stops: var(--tw-gradient-position), var(--tw-gradient-from) var(--tw-gradient-from-position), var(--tw-gradient-via) var(--tw-gradient-via-position), var(--tw-gradient-to) var(--tw-gradient-to-position);
+  --tw-gradient-stops: var(--tw-gradient-via-stops);
+}
+.to-amber-300 {
+  --tw-gradient-to: var(--color-amber-300);
+  --tw-gradient-stops: var(--tw-gradient-via-stops, var(--tw-gradient-position), var(--tw-gradient-from) var(--tw-gradient-from-position), var(--tw-gradient-to) var(--tw-gradient-to-position));
+}
+.to-purple-600 {
+  --tw-gradient-to: var(--color-purple-600);
+  --tw-gradient-stops: var(--tw-gradient-via-stops, var(--tw-gradient-position), var(--tw-gradient-from) var(--tw-gradient-from-position), var(--tw-gradient-to) var(--tw-gradient-to-position));
+}
+.bg-clip-text {
+  background-clip: text;
+}
+.p-0 {
+  padding: calc(var(--spacing) * 0);
+}
+.p-0\.5 {
+  padding: calc(var(--spacing) * 0.5);
+}
+.p-1 {
+  padding: calc(var(--spacing) * 1);
+}
+.p-1\.5 {
+  padding: calc(var(--spacing) * 1.5);
+}
+.p-3 {
+  padding: calc(var(--spacing) * 3);
+}
+.p-3\.5 {
+  padding: calc(var(--spacing) * 3.5);
+}
+.p-4 {
+  padding: calc(var(--spacing) * 4);
+}
+.p-5 {
+  padding: calc(var(--spacing) * 5);
+}
+.px-1 {
+  padding-inline: calc(var(--spacing) * 1);
+}
+.px-1\.5 {
+  padding-inline: calc(var(--spacing) * 1.5);
+}
+.px-2 {
+  padding-inline: calc(var(--spacing) * 2);
+}
+.px-2\.5 {
+  padding-inline: calc(var(--spacing) * 2.5);
+}
+.px-3 {
+  padding-inline: calc(var(--spacing) * 3);
+}
+.px-3\.5 {
+  padding-inline: calc(var(--spacing) * 3.5);
+}
+.px-4 {
+  padding-inline: calc(var(--spacing) * 4);
+}
+.py-0 {
+  padding-block: calc(var(--spacing) * 0);
+}
+.py-0\.5 {
+  padding-block: calc(var(--spacing) * 0.5);
+}
+.py-1 {
+  padding-block: calc(var(--spacing) * 1);
+}
+.py-1\.5 {
+  padding-block: calc(var(--spacing) * 1.5);
+}
+.py-2 {
+  padding-block: calc(var(--spacing) * 2);
+}
+.py-2\.5 {
+  padding-block: calc(var(--spacing) * 2.5);
+}
+.py-3 {
+  padding-block: calc(var(--spacing) * 3);
+}
+.py-3\.5 {
+  padding-block: calc(var(--spacing) * 3.5);
+}
+.py-7 {
+  padding-block: calc(var(--spacing) * 7);
+}
+.pt-1 {
+  padding-top: calc(var(--spacing) * 1);
+}
+.pt-1\.5 {
+  padding-top: calc(var(--spacing) * 1.5);
+}
+.pt-3 {
+  padding-top: calc(var(--spacing) * 3);
+}
+.pb-1 {
+  padding-bottom: calc(var(--spacing) * 1);
+}
+.pb-1\.5 {
+  padding-bottom: calc(var(--spacing) * 1.5);
+}
+.pb-4 {
+  padding-bottom: calc(var(--spacing) * 4);
+}
+.pb-5 {
+  padding-bottom: calc(var(--spacing) * 5);
+}
+.pl-4 {
+  padding-left: calc(var(--spacing) * 4);
+}
+.text-center {
+  text-align: center;
+}
+.text-left {
+  text-align: left;
+}
+.text-right {
+  text-align: right;
+}
+.font-display {
+  font-family: var(--font-display);
+}
+.font-mono {
+  font-family: var(--font-mono);
+}
+.text-2xl {
+  font-size: var(--text-2xl);
+  line-height: var(--tw-leading, var(--text-2xl--line-height));
+}
+.text-3xl {
+  font-size: var(--text-3xl);
+  line-height: var(--tw-leading, var(--text-3xl--line-height));
+}
+.text-base {
+  font-size: var(--text-base);
+  line-height: var(--tw-leading, var(--text-base--line-height));
+}
+.text-lg {
+  font-size: var(--text-lg);
+  line-height: var(--tw-leading, var(--text-lg--line-height));
+}
+.text-sm {
+  font-size: var(--text-sm);
+  line-height: var(--tw-leading, var(--text-sm--line-height));
+}
+.text-xl {
+  font-size: var(--text-xl);
+  line-height: var(--tw-leading, var(--text-xl--line-height));
+}
+.text-xs {
+  font-size: var(--text-xs);
+  line-height: var(--tw-leading, var(--text-xs--line-height));
+}
+.text-\[10px\] {
+  font-size: 10px;
+}
+.text-\[11px\] {
+  font-size: 11px;
+}
+.leading-\[1\.03\] {
+  --tw-leading: 1.03;
+  line-height: 1.03;
+}
+.leading-relaxed {
+  --tw-leading: var(--leading-relaxed);
+  line-height: var(--leading-relaxed);
+}
+.font-bold {
+  --tw-font-weight: var(--font-weight-bold);
+  font-weight: var(--font-weight-bold);
+}
+.font-extrabold {
+  --tw-font-weight: var(--font-weight-extrabold);
+  font-weight: var(--font-weight-extrabold);
+}
+.font-medium {
+  --tw-font-weight: var(--font-weight-medium);
+  font-weight: var(--font-weight-medium);
+}
+.font-normal {
+  --tw-font-weight: var(--font-weight-normal);
+  font-weight: var(--font-weight-normal);
+}
+.font-semibold {
+  --tw-font-weight: var(--font-weight-semibold);
+  font-weight: var(--font-weight-semibold);
+}
+.tracking-tight {
+  --tw-tracking: var(--tracking-tight);
+  letter-spacing: var(--tracking-tight);
+}
+.tracking-wider {
+  --tw-tracking: var(--tracking-wider);
+  letter-spacing: var(--tracking-wider);
+}
+.tracking-widest {
+  --tw-tracking: var(--tracking-widest);
+  letter-spacing: var(--tracking-widest);
+}
+.whitespace-nowrap {
+  white-space: nowrap;
+}
+.text-amber-300 {
+  color: var(--color-amber-300);
+}
+.text-amber-400 {
+  color: var(--color-amber-400);
+}
+.text-emerald-300 {
+  color: var(--color-emerald-300);
+}
+.text-emerald-400 {
+  color: var(--color-emerald-400);
+}
+.text-fuchsia-200 {
+  color: var(--color-fuchsia-200);
+}
+.text-fuchsia-300 {
+  color: var(--color-fuchsia-300);
+}
+.text-fuchsia-400 {
+  color: var(--color-fuchsia-400);
+}
+.text-purple-300 {
+  color: var(--color-purple-300);
+}
+.text-purple-400 {
+  color: var(--color-purple-400);
+}
+.text-rose-300 {
+  color: var(--color-rose-300);
+}
+.text-rose-400 {
+  color: var(--color-rose-400);
+}
+.text-sky-300 {
+  color: var(--color-sky-300);
+}
+.text-sky-400 {
+  color: var(--color-sky-400);
+}
+.text-slate-200 {
+  color: var(--color-slate-200);
+}
+.text-slate-300 {
+  color: var(--color-slate-300);
+}
+.text-slate-400 {
+  color: var(--color-slate-400);
+}
+.text-slate-500 {
+  color: var(--color-slate-500);
+}
+.text-transparent {
+  color: transparent;
+}
+.text-white {
+  color: var(--color-white);
+}
+.uppercase {
+  text-transform: uppercase;
+}
+.italic {
+  font-style: italic;
+}
+.tabular-nums {
+  --tw-numeric-spacing: tabular-nums;
+  font-variant-numeric: var(--tw-ordinal,) var(--tw-slashed-zero,) var(--tw-numeric-figure,) var(--tw-numeric-spacing,) var(--tw-numeric-fraction,);
+}
+.underline {
+  text-decoration-line: underline;
+}
+.opacity-0 {
+  opacity: 0%;
+}
+.shadow-2xl {
+  --tw-shadow: 0 25px 50px -12px var(--tw-shadow-color, rgb(0 0 0 / 0.25));
+  box-shadow: var(--tw-inset-shadow), var(--tw-inset-ring-shadow), var(--tw-ring-offset-shadow), var(--tw-ring-shadow), var(--tw-shadow);
+}
+.shadow-inner {
+  --tw-shadow: inset 0 2px 4px 0 var(--tw-shadow-color, rgb(0 0 0 / 0.05));
+  box-shadow: var(--tw-inset-shadow), var(--tw-inset-ring-shadow), var(--tw-ring-offset-shadow), var(--tw-ring-shadow), var(--tw-shadow);
+}
+.shadow-lg {
+  --tw-shadow: 0 10px 15px -3px var(--tw-shadow-color, rgb(0 0 0 / 0.1)), 0 4px 6px -4px var(--tw-shadow-color, rgb(0 0 0 / 0.1));
+  box-shadow: var(--tw-inset-shadow), var(--tw-inset-ring-shadow), var(--tw-ring-offset-shadow), var(--tw-ring-shadow), var(--tw-shadow);
+}
+.shadow-md {
+  --tw-shadow: 0 4px 6px -1px var(--tw-shadow-color, rgb(0 0 0 / 0.1)), 0 2px 4px -2px var(--tw-shadow-color, rgb(0 0 0 / 0.1));
+  box-shadow: var(--tw-inset-shadow), var(--tw-inset-ring-shadow), var(--tw-ring-offset-shadow), var(--tw-ring-shadow), var(--tw-shadow);
+}
+.shadow-fuchsia-600\/30 {
+  --tw-shadow-color: color-mix(in srgb, oklch(59.1% 0.293 322.896) 30%, transparent);
+  @supports (color: color-mix(in lab, red, red)) {
+    --tw-shadow-color: color-mix(in oklab, color-mix(in oklab, var(--color-fuchsia-600) 30%, transparent) var(--tw-shadow-alpha), transparent);
+  }
+}
+.shadow-fuchsia-950\/30 {
+  --tw-shadow-color: color-mix(in srgb, oklch(29.3% 0.136 325.661) 30%, transparent);
+  @supports (color: color-mix(in lab, red, red)) {
+    --tw-shadow-color: color-mix(in oklab, color-mix(in oklab, var(--color-fuchsia-950) 30%, transparent) var(--tw-shadow-alpha), transparent);
+  }
+}
+.drop-shadow {
+  --tw-drop-shadow-size: drop-shadow(0 1px 2px var(--tw-drop-shadow-color, rgb(0 0 0 / 0.1))) drop-shadow(0 1px 1px var(--tw-drop-shadow-color, rgb(0 0 0 / 0.06)));
+  --tw-drop-shadow: drop-shadow(0 1px 2px rgb(0 0 0 / 0.1)) drop-shadow( 0 1px 1px rgb(0 0 0 / 0.06));
+  filter: var(--tw-blur,) var(--tw-brightness,) var(--tw-contrast,) var(--tw-grayscale,) var(--tw-hue-rotate,) var(--tw-invert,) var(--tw-saturate,) var(--tw-sepia,) var(--tw-drop-shadow,);
+}
+.backdrop-blur {
+  --tw-backdrop-blur: blur(8px);
+  -webkit-backdrop-filter: var(--tw-backdrop-blur,) var(--tw-backdrop-brightness,) var(--tw-backdrop-contrast,) var(--tw-backdrop-grayscale,) var(--tw-backdrop-hue-rotate,) var(--tw-backdrop-invert,) var(--tw-backdrop-opacity,) var(--tw-backdrop-saturate,) var(--tw-backdrop-sepia,);
+  backdrop-filter: var(--tw-backdrop-blur,) var(--tw-backdrop-brightness,) var(--tw-backdrop-contrast,) var(--tw-backdrop-grayscale,) var(--tw-backdrop-hue-rotate,) var(--tw-backdrop-invert,) var(--tw-backdrop-opacity,) var(--tw-backdrop-saturate,) var(--tw-backdrop-sepia,);
+}
+.backdrop-blur-xl {
+  --tw-backdrop-blur: blur(var(--blur-xl));
+  -webkit-backdrop-filter: var(--tw-backdrop-blur,) var(--tw-backdrop-brightness,) var(--tw-backdrop-contrast,) var(--tw-backdrop-grayscale,) var(--tw-backdrop-hue-rotate,) var(--tw-backdrop-invert,) var(--tw-backdrop-opacity,) var(--tw-backdrop-saturate,) var(--tw-backdrop-sepia,);
+  backdrop-filter: var(--tw-backdrop-blur,) var(--tw-backdrop-brightness,) var(--tw-backdrop-contrast,) var(--tw-backdrop-grayscale,) var(--tw-backdrop-hue-rotate,) var(--tw-backdrop-invert,) var(--tw-backdrop-opacity,) var(--tw-backdrop-saturate,) var(--tw-backdrop-sepia,);
+}
+.backdrop-filter {
+  -webkit-backdrop-filter: var(--tw-backdrop-blur,) var(--tw-backdrop-brightness,) var(--tw-backdrop-contrast,) var(--tw-backdrop-grayscale,) var(--tw-backdrop-hue-rotate,) var(--tw-backdrop-invert,) var(--tw-backdrop-opacity,) var(--tw-backdrop-saturate,) var(--tw-backdrop-sepia,);
+  backdrop-filter: var(--tw-backdrop-blur,) var(--tw-backdrop-brightness,) var(--tw-backdrop-contrast,) var(--tw-backdrop-grayscale,) var(--tw-backdrop-hue-rotate,) var(--tw-backdrop-invert,) var(--tw-backdrop-opacity,) var(--tw-backdrop-saturate,) var(--tw-backdrop-sepia,);
+}
+.transition {
+  transition-property: color, background-color, border-color, outline-color, text-decoration-color, fill, stroke, --tw-gradient-from, --tw-gradient-via, --tw-gradient-to, opacity, box-shadow, transform, translate, scale, rotate, filter, -webkit-backdrop-filter, backdrop-filter, display, visibility, content-visibility, overlay, pointer-events;
+  transition-timing-function: var(--tw-ease, var(--default-transition-timing-function));
+  transition-duration: var(--tw-duration, var(--default-transition-duration));
+}
+.transition-all {
+  transition-property: all;
+  transition-timing-function: var(--tw-ease, var(--default-transition-timing-function));
+  transition-duration: var(--tw-duration, var(--default-transition-duration));
+}
+.transition-colors {
+  transition-property: color, background-color, border-color, outline-color, text-decoration-color, fill, stroke, --tw-gradient-from, --tw-gradient-via, --tw-gradient-to;
+  transition-timing-function: var(--tw-ease, var(--default-transition-timing-function));
+  transition-duration: var(--tw-duration, var(--default-transition-duration));
+}
+.transition-opacity {
+  transition-property: opacity;
+  transition-timing-function: var(--tw-ease, var(--default-transition-timing-function));
+  transition-duration: var(--tw-duration, var(--default-transition-duration));
+}
+.duration-75 {
+  --tw-duration: 75ms;
+  transition-duration: 75ms;
+}
+.duration-200 {
+  --tw-duration: 200ms;
+  transition-duration: 200ms;
+}
+.duration-300 {
+  --tw-duration: 300ms;
+  transition-duration: 300ms;
+}
+.ease-out {
+  --tw-ease: var(--ease-out);
+  transition-timing-function: var(--ease-out);
+}
+.select-none {
+  -webkit-user-select: none;
+  user-select: none;
+}
+.selection\:bg-fuchsia-500\/30 {
+  & *::selection {
+    background-color: color-mix(in srgb, oklch(66.7% 0.295 322.15) 30%, transparent);
+    @supports (color: color-mix(in lab, red, red)) {
+      background-color: color-mix(in oklab, var(--color-fuchsia-500) 30%, transparent);
+    }
+  }
+  &::selection {
+    background-color: color-mix(in srgb, oklch(66.7% 0.295 322.15) 30%, transparent);
+    @supports (color: color-mix(in lab, red, red)) {
+      background-color: color-mix(in oklab, var(--color-fuchsia-500) 30%, transparent);
+    }
+  }
+}
+.selection\:text-fuchsia-200 {
+  & *::selection {
+    color: var(--color-fuchsia-200);
+  }
+  &::selection {
+    color: var(--color-fuchsia-200);
+  }
+}
+.hover\:border-slate-600 {
+  &:hover {
+    @media (hover: hover) {
+      border-color: var(--color-slate-600);
+    }
+  }
+}
+.hover\:bg-fuchsia-500\/25 {
+  &:hover {
+    @media (hover: hover) {
+      background-color: color-mix(in srgb, oklch(66.7% 0.295 322.15) 25%, transparent);
+      @supports (color: color-mix(in lab, red, red)) {
+        background-color: color-mix(in oklab, var(--color-fuchsia-500) 25%, transparent);
+      }
+    }
+  }
+}
+.hover\:bg-fuchsia-500\/30 {
+  &:hover {
+    @media (hover: hover) {
+      background-color: color-mix(in srgb, oklch(66.7% 0.295 322.15) 30%, transparent);
+      @supports (color: color-mix(in lab, red, red)) {
+        background-color: color-mix(in oklab, var(--color-fuchsia-500) 30%, transparent);
+      }
+    }
+  }
+}
+.hover\:bg-slate-700 {
+  &:hover {
+    @media (hover: hover) {
+      background-color: var(--color-slate-700);
+    }
+  }
+}
+.hover\:bg-slate-700\/80 {
+  &:hover {
+    @media (hover: hover) {
+      background-color: color-mix(in srgb, oklch(37.2% 0.044 257.287) 80%, transparent);
+      @supports (color: color-mix(in lab, red, red)) {
+        background-color: color-mix(in oklab, var(--color-slate-700) 80%, transparent);
+      }
+    }
+  }
+}
+.hover\:bg-slate-800\/50 {
+  &:hover {
+    @media (hover: hover) {
+      background-color: color-mix(in srgb, oklch(27.9% 0.041 260.031) 50%, transparent);
+      @supports (color: color-mix(in lab, red, red)) {
+        background-color: color-mix(in oklab, var(--color-slate-800) 50%, transparent);
+      }
+    }
+  }
+}
+.hover\:from-fuchsia-500 {
+  &:hover {
+    @media (hover: hover) {
+      --tw-gradient-from: var(--color-fuchsia-500);
+      --tw-gradient-stops: var(--tw-gradient-via-stops, var(--tw-gradient-position), var(--tw-gradient-from) var(--tw-gradient-from-position), var(--tw-gradient-to) var(--tw-gradient-to-position));
+    }
+  }
+}
+.hover\:to-purple-500 {
+  &:hover {
+    @media (hover: hover) {
+      --tw-gradient-to: var(--color-purple-500);
+      --tw-gradient-stops: var(--tw-gradient-via-stops, var(--tw-gradient-position), var(--tw-gradient-from) var(--tw-gradient-from-position), var(--tw-gradient-to) var(--tw-gradient-to-position));
+    }
+  }
+}
+.hover\:text-fuchsia-300 {
+  &:hover {
+    @media (hover: hover) {
+      color: var(--color-fuchsia-300);
+    }
+  }
+}
+.hover\:text-white {
+  &:hover {
+    @media (hover: hover) {
+      color: var(--color-white);
+    }
+  }
+}
+.sm\:grid-cols-2 {
+  @media (width >= 40rem) {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+.sm\:flex-row {
+  @media (width >= 40rem) {
+    flex-direction: row;
+  }
+}
+.sm\:items-center {
+  @media (width >= 40rem) {
+    align-items: center;
+  }
+}
+.sm\:p-5 {
+  @media (width >= 40rem) {
+    padding: calc(var(--spacing) * 5);
+  }
+}
+.sm\:p-6 {
+  @media (width >= 40rem) {
+    padding: calc(var(--spacing) * 6);
+  }
+}
+.sm\:px-5 {
+  @media (width >= 40rem) {
+    padding-inline: calc(var(--spacing) * 5);
+  }
+}
+.sm\:px-6 {
+  @media (width >= 40rem) {
+    padding-inline: calc(var(--spacing) * 6);
+  }
+}
+.sm\:py-10 {
+  @media (width >= 40rem) {
+    padding-block: calc(var(--spacing) * 10);
+  }
+}
+.sm\:text-5xl {
+  @media (width >= 40rem) {
+    font-size: var(--text-5xl);
+    line-height: var(--tw-leading, var(--text-5xl--line-height));
+  }
+}
+.sm\:text-base {
+  @media (width >= 40rem) {
+    font-size: var(--text-base);
+    line-height: var(--tw-leading, var(--text-base--line-height));
+  }
+}
+.sm\:text-sm {
+  @media (width >= 40rem) {
+    font-size: var(--text-sm);
+    line-height: var(--tw-leading, var(--text-sm--line-height));
+  }
+}
+.sm\:text-xl {
+  @media (width >= 40rem) {
+    font-size: var(--text-xl);
+    line-height: var(--tw-leading, var(--text-xl--line-height));
+  }
+}
+.md\:grid-cols-4 {
+  @media (width >= 48rem) {
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+  }
+}
+.md\:flex-row {
+  @media (width >= 48rem) {
+    flex-direction: row;
+  }
+}
+.md\:items-center {
+  @media (width >= 48rem) {
+    align-items: center;
+  }
+}
+.lg\:col-span-5 {
+  @media (width >= 64rem) {
+    grid-column: span 5 / span 5;
+  }
+}
+.lg\:col-span-7 {
+  @media (width >= 64rem) {
+    grid-column: span 7 / span 7;
+  }
+}
+.lg\:grid-cols-2 {
+  @media (width >= 64rem) {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+.lg\:grid-cols-4 {
+  @media (width >= 64rem) {
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+  }
+}
+.lg\:grid-cols-12 {
+  @media (width >= 64rem) {
+    grid-template-columns: repeat(12, minmax(0, 1fr));
+  }
+}
+.lg\:flex-col {
+  @media (width >= 64rem) {
+    flex-direction: column;
+  }
+}
+.lg\:flex-row {
+  @media (width >= 64rem) {
+    flex-direction: row;
+  }
+}
+.lg\:items-center {
+  @media (width >= 64rem) {
+    align-items: center;
+  }
+}
+.lg\:items-end {
+  @media (width >= 64rem) {
+    align-items: flex-end;
+  }
+}
+.lg\:px-8 {
+  @media (width >= 64rem) {
+    padding-inline: calc(var(--spacing) * 8);
+  }
+}
+.lg\:text-right {
+  @media (width >= 64rem) {
+    text-align: right;
+  }
+}
+@property --tw-translate-x {
+  syntax: "*";
+  inherits: false;
+  initial-value: 0;
+}
+@property --tw-translate-y {
+  syntax: "*";
+  inherits: false;
+  initial-value: 0;
+}
+@property --tw-translate-z {
+  syntax: "*";
+  inherits: false;
+  initial-value: 0;
+}
+@property --tw-space-y-reverse {
+  syntax: "*";
+  inherits: false;
+  initial-value: 0;
+}
+@property --tw-divide-y-reverse {
+  syntax: "*";
+  inherits: false;
+  initial-value: 0;
+}
+@property --tw-border-style {
+  syntax: "*";
+  inherits: false;
+  initial-value: solid;
+}
+@property --tw-gradient-position {
+  syntax: "*";
+  inherits: false;
+}
+@property --tw-gradient-from {
+  syntax: "<color>";
+  inherits: false;
+  initial-value: #0000;
+}
+@property --tw-gradient-via {
+  syntax: "<color>";
+  inherits: false;
+  initial-value: #0000;
+}
+@property --tw-gradient-to {
+  syntax: "<color>";
+  inherits: false;
+  initial-value: #0000;
+}
+@property --tw-gradient-stops {
+  syntax: "*";
+  inherits: false;
+}
+@property --tw-gradient-via-stops {
+  syntax: "*";
+  inherits: false;
+}
+@property --tw-gradient-from-position {
+  syntax: "<length-percentage>";
+  inherits: false;
+  initial-value: 0%;
+}
+@property --tw-gradient-via-position {
+  syntax: "<length-percentage>";
+  inherits: false;
+  initial-value: 50%;
+}
+@property --tw-gradient-to-position {
+  syntax: "<length-percentage>";
+  inherits: false;
+  initial-value: 100%;
+}
+@property --tw-leading {
+  syntax: "*";
+  inherits: false;
+}
+@property --tw-font-weight {
+  syntax: "*";
+  inherits: false;
+}
+@property --tw-tracking {
+  syntax: "*";
+  inherits: false;
+}
+@property --tw-ordinal {
+  syntax: "*";
+  inherits: false;
+}
+@property --tw-slashed-zero {
+  syntax: "*";
+  inherits: false;
+}
+@property --tw-numeric-figure {
+  syntax: "*";
+  inherits: false;
+}
+@property --tw-numeric-spacing {
+  syntax: "*";
+  inherits: false;
+}
+@property --tw-numeric-fraction {
+  syntax: "*";
+  inherits: false;
+}
+@property --tw-shadow {
+  syntax: "*";
+  inherits: false;
+  initial-value: 0 0 #0000;
+}
+@property --tw-shadow-color {
+  syntax: "*";
+  inherits: false;
+}
+@property --tw-shadow-alpha {
+  syntax: "<percentage>";
+  inherits: false;
+  initial-value: 100%;
+}
+@property --tw-inset-shadow {
+  syntax: "*";
+  inherits: false;
+  initial-value: 0 0 #0000;
+}
+@property --tw-inset-shadow-color {
+  syntax: "*";
+  inherits: false;
+}
+@property --tw-inset-shadow-alpha {
+  syntax: "<percentage>";
+  inherits: false;
+  initial-value: 100%;
+}
+@property --tw-ring-color {
+  syntax: "*";
+  inherits: false;
+}
+@property --tw-ring-shadow {
+  syntax: "*";
+  inherits: false;
+  initial-value: 0 0 #0000;
+}
+@property --tw-inset-ring-color {
+  syntax: "*";
+  inherits: false;
+}
+@property --tw-inset-ring-shadow {
+  syntax: "*";
+  inherits: false;
+  initial-value: 0 0 #0000;
+}
+@property --tw-ring-inset {
+  syntax: "*";
+  inherits: false;
+}
+@property --tw-ring-offset-width {
+  syntax: "<length>";
+  inherits: false;
+  initial-value: 0px;
+}
+@property --tw-ring-offset-color {
+  syntax: "*";
+  inherits: false;
+  initial-value: #fff;
+}
+@property --tw-ring-offset-shadow {
+  syntax: "*";
+  inherits: false;
+  initial-value: 0 0 #0000;
+}
+@property --tw-blur {
+  syntax: "*";
+  inherits: false;
+}
+@property --tw-brightness {
+  syntax: "*";
+  inherits: false;
+}
+@property --tw-contrast {
+  syntax: "*";
+  inherits: false;
+}
+@property --tw-grayscale {
+  syntax: "*";
+  inherits: false;
+}
+@property --tw-hue-rotate {
+  syntax: "*";
+  inherits: false;
+}
+@property --tw-invert {
+  syntax: "*";
+  inherits: false;
+}
+@property --tw-opacity {
+  syntax: "*";
+  inherits: false;
+}
+@property --tw-saturate {
+  syntax: "*";
+  inherits: false;
+}
+@property --tw-sepia {
+  syntax: "*";
+  inherits: false;
+}
+@property --tw-drop-shadow {
+  syntax: "*";
+  inherits: false;
+}
+@property --tw-drop-shadow-color {
+  syntax: "*";
+  inherits: false;
+}
+@property --tw-drop-shadow-alpha {
+  syntax: "<percentage>";
+  inherits: false;
+  initial-value: 100%;
+}
+@property --tw-drop-shadow-size {
+  syntax: "*";
+  inherits: false;
+}
+@property --tw-backdrop-blur {
+  syntax: "*";
+  inherits: false;
+}
+@property --tw-backdrop-brightness {
+  syntax: "*";
+  inherits: false;
+}
+@property --tw-backdrop-contrast {
+  syntax: "*";
+  inherits: false;
+}
+@property --tw-backdrop-grayscale {
+  syntax: "*";
+  inherits: false;
+}
+@property --tw-backdrop-hue-rotate {
+  syntax: "*";
+  inherits: false;
+}
+@property --tw-backdrop-invert {
+  syntax: "*";
+  inherits: false;
+}
+@property --tw-backdrop-opacity {
+  syntax: "*";
+  inherits: false;
+}
+@property --tw-backdrop-saturate {
+  syntax: "*";
+  inherits: false;
+}
+@property --tw-backdrop-sepia {
+  syntax: "*";
+  inherits: false;
+}
+@property --tw-duration {
+  syntax: "*";
+  inherits: false;
+}
+@property --tw-ease {
+  syntax: "*";
+  inherits: false;
+}
+@keyframes ping {
+  75%, 100% {
+    transform: scale(2);
+    opacity: 0;
+  }
+}
+@keyframes pulse {
+  50% {
+    opacity: 0.5;
+  }
+}
+@layer properties {
+  @supports ((-webkit-hyphens: none) and (not (margin-trim: inline))) or ((-moz-orient: inline) and (not (color:rgb(from red r g b)))) {
+    *, ::before, ::after, ::backdrop {
+      --tw-translate-x: 0;
+      --tw-translate-y: 0;
+      --tw-translate-z: 0;
+      --tw-space-y-reverse: 0;
+      --tw-divide-y-reverse: 0;
+      --tw-border-style: solid;
+      --tw-gradient-position: initial;
+      --tw-gradient-from: #0000;
+      --tw-gradient-via: #0000;
+      --tw-gradient-to: #0000;
+      --tw-gradient-stops: initial;
+      --tw-gradient-via-stops: initial;
+      --tw-gradient-from-position: 0%;
+      --tw-gradient-via-position: 50%;
+      --tw-gradient-to-position: 100%;
+      --tw-leading: initial;
+      --tw-font-weight: initial;
+      --tw-tracking: initial;
+      --tw-ordinal: initial;
+      --tw-slashed-zero: initial;
+      --tw-numeric-figure: initial;
+      --tw-numeric-spacing: initial;
+      --tw-numeric-fraction: initial;
+      --tw-shadow: 0 0 #0000;
+      --tw-shadow-color: initial;
+      --tw-shadow-alpha: 100%;
+      --tw-inset-shadow: 0 0 #0000;
+      --tw-inset-shadow-color: initial;
+      --tw-inset-shadow-alpha: 100%;
+      --tw-ring-color: initial;
+      --tw-ring-shadow: 0 0 #0000;
+      --tw-inset-ring-color: initial;
+      --tw-inset-ring-shadow: 0 0 #0000;
+      --tw-ring-inset: initial;
+      --tw-ring-offset-width: 0px;
+      --tw-ring-offset-color: #fff;
+      --tw-ring-offset-shadow: 0 0 #0000;
+      --tw-blur: initial;
+      --tw-brightness: initial;
+      --tw-contrast: initial;
+      --tw-grayscale: initial;
+      --tw-hue-rotate: initial;
+      --tw-invert: initial;
+      --tw-opacity: initial;
+      --tw-saturate: initial;
+      --tw-sepia: initial;
+      --tw-drop-shadow: initial;
+      --tw-drop-shadow-color: initial;
+      --tw-drop-shadow-alpha: 100%;
+      --tw-drop-shadow-size: initial;
+      --tw-backdrop-blur: initial;
+      --tw-backdrop-brightness: initial;
+      --tw-backdrop-contrast: initial;
+      --tw-backdrop-grayscale: initial;
+      --tw-backdrop-hue-rotate: initial;
+      --tw-backdrop-invert: initial;
+      --tw-backdrop-opacity: initial;
+      --tw-backdrop-saturate: initial;
+      --tw-backdrop-sepia: initial;
+      --tw-duration: initial;
+      --tw-ease: initial;
+    }
+  }
+}
+</style>
   <!-- Google Fonts: Inter, Space Grotesk, JetBrains Mono -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:ital,wght@0,400;0,500;0,600;0,700;1,400&family=Space+Grotesk:wght@600;700;800&display=swap" rel="stylesheet">
-
-  <script>
-    tailwind.config = {
-      darkMode: 'class',
-      theme: {
-        extend: {
-          fontFamily: {
-            sans: ['Inter', 'system-ui', 'sans-serif'],
-            display: ['Space Grotesk', 'Inter', 'sans-serif'],
-            mono: ['JetBrains Mono', 'monospace'],
-          }
-        }
-      }
-    }
-  </script>
-
-  <style>
+<style>
     :root {
       color-scheme: dark;
       --bg-base: oklch(12% 0.025 265);
@@ -213,9 +2029,8 @@
       transition: opacity 0.25s ease, stroke-width 0.2s ease;
     }
 
-    .line-draw {
-      animation: drawLine 1.1s cubic-bezier(0.22, 1, 0.36, 1) forwards;
-    }
+    /* Monthly reveal is driven by the synchronized timeline, not a one-off CSS draw. */
+    .line-draw { animation: none; }
 
     @keyframes drawLine {
       to { stroke-dashoffset: 0; }
@@ -267,9 +2082,263 @@
     ::view-transition-new(root) {
       animation-duration: 0.22s;
     }
+
+
+    /* ============================================================
+       CINEMATIC OPENING / HISTORICAL PRICE INTELLIGENCE
+       Self-contained animations; no images, libraries or requests.
+       ============================================================ */
+    body.intro-open { overflow: hidden !important; }
+    #priceIntro[hidden] { display: none !important; }
+    #priceIntro {
+      position: fixed; inset: 0; z-index: 10000; isolation: isolate;
+      min-height: 100dvh; overflow-y: auto; overscroll-behavior: contain;
+      color: #f5f7ff; background: #060913;
+      font-family: 'Inter', system-ui, sans-serif;
+      opacity: 1; transform: scale(1);
+      transition: opacity .74s cubic-bezier(.3,.05,.2,1), transform .74s cubic-bezier(.3,.05,.2,1), filter .74s ease;
+    }
+    #priceIntro.intro-exit { opacity: 0; transform: scale(1.035); filter: blur(12px); pointer-events: none; }
+    .intro-bg {
+      position: absolute; inset: 0; z-index: -3; pointer-events: none;
+      background:
+        radial-gradient(ellipse 44% 48% at 82% 44%, rgba(68, 53, 143, .29), transparent 100%),
+        radial-gradient(ellipse 36% 56% at 8% 86%, rgba(48, 113, 167, .13), transparent 100%),
+        radial-gradient(ellipse 48% 60% at 55% 0%, rgba(151, 58, 138, .105), transparent 100%),
+        #060913;
+    }
+    .intro-grid {
+      position: absolute; inset: 0; z-index: -2; pointer-events: none;
+      background-image: linear-gradient(rgba(146, 159, 219, .047) 1px, transparent 1px),
+                        linear-gradient(90deg, rgba(146, 159, 219, .047) 1px, transparent 1px);
+      background-size: 61px 61px; mask-image: linear-gradient(to bottom, transparent, #000 18%, #000 85%, transparent);
+      animation: intro-grid-shift 17s linear infinite;
+    }
+    .intro-halo {
+      position: absolute; width: min(62vw, 790px); aspect-ratio: 1; top: 3%; right: -12%; z-index: -1;
+      border: 1px solid rgba(190, 111, 234, .12); border-radius: 50%; pointer-events: none;
+      box-shadow: 0 0 0 80px rgba(117, 68, 178, .023), 0 0 0 175px rgba(117, 68, 178, .014);
+      animation: intro-breathe 6s ease-in-out infinite alternate;
+    }
+    .intro-halo::before, .intro-halo::after { content: ''; position: absolute; inset: 13%; border: 1px dashed rgba(167, 143, 243, .15); border-radius: 50%; }
+    .intro-halo::after { inset: 29%; border-style: solid; border-color: rgba(99, 173, 249, .13); }
+    .intro-sweep {
+      position: absolute; top: -15%; left: -55%; width: 26%; height: 135%; pointer-events: none; z-index: -1;
+      background: linear-gradient(90deg, transparent, rgba(168, 120, 237, .037), transparent);
+      transform: skewX(-17deg); animation: intro-sweep-move 7s ease-in-out infinite;
+    }
+    .intro-shell {
+      width: min(100%, 1536px); min-height: 100dvh; margin: 0 auto; padding: clamp(20px, 3vw, 46px) clamp(21px, 5.5vw, 90px) 24px;
+      display: flex; flex-direction: column; gap: 24px;
+    }
+    .intro-top, .intro-bottom { display: flex; justify-content: space-between; align-items: center; gap: 24px; }
+    .intro-top { min-height: 30px; }
+    .intro-brand { display: inline-flex; align-items: center; gap: 12px; font: 700 11px/1.4 'JetBrains Mono', monospace; letter-spacing: .14em; color: #e5e9ff; }
+    .intro-brand-emblem { width: 24px; height: 24px; display: grid; place-items: center; border-radius: 6px; background: linear-gradient(135deg,#b56aff,#539be4); box-shadow: 0 0 25px rgba(190,91,255,.26); }
+    .intro-brand-emblem svg { width: 16px; height: 16px; }
+    .intro-status, .intro-bottom-note { font: 500 10px/1.7 'JetBrains Mono', monospace; letter-spacing: .105em; color: #8d9cbd; }
+    .intro-status { display: inline-flex; gap: 9px; align-items: center; }
+    .intro-live-dot { width: 6px; height: 6px; background: #56eecb; border-radius: 50%; box-shadow: 0 0 12px rgba(86,238,203,.8); animation: intro-dot 1.45s ease-in-out infinite; }
+    .intro-main { flex: 1; display: grid; grid-template-columns: minmax(0,1.01fr) minmax(0, .99fr); align-items: center; gap: clamp(24px, 5.2vw, 92px); }
+    .intro-copy { padding: 30px 0 25px; }
+    .intro-eyebrow { font: 600 11px/1.5 'JetBrains Mono', monospace; letter-spacing: .12em; color: #e3a4ff; text-transform: uppercase; margin-bottom: 25px; display: flex; gap: 10px; align-items: center; }
+    .intro-eyebrow::before { content: ''; width: 28px; height: 1px; background: #dc90ff; }
+    .intro-headline { font-family: 'Space Grotesk','Inter',system-ui,sans-serif; font-weight: 800; letter-spacing: -.072em; font-size: clamp(53px, 6.5vw, 111px); line-height: .95; margin: 0; text-transform: uppercase; }
+    .intro-headline span { display: block; }
+    .intro-headline .intro-gradient { background: linear-gradient(100deg,#f4f6ff 0%,#ddbbff 39%,#70c8ff 96%); color: transparent; background-clip: text; -webkit-background-clip: text; }
+    .intro-line-mask { display: block; overflow: hidden; padding: .03em 0 .06em; }
+    .intro-line-mask > span { display: block; transform: translateY(116%); animation: intro-line-in .84s cubic-bezier(.16,1,.3,1) forwards; }
+    .intro-line-mask:nth-child(2) > span { animation-delay: .23s; }
+    .intro-line-mask:nth-child(3) > span { animation-delay: .46s; }
+    .intro-description { margin: 27px 0 30px; max-width: 440px; color: #afbdd6; font-size: clamp(14px,1.25vw,17px); line-height: 1.85; letter-spacing: -.01em; opacity: 0; transform: translateY(9px); animation: intro-up .85s ease .85s forwards; }
+    .intro-description strong { font-weight: 600; color: #f3f5ff; }
+    .intro-facts { display: flex; gap: clamp(16px,2.8vw,43px); border-top: 1px solid rgba(137,153,198,.24); padding-top: 22px; max-width: 475px; opacity: 0; animation: intro-up .8s ease 1.05s forwards; }
+    .intro-fact-num { display: block; color: #f4f6ff; font: 700 clamp(20px,2.25vw,31px)/1.1 'Space Grotesk',system-ui,sans-serif; }
+    .intro-fact-label { display: block; margin-top: 5px; font: 500 9px/1.5 'JetBrains Mono',monospace; letter-spacing: .085em; color: #7786a7; text-transform: uppercase; white-space: nowrap; }
+    .intro-display { min-width: 0; width: 100%; opacity: 0; transform: translateY(20px) scale(.97); animation: intro-screen-in 1s cubic-bezier(.16,1,.3,1) .55s forwards; }
+    .intro-terminal { position: relative; width: 100%; overflow: hidden; border-radius: 16px; background: linear-gradient(154deg,rgba(21,29,52,.96),rgba(8,13,27,.97)); border: 1px solid rgba(164,154,231,.27); box-shadow: 0 45px 100px rgba(0,0,0,.56), 0 0 70px rgba(108,76,210,.10), inset 0 1px rgba(255,255,255,.07); }
+    .intro-terminal::before { content:''; position: absolute; top:0; left:10%; right:10%; height:1px; background: linear-gradient(90deg,transparent,#dd9aff,transparent); box-shadow:0 0 30px #d291ff; }
+    .intro-terminal::after { content:''; position: absolute; inset:0; pointer-events:none; background: repeating-linear-gradient(0deg, transparent, transparent 3px, rgba(1,2,7,.065) 4px); opacity: .35; }
+    .intro-terminal-top { display:flex; justify-content:space-between; align-items:center; gap:12px; padding:17px clamp(14px,2vw,23px); border-bottom:1px solid rgba(132,150,192,.14); }
+    .intro-terminal-label { color:#dbe3ff; font:600 10px/1.6 'JetBrains Mono',monospace; letter-spacing:.09em; }
+    .intro-terminal-meta { color:#7182a6; font:500 9px/1.6 'JetBrains Mono',monospace; letter-spacing:.08em; }
+    .intro-window-buttons { display:inline-flex; gap:5px; margin-right:10px; vertical-align:middle; }
+    .intro-window-buttons i { display:block; border:1px solid rgba(171,176,213,.4); width:6px; height:6px; border-radius:50%; }
+    .intro-chart-header { display:flex; justify-content:space-between; align-items:end; gap:12px; padding:22px 23px 0; }
+    .intro-chart-heading { color:#899cbd; text-transform:uppercase; font:600 10px/1.7 'JetBrains Mono',monospace; letter-spacing:.11em; }
+    .intro-chart-month { color:white; font:700 clamp(15px,2vw,21px)/1.2 'Space Grotesk',system-ui,sans-serif; white-space:nowrap; }
+    .intro-svg-wrap { padding:0 13px 0 6px; margin-top:7px; }
+    #introChart { display:block; width:100%; height:auto; max-height:230px; overflow:visible; }
+    .intro-svg-grid { stroke:rgba(143,165,213,.16); stroke-width:1; }
+    .intro-svg-zero { stroke:rgba(205,213,237,.42); stroke-width:1; stroke-dasharray:4 6; }
+    .intro-svg-label { fill:#7485a9; font:500 13px 'JetBrains Mono',monospace; }
+    .intro-svg-line { fill:none; stroke-width:3.2; stroke-linejoin:round; stroke-linecap:round; filter:drop-shadow(0 0 3px rgba(238,245,255,.12)); }
+    .intro-legend { display:flex; justify-content:center; flex-wrap:wrap; gap:12px 19px; padding:0 20px 18px; }
+    .intro-legend span { font:500 9px 'JetBrains Mono',monospace; color:#8494b2; display:flex; align-items:center; gap:7px; }
+    .intro-legend i { display:block; width:7px; height:7px; border-radius:50%; }
+    .intro-price-grid { display:grid; grid-template-columns:repeat(2,minmax(0,1fr)); border-top:1px solid rgba(137,153,198,.18); }
+    .intro-price { padding:16px clamp(11px,2vw,23px); min-width:0; }
+    .intro-price:nth-child(even) { border-left:1px solid rgba(137,153,198,.13); }
+    .intro-price:nth-child(n+3) { border-top:1px solid rgba(137,153,198,.13); }
+    .intro-price-label { display:flex; gap:7px; align-items:center; font:600 10px/1.4 'JetBrains Mono',monospace; color:#a2b0ce; text-transform:uppercase; letter-spacing:.045em; }
+    .intro-price-label i { display:inline-block; width:6px; height:6px; border-radius:50%; flex:none; }
+    .intro-price-value { display:flex; align-items:baseline; flex-wrap:wrap; gap:7px; margin-top:7px; color:#f4f6ff; font:700 clamp(23px,3.0vw,38px)/1.18 'Space Grotesk',sans-serif; letter-spacing:-.055em; font-variant-numeric:tabular-nums; }
+    .intro-price-value small { color:#7182a6; font:500 10px 'JetBrains Mono',monospace; letter-spacing:0; }
+    .intro-under-terminal { display:flex; justify-content:space-between; padding:13px 4px; font:500 9px 'JetBrains Mono',monospace; letter-spacing:.08em; text-transform:uppercase; color:#657692; }
+    .intro-bottom { border-top:1px solid rgba(128,149,193,.16); padding:19px 0 9px; margin-top:auto; }
+    .intro-controls { display:flex; align-items:center; gap:19px; }
+    .intro-auto { color:#8390b0; font:500 10px 'JetBrains Mono',monospace; white-space:nowrap; }
+    .intro-skip { display:inline-flex; align-items:center; gap:10px; padding:10px 15px; border:1px solid rgba(213,163,249,.5); color:#f4e5ff; background:rgba(168,95,221,.09); border-radius:7px; cursor:pointer; font:600 11px 'JetBrains Mono',monospace; transition:background .2s, border-color .2s, transform .2s; }
+    .intro-skip:hover, .intro-skip:focus-visible { background:rgba(168,95,221,.23); border-color:#e4a6ff; transform:translateY(-1px); outline:0; }
+    .intro-skip span { font-size:17px; line-height:8px; }
+    .intro-progress { position:absolute; bottom:0; left:0; right:0; height:3px; background:rgba(161,132,204,.11); }
+    .intro-progress > span { display:block; height:100%; width:0; background:linear-gradient(90deg,#73bfff,#df88f8); box-shadow:0 0 13px #b389ff; will-change:width; }
+    .intro-replay-btn { display:inline-flex; align-items:center; gap:6px; padding:8px 12px; border-radius:12px; color:#dcb6fc; background:rgba(137,73,182,.13); border:1px solid rgba(192,131,234,.34); font:500 12px 'JetBrains Mono',monospace; cursor:pointer; transition:background .2s,border-color .2s; }
+    .intro-replay-btn:hover { background:rgba(137,73,182,.26); border-color:rgba(234,179,255,.7); }
+    @keyframes intro-line-in { to { transform:translateY(0); } }
+    @keyframes intro-up { to { opacity:1; transform:translateY(0); } }
+    @keyframes intro-screen-in { to { opacity:1; transform:translateY(0) scale(1); } }
+    @keyframes intro-grid-shift { to { background-position:61px 61px,61px 61px; } }
+    @keyframes intro-breathe { to { transform:scale(1.1); opacity:.6; } }
+    @keyframes intro-dot { 50% { opacity:.27; } }
+    @keyframes intro-sweep-move { 70%,100% { left:150%; } }
+    @media (max-width: 1000px) {
+      .intro-shell { gap:14px; }
+      .intro-main { grid-template-columns:1fr; gap:19px; padding:20px 0; }
+      .intro-copy { padding:12px 0 8px; }
+      .intro-headline { font-size:clamp(51px,9vw,82px); }
+      .intro-description { margin:15px 0 18px; }
+      .intro-facts { padding-top:14px; }
+      .intro-display { width:min(100%,680px); }
+    }
+    @media (max-width: 600px) {
+      .intro-shell { padding:17px 17px 18px; }
+      .intro-status { font-size:9px; letter-spacing:0; }
+      .intro-brand { font-size:9px; letter-spacing:.06em; gap:8px; }
+      .intro-main { padding:6px 0 12px; }
+      .intro-eyebrow { font-size:9px; margin-bottom:13px; }
+      .intro-headline { font-size:clamp(43px,12.3vw,67px); }
+      .intro-description { font-size:13px; line-height:1.6; }
+      .intro-fact-num { font-size:22px; }
+      .intro-fact-label { font-size:8px; }
+      .intro-facts { gap:14px; }
+      .intro-terminal-top { padding:12px; }
+      .intro-chart-header { padding:13px 14px 0; }
+      .intro-svg-wrap { margin-top:0; }
+      .intro-legend { gap:9px; padding-bottom:10px; }
+      .intro-price { padding:10px 12px; }
+      .intro-price-label { font-size:9px; }
+      .intro-price-value { font-size:25px; margin-top:4px; }
+      .intro-bottom-note { font-size:9px; }
+      .intro-auto { display:none; }
+      .intro-bottom { padding:10px 0; }
+    }
+    @media (max-height: 780px) and (min-width: 1001px) {
+      .intro-shell { padding-top:17px; padding-bottom:13px; }
+      .intro-copy { padding:5px 0; }
+      .intro-headline { font-size:clamp(57px,6vw,90px); }
+      .intro-description { margin:20px 0; }
+      .intro-svg-wrap svg { max-height:190px !important; }
+    }
+    @media (prefers-reduced-motion: reduce) {
+      .intro-grid,.intro-halo,.intro-sweep,.intro-live-dot,.intro-line-mask>span,.intro-description,.intro-facts,.intro-display { animation:none !important; }
+      .intro-line-mask>span { transform:none !important; }
+      .intro-description,.intro-facts,.intro-display { opacity:1 !important; transform:none !important; }
+      #priceIntro { transition:none; }
+    }
+
+
+    /* Keep ambient graphics from widening the intro scroll surface. */
+    #priceIntro { overflow-x: hidden; }
+    .intro-header-skip { display: none; }
+    @media (max-width: 600px) {
+      .intro-top .intro-status { display: none; }
+      .intro-header-skip {
+        display: inline-flex; align-items: center; gap: 5px; flex: none;
+        padding: 7px 10px; border: 1px solid rgba(213,163,249,.48);
+        background: rgba(168,95,221,.10); color:#f3d8ff; border-radius:6px;
+        font:600 10px 'JetBrains Mono',monospace; cursor:pointer;
+      }
+      .intro-facts { display: none; }
+      .intro-description { margin-bottom: 7px; }
+      #introChart { max-height: 175px; }
+    }
+
   </style>
 </head>
-<body class="selection:bg-fuchsia-500/30 selection:text-fuchsia-200">
+<body class="selection:bg-fuchsia-500/30 selection:text-fuchsia-200 intro-open">
+
+  <!-- BEGIN CINEMATIC PRICE INTRO -->
+  <section id="priceIntro" role="dialog" aria-modal="true" aria-label="Introduction to U.S. staple price history" tabindex="-1">
+    <div class="intro-bg" aria-hidden="true"></div>
+    <div class="intro-grid" aria-hidden="true"></div>
+    <div class="intro-halo" aria-hidden="true"></div>
+    <div class="intro-sweep" aria-hidden="true"></div>
+    <div class="intro-shell">
+      <div class="intro-top">
+        <div class="intro-brand">
+          <span class="intro-brand-emblem" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none"><path d="M4 17 10 8l4 4 6-7" stroke="#fff" stroke-width="2.1" stroke-linecap="round" stroke-linejoin="round"/><path d="M17 5h3v3" stroke="#fff" stroke-width="2.1" stroke-linecap="round"/></svg></span>
+          <span>PRICE INTELLIGENCE <span style="color:#7183a2">/ U.S. DATA</span></span>
+        </div>
+        <div class="intro-status"><i class="intro-live-dot"></i><span>BLS DATA <span style="color:#bdeee4">VERIFIED</span></span></div>
+        <button class="intro-header-skip" type="button" onclick="finishPriceIntro()">SKIP ↗</button>
+      </div>
+      <div class="intro-main">
+        <div class="intro-copy">
+          <div class="intro-eyebrow">24 MONTHS OF EVERYDAY PRICES</div>
+          <h2 class="intro-headline">
+            <span class="intro-line-mask"><span>THE COST</span></span>
+            <span class="intro-line-mask"><span>OF</span></span>
+            <span class="intro-line-mask"><span class="intro-gradient">EVERYDAY.</span></span>
+          </h2>
+          <p class="intro-description">Four familiar purchases. Two years of change.<br><strong>Watch what Americans paid, month by month.</strong><br>Official U.S. average prices, not store-specific estimates.</p>
+          <div class="intro-facts" aria-label="Data scope">
+            <div><span class="intro-fact-num">24</span><span class="intro-fact-label">MONTHS TRACKED</span></div>
+            <div><span class="intro-fact-num">04</span><span class="intro-fact-label">PRICE SERIES</span></div>
+            <div><span class="intro-fact-num">BLS</span><span class="intro-fact-label">OFFICIAL SOURCE</span></div>
+          </div>
+        </div>
+        <div class="intro-display">
+          <div class="intro-terminal">
+            <div class="intro-terminal-top">
+              <span class="intro-terminal-label"><span class="intro-window-buttons" aria-hidden="true"><i></i><i></i><i></i></span> PRICE MOVEMENT / 2024—2026</span>
+              <span class="intro-terminal-meta">SERIES 04 / 04</span>
+            </div>
+            <div class="intro-chart-header">
+              <span class="intro-chart-heading">RELATIVE CHANGE FROM OCT 2024</span>
+              <time class="intro-chart-month" id="introChartMonth">OCT 2024</time>
+            </div>
+            <div class="intro-svg-wrap">
+              <svg id="introChart" viewBox="0 0 640 262" role="img" aria-label="Animated historical percent-change paths for gasoline, white bread, eggs, and ground beef"></svg>
+            </div>
+            <div class="intro-legend" aria-hidden="true">
+              <span><i style="background:#f43f5e"></i> GAS</span>
+              <span><i style="background:#38bdf8"></i> BREAD</span>
+              <span><i style="background:#fbbf24"></i> EGGS</span>
+              <span><i style="background:#a855f7"></i> BEEF</span>
+            </div>
+            <div class="intro-price-grid" aria-label="Prices in the animated month">
+              <div class="intro-price"><div class="intro-price-label"><i style="background:#f43f5e"></i> GASOLINE</div><div class="intro-price-value"><span id="introValueGas">$3.279</span><small>/gal</small></div></div>
+              <div class="intro-price"><div class="intro-price-label"><i style="background:#38bdf8"></i> WHITE BREAD</div><div class="intro-price-value"><span id="introValueBread">$1.937</span><small>/lb</small></div></div>
+              <div class="intro-price"><div class="intro-price-label"><i style="background:#fbbf24"></i> LARGE EGGS</div><div class="intro-price-value"><span id="introValueEggs">$3.370</span><small>/doz</small></div></div>
+              <div class="intro-price"><div class="intro-price-label"><i style="background:#a855f7"></i> GROUND BEEF</div><div class="intro-price-value"><span id="introValueBeef">$5.588</span><small>/lb</small></div></div>
+            </div>
+          </div>
+          <div class="intro-under-terminal"><span>OCT 2024 → SEP 2026</span><span>HISTORICAL OBSERVATIONS</span></div>
+        </div>
+      </div>
+      <div class="intro-bottom">
+        <span class="intro-bottom-note">DATA: U.S. BLS / FRED <span style="color:#4b5873">·</span> LAST MONTH: SEP 2026</span>
+        <div class="intro-controls">
+          <span class="intro-auto" id="introAutoText">ENTERING DASHBOARD IN 9s</span>
+          <button type="button" class="intro-skip" onclick="finishPriceIntro()" id="introSkipBtn" aria-label="Skip intro and enter dashboard">ENTER DASHBOARD <span aria-hidden="true">→</span></button>
+        </div>
+      </div>
+    </div>
+    <div class="intro-progress" aria-hidden="true"><span id="introProgressBar"></span></div>
+  </section>
+  <!-- END CINEMATIC PRICE INTRO -->
+
   <!-- Subtle Animated Film Grain -->
   <div class="noise-overlay"></div>
 
@@ -304,7 +2373,7 @@
           U.S. Staple Price <span class="bg-gradient-to-r from-fuchsia-400 via-sky-400 to-amber-300 bg-clip-text text-transparent">Dynamics</span>
         </h1>
         <p class="mt-2.5 text-slate-400 text-sm sm:text-base max-w-2xl leading-relaxed">
-          High-precision 24-month retail price telemetry for regular unleaded gasoline, pan white bread, Grade A large eggs, and 100% ground beef (<span class="text-slate-200 font-mono text-xs">Oct 2024 – Sep 2026</span>).
+          Watch actual published U.S. average prices move month by month for gasoline, white bread, Grade A large eggs and ground beef. Historical window: <span class="text-slate-200 font-mono text-xs">Oct 2024 – Sep 2026</span>.
         </p>
       </div>
 
@@ -323,15 +2392,32 @@
             </svg>
             <span>Export CSV</span>
           </button>
+          <button type="button" class="intro-replay-btn" onclick="replayPriceIntro()" title="Replay the opening animation">↻ <span>Replay Intro</span></button>
         </div>
 
         <div class="font-mono text-[11px] text-slate-400 text-left lg:text-right leading-relaxed">
           Verified: <span class="text-slate-200">BLS CPI Average Price Release</span><br>
-          Published through <strong class="text-fuchsia-300">Sep 2026</strong> · Checked: Nov 2, 2026<br>
+          Latest month: <strong class="text-fuchsia-300">Sep 2026</strong> · Verified: Nov 7, 2026<br>
           Next scheduled release: <span class="text-slate-200">Nov 10, 2026</span>
         </div>
       </div>
     </header>
+
+    <!-- Latest *released* national prices remain visible while the historical loop plays. -->
+    <section class="rounded-2xl mb-5 border border-emerald-500/25 bg-slate-950/70 px-4 py-3.5" aria-label="Latest verified BLS prices">
+      <div class="flex flex-wrap gap-2 items-center justify-between mb-3">
+        <div class="text-[11px] font-mono font-semibold tracking-wider text-emerald-300 uppercase flex items-center gap-2">
+          <span class="inline-block w-2 h-2 bg-emerald-400 rounded-full"></span> Latest official monthly snapshot · September 2026
+        </div>
+        <span class="text-[10px] font-mono text-slate-500">National urban averages · not real-time checkout prices</span>
+      </div>
+      <div class="grid grid-cols-2 md:grid-cols-4 gap-2.5">
+        <div class="rounded-lg bg-rose-500/5 border border-rose-500/20 py-2 px-3"><div class="text-[10px] text-slate-400 font-mono">GASOLINE / GAL</div><div class="font-display font-extrabold text-xl text-rose-300">$4.482</div></div>
+        <div class="rounded-lg bg-sky-500/5 border border-sky-500/20 py-2 px-3"><div class="text-[10px] text-slate-400 font-mono">BREAD / LB</div><div class="font-display font-extrabold text-xl text-sky-300">$1.830</div></div>
+        <div class="rounded-lg bg-amber-500/5 border border-amber-500/20 py-2 px-3"><div class="text-[10px] text-slate-400 font-mono">EGGS / DOZEN</div><div class="font-display font-extrabold text-xl text-amber-300">$2.272</div></div>
+        <div class="rounded-lg bg-purple-500/5 border border-purple-500/20 py-2 px-3"><div class="text-[10px] text-slate-400 font-mono">BEEF / LB</div><div class="font-display font-extrabold text-xl text-purple-300">$6.792</div></div>
+      </div>
+    </section>
 
     <!-- Collapsible Personal Household Basket Calculator Drawer -->
     <section id="basketDrawer" class="hidden mb-6 spotlight-card rounded-2xl p-5 sm:p-6 border-fuchsia-500/40">
@@ -428,6 +2514,8 @@
           ↺ Reset
         </button>
 
+        <span class="inline-flex items-center gap-1.5 rounded-full px-2.5 py-1.5 bg-emerald-500/10 border border-emerald-500/25 font-mono text-[10px] text-emerald-300 whitespace-nowrap" title="The animation restarts after the final published month"><span class="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-pulse"></span> ↻ AUTO LOOP</span>
+
         <!-- Speed Multiplier Pill -->
         <div class="inline-flex items-center bg-slate-950/80 border border-slate-800 rounded-full p-0.5 font-mono text-[11px]">
           <button onclick="setPlaySpeed(0.5, this)" class="speed-btn px-2.5 py-1 rounded-full text-slate-400 hover:text-white transition cursor-pointer">0.5×</button>
@@ -438,10 +2526,10 @@
 
       <div class="flex-1 flex items-center gap-3.5 min-w-[240px]">
         <button onclick="stepMonth(-1)" class="p-1.5 rounded-lg bg-slate-800/70 hover:bg-slate-700 text-slate-300 font-mono text-xs cursor-pointer" title="Step back 1 month (Left Arrow)">◀</button>
-        <input type="range" id="simSlider" class="sim-slider flex-1" min="0" max="23" value="23" step="0.05" oninput="onSliderScrub(this.value)" aria-label="Scrub timeline">
+        <input type="range" id="simSlider" class="sim-slider flex-1" min="0" max="23" value="0" step="0.05" oninput="onSliderScrub(this.value)" aria-label="Scrub timeline">
         <button onclick="stepMonth(1)" class="p-1.5 rounded-lg bg-slate-800/70 hover:bg-slate-700 text-slate-300 font-mono text-xs cursor-pointer" title="Step forward 1 month (Right Arrow)">▶</button>
         <div id="simDateBadge" class="font-mono text-xs font-bold px-3 py-1.5 rounded-lg bg-slate-950/90 border border-fuchsia-500/40 text-fuchsia-300 min-w-[100px] text-center shadow-inner">
-          Sep 2026
+          Oct 2024
         </div>
       </div>
     </div>
@@ -489,7 +2577,7 @@
             <span id="normBadge" class="px-2 py-0.5 rounded bg-sky-500/15 border border-sky-500/30 text-sky-300 font-mono text-[11px]">Absolute $ USD</span>
           </div>
           <p class="text-xs sm:text-sm text-slate-400 mt-0.5">
-            Drag or hover directly across any chart canvas to scrub the synchronized crosshair across all series. Shaded hatch marks the Oct 2025 federal collection hiatus.
+            Price histories draw forward automatically, one month at a time, then restart. Pause or scrub to inspect specific months. Hatching marks unavailable October 2025 food observations; no prices are invented.
           </p>
         </div>
         <div id="activeFilterBadge" class="hidden">
@@ -540,7 +2628,7 @@
       <div class="lg:col-span-7 border-l-2 border-fuchsia-500 pl-4 text-xs sm:text-sm text-slate-300 leading-relaxed space-y-2">
         <div class="font-display font-bold text-white text-base">Statistical Methodology & Data Integrity</div>
         <p class="text-slate-400">
-          Summary cards display the arithmetic mean, standard deviation (<span class="font-mono text-slate-200">σ</span>), and min-max price distribution across the active time horizon.
+          Large animated cards show the <strong>price published for the selected month</strong> (not the period average). Range and standard deviation use the entire chosen time window. The visual cursor moves smoothly between monthly observations, but card prices always reflect real published monthly data.
           <strong>October 2025</strong> is omitted for white bread, Grade A large eggs, and ground beef due to a temporary federal survey collection suspension; all statistical moments and percentage deltas use strictly published BLS observations without synthetic interpolation.
         </p>
       </div>
@@ -571,13 +2659,19 @@
     </section>
 
     <footer class="mt-8 text-center font-mono text-[11px] text-slate-500">
-      Source: U.S. Bureau of Labor Statistics (BLS) Consumer Price Index Average Price Data via Federal Reserve Economic Data (FRED). Latest official observations: September 2026; checked November 2, 2026.
+      Source: U.S. Bureau of Labor Statistics (BLS) Average Price Data via FRED. Verified Nov 7, 2026; latest published observation Sep 2026. Static verified snapshot (not a live feed). October data scheduled Nov 10, 2026. Prices differ from local retail prices.
     </footer>
   </main>
 
   <script>
     // ============================================================================
-    // 1. EXACT PRESERVED BLS DATASET (Oct 2024 – Sep 2026)
+    // 1. VERIFIED BLS / FRED DATASET (Oct 2024 – Sep 2026; checked Nov 7, 2026)
+    // 2026-09 final published: gas $4.482/gal, bread $1.830/lb,
+    // eggs $2.272/dozen, ground beef $6.792/lb.
+    // Source: https://fred.stlouisfed.org/data/APU000074714
+    //         https://fred.stlouisfed.org/data/APU0000702111
+    //         https://fred.stlouisfed.org/data/APU0000708111
+    //         https://fred.stlouisfed.org/data/APU0000703112
     // ============================================================================
     const fullMonths = [
       "2024-10","2024-11","2024-12",
@@ -640,7 +2734,7 @@
     let isPlaying = false;
     let playSpeed = 1;
     let animRaf = null;
-    let currentProgress = 23;   // Fractional index inside active slice
+    let currentProgress = 0;    // Start at Oct 2024; the playhead automatically loops
     let isDraggingChart = false;
 
     const basketQuantities = { gas: 40, bread: 4, eggs: 3, beef: 6 };
@@ -719,10 +2813,11 @@
     // 3. CONTROLS & MODE SWITCHERS
     // ============================================================================
     function setHorizon(monthsCount, btnEl) {
+      const resumePlayback = isPlaying;
       stopSimulation();
       runWithTransition(() => {
         activeHorizon = monthsCount;
-        currentProgress = monthsCount - 1;
+        currentProgress = 0;
         simSlider.max = monthsCount - 1;
         simSlider.value = currentProgress;
 
@@ -733,6 +2828,7 @@
 
         renderAll(true);
       });
+      if (resumePlayback) startSimulation();
     }
 
     function setNormMode(mode, btnEl) {
@@ -857,7 +2953,9 @@
 
       host.innerHTML = series.map((s, idx) => {
         const { mean, std, min, max, first, last, count } = s.stats;
-        const changePct = first ? ((last / first) - 1) * 100 : 0;
+        const activeIndex = Math.round(Math.max(0, Math.min(currentProgress, months.length - 1)));
+        const activePrice = s.rawValues[activeIndex];
+        const changePct = first && activePrice !== null ? ((activePrice / first) - 1) * 100 : 0;
         const isUp = changePct >= 0;
         const badgeColor = isUp
           ? "text-rose-300 bg-rose-500/15 border-rose-500/30"
@@ -866,19 +2964,12 @@
         const isSelected = activeFilter === s.key ? " active-filter" : "";
 
         // Position of latest price within [min, max]
-        const rangeRatio = max > min ? Math.max(0, Math.min(100, ((last - min) / (max - min)) * 100)) : 50;
+        const rangeRatio = max > min && activePrice !== null ? Math.max(0, Math.min(100, ((activePrice - min) / (max - min)) * 100)) : 0;
 
-        // Primary displayed metric depends on normMode
-        let primaryDisplay = money(mean);
-        let primarySub = `${activeHorizon}M Mean (${s.shortUnit})`;
-        if (normMode === "pct") {
-          primaryDisplay = `${changePct >= 0 ? "+" : ""}${changePct.toFixed(1)}%`;
-          primarySub = `Window Δ vs ${monthLabel(months[0])}`;
-        } else if (normMode === "zscore") {
-          const latestZ = (last - mean) / std;
-          primaryDisplay = `${latestZ >= 0 ? "+" : ""}${latestZ.toFixed(2)}σ`;
-          primarySub = `Latest Z (σ = $${std.toFixed(2)})`;
-        }
+        // Cards always display *published dollar prices*; chart normalization
+        // changes the chart axes, not the meaning of the price on the card.
+        const primaryDisplay = activePrice === null ? "N/A" : money3(activePrice);
+        const primarySub = `${monthLabel(months[activeIndex])} · ${s.shortUnit}`;
 
         return `
           <article class="spotlight-card card-interactive rounded-2xl p-4 sm:p-5 cursor-pointer select-none${isSelected}" onclick="toggleFilter('${s.key}')">
@@ -888,7 +2979,7 @@
                 <span class="font-display font-bold text-sm text-white">${s.name}</span>
                 <span class="font-mono text-[10px] text-slate-500 border border-slate-800 rounded px-1">${idx + 1}</span>
               </div>
-              <span class="px-2 py-0.5 rounded-full border font-mono text-[11px] font-semibold ${badgeColor}">
+              <span id="card-delta-${s.key}" class="px-2 py-0.5 rounded-full border font-mono text-[11px] font-semibold ${badgeColor}">
                 ${arrow} ${Math.abs(changePct).toFixed(1)}%
               </span>
             </div>
@@ -898,7 +2989,7 @@
                 <div class="font-display text-3xl font-extrabold tracking-tight text-white tabular-nums" id="card-val-${s.key}">
                   ${primaryDisplay}
                 </div>
-                <div class="font-mono text-[11px] text-slate-400 mt-0.5">${primarySub}</div>
+                <div id="card-month-${s.key}" class="font-mono text-[11px] text-slate-400 mt-0.5">${primarySub}</div>
               </div>
               <div class="flex flex-col items-end">
                 ${buildMiniSparkline(s.rawValues, s.hex)}
@@ -910,11 +3001,11 @@
             <div class="mt-3.5 pt-3 border-t border-slate-800/80">
               <div class="flex justify-between items-center font-mono text-[10px] text-slate-400 mb-1">
                 <span>Low ${money(min)}</span>
-                <span class="text-slate-200 font-semibold" id="card-live-${s.key}">Latest ${money(last)}</span>
+                <span class="text-slate-200 font-semibold" id="card-live-${s.key}">${monthLabel(months[activeIndex])}: ${activePrice === null ? "N/A" : money3(activePrice)}</span>
                 <span>High ${money(max)}</span>
               </div>
               <div class="w-full h-1.5 bg-slate-900 rounded-full overflow-hidden relative border border-slate-800">
-                <div class="h-full rounded-full transition-all duration-300" style="width:${rangeRatio}%; background:${s.hex};"></div>
+                <div id="card-range-${s.key}" class="h-full rounded-full" style="width:${rangeRatio}%; background:${s.hex};"></div>
               </div>
             </div>
           </article>
@@ -1034,15 +3125,18 @@
                 <stop offset="0%" stop-color="${s.hex}" stop-opacity="0.34"/>
                 <stop offset="100%" stop-color="${s.hex}" stop-opacity="0.0"/>
               </linearGradient>
+              <clipPath id="reveal-${s.key}"><rect id="reveal-rect-${s.key}" x="${pad.l - 6}" y="0" width="0" height="${H}" /></clipPath>
             </defs>
             ${missingBand}
             ${yGrid}
             ${zeroLine}
             ${xTicks}
-            <path d="${areaD}" fill="url(#grad-${s.key})" class="pointer-events-none"></path>
-            ${segments.map(d => `<path class="line-series line-draw" d="${d}" stroke="${s.hex}"></path>`).join('')}
-            ${dots}
-            <circle class="pulse-ring" cx="${pulseX}" cy="${pulseY}" stroke="${s.hex}"></circle>
+            <g clip-path="url(#reveal-${s.key})">
+              <path d="${areaD}" fill="url(#grad-${s.key})" class="pointer-events-none"></path>
+              ${segments.map(d => `<path class="line-series line-draw" d="${d}" stroke="${s.hex}"></path>`).join('')}
+              ${dots}
+            </g>
+            <circle class="pulse-ring" id="pulse-${s.key}" cx="${pulseX}" cy="${pulseY}" stroke="${s.hex}"></circle>
             <line class="playhead-cursor" id="cursor-${s.key}" x1="${pulseX}" x2="${pulseX}" y1="${pad.t}" y2="${H - pad.b}"></line>
             <circle class="playhead-tracer-glow" id="tracer-${s.key}" cx="${pulseX}" cy="${pulseY}" r="5.5" fill="${s.hex}" stroke="#fff" stroke-width="1.5" style="color:${s.hex};"></circle>
           </svg>
@@ -1099,8 +3193,10 @@
         const lastVal = s.values[s.values.length - 1];
         return `
           <g class="overlay-series-group transition-opacity duration-200" data-key="${s.key}">
-            ${segments.map(d => `<path class="line-series line-draw" d="${d}" stroke="${s.hex}" stroke-width="3"></path>`).join('')}
-            ${dots}
+            <g clip-path="url(#reveal-overlay-${s.key})">
+              ${segments.map(d => `<path class="line-series line-draw" d="${d}" stroke="${s.hex}" stroke-width="3"></path>`).join('')}
+              ${dots}
+            </g>
             <circle class="playhead-tracer-glow" id="tracer-${s.key}" cx="${x(months.length - 1)}" cy="${y(lastVal || 0)}" r="6" fill="${s.hex}" stroke="#fff" stroke-width="1.8" style="color:${s.hex};"></circle>
           </g>
         `;
@@ -1124,6 +3220,7 @@
           </div>
 
           <svg id="svg-overlay" viewBox="0 0 ${W} ${H}" class="w-full h-[350px] block overflow-visible cursor-crosshair select-none interactive-svg" data-overlay="true">
+            <defs>${series.map(s => `<clipPath id="reveal-overlay-${s.key}"><rect id="reveal-rect-overlay-${s.key}" x="${pad.l - 6}" y="0" width="0" height="${H}" /></clipPath>`).join('')}</defs>
             ${missingBand}
             ${yGrid}
             ${zeroLine}
@@ -1136,12 +3233,8 @@
     }
 
     function setupLineDrawAnimations() {
-      document.querySelectorAll('svg path.line-draw').forEach(path => {
-        const length = path.getTotalLength();
-        path.style.strokeDasharray = length;
-        path.style.strokeDashoffset = length;
-        path.getBoundingClientRect();
-      });
+      // SVG clip rectangles reveal historic observations in sync with the date
+      // and price cards; no initial one-shot animation is required.
     }
 
     function renderCharts(triggerAnimation = true) {
@@ -1425,10 +3518,12 @@
 
           const v1 = s.values[floorIdx];
           const v2 = s.values[ceilIdx];
-          let interpVal = null;
-          if (v1 !== null && v2 !== null) interpVal = v1 + (v2 - v1) * fraction;
-          else if (v1 !== null) interpVal = v1;
-          else if (v2 !== null) interpVal = v2;
+          // If an official observation is missing, leave a gap; don't invent values.
+          let interpVal = (v1 !== null && v2 !== null)
+            ? v1 + (v2 - v1) * fraction
+            : (fraction < 0.00001 ? v1 : fraction > 0.99999 ? v2 : null);
+          const revealRect = document.getElementById(`reveal-rect-${s.key}`);
+          if (revealRect) revealRect.setAttribute('width', Math.max(0, curX - (pad.l - 6) + 5));
 
           const cursorEl = document.getElementById(`cursor-${s.key}`);
           const tracerEl = document.getElementById(`tracer-${s.key}`);
@@ -1439,17 +3534,23 @@
             cursorEl.setAttribute('x2', curX);
           }
 
+          const pulseEl = document.getElementById(`pulse-${s.key}`);
           if (tracerEl && interpVal !== null) {
             tracerEl.setAttribute('cx', curX);
             tracerEl.setAttribute('cy', getY(interpVal));
             tracerEl.style.opacity = '1';
-          } else if (tracerEl) {
-            tracerEl.style.opacity = '0';
+            if (pulseEl) {
+              pulseEl.setAttribute('cx', curX);
+              pulseEl.setAttribute('cy', getY(interpVal));
+              pulseEl.style.opacity = '1';
+            }
+          } else {
+            if (tracerEl) tracerEl.style.opacity = '0';
+            if (pulseEl) pulseEl.style.opacity = '0';
           }
 
-          if (previewEl && interpVal !== null) {
-            previewEl.textContent = formatTransformed(interpVal, normMode, 3);
-          }
+          if (previewEl) previewEl.textContent = s.rawValues[roundedIdx] === null
+            ? 'N/A' : formatTransformed(s.values[roundedIdx], normMode, 3);
         });
       } else {
         // Unified Overlay Playhead
@@ -1473,10 +3574,11 @@
         series.forEach(s => {
           const v1 = s.values[floorIdx];
           const v2 = s.values[ceilIdx];
-          let interpVal = null;
-          if (v1 !== null && v2 !== null) interpVal = v1 + (v2 - v1) * fraction;
-          else if (v1 !== null) interpVal = v1;
-          else if (v2 !== null) interpVal = v2;
+          let interpVal = (v1 !== null && v2 !== null)
+            ? v1 + (v2 - v1) * fraction
+            : (fraction < 0.00001 ? v1 : fraction > 0.99999 ? v2 : null);
+          const revealRect = document.getElementById(`reveal-rect-overlay-${s.key}`);
+          if (revealRect) revealRect.setAttribute('width', Math.max(0, curX - (pad.l - 6) + 5));
 
           const tracerEl = document.getElementById(`tracer-${s.key}`);
           const previewEl = document.getElementById(`preview-${s.key}`);
@@ -1489,19 +3591,36 @@
             tracerEl.style.opacity = '0';
           }
 
-          if (previewEl && interpVal !== null) {
-            previewEl.textContent = formatTransformed(interpVal, normMode, 3);
-          }
+          if (previewEl) previewEl.textContent = s.rawValues[roundedIdx] === null
+            ? 'N/A' : formatTransformed(s.values[roundedIdx], normMode, 3);
         });
       }
 
-      // Sync card live price label
+      // Synchronize large price counters, month, price change and position
+      // with the displayed *published month*, rather than the window mean.
       series.forEach(s => {
         const rawV = s.rawValues[roundedIdx];
+        const activeDate = monthLabel(months[roundedIdx]);
+        const valEl = document.getElementById(`card-val-${s.key}`);
+        const monthEl = document.getElementById(`card-month-${s.key}`);
         const cardLive = document.getElementById(`card-live-${s.key}`);
-        if (cardLive) {
-          cardLive.textContent = rawV !== null ? `${monthLabel(months[roundedIdx])}: ${money(rawV)}` : `${monthLabel(months[roundedIdx])}: Hiatus`;
+        const badge = document.getElementById(`card-delta-${s.key}`);
+        const bar = document.getElementById(`card-range-${s.key}`);
+        if (valEl) valEl.textContent = rawV === null ? "N/A" : money3(rawV);
+        if (monthEl) monthEl.textContent = `${activeDate} · ${s.shortUnit}`;
+        if (cardLive) cardLive.textContent = `${activeDate}: ${rawV === null ? "No published data" : money3(rawV)}`;
+        if (badge) {
+          if (rawV === null) {
+            badge.textContent = "—";
+            badge.className = "px-2 py-0.5 rounded-full border font-mono text-[11px] font-semibold text-slate-400 bg-slate-500/10 border-slate-700";
+          } else {
+            const pct = s.stats.first ? (rawV / s.stats.first - 1) * 100 : 0;
+            const isUp = pct >= 0;
+            badge.textContent = `${isUp ? "▲" : "▼"} ${Math.abs(pct).toFixed(1)}%`;
+            badge.className = `px-2 py-0.5 rounded-full border font-mono text-[11px] font-semibold ${isUp ? "text-rose-300 bg-rose-500/15 border-rose-500/30" : "text-emerald-300 bg-emerald-500/15 border-emerald-500/30"}`;
+          }
         }
+        if (bar) bar.style.width = rawV === null ? "0%" : `${s.stats.max > s.stats.min ? ((rawV - s.stats.min) / (s.stats.max - s.stats.min)) * 100 : 50}%`;
       });
 
       highlightTableRow(roundedIdx);
@@ -1543,26 +3662,37 @@
     }
 
     function startSimulation() {
+      if (isPlaying) return;
       const { months } = getActiveSlice();
       if (currentProgress >= months.length - 1) currentProgress = 0;
       isPlaying = true;
       playIcon.textContent = "❚❚";
-      playText.textContent = "Pause";
+      playText.textContent = "Pause Timeline";
 
-      let lastTime = performance.now();
-      const baseRate = 0.0036;
+      // At 1x, 23 transitions take ~16 seconds; hold on the latest values
+      // for 1.8 seconds, return to the first month and repeat indefinitely.
+      const monthsPerMs = 0.00145;
+      const finalHoldMs = 1800;
+      let lastTime = null;
+      let holdStartedAt = null;
 
       function step(now) {
-        const dt = now - lastTime;
+        if (!isPlaying) return;
+        if (lastTime === null) lastTime = now;
+        const dt = Math.min(now - lastTime, 80); // don't skip the timeline after a hidden tab
         lastTime = now;
-        currentProgress += dt * baseRate * playSpeed;
 
-        if (currentProgress >= months.length - 1) {
-          currentProgress = months.length - 1;
-          simSlider.value = currentProgress;
-          updateSimulationView(currentProgress);
-          stopSimulation();
-          return;
+        if (holdStartedAt !== null) {
+          if (now - holdStartedAt >= finalHoldMs) {
+            currentProgress = 0;
+            holdStartedAt = null;
+          }
+        } else {
+          currentProgress += dt * monthsPerMs * playSpeed;
+          if (currentProgress >= months.length - 1) {
+            currentProgress = months.length - 1;
+            holdStartedAt = now;
+          }
         }
 
         simSlider.value = currentProgress;
@@ -1576,6 +3706,7 @@
     function stopSimulation() {
       isPlaying = false;
       if (animRaf) cancelAnimationFrame(animRaf);
+      animRaf = null;
       playIcon.textContent = "▶";
       playText.textContent = "Play Timeline";
     }
@@ -1629,8 +3760,163 @@
       });
     }
 
+
+    // ============================================================================
+    // CINEMATIC INTRO: normalized BLS price curves, animated price readouts,
+    // timed entrance to the actual 24-month looping dashboard.
+    // ============================================================================
+    const introOverlay = document.getElementById('priceIntro');
+    const introDuration = 9000;
+    let introFrame = null;
+    let introActive = false;
+    let introStart = 0;
+    let introExitTimer = null;
+    const introSvgNS = 'http://www.w3.org/2000/svg';
+    const introGraph = { padL: 49, padR: 20, padT: 19, padB: 33, width: 640, height: 262, dots: {}, clip: null };
+    const introValues = {
+      gas: document.getElementById('introValueGas'),
+      bread: document.getElementById('introValueBread'),
+      eggs: document.getElementById('introValueEggs'),
+      beef: document.getElementById('introValueBeef')
+    };
+
+    function introSvgEl(tag, attrs, parent) {
+      const el = document.createElementNS(introSvgNS, tag);
+      Object.entries(attrs).forEach(([k,v]) => el.setAttribute(k, String(v)));
+      if (parent) parent.appendChild(el);
+      return el;
+    }
+    function buildIntroChart() {
+      const svg = document.getElementById('introChart');
+      svg.replaceChildren();
+      const { padL, padR, padT, padB, width, height } = introGraph;
+      const pctData = seriesData.map(s => s.values.map(v => v === null ? null : (v / s.values[0] - 1) * 100));
+      const all = pctData.flat().filter(v => v !== null);
+      const lo = Math.floor((Math.min(...all) - 12) / 25) * 25;
+      const hi = Math.ceil((Math.max(...all) + 12) / 25) * 25;
+      const plotW = width - padL - padR;
+      const plotH = height - padT - padB;
+      const x = index => padL + (index / (fullMonths.length - 1)) * plotW;
+      const y = value => padT + (hi-value) / (hi-lo) * plotH;
+      const defs = introSvgEl('defs', {}, svg);
+      const clip = introSvgEl('clipPath', {id:'introLineClip'},defs);
+      introGraph.clip = introSvgEl('rect',{x:padL-5, y:0, width:0, height:height},clip);
+      for(let t=lo; t<=hi; t+=25) {
+        introSvgEl('line',{x1:padL,y1:y(t),x2:width-padR,y2:y(t),class:t===0?'intro-svg-zero':'intro-svg-grid'},svg);
+        const label = introSvgEl('text',{x:padL-12,y:y(t)+4,class:'intro-svg-label','text-anchor':'end'},svg);
+        label.textContent = `${t>0?'+':''}${t}%`;
+      }
+      const yearLabels = [['2024',0],['2025',12],['2026',23]];
+      yearLabels.forEach(([label,index]) => {
+        const el = introSvgEl('text',{x:x(index),y:height-7,class:'intro-svg-label','text-anchor':index===0?'start':index===23?'end':'middle'},svg);
+        el.textContent = label;
+      });
+      const group = introSvgEl('g',{'clip-path':'url(#introLineClip)'},svg);
+      pctData.forEach((values,si)=>{
+        const s = seriesData[si];
+        let segment = [];
+        function flush() {
+          if(segment.length>0) introSvgEl('path',{
+            d:segment.map(([xx,yy],i)=>`${i?'L':'M'}${xx.toFixed(2)},${yy.toFixed(2)}`).join(' '),
+            stroke:s.hex, class:'intro-svg-line'
+          },group);
+          segment=[];
+        }
+        values.forEach((v,i)=>{
+          if(v===null) { flush(); return; }
+          segment.push([x(i),y(v)]);
+        });
+        flush();
+        introGraph.dots[s.key] = introSvgEl('circle', {
+          cx:x(0), cy:y(0), r:4.7, fill:s.hex, stroke:'#080c19','stroke-width':2,
+          style:`filter:drop-shadow(0 0 6px ${s.hex});`
+        },svg);
+      });
+      introGraph.x = x; introGraph.y = y;
+      introGraph.pctData = pctData;
+    }
+    function updateIntroGraph(progress) {
+      const pos = progress * (fullMonths.length-1);
+      const idx = Math.min(fullMonths.length-1,Math.floor(pos));
+      const frac = pos-idx;
+      const labelIndex = Math.min(fullMonths.length-1,Math.round(pos));
+      const date = document.getElementById('introChartMonth');
+      date.textContent = monthLabel(fullMonths[labelIndex]).toUpperCase();
+      date.dateTime = `${fullMonths[labelIndex]}-01`;
+      introGraph.clip.setAttribute('width',Math.max(0,introGraph.x(pos)-introGraph.x(0)+5));
+      seriesData.forEach((s,si) => {
+        const a=s.values[idx], b=s.values[Math.min(idx+1,s.values.length-1)];
+        const value=(a!==null&&b!==null)?a+(b-a)*frac:(frac<.001?a:frac>.999?b:null);
+        introValues[s.key].textContent=value===null?'—':`$${value.toFixed(3)}`;
+        const dot=introGraph.dots[s.key];
+        if (value===null) { dot.style.opacity='0'; }
+        else {
+          dot.style.opacity='1';
+          dot.setAttribute('cx',introGraph.x(pos));
+          dot.setAttribute('cy',introGraph.y((value/s.values[0]-1)*100));
+        }
+      });
+    }
+    function beginPriceIntro() {
+      if (introExitTimer) clearTimeout(introExitTimer);
+      if (introFrame) cancelAnimationFrame(introFrame);
+      if (!introGraph.clip) buildIntroChart();
+      introActive = true;
+      window.scrollTo(0, 0); // Replay always reveals the dashboard from its top.
+      introOverlay.hidden = false;
+      introOverlay.classList.remove('intro-exit');
+      document.body.classList.add('intro-open');
+      stopSimulation();
+      currentProgress = 0;
+      simSlider.value = 0;
+      updateSimulationView(0);
+      updateIntroGraph(0);
+      document.getElementById('introProgressBar').style.width = '0%';
+      document.getElementById('introAutoText').textContent = 'ENTERING DASHBOARD IN 9s';
+      introOverlay.focus({preventScroll:true});
+      if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+        finishPriceIntro();
+        return;
+      }
+      introStart = performance.now();
+      function tick(now) {
+        if (!introActive) return;
+        const fraction = Math.min(1,(now-introStart)/introDuration);
+        // A short opening hold lets the typographic entrance establish itself.
+        const chartProgress = Math.min(1,Math.max(0,(fraction-.13)/.75));
+        updateIntroGraph(chartProgress);
+        document.getElementById('introProgressBar').style.width = `${fraction*100}%`;
+        document.getElementById('introAutoText').textContent = `ENTERING DASHBOARD IN ${Math.max(0,Math.ceil((introDuration-(now-introStart))/1000))}s`;
+        if (fraction >= 1) { finishPriceIntro(); return; }
+        introFrame = requestAnimationFrame(tick);
+      }
+      introFrame = requestAnimationFrame(tick);
+    }
+    function finishPriceIntro() {
+      if (!introActive) return;
+      introActive = false;
+      if (introFrame) cancelAnimationFrame(introFrame);
+      introFrame = null;
+      updateIntroGraph(1);
+      document.getElementById('introProgressBar').style.width = '100%';
+      introOverlay.classList.add('intro-exit');
+      document.body.classList.remove('intro-open');
+      playBtn.focus({preventScroll:true});
+      // Let the actual dashboard price series begin only after the intro.
+      currentProgress=0;
+      simSlider.value=0;
+      updateSimulationView(0);
+      startSimulation();
+      introExitTimer = setTimeout(() => { if (!introActive) introOverlay.hidden=true; }, 740);
+    }
+    function replayPriceIntro() { beginPriceIntro(); }
+
     // Global Keyboard Shortcuts
     window.addEventListener('keydown', e => {
+      if (introActive) {
+        if (e.key === 'Escape' || e.key === 'Enter') { e.preventDefault(); finishPriceIntro(); }
+        return;
+      }
       if (['INPUT', 'TEXTAREA'].includes(document.activeElement?.tagName)) return;
       if (e.code === 'Space') {
         e.preventDefault();
@@ -1663,6 +3949,10 @@
     // Initial Launch
     window.onload = function () {
       renderAll(true);
+      simSlider.value = 0;
+      updateSimulationView(0);
+      // The intro plays once on entry, then starts the dashboard's perpetual loop.
+      beginPriceIntro();
     };
   </script>
 </body>
