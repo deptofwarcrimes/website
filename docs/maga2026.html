@@ -163,7 +163,7 @@ let activeIndex=-1;
 let lastClicked=null;
 let terminalTimer;
 const TERMINAL_CHAR_MS=35;
-const TERMINAL_KNOWN_FOR={"Dan Bongino":"GIVING UP AFTER A FEW MONTHS","JamminLu":"Simping for Trump while being a Proud Mexican","Karoline Leavitt":"Called her generation Silver Spoon Fed, while being married to a 60yr old Billionaire","Kid Rock":"Being a walking definition of White Trash","Laura Loomer":"Eating dog food/Blowing Bannon","Steven Crowder":"Wife Beater"};
+const TERMINAL_KNOWN_FOR={"Dan Bongino":"GIVING UP AFTER A FEW MONTHS","JamminLu":"Simping for Trump while being a Proud Mexican","Karoline Leavitt":"Called her generation Silver Spoon Fed, while being married to a 60yr old Billionaire","Kid Rock":"Being a walking definition of White Trash","Laura Loomer":"Eating dog food/Blowing Bannon","Steven Crowder":"Wife Beater","Tim Pool":"Paid Russian Agent with a Beanie Obsession"};
 function render(){
   const q=search.value.trim().toLocaleLowerCase();
   visible=PEOPLE.filter(p=>(filter==='all'||p.group===filter)&&p.name.toLocaleLowerCase().includes(q));
