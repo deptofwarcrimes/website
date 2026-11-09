@@ -5,8 +5,8 @@
 <meta name="viewport" content="width=device-width,initial-scale=1">
 <meta name="theme-color" content="#080b10">
 <meta name="color-scheme" content="dark">
-<meta name="description" content="Five verified U.S. news stories for November 7, 2026, in an animated, source-linked editorial briefing.">
-<title>THE PULSE | U.S. News Brief — November 7, 2026</title>
+<meta name="description" content="Hourly, source-linked headlines across eight U.S. political, government, energy, and Iran news categories.">
+<title>THE PULSE | U.S. Headline Brief</title>
 <style>
 :root{--bg:#050611;--surface:#10151d;--surface2:#151c26;--surface3:#1a2530;--line:#293441;--line-soft:#1f2a35;--text:#f2f5f8;--soft:#c1cbd5;--muted:#8494a5;--red:#fc5858;--red2:#ff8b76;--mint:#64dcc6;--yellow:#f4cb8c;--blue:#89adff;--font:Inter,ui-sans-serif,system-ui,-apple-system,"Segoe UI",Arial,sans-serif;--mono:ui-monospace,SFMono-Regular,Consolas,"Liberation Mono",monospace}
 *{box-sizing:border-box}html,body{margin:0;min-height:100%}body{position:relative;isolation:isolate;background:radial-gradient(ellipse 58% 45% at 8% 6%,#253c9c61,transparent 67%),radial-gradient(ellipse 45% 45% at 94% 12%,#ef278344,transparent 69%),radial-gradient(ellipse 70% 44% at 52% 100%,#087f9a42,transparent 72%),linear-gradient(135deg,#04050e 0%,#080d22 46%,#090713 100%);color:var(--text);font-family:var(--font);-webkit-font-smoothing:antialiased;line-height:1.45;font-size:13px;overflow-x:hidden}body:before{content:"";pointer-events:none;position:fixed;inset:0;z-index:-1;opacity:.8;background:linear-gradient(115deg,transparent 0 42%,#4d4cff08 48%,transparent 55%),repeating-linear-gradient(90deg,transparent 0 63px,#53e9ff0c 64px 65px,transparent 66px 126px),repeating-linear-gradient(0deg,transparent 0 63px,#ff4fa30a 64px 65px,transparent 66px 126px);mask-image:linear-gradient(to bottom,black,transparent 92%)}body:after{content:"";pointer-events:none;position:fixed;z-index:-1;width:70vmax;height:16vmax;left:-16vmax;top:32vh;opacity:.52;filter:blur(34px);transform:rotate(-18deg);background:linear-gradient(90deg,transparent,#2adfff78 28%,#ae55ff70 52%,#ff4a9a68 76%,transparent);animation:neon-drift 17s ease-in-out infinite alternate}a{color:inherit;text-decoration:none}button{font:inherit;color:inherit;cursor:pointer}button:focus-visible,a:focus-visible{outline:2px solid var(--red2);outline-offset:3px}button:disabled{cursor:default;opacity:.45}
@@ -572,12 +572,12 @@ footer{display:flex;justify-content:space-between;gap:18px;margin-top:12px;color
 </section>
 <div class="shell briefing-shell">
 <header class="header signal-header">
-  <div class="identity"><div class="mark" aria-hidden="true">↗</div><div><div class="brand">THE <em>PULSE</em></div><div class="brand-sub">U.S. NEWS RADAR / TOP FIVE</div></div></div>
-  <div class="snapshot"><span class="live-dot" aria-hidden="true"></span>ANIMATED BRIEF <small>NOV 07, 2026</small></div>
+  <div class="identity"><div class="mark" aria-hidden="true">↗</div><div><div class="brand">THE <em>PULSE</em></div><div class="brand-sub">U.S. HEADLINE WIRE / EIGHT CATEGORIES</div></div></div>
+  <div class="snapshot"><span class="live-dot" aria-hidden="true"></span>HOURLY BRIEF <small id="snapshot-date">NOV 09, 2026 · 04:43 UTC</small></div>
 </header>
 <main>
-<section class="heading-row briefing-heading" aria-label="Page introduction"><div><div class="eyebrow">THE AMERICAN BRIEF // NEWS RADAR</div><h1>What America is talking about<span class="red">.</span></h1><p class="dek">Five verified U.S. headlines for November 7, 2026. Original reporting and official records are one click away.</p></div><div class="edition"><strong>05<span style="color:var(--red)">/05</span></strong>CURATED STORIES</div></section>
-<section class="board brief-console" aria-label="Five-story animated news briefing">
+<section class="heading-row briefing-heading" aria-label="Page introduction"><div><div class="eyebrow">THE AMERICAN BRIEF // HOURLY HEADLINE RADAR</div><h1>Eight signals to watch<span class="red">.</span></h1><p class="dek">Hourly, source-linked headlines for political parties, U.S. agencies, impeachment, oil prices, and Iran.</p></div><div class="edition"><strong id="edition-count">08</strong>LIVE CATEGORIES</div></section>
+<section class="board brief-console" aria-label="Eight-category animated news briefing">
 <div class="feature" id="feature" aria-roledescription="carousel" aria-label="Trending news carousel">
   <div class="features-top"><span class="pill"><i aria-hidden="true"></i> TOP STORY ROTATION</span><span class="counter" id="counter"><b>01</b> / 05</span></div>
   <div class="feature-body" id="feature-body" aria-live="off">
@@ -589,140 +589,21 @@ footer{display:flex;justify-content:space-between;gap:18px;margin-top:12px;color
   </div>
   <div class="feature-footer"><div class="progress-rail" id="progress" aria-label="Story selector"></div><span class="rail-label" id="auto-label">AUTO · 6 SEC</span><div class="controls"><button type="button" class="ctrl" id="previous" aria-label="Previous story" title="Previous story">‹</button><button type="button" class="ctrl play" id="play" aria-label="Pause rotation" aria-pressed="false" title="Pause rotation"><span id="play-symbol">Ⅱ</span><span id="play-label">PAUSE</span></button><button type="button" class="ctrl" id="next" aria-label="Next story" title="Next story">›</button></div></div>
 </div>
-<aside class="radar" aria-label="Select one of five stories"><div class="radar-title"><span>ON THE RADAR</span><span>05 ACTIVE</span></div><div class="radar-list" id="radar-list"></div><div class="radar-note"><b>●</b> Updated Nov 7 · editorial snapshot</div></aside>
+<aside class="radar" aria-label="Select a headline category"><div class="radar-title"><span>ON THE RADAR</span><span id="radar-count">08 ACTIVE</span></div><div class="radar-list" id="radar-list"></div><div class="radar-note" id="radar-note"><b>●</b> Updating hourly from linked reporting</div></aside>
 </section>
 <section class="ticker" aria-label="Scrolling headlines"><div class="ticker-label"><span aria-hidden="true">◉</span> HEADLINE WIRE</div><div class="ticker-window" id="ticker-window"><div class="ticker-track" id="ticker-track"></div></div><button class="ticker-control" type="button" id="ticker-pause" aria-label="Pause scrolling headlines" title="Pause scrolling headlines">Ⅱ</button></section>
 </main>
-<footer><div><b>Source transparency:</b> Five stories selected from Associated Press reporting, checked Nov. 7, 2026. This is a static editorial snapshot, not live news or measured social-media rankings.</div><div class="foot-key">NAVIGATE <kbd>←</kbd><kbd>→</kbd> <span aria-hidden="true">·</span> TAP ANY STORY</div></footer>
+<footer><div><b>Source transparency:</b> Each category links to the latest headline returned by its Google News RSS search. This is an automated hourly briefing, not a measured social-media ranking.</div><div class="foot-key">NAVIGATE <kbd>←</kbd><kbd>→</kbd> <span aria-hidden="true">·</span> TAP ANY STORY</div></footer>
 </div>
 <script>
 (()=>{'use strict';const intro=document.getElementById('neon-dial-intro'),status=document.getElementById('dial-status'),detail=document.getElementById('dial-detail'),progress=document.getElementById('dial-progress'),enter=document.getElementById('dial-enter'),skip=document.getElementById('dial-skip'),windowEl=document.querySelector('.dial-window'),crawlLines=[...document.querySelectorAll('.dial-crawl-text p')];const steps=[['Initializing secure connection','SYNCING PUBLIC RECORDS...',16],['Dialing independent sources','ESTABLISHING UPLINK...',40],['Verifying archive signal','SOURCE LINKS CONFIRMED...',70],['Loading the American brief','SIGNAL READY.',100]],reduced=matchMedia('(prefers-reduced-motion: reduce)');const ticks=Array.from({length:20},()=>{const tick=document.createElement('i');progress.append(tick);return tick}),messages=crawlLines.map(line=>line.textContent.trim());let timer,crawlTimer,showingCrawl=false;crawlLines.forEach(line=>line.textContent='');function leave(){if(!intro||intro.classList.contains('is-leaving'))return;clearTimeout(timer);clearTimeout(crawlTimer);intro.classList.add('is-leaving');setTimeout(()=>intro.hidden=true,500);document.querySelector('#story-link')?.focus({preventScroll:true})}function renderStep(index){const [label,copy,value]=steps[index];status.textContent=label;detail.textContent=copy;progress.setAttribute('aria-valuenow',String(value));ticks.forEach((tick,i)=>tick.classList.toggle('on',i<Math.round(value/5)));if(index===steps.length-1){document.getElementById('dial-bar-title').textContent='DWC Network — Connected';enter.disabled=false}}function showStep(index){renderStep(index);if(index===steps.length-1){enter.focus();return}timer=setTimeout(()=>showStep(index+1),900)}function typeLine(lineIndex,charIndex=0){const line=crawlLines[lineIndex],message=messages[lineIndex];line.classList.add('typed','typing');line.textContent=message.slice(0,charIndex);if(charIndex<message.length){crawlTimer=setTimeout(()=>typeLine(lineIndex,charIndex+1),24);return}line.classList.remove('typing');crawlTimer=setTimeout(()=>lineIndex<messages.length-1?typeLine(lineIndex+1):leave(),lineIndex<messages.length-1?220:1200)}function showCrawl(){showingCrawl=true;windowEl.classList.add('is-crawl');document.getElementById('dial-bar-title').textContent='DWC Network — Welcome';enter.textContent='OPEN THE BRIEF';enter.focus();if(reduced.matches){crawlLines.forEach((line,index)=>{line.textContent=messages[index];line.classList.add('typed')});crawlTimer=setTimeout(leave,1200)}else typeLine(0)}enter.addEventListener('click',()=>showingCrawl?leave():showCrawl());skip.addEventListener('click',leave);document.addEventListener('keydown',event=>{if(event.key==='Escape'&&!intro.hidden)leave()});if(!reduced.matches)timer=setTimeout(()=>showStep(0),400);else renderStep(steps.length-1)})();
 </script>
-<script type="application/json" id="story-data">[
-  {
-    "id": 1,
-    "category": "Politics",
-    "label": "ELECTION LITIGATION",
-    "date": "NOV 07, 2026",
-    "title": "Justice Department drops bid to set aside disputed California ballots",
-    "summary": "The Justice Department asked to dismiss its lawsuit seeking to stop California from counting roughly 20,000 ballots while voters' immigration statuses were checked. California officials and the federal judge had questioned the underlying list, AP reports.",
-    "source": "https://apnews.com/article/09e1048507008385dae20160786dc490",
-    "sourceName": "Associated Press",
-    "secondary": {
-      "label": "AP · Midterm takeaways",
-      "url": "https://apnews.com/article/1cb09c8674598632ec3e4307eda5fbb8"
-    },
-    "platforms": [
-      {
-        "name": "AP · California ballot case",
-        "url": "https://apnews.com/article/09e1048507008385dae20160786dc490"
-      },
-      {
-        "name": "AP · Midterm overview",
-        "url": "https://apnews.com/article/1cb09c8674598632ec3e4307eda5fbb8"
-      }
-    ]
-  },
-  {
-    "id": 2,
-    "category": "Politics",
-    "label": "IMMIGRATION FIGHT",
-    "date": "NOV 07, 2026",
-    "title": "Democrats prepare an immigration fight after their midterm gains",
-    "summary": "Winning Democrats are weighing oversight of the administration's deportation program and possible immigration legislation. Their leverage will still be constrained by presidential veto power and previously approved enforcement funding, according to AP.",
-    "source": "https://apnews.com/article/8f976e0a67472f789348f1ce7bad1052",
-    "sourceName": "Associated Press",
-    "secondary": {
-      "label": "AP · Republican response",
-      "url": "https://apnews.com/article/fd3114355fa1a4fc479e5a3ae17d1445"
-    },
-    "platforms": [
-      {
-        "name": "AP · Immigration politics",
-        "url": "https://apnews.com/article/8f976e0a67472f789348f1ce7bad1052"
-      },
-      {
-        "name": "AP · GOP postmortem",
-        "url": "https://apnews.com/article/fd3114355fa1a4fc479e5a3ae17d1445"
-      }
-    ]
-  },
-  {
-    "id": 3,
-    "category": "Markets",
-    "label": "MARKET REACTION",
-    "date": "NOV 07, 2026",
-    "title": "Midterm results reshape investor bets across AI, energy and health care",
-    "summary": "Wall Street reassessed companies exposed to AI data-center growth, defense and oil, tariffs, and health programs after the election. AP reports that the biggest moves reflected expectations about the policy agenda of a Democratic Congress.",
-    "source": "https://apnews.com/article/4ac9a6a3c35aeec37374fc8083bf9395",
-    "sourceName": "Associated Press",
-    "secondary": {
-      "label": "AP · Election economic context",
-      "url": "https://apnews.com/article/1cb09c8674598632ec3e4307eda5fbb8"
-    },
-    "platforms": [
-      {
-        "name": "AP · Wall Street reaction",
-        "url": "https://apnews.com/article/4ac9a6a3c35aeec37374fc8083bf9395"
-      },
-      {
-        "name": "AP · Voter takeaways",
-        "url": "https://apnews.com/article/1cb09c8674598632ec3e4307eda5fbb8"
-      }
-    ]
-  },
-  {
-    "id": 4,
-    "category": "Politics",
-    "label": "YOUTH VOTE",
-    "date": "NOV 07, 2026",
-    "title": "Young voters swung sharply toward Democrats. Whether they stay is the question",
-    "summary": "Voters under 30 moved left by double digits in nearly all major Senate races compared with 2024, AP reports. The shift reflected concerns over the economy and foreign policy, but analysts caution that young voters remain a volatile coalition.",
-    "source": "https://apnews.com/article/70dc21f87d633f6936faf0200922bc57",
-    "sourceName": "Associated Press",
-    "secondary": {
-      "label": "AP · GOP and midterms",
-      "url": "https://apnews.com/article/fd3114355fa1a4fc479e5a3ae17d1445"
-    },
-    "platforms": [
-      {
-        "name": "AP · Young voter analysis",
-        "url": "https://apnews.com/article/70dc21f87d633f6936faf0200922bc57"
-      },
-      {
-        "name": "AP · Republican reaction",
-        "url": "https://apnews.com/article/fd3114355fa1a4fc479e5a3ae17d1445"
-      }
-    ]
-  },
-  {
-    "id": 5,
-    "category": "World",
-    "label": "U.S.-ISRAEL DEBATE",
-    "date": "NOV 07, 2026",
-    "title": "Election results expose a broader U.S. debate over Israel policy",
-    "summary": "The midterms highlighted growing criticism of U.S. support for Israel across the political spectrum. AP reports that recent comments and election outcomes have intensified questions about the durability of the long-standing bipartisan consensus.",
-    "source": "https://apnews.com/article/e6c87d39119516cc245b4cd0cb41cb08",
-    "sourceName": "Associated Press",
-    "secondary": {
-      "label": "AP · Global reaction to the midterms",
-      "url": "https://apnews.com/article/4b5932abf54c5f6dc70b1f8f2d1c5d07"
-    },
-    "platforms": [
-      {
-        "name": "AP · Israel policy debate",
-        "url": "https://apnews.com/article/e6c87d39119516cc245b4cd0cb41cb08"
-      },
-      {
-        "name": "AP · International reaction",
-        "url": "https://apnews.com/article/4b5932abf54c5f6dc70b1f8f2d1c5d07"
-      }
-    ]
-  }
-]</script>
+<script type="application/json" id="story-data">
+[{"category":"Politics","label":"DEMOCRATS","date":"NOV 04, 2026","title":"6 takeaways from Democrats' big wave on election night","summary":"Latest democrats headline surfaced by Google News from NPR.","source":"https://news.google.com/rss/articles/CBMilAFBVV95cUxQREc1X1oxWDdCVGhCWk1hcS1oZFlMdllwQnZqOGtLa0NMaV91X0xETzcwT2t2czNwUmo5ckRwWDQ2cFFPTVAwTzlxUkVVdzdCZlNtSUpIQWJlVm1mWndueU10QzNTeWlTRHVveGhDcUIyWjFQQmxPN1VuSFRjWjZ6d2ZKQmZJblJZeGF2eUhtTWdaQTlE?oc=5","sourceName":"NPR","secondary":{"label":"Google News · Democrats","url":"https://news.google.com/rss/search?hl=en-US&gl=US&ceid=US:en&q=Democratic+Party+announcement+OR+Democrats+significant+event"},"platforms":[{"name":"Google News · Democrats","url":"https://news.google.com/rss/search?hl=en-US&gl=US&ceid=US:en&q=Democratic+Party+announcement+OR+Democrats+significant+event"}],"id":1},{"category":"Politics","label":"REPUBLICANS","date":"NOV 04, 2026","title":"Republicans tried to gerrymander their way out of big congressional losses. It didn't work","summary":"Latest republicans headline surfaced by Google News from NPR.","source":"https://news.google.com/rss/articles/CBMijgFBVV95cUxOcHVUZm9FMWp1Y2pWcUdtcnAwLU96b1F2R3JLSzFBV1pSWDR3aDJmOUc4Y0NtRGR2bmxhYk4yblRtTFRhQXhYNnFLQkEzU2VhSmFueWJ2UzIwVWRMSHJDbFVtcENENUl5blQ4LTBCUENpV1YycUMzRXIzZndxRmMxM3Y5TE9sYnVmTjZ1OFln?oc=5","sourceName":"NPR","secondary":{"label":"Google News · Republicans","url":"https://news.google.com/rss/search?hl=en-US&gl=US&ceid=US:en&q=Republican+Party+announcement+OR+Republicans+significant+event"},"platforms":[{"name":"Google News · Republicans","url":"https://news.google.com/rss/search?hl=en-US&gl=US&ceid=US:en&q=Republican+Party+announcement+OR+Republicans+significant+event"}],"id":2},{"category":"Government","label":"DOJ","date":"NOV 06, 2026","title":"AG Blanche and Florida Officials Announce Jacksonville as Winner of the Model Cities Initiative","summary":"Latest department of justice headline surfaced by Google News from Department of Justice (.gov).","source":"https://news.google.com/rss/articles/CBMiuwFBVV95cUxNQjRHOTQ2aEJvbGxwcGNHRnNJN1dsTUYyX0Fpbk41cV9iWlE4VmRnYXZqbFNxSlVhQjAzMWJnSUZRS1lfME9rcFUtOVpiTmlNNXFIUWdxZF9wd1puQXJURTljV0VlSFFjYl9sQXoxdkRkTmh2eE9wRkhINFd6R1d6czJQZnBwYmxQVFZEQjhpUUpYN0VWbC1JWHBnTDMya1B0U1VWX0h5c2lKb0JKejljdTFRR0Y3UEJkOWo4?oc=5","sourceName":"Department of Justice (.gov)","secondary":{"label":"Google News · Doj","url":"https://news.google.com/rss/search?hl=en-US&gl=US&ceid=US:en&q=Department+of+Justice+DOJ+news"},"platforms":[{"name":"Google News · Department of Justice","url":"https://news.google.com/rss/search?hl=en-US&gl=US&ceid=US:en&q=Department+of+Justice+DOJ+news"}],"id":3},{"category":"Government","label":"DOD","date":"NOV 06, 2026","title":"Hegseth vows to defend Pentagon policies as Democrats flip Congress","summary":"Latest department of defense headline surfaced by Google News from Federal News Network.","source":"https://news.google.com/rss/articles/CBMivAFBVV95cUxPZGd6ZDBxbjd2clJGSDJPYlR5NGtPcmRFbFgyazRkX1pqQWxMRTNzUEVKd3o5YnBNamVGY01WcThqdFBUaXlUaVNIQXY1aU1kR2ZyaEY1MGVLY3hxOUQ5NXRYTWpObWVlR3ZWYTM3a1pUNGdpRnpHWHdPa292a0JHY2dfRDAtbkRJY3FTNG95dTV4Z2diYUpsekszOEN3LWs1VlY2LU5JSzFHSFRuVEhERE4tNU9yOWRTM1lPSA?oc=5","sourceName":"Federal News Network","secondary":{"label":"Google News · Dod","url":"https://news.google.com/rss/search?hl=en-US&gl=US&ceid=US:en&q=Department+of+Defense+Pentagon+news"},"platforms":[{"name":"Google News · Department of Defense","url":"https://news.google.com/rss/search?hl=en-US&gl=US&ceid=US:en&q=Department+of+Defense+Pentagon+news"}],"id":4},{"category":"Government","label":"ICE","date":"NOV 09, 2026","title":"Trump says immigration crackdown was 'too tough' and played part in midterms defeat","summary":"Latest immigration and customs enforcement headline surfaced by Google News from BBC.","source":"https://news.google.com/rss/articles/CBMiW0FVX3lxTE52M1FGVUZVd0NsT2dyZVdxOXZDZkFYdGNXYmxsUDV3T3dNSGkxR3M1SGNtbERUUVduZHM5QXEwSExlMU01VUVvQnRnYzJocy1UNzlkNDQwS21mVTg?oc=5","sourceName":"BBC","secondary":{"label":"Google News · Ice","url":"https://news.google.com/rss/search?hl=en-US&gl=US&ceid=US:en&q=ICE+immigration+enforcement+news"},"platforms":[{"name":"Google News · Immigration and Customs Enforcement","url":"https://news.google.com/rss/search?hl=en-US&gl=US&ceid=US:en&q=ICE+immigration+enforcement+news"}],"id":5},{"category":"Politics","label":"IMPEACHMENT","date":"NOV 08, 2026","title":"Healthcare, tariffs – but not Trump impeachment: Democrats chart next two years of power","summary":"Latest impeachment headline surfaced by Google News from The Guardian.","source":"https://news.google.com/rss/articles/CBMiiAFBVV95cUxNYmlpSTJYbzQ2dW1ZQWE4N2d4b3NUaTYyMF9VT01NTW9hVHptZkVKQ2RvbDR3bUZmellvUnk3Mm9vR0lDRkItcFdfVVB3YlJtRHZYMnl4UDFhS2IyX1RfUkJYQV9wYjFrbGFfVDZtYmtsRFRTZDJsMTZTeU5sQnZiR1dFY1JqaFNM?oc=5","sourceName":"The Guardian","secondary":{"label":"Google News · Impeachment","url":"https://news.google.com/rss/search?hl=en-US&gl=US&ceid=US:en&q=impeachment+news+United+States"},"platforms":[{"name":"Google News · Impeachment","url":"https://news.google.com/rss/search?hl=en-US&gl=US&ceid=US:en&q=impeachment+news+United+States"}],"id":6},{"category":"Energy","label":"OIL PRICES","date":"NOV 06, 2026","title":"As high oil prices curb demand, fresh signs of glut appear","summary":"Latest oil prices headline surfaced by Google News from Reuters.","source":"https://news.google.com/rss/articles/CBMipgFBVV95cUxQem82aUU3S0NZWXNNcXlreW9xS3J0UnpIcDNCWVdqS3NyclRxSUtWenpmMEhoNmp6amtNSG5ZYmpuMzc1TElxODVYTmVSZURrYjJsbVliVXlVSzNtM3J5TDBMNl9sQ0JSTmxKQ2RxVzc4RnMxX2lIZGp3Y3kwTFdrUndLZkFMN0JkN2xLTi02dDZjT0x1Wk0ySTMxZlpNZWRmX1F6ZDhR?oc=5","sourceName":"Reuters","secondary":{"label":"Google News · Oil Prices","url":"https://news.google.com/rss/search?hl=en-US&gl=US&ceid=US:en&q=oil+prices+crude+oil+market+news"},"platforms":[{"name":"Google News · Oil prices","url":"https://news.google.com/rss/search?hl=en-US&gl=US&ceid=US:en&q=oil+prices+crude+oil+market+news"}],"id":7},{"category":"World","label":"IRAN","date":"NOV 08, 2026","title":"Trump says renewed attacks on Iran “highly unlikely” if talks show progress","summary":"Latest iran headline surfaced by Google News from CNN.","source":"https://news.google.com/rss/articles/CBMicEFVX3lxTFBRcFFDS2FTak9Bd3ZyWUJkVUh4NDdfamp4bDNDd1A1NXpleGxxeFFTRmhsV3IyZE56R19qLVVRYmhNSFZISXpjaEhwYmJHeE1YTzlJVFRDdmJYbHczRnozVjUyYWttNkxyMThCMGJrNW0?oc=5","sourceName":"CNN","secondary":{"label":"Google News · Iran","url":"https://news.google.com/rss/search?hl=en-US&gl=US&ceid=US:en&q=Iran+news"},"platforms":[{"name":"Google News · Iran","url":"https://news.google.com/rss/search?hl=en-US&gl=US&ceid=US:en&q=Iran+news"}],"id":8}]
+</script>
 <script>
 (()=>{'use strict';
-const stories=JSON.parse(document.getElementById('story-data').textContent);
+const stories=JSON.parse(document.getElementById('story-data').textContent),storyCount=String(stories.length).padStart(2,'0');
 const $=id=>document.getElementById(id),stage=$('feature'),body=$('feature-body'),cat=$('story-category'),title=$('story-title'),summary=$('story-summary'),coverage=$('coverage'),mainLink=$('story-link'),secondary=$('secondary-link'),counter=$('counter'),radar=$('radar-list'),rail=$('progress');
 const period=6000, reduced=window.matchMedia('(prefers-reduced-motion: reduce)'), motionOK=()=>!reduced.matches;
 let current=0,paused=reduced.matches,animationTimer=null,transitionTimer=null,lastTouchX=null,tickerPaused=reduced.matches;
@@ -730,7 +611,7 @@ const safeUrl=url=>/^https:\/\//.test(url)?url:'#';
 function buildMenu(){stories.forEach((s,i)=>{const b=document.createElement('button');b.type='button';b.className='radar-item';b.setAttribute('aria-label','Show story '+(i+1)+': '+s.title);b.innerHTML='<span class="radar-num">'+String(i+1).padStart(2,'0')+'</span><span class="radar-copy"><span class="radar-cat"></span><span class="radar-head"></span></span>';b.querySelector('.radar-cat').textContent=s.label;b.querySelector('.radar-head').textContent=s.title;b.onclick=()=>navigate(i);radar.appendChild(b);
 const seg=document.createElement('button');seg.type='button';seg.className='segment';seg.setAttribute('aria-label','Show story '+(i+1));seg.onclick=()=>navigate(i);rail.appendChild(seg)})}
 function buildTicker(){const track=$('ticker-track');for(let copy=0;copy<2;copy++){const row=document.createElement('div');row.className='ticker-set';if(copy===1)row.setAttribute('aria-hidden','true');stories.forEach((s,i)=>{const link=document.createElement('a');link.className='ticker-link';link.href=safeUrl(s.source);link.target='_blank';link.rel='noopener noreferrer';link.tabIndex=copy===1?-1:0;const id=document.createElement('span');id.textContent=String(i+1).padStart(2,'0');link.append(id,document.createTextNode(s.title));row.appendChild(link);const sep=document.createElement('span');sep.className='ticker-divider';sep.textContent='✦';row.appendChild(sep)});track.appendChild(row)}}
-function render(){const s=stories[current];cat.dataset.category=s.category;cat.textContent=s.label+'  ·  '+s.date;title.textContent=s.title;summary.textContent=s.summary;counter.innerHTML='<b>'+String(current+1).padStart(2,'0')+'</b> / 05';mainLink.href=safeUrl(s.source);mainLink.innerHTML='Read '+s.sourceName+' <span aria-hidden="true">↗</span>';coverage.replaceChildren();const label=document.createElement('span');label.className='coverage-label';label.textContent='REPORTING / SOURCES';coverage.append(label);s.platforms.forEach(p=>{const a=document.createElement('a');a.className='chip';a.textContent=p.name;a.href=safeUrl(p.url);a.target='_blank';a.rel='noopener noreferrer';coverage.append(a)});
+function render(){const s=stories[current];cat.dataset.category=s.category;cat.textContent=s.label+'  ·  '+s.date;title.textContent=s.title;summary.textContent=s.summary;counter.innerHTML='<b>'+String(current+1).padStart(2,'0')+'</b> / '+storyCount;mainLink.href=safeUrl(s.source);mainLink.innerHTML='Read '+s.sourceName+' <span aria-hidden="true">↗</span>';coverage.replaceChildren();const label=document.createElement('span');label.className='coverage-label';label.textContent='HEADLINE SOURCE';coverage.append(label);s.platforms.forEach(p=>{const a=document.createElement('a');a.className='chip';a.textContent=p.name;a.href=safeUrl(p.url);a.target='_blank';a.rel='noopener noreferrer';coverage.append(a)});
 if(s.secondary){secondary.hidden=false;secondary.href=safeUrl(s.secondary.url);secondary.textContent=s.secondary.label+' ↗'}else{secondary.hidden=true}
 [...radar.children].forEach((b,i)=>{b.classList.toggle('active',i===current);b.setAttribute('aria-current',i===current?'true':'false')});renderProgress()}
 function renderProgress(){rail.querySelectorAll('button').forEach((seg,i)=>{seg.className='segment'+(i<current?' complete':'')+(i===current?' active':'')+(paused?' paused':'');seg.style.setProperty('--duration',period+'ms');seg.setAttribute('aria-current',i===current?'true':'false')});$('play-symbol').textContent=paused?'▶':'Ⅱ';$('play-label').textContent=paused?'PLAY':'PAUSE';$('play').setAttribute('aria-label',paused?'Resume rotation':'Pause rotation');$('play').setAttribute('aria-pressed',String(paused));$('auto-label').textContent=paused?'ROTATION PAUSED':'AUTO · 6 SEC'}
@@ -749,7 +630,7 @@ document.addEventListener('keydown',e=>{if(e.target.closest('a,button,input,text
 $('ticker-pause').onclick=()=>{tickerPaused=!tickerPaused;$('ticker-track').style.animationPlayState=tickerPaused?'paused':'running';$('ticker-pause').textContent=tickerPaused?'▶':'Ⅱ';$('ticker-pause').setAttribute('aria-label',tickerPaused?'Resume scrolling headlines':'Pause scrolling headlines')};
 if(tickerPaused){$('ticker-track').style.animationPlayState='paused';$('ticker-pause').textContent='▶'}
 if(typeof reduced.addEventListener==='function'){reduced.addEventListener('change',e=>{if(e.matches){paused=true;tickerPaused=true;clearTimeout(animationTimer);$('ticker-track').style.animationPlayState='paused';$('ticker-pause').textContent='▶';renderProgress()}else{renderProgress()}})}
-buildMenu();buildTicker();render();resetTimer();
+document.getElementById('edition-count').textContent=storyCount;document.getElementById('radar-count').textContent=storyCount+' ACTIVE';document.getElementById('radar-note').innerHTML='<b>●</b> Updated '+document.getElementById('snapshot-date').textContent+' · source-linked headlines';buildMenu();buildTicker();render();resetTimer();
 })();
 </script>
 </body>
