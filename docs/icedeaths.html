@@ -61,210 +61,598 @@
         .custom-scrollbar::-webkit-scrollbar-thumb:hover {
             background: #475569;
         }
+
+        /* Cinematic opening visualization — isolated from the dashboard styles */
+        body.mi-locked { overflow: hidden; }
+        .mi-intro {
+            --mi-accent: #ef5a62;
+            --mi-accent-dim: rgba(239,90,98,.16);
+            position: fixed; inset: 0; z-index: 90; overflow-y: auto;
+            background: #050910; color: #f3f5fa; isolation: isolate;
+            font-family: Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+            transition: opacity .8s ease, visibility .8s ease;
+        }
+        .mi-intro[hidden] { display: none !important; }
+        .mi-intro.is-exiting { opacity: 0; visibility: hidden; pointer-events: none; }
+        .mi-intro::before {
+            content: ""; position: fixed; inset: 0; z-index: -3; pointer-events: none;
+            background:
+                radial-gradient(ellipse at 78% 49%, rgba(113,32,43,.26), transparent 47%),
+                radial-gradient(ellipse at 18% 82%, rgba(23,50,77,.32), transparent 55%),
+                linear-gradient(135deg, #060b14 0%, #080d17 49%, #03070e 100%);
+        }
+        .mi-intro::after {
+            content: ""; position: fixed; inset: 0; z-index: -1; opacity: .48; pointer-events: none;
+            background-image: linear-gradient(rgba(132,151,173,.055) 1px, transparent 1px),
+                              linear-gradient(90deg, rgba(132,151,173,.055) 1px, transparent 1px);
+            background-size: 54px 54px;
+            mask-image: linear-gradient(90deg, transparent 0, black 35%, black 100%);
+        }
+        .mi-shell {
+            min-height: 100dvh; max-width: 1440px; margin: 0 auto; padding: 30px clamp(24px, 5vw, 80px) 24px;
+            display: flex; flex-direction: column; position: relative;
+        }
+        .mi-topbar { display: flex; justify-content: space-between; align-items: center; gap: 16px; }
+        .mi-wordmark { display: flex; align-items: center; gap: 12px; text-transform: uppercase; font-size: 10px;
+            font-weight: 750; letter-spacing: .24em; color: #d1d8e5; }
+        .mi-mark { width: 26px; height: 26px; display: grid; place-items: center; border: 1px solid #813943;
+            color: #ff727a; border-radius: 50%; font-size: 14px; font-weight: 400; }
+        .mi-topright { display: flex; align-items: center; gap: clamp(14px,2.7vw,35px); }
+        .mi-edition { color: #718297; font-size: 10px; letter-spacing: .18em; text-transform: uppercase; }
+        .mi-skip { color: #cbd5e1; background: none; border: 0; font-weight: 650; letter-spacing: .12em;
+            font-size: 11px; text-transform: uppercase; cursor: pointer; padding: 10px 0; }
+        .mi-skip:hover, .mi-skip:focus-visible { color: #fff; }
+        .mi-skip span { margin-left: 8px; color: #f87171; }
+        .mi-main { flex: 1; display: grid; grid-template-columns: 1.08fr 1fr; align-items: center;
+            gap: clamp(18px, 5vw, 95px); padding: 55px 0 18px; min-height: 500px; }
+        .mi-copy { position: relative; z-index: 5; padding: 12px 0; }
+        .mi-eyebrow { display: flex; align-items: center; gap: 11px; margin-bottom: 24px; font-size: 10px;
+            font-weight: 700; letter-spacing: .26em; color: #f47c84; text-transform: uppercase; }
+        .mi-eyebrow::before { content: ""; display: block; width: 30px; height: 1px; background: #ef5a62; }
+        .mi-chapter { font-size: 11px; letter-spacing: .14em; color: #8b9bb0; margin: 0 0 20px; text-transform: uppercase; }
+        .mi-chapter b { color: #f26a74; }
+        .mi-title { font-size: clamp(42px,5.5vw,83px); letter-spacing: -.06em; line-height: 1.025;
+            font-weight: 760; margin: 0 0 26px; max-width: 790px; text-wrap: balance; }
+        .mi-title em { font-style: normal; color: #f77980; }
+        .mi-description { font-size: clamp(15px, 1.4vw, 18px); color: #a8b6c9; line-height: 1.75;
+            max-width: 515px; min-height: 96px; }
+        .mi-message { border-left: 2px solid var(--mi-accent); color: #7f90a6; padding-left: 16px;
+            font-size: 11px; letter-spacing: .12em; margin-top: 34px; text-transform: uppercase; }
+        .mi-stage-enter { animation: mi-stage-in .65s both; }
+        @keyframes mi-stage-in { from { opacity: 0; transform: translateY(18px); filter: blur(5px); }
+                                to { opacity: 1; transform: translateY(0); filter: blur(0); } }
+        .mi-visual { position: relative; display: grid; place-items: center; min-height: 480px;
+            aspect-ratio: 1 / 1; max-height: 640px; }
+        .mi-visual::before { content: ""; position: absolute; inset: 6%; border-radius: 50%;
+            background: radial-gradient(circle, rgba(176,49,58,.08) 0%, rgba(176,49,58,.045) 30%, transparent 66%); }
+        .mi-orbit { position: absolute; border: 1px solid rgba(224,91,103,.20); border-radius: 50%;
+            box-shadow: inset 0 0 42px rgba(169,39,54,.02), 0 0 28px rgba(169,39,54,.018); }
+        .mi-orbit.outer { width: 95%; aspect-ratio: 1; border-style: dashed; border-color: rgba(148,163,184,.15); animation: mi-rotate 62s linear infinite; }
+        .mi-orbit.middle { width: 76%; aspect-ratio: 1; border-color: rgba(241,102,114,.2); }
+        .mi-orbit.inner { width: 53%; aspect-ratio: 1; border-color: rgba(241,102,114,.12); }
+        .mi-orbit.outer::after { content: ""; position: absolute; width: 7px; height: 7px;
+            left: 14%; top: 15%; background: #ff7882; border-radius: 50%; box-shadow: 0 0 21px #f25a66; }
+        .mi-sweep { width: 92%; aspect-ratio: 1; position: absolute; border-radius: 50%;
+            background: conic-gradient(from 0deg, transparent 0deg, transparent 303deg, rgba(214,57,68,.10) 341deg, transparent 359deg);
+            animation: mi-rotate 11s linear infinite; }
+        @keyframes mi-rotate { to { transform: rotate(360deg); } }
+        .mi-field { width: 96%; height: 96%; position: absolute; display: grid;
+            grid-template-columns: repeat(19, 1fr); grid-template-rows: repeat(13, 1fr);
+            place-items: center; mask-image: radial-gradient(ellipse, black 28%, rgba(0,0,0,.65) 56%, transparent 79%); }
+        .mi-pixel { display: block; width: 3px; height: 3px; border-radius: 50%; background: #2c3d50;
+            opacity: .6; transition: background 1s ease, opacity 1s ease, transform .8s ease, box-shadow 1s ease; }
+        .mi-pixel.lit { background: #f46f78; opacity: .86; transform: scale(1.45); box-shadow: 0 0 9px rgba(239,83,99,.52); }
+        .mi-center { position: relative; width: min(70%, 350px); aspect-ratio: 1;
+            border-radius: 50%; display: flex; flex-direction: column; justify-content: center; text-align: center;
+            padding: 24px; background: radial-gradient(circle, rgba(10,17,29,.94) 0%, rgba(9,15,26,.97) 60%, rgba(12,18,30,.6) 90%);
+            border: 1px solid rgba(189,76,87,.22); box-shadow: 0 0 90px rgba(195,45,63,.09), inset 0 0 50px rgba(0,0,0,.3); }
+        .mi-center::before { content: ""; position: absolute; border-radius: 50%; inset: 12px; border: 1px solid rgba(227,99,108,.09); }
+        .mi-center-tag { color: #8396a9; font-size: clamp(8px,.75vw,10px); font-weight: 700; letter-spacing: .20em;
+            text-transform: uppercase; }
+        .mi-number { display: block; margin: 12px -25px 10px; font-variant-numeric: tabular-nums; color: #f8f9fd;
+            font-size: clamp(49px, 5.1vw, 80px); font-weight: 750; line-height: 1.08; letter-spacing: -.065em;
+            text-shadow: 0 0 54px rgba(249,94,106,.28); }
+        .mi-number.is-range { font-size: clamp(32px,3.5vw,56px); letter-spacing: -.055em; }
+        .mi-number::after { content: ""; display: block; width: 46px; height: 2px; margin: 14px auto 0; background: #e85d68; box-shadow: 0 0 12px #b33746; }
+        .mi-unit { font-size: 10px; line-height: 1.6; font-weight: 700; letter-spacing: .1em; color: #becbd9;
+            text-transform: uppercase; max-width: 230px; margin: 0 auto; }
+        .mi-coordinate { position: absolute; color: #6f8297; text-transform: uppercase;
+            font-size: 9px; letter-spacing: .16em; }
+        .mi-coordinate.top { top: 7%; right: 5%; } .mi-coordinate.bottom { bottom: 9%; left: 3%; }
+        .mi-bottom { padding-top: 20px; border-top: 1px solid rgba(142,158,183,.2); }
+        .mi-bottom-meta { display: flex; align-items: center; justify-content: space-between; color: #91a1b5;
+            font-size: 10px; font-weight: 700; letter-spacing: .18em; text-transform: uppercase; margin-bottom: 12px; }
+        .mi-progress-track { width: 100%; height: 2px; background: #2a3444; overflow: hidden; }
+        .mi-progress-fill { height: 100%; width: 0; background: linear-gradient(90deg, #8d2837, #f4717a);
+            box-shadow: 0 0 15px #f15b66; }
+        .mi-years { display: flex; justify-content: space-between; font-size: 10px; color: #718399; letter-spacing: .12em; margin-top: 10px; }
+        .mi-footer-row { display: flex; gap: 16px; justify-content: space-between; align-items: flex-end; padding-top: 30px; }
+        .mi-method { color: #7d8ca1; font-size: 11px; line-height: 1.55; max-width: 570px; }
+        .mi-controls { display: flex; align-items: center; gap: 13px; flex-shrink: 0; }
+        .mi-pause { border: 1px solid #344255; background: transparent; color: #cbd5e1; border-radius: 3px;
+            padding: 14px 19px; min-width: 85px; font-size: 10px; font-weight: 750; letter-spacing: .1em;
+            cursor: pointer; text-transform: uppercase; }
+        .mi-enter { border: 1px solid #f16771; background: #c73547; border-radius: 3px; padding: 14px 23px;
+            color: #fff; font-size: 11px; font-weight: 780; letter-spacing: .1em; text-transform: uppercase;
+            cursor: pointer; box-shadow: 0 8px 34px rgba(167,28,50,.2); }
+        .mi-enter span { font-size: 15px; margin-left: 15px; }
+        .mi-enter:hover, .mi-enter:focus-visible { background: #e04b5a; }
+        .mi-pause:hover, .mi-pause:focus-visible { border-color: #9ca8ba; background: #1a2636; }
+        .mi-intro button:focus-visible { outline: 2px solid #fda4af; outline-offset: 4px; }
+        .mi-replay { margin-left: auto; padding: 8px 10px; flex-shrink: 0; color: #cbd5e1;
+            border: 1px solid #475569; border-radius: 6px; background: rgba(15,23,42,.6);
+            font-size: 11px; cursor: pointer; white-space: nowrap; }
+        .mi-replay:hover { background: #334155; color: white; }
+        @media (min-width: 901px) and (max-height: 1000px) {
+            .mi-shell { height: 100dvh; padding-top: 22px; padding-bottom: 14px; }
+            .mi-main { flex: 0 0 auto; height: min(58vh, 550px); padding: 12px 0 6px; min-height: 0; }
+            .mi-visual { width: min(100%, 53vh, 525px); min-height: 0; justify-self: center; }
+            .mi-title { font-size: clamp(42px, 5vw, 72px); }
+            .mi-description { min-height: 75px; }
+            .mi-message { margin-top: 24px; }
+            .mi-footer-row { padding-top: 17px; }
+        }
+        @media (max-width: 900px) {
+            .mi-shell { padding: 22px 26px 25px; }
+            .mi-main { grid-template-columns: 1fr 1fr; gap: 4px; padding: 30px 0 18px; min-height: 350px; }
+            .mi-title { font-size: clamp(32px,5vw,52px); }
+            .mi-visual { min-height: 320px; }
+            .mi-center { width: 75%; }
+            .mi-number { font-size: clamp(40px,5vw,64px); }
+            .mi-number.is-range { font-size: clamp(29px,3.5vw,45px); }
+            .mi-footer-row { align-items: flex-start; }
+        }
+        @media (max-width: 650px) {
+            .mi-shell { padding: 20px 20px 24px; }
+            .mi-wordmark { font-size: 9px; letter-spacing: .11em; gap: 8px; }
+            .mi-mark { width: 23px; height: 23px; }
+            .mi-edition { display: none; }
+            .mi-main { display: flex; flex-direction: column; gap: 10px; padding: 30px 0 20px; min-height: auto; }
+            .mi-copy { width: 100%; padding: 0; }
+            .mi-eyebrow { margin-bottom: 12px; font-size: 9px; }
+            .mi-chapter { margin-bottom: 10px; }
+            .mi-title { font-size: clamp(35px, 9vw, 58px); margin-bottom: 13px; }
+            .mi-description { font-size: 14px; line-height: 1.6; min-height: 70px; }
+            .mi-message { margin-top: 16px; font-size: 9px; }
+            .mi-visual { width: min(100%,350px); min-height: unset; aspect-ratio: 1; align-self: center; margin-top: -8px; }
+            .mi-center { width: 70%; }
+            .mi-number { font-size: clamp(42px, 11vw, 58px); }
+            .mi-number.is-range { font-size: clamp(30px, 8vw, 43px); }
+            .mi-center-tag { font-size: 8px; } .mi-unit { font-size: 9px; }
+            .mi-coordinate { display: none; }
+            .mi-bottom { padding-top: 15px; }
+            .mi-footer-row { flex-direction: column-reverse; gap: 18px; padding-top: 18px; align-items: stretch; }
+            .mi-controls { width: 100%; }
+            .mi-pause { min-width: 72px; padding: 13px 11px; }
+            .mi-enter { flex: 1; padding: 13px 10px; text-align: center; }
+            .mi-method { font-size: 10px; }
+        }
+        @media (max-height: 740px) and (min-width: 651px) {
+            .mi-shell { padding-top: 16px; padding-bottom: 15px; }
+            .mi-main { padding: 12px 0; min-height: 300px; }
+            .mi-visual { min-height: 330px; max-height: 58vh; }
+            .mi-title { font-size: clamp(38px, 4.3vw, 65px); }
+            .mi-description { min-height: 65px; }
+            .mi-message { margin-top: 18px; }
+            .mi-footer-row { padding-top: 15px; }
+        }
+        @media (prefers-reduced-motion: reduce) {
+            .mi-orbit.outer, .mi-sweep, .mi-stage-enter { animation: none !important; }
+            .mi-intro, .mi-pixel { transition: none !important; }
+        }
+
+
+/* ============================================================================
+   EDITORIAL REPORT: cinematic landing design inherited from the opening sequence
+   ============================================================================ */
+:root { color-scheme: dark; --r-ink: #050910; --r-panel:#0c1420; --r-quiet:#8d9bb0; --r-line: rgba(131,150,176,.19); --r-hot:#f27780; }
+html { scroll-behavior: smooth; }
+body { margin:0; min-height:100vh; color:#edf1f7; background:
+    radial-gradient(ellipse at 78% 10%, rgba(114,30,49,.14) 0%, transparent 38%),
+    radial-gradient(ellipse at 0% 38%, rgba(17,48,78,.23) 0%, transparent 47%),#050910 !important;
+    font-family:Inter,ui-sans-serif,system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif; }
+body::before {content:"";position:fixed;inset:0;z-index:-1;pointer-events:none;opacity:.55;
+  background-image:linear-gradient(rgba(121,143,168,.035) 1px,transparent 1px),linear-gradient(90deg,rgba(121,143,168,.035) 1px,transparent 1px);
+  background-size:54px 54px; }
+button, a { -webkit-tap-highlight-color:transparent; }
+button:focus-visible,a:focus-visible {outline:2px solid #f9a2a9;outline-offset:4px;}
+.report-header {position:sticky;top:0;z-index:30;background:rgba(5,9,16,.94);border-bottom:1px solid rgba(132,149,176,.23);backdrop-filter:blur(22px);}
+.report-header-main,.report-nav-wrap { max-width:1490px;margin:auto;padding-left:clamp(22px,5vw,72px);padding-right:clamp(22px,5vw,72px); }
+.report-header-main {height:79px;display:flex;align-items:center;justify-content:space-between;gap:20px;border-bottom:1px solid rgba(111,132,161,.14);}
+.report-brand {text-decoration:none!important;color:#e5eaf3!important;display:inline-flex;align-items:center;gap:14px;font-size:11px;font-weight:800;letter-spacing:.22em;white-space:nowrap;}
+.report-brand-symbol {font-size:19px;line-height:1;width:30px;height:30px;border:1px solid rgba(239,96,111,.55);border-radius:50%;display:grid;place-items:center;color:#f47781;font-weight:300;}
+.report-brand-slash {color:#f16b74;margin:0 4px;}
+.report-header-right {display:flex;align-items:center;gap:34px;}.report-daterange {font-size:10px;letter-spacing:.18em;color:#8394ab;white-space:nowrap;}
+.report-header-slash {margin:0 10px;color:#5c6b80;}
+.report-replay {border:1px solid rgba(202,83,98,.65);color:#f4d8dc;background:rgba(95,22,38,.12);padding:11px 14px;border-radius:2px;font-size:10px;font-weight:750;letter-spacing:.12em;cursor:pointer;white-space:nowrap;}
+.report-replay:hover {background:#a62e44;color:#fff;}
+.report-replay span {color:#f77d87;font-size:15px;vertical-align:-1px;margin-right:6px;}
+.report-nav-wrap {display:flex;align-items:stretch;justify-content:space-between;gap:20px;min-height:57px;}
+.report-nav {display:flex;align-items:stretch;gap:clamp(14px,3.4vw,49px);overflow:auto;scrollbar-width:none;}
+.report-nav::-webkit-scrollbar {display:none;}
+.report-nav .tab-btn {appearance:none!important;background:none!important;border:0!important;border-bottom:2px solid transparent!important;border-radius:0!important;padding:0 0 1px;display:inline-flex;align-items:center;gap:9px;white-space:nowrap;color:#78889e!important;font-size:10px!important;font-weight:800!important;letter-spacing:.15em!important;cursor:pointer;transition:color .2s,border-color .2s;}
+.report-nav .tab-btn:hover {color:#f5f6f9!important;background:transparent!important;}
+.report-nav .tab-btn.bg-red-700 {color:#f6f7fb!important;border-bottom-color:#ed6472!important;}
+.report-nav-num {font-size:9px;color:#d55564;}
+.report-header-status {display:flex;align-items:center;gap:9px;color:#607187;font-size:9px;font-weight:800;letter-spacing:.13em;white-space:nowrap;}
+.report-status-dot {height:6px;width:6px;background:#e56e78;box-shadow:0 0 11px #e56e78;border-radius:50%;animation:report-pulse 2.6s ease-in-out infinite;}
+@keyframes report-pulse{50%{opacity:.35;box-shadow:none;}}
+.report-main {max-width:1490px;min-height:65vh;margin:0 auto;padding:0 clamp(22px,5vw,72px) 90px;flex-grow:1;width:100%;box-sizing:border-box;}
+.tab-content.hidden {display:none!important;}
+.report-hero {position:relative;min-height:668px;display:grid;grid-template-columns:1.08fr 1fr;grid-template-rows:1fr auto;align-items:center;column-gap:clamp(0px,3vw,80px);padding-top:32px;isolation:isolate;border-bottom:1px solid rgba(131,150,176,.15);}
+.report-hero-grid {position:absolute;inset:0;z-index:-3;pointer-events:none;opacity:.55;background-image:linear-gradient(rgba(116,139,166,.044) 1px,transparent 1px),linear-gradient(90deg,rgba(116,139,166,.044) 1px,transparent 1px);background-size:54px 54px;mask-image:linear-gradient(90deg,transparent,black 42%);}
+.report-hero-glow {position:absolute;inset:0;pointer-events:none;z-index:-2;background:radial-gradient(ellipse at 77% 47%,rgba(170,38,62,.16),transparent 39%),radial-gradient(ellipse at 17% 86%,rgba(17,48,82,.19),transparent 47%);}
+.report-hero-copy {z-index:2;padding:44px 0 35px;}
+.report-eyebrow {display:flex;align-items:center;gap:12px;font-size:10px;color:#f2757d;font-weight:800;letter-spacing:.25em;margin:0 0 37px;}.report-eyebrow i{width:28px;height:1px;background:#f2757d;display:block;}
+.report-chapter{font-size:11px;color:#91a2b9;letter-spacing:.15em;margin:0 0 21px;}.report-chapter b{color:#f2757d;}.report-chapter-separator{margin:0 10px;color:#4d5e75;}
+.report-hero-title{font-size:clamp(54px,5.9vw,91px);line-height:1.035;font-weight:780;letter-spacing:-.068em;margin:0 0 29px;color:#f3f5fa;text-wrap:balance;}
+.report-hero-title em {color:#f17b85;font-style:normal;}
+.report-hero-lede {font-size:clamp(15px,1.35vw,18px);line-height:1.78;color:#a9b6c9;max-width:590px;margin:0 0 32px;}
+.report-hero-actions{display:flex;gap:28px;align-items:center;flex-wrap:wrap;}
+.report-btn-primary{border:1px solid #e65f70;background:#c5384e;color:white;font-size:11px;font-weight:800;letter-spacing:.1em;padding:17px 19px 17px 24px;cursor:pointer;border-radius:3px;box-shadow:0 12px 36px rgba(172,35,54,.23);}
+.report-btn-primary:hover{background:#e44f62;transform:translateY(-2px);}
+.report-btn-primary span{padding-left:27px;font-size:15px;}.report-btn-text {color:#c7d2e3;font-size:10px;font-weight:750;letter-spacing:.14em;text-decoration:none;border-bottom:1px solid #596b80;padding-bottom:9px;}.report-btn-text:hover{color:white;border-color:#f07983;}.report-btn-text span{color:#ed7c88;margin-left:11px;}
+.report-hero-note {margin:40px 0 0;color:#78889e;font-size:9px;letter-spacing:.12em;line-height:1.7;display:flex;align-items:center;gap:13px;}
+.report-hero-note span{height:22px;width:2px;display:inline-block;background:#eb6575;}
+.report-hero-visual{position:relative;width:min(100%,570px);aspect-ratio:1;display:grid;place-items:center;justify-self:center;margin:10px auto 0;}
+.report-visual-halo{position:absolute;inset:0;border-radius:50%;background:radial-gradient(circle,transparent 10%,rgba(201,52,68,.045) 55%,transparent 75%);}
+.report-orbit {position:absolute;aspect-ratio:1;border-radius:50%;pointer-events:none;}
+.report-orbit-a{width:97%;border:1px dashed rgba(156,124,148,.21);animation:report-spin 90s linear infinite;}
+.report-orbit-a::after{content:"";position:absolute;width:7px;height:7px;top:14%;left:15%;border-radius:50%;background:#fd7e87;box-shadow:0 0 20px #e74c65;}
+.report-orbit-b{width:83%;border:1px solid rgba(229,89,110,.19);box-shadow:0 0 85px rgba(190,35,55,.06),inset 0 0 85px rgba(196,39,62,.07);}
+.report-orbit-c{width:64%;border:1px solid rgba(224,73,100,.16);}
+.report-orbit-arc{position:absolute;width:93%;aspect-ratio:1;border-radius:50%;background:conic-gradient(from 0deg,transparent 0deg,transparent 310deg,rgba(244,102,122,.14) 342deg,transparent 360deg);animation:report-spin 14s linear infinite;}
+@keyframes report-spin{to{transform:rotate(360deg);}}
+.report-orbit-core{position:relative;width:69%;aspect-ratio:1;border-radius:50%;display:flex;flex-direction:column;justify-content:center;align-items:center;text-align:center;background:radial-gradient(circle,rgba(13,20,32,.97),rgba(8,13,23,.98) 67%,rgba(8,13,23,.70));border:1px solid rgba(213,67,90,.23);box-shadow:0 0 100px rgba(216,48,66,.10),inset 0 0 55px rgba(0,0,0,.27);padding:26px;box-sizing:border-box;}
+.report-orbit-core::before{content:"";position:absolute;inset:13px;border:1px solid rgba(222,81,100,.07);border-radius:50%;pointer-events:none;}
+.report-orbit-eyebrow{font-size:10px;letter-spacing:.19em;font-weight:800;color:#a1afc3;margin:0 0 24px;}
+.report-orbit-value{font-size:clamp(45px,4.65vw,73px);font-weight:760;line-height:1;letter-spacing:-.083em;font-variant-numeric:tabular-nums;color:#f4f6fa;white-space:nowrap;text-shadow:0 0 52px rgba(244,100,110,.22);}
+.report-orbit-value span{font-size:.62em;color:#f27982;margin:0 4px;}.report-orbit-value sup{font-size:.48em;vertical-align:top;color:#fa8b90;margin-left:2px;}
+.report-orbit-rule {width:45px;height:2px;background:#ec6073;margin:25px auto 20px;box-shadow:0 0 15px #db5766;}
+.report-orbit-caption{font-size:10px;font-weight:800;letter-spacing:.13em;color:#e4ebf4;margin:0 0 7px;}
+.report-orbit-caption2{font-size:9px;color:#72849b;letter-spacing:.10em;}
+.report-visual-coordinate{position:absolute;font-size:9px;letter-spacing:.13em;color:#6f7f94;white-space:nowrap;}.report-coordinate-top{top:9%;right:0;}.report-coordinate-bottom{bottom:9%;left:0;}
+.report-hero-timeline{grid-column:1/-1;padding:15px 0 24px;margin-top:0;border-top:1px solid rgba(139,158,184,.19);}
+.report-timeline-top{display:flex;justify-content:space-between;gap:12px;color:#93a2b8;letter-spacing:.17em;font-size:10px;font-weight:800;margin-bottom:13px;}
+.report-timeline-track{position:relative;height:2px;background:#283344;margin-bottom:13px;}
+.report-timeline-beam{display:block;height:100%;width:100%;background:linear-gradient(90deg,#ac3448,#e36e78 60%,rgba(230,104,118,.3));opacity:.7;}
+.report-timeline-dot{position:absolute;top:-3px;z-index:1;height:8px;width:8px;border:2px solid #f17e89;background:#101621;border-radius:50%;}
+.report-timeline-dot.first{left:0;}.report-timeline-dot.second{left:31%;}.report-timeline-dot.third{left:72%;}.report-timeline-dot.fourth{right:0;}
+.report-timeline-years{display:flex;justify-content:space-between;color:#72849b;letter-spacing:.1em;font-size:10px;}
+.report-metrics-section,.report-analysis,.report-ledger,.report-next{padding-top:85px;scroll-margin-top:170px;}
+.report-section-heading {margin-bottom:30px;}.report-section-heading-inline {display:flex;align-items:end;justify-content:space-between;gap:40px;}
+.report-section-kicker{font-size:10px;font-weight:800;letter-spacing:.19em;color:#a0b0c4;margin-bottom:17px;}.report-section-kicker span{color:#f27480;margin-right:6px;}
+.report-section-heading h2 {font-size:clamp(35px,3.6vw,54px);line-height:1.09;letter-spacing:-.057em;font-weight:750;margin:0 0 11px;color:#f0f3f8;}.report-section-heading h2 em {color:#ee7b83;font-style:normal;}
+.report-section-heading p{max-width:575px;margin:0;font-size:14px;line-height:1.7;color:#8f9fb4;}.report-section-heading-inline>p {max-width:325px;margin-bottom:7px;text-align:right;}
+.report-metrics{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));border-top:1px solid rgba(139,155,178,.3);border-bottom:1px solid rgba(139,155,178,.28);}
+.report-metric{min-width:0;padding:27px 23px 21px;border-right:1px solid rgba(131,150,176,.18);position:relative;background:linear-gradient(175deg,rgba(18,28,43,.34),rgba(5,10,19,.06));transition:background .3s;}
+.report-metric:first-child{padding-left:0;}.report-metric:last-child{border-right:0;}.report-metric:hover{background:rgba(31,40,56,.32);}
+.report-metric-index{font-size:10px;letter-spacing:.1em;color:#ed7882;font-weight:800;white-space:nowrap;}.report-metric-index span{color:#687d95;font-size:9px;}
+.report-metric-value{font-size:clamp(38px,3.9vw,59px);font-weight:770;letter-spacing:-.065em;line-height:1.15;color:#f3f6fc;white-space:nowrap;margin:26px 0 9px;}.report-metric-range{color:#f3f6fc;}.report-metric-range sup{font-size:.5em;color:#f17b85;}.report-metric-emphasis{color:#f17c88;}.report-metric-percent{font-size:.65em;}
+.report-metric h3{font-size:10px;font-weight:800;letter-spacing:.15em;color:#e2e8f1;margin:0 0 9px;}.report-metric p{font-size:12px;line-height:1.65;color:#8b9db1;min-height:57px;max-width:235px;}
+.report-metric-lower{display:flex;align-items:center;justify-content:space-between;gap:12px;border-top:1px solid rgba(118,138,164,.16);padding-top:15px;margin-top:20px;font-size:9px;font-weight:800;letter-spacing:.12em;color:#7c91a9;}.report-metric-lower>span {color:#f17d87;}
+.report-metric-indicator{height:5px;width:5px;border-radius:50%;background:#e4797c;box-shadow:0 0 8px #e4797c;}.report-metric-indicator.amber{background:#e6b76a;box-shadow:0 0 8px #e6b76a;}
+.report-source-note{font-size:11px;line-height:1.6;color:#78889e;max-width:1050px;margin:20px 0 0;}
+.report-chart-grid{display:grid;grid-template-columns:5fr 7fr;gap:18px;}
+.report-data-panel{min-width:0;background:linear-gradient(145deg,rgba(15,24,38,.90),rgba(7,12,22,.97));border:1px solid rgba(129,147,171,.22);padding:27px 29px 22px;position:relative;overflow:hidden;}
+.report-data-panel::before{content:"";position:absolute;width:170px;height:170px;border-radius:50%;right:-100px;top:-110px;background:#ba3b51;filter:blur(105px);opacity:.24;pointer-events:none;}
+.report-panel-top,.report-ledger-top{display:flex;justify-content:space-between;gap:14px;font-size:9px;letter-spacing:.17em;font-weight:800;color:#778ca5;padding-bottom:17px;border-bottom:1px solid rgba(131,150,176,.19);}
+.report-panel-top span:first-child,.report-ledger-top span:first-child{color:#f27682;}
+.report-panel-heading{padding-top:25px;}.report-panel-heading h3{color:#eef3f9;font-size:23px;letter-spacing:-.035em;font-weight:730;margin:0 0 7px;}.report-panel-heading p{font-size:12px;line-height:1.6;color:#94a4ba;margin:0;min-height:39px;}
+.report-chart-container{height:320px;max-height:none;max-width:none;margin:15px 0 0;position:relative;width:100%;}.report-chart-container canvas{display:block;}
+.report-panel-insight{border-top:1px solid rgba(131,150,176,.16);margin-top:15px;padding-top:18px;display:flex;gap:15px;align-items:flex-start;}.report-panel-insight span{font-size:9px;white-space:nowrap;font-weight:800;letter-spacing:.1em;color:#f17c85;margin-top:3px;}.report-panel-insight p{font-size:11px;line-height:1.65;color:#9eacbd;margin:0;}
+.report-ledger-panel{background:linear-gradient(145deg,rgba(15,24,38,.89),rgba(7,12,22,.98));border:1px solid rgba(129,147,171,.22);padding:26px 27px 10px;}
+.report-ledger-scroll{overflow-x:auto;margin-top:19px;scrollbar-color:#3a4b61 #0d1724;}
+.report-ledger table{width:100%;min-width:890px;border-collapse:collapse;text-align:left;font-size:12px;}
+.report-ledger th{padding:16px 13px;color:#9eb0c7;background:#132033;font-size:10px;letter-spacing:.06em;text-transform:uppercase;vertical-align:middle;white-space:nowrap;}
+.report-ledger td{padding:16px 13px;color:#c1cddd;line-height:1.55;border-bottom:1px solid rgba(131,150,176,.16);background:transparent;}
+.report-ledger tr:hover td{background:rgba(43,54,71,.35);}.report-ledger td:first-child{font-weight:750;color:#e8eef8;}
+.report-ledger tr:last-child td{font-weight:800;border-top:1px solid #e87981;color:#fff;}
+.report-ledger td.text-center,.report-ledger th.text-center{text-align:center;}
+.report-next-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:18px;}
+.report-next-card{appearance:none;text-align:left;cursor:pointer;background:linear-gradient(145deg,#111a28,#080d17);border:1px solid rgba(125,145,174,.23);min-height:244px;padding:25px;display:flex;flex-direction:column;align-items:flex-start;gap:10px;color:#f4f6f9;transition:transform .25s,border-color .25s,background .25s;}
+.report-next-card:hover{transform:translateY(-5px);border-color:rgba(241,123,137,.60);background:linear-gradient(145deg,#1b2232,#090d17);}
+.report-next-number{color:#f17882;font-size:10px;font-weight:800;letter-spacing:.15em;margin-bottom:12px;}.report-next-card strong{font-size:25px;line-height:1.1;letter-spacing:-.04em;font-weight:720;}.report-next-card>span:nth-child(3){color:#9aabc1;font-size:12px;line-height:1.7;max-width:280px;}.report-next-card b{border-top:1px solid rgba(131,150,176,.19);width:100%;padding-top:16px;margin-top:auto;color:#b7c7d8;letter-spacing:.1em;font-size:9px;display:flex;justify-content:space-between;align-items:center;}.report-next-card b i{font-style:normal;color:#f27985;font-size:16px;}
+.report-footer{border-top:1px solid rgba(131,150,176,.22);background:#060b14;padding:35px 0 39px;color:#7d90a8;}
+.report-footer-inner{max-width:1490px;margin:0 auto;padding:0 clamp(22px,5vw,72px);display:flex;justify-content:space-between;gap:30px;}
+.report-footer-brand{color:#dbe4ef;font-size:10px;font-weight:800;letter-spacing:.18em;}.report-footer-brand span{color:#ee7883;font-size:17px;margin-right:9px;vertical-align:-2px;}
+.report-footer p{font-size:11px;margin:8px 0 0;color:#667b94;}.report-footer-right{text-align:right;font-size:9px;letter-spacing:.12em;font-weight:700;}
+/* The dashboard makes its own entrance as the cinematic opening closes. */
+#reportHeroTitle:focus {outline:none;}
+body:not(.mi-locked) .report-hero-copy {animation:report-hero-reveal .85s cubic-bezier(.16,1,.3,1) both;}
+body:not(.mi-locked) .report-orbit-core {animation:report-core-reveal 1.15s cubic-bezier(.16,1,.3,1) both;}
+@keyframes report-hero-reveal{from{opacity:0;transform:translateY(24px);filter:blur(6px);}to{opacity:1;transform:translateY(0);filter:blur(0);}}
+@keyframes report-core-reveal{from{opacity:.3;transform:scale(.94);}to{opacity:1;transform:scale(1);}}
+/* Existing deeper report tabs inherit the same atmospheric panels and editorial spacing. */
+#tab-custodial,#tab-field,#tab-systemic{padding-top:52px;}
+#tab-custodial > div.bg-slate-900,#tab-field > div.bg-slate-900,#tab-systemic > div.bg-slate-900,
+#tab-custodial .bg-slate-900,#tab-field .bg-slate-900,#tab-systemic .bg-slate-900{
+ background:linear-gradient(145deg,rgba(17,27,42,.93),rgba(8,14,24,.97))!important;border-color:rgba(132,150,175,.23)!important;}
+#tab-custodial>div:first-child,#tab-field>div:first-child,#tab-systemic>div:first-child{border-left:2px solid #dc5c6d!important;padding:29px 33px!important;}
+#tab-custodial>div:first-child h2,#tab-field>div:first-child h2,#tab-systemic>div:first-child h2{font-size:clamp(23px,2.5vw,32px);letter-spacing:-.04em;margin-bottom:15px;line-height:1.2;}
+#tab-custodial>div:first-child p,#tab-field>div:first-child p,#tab-systemic>div:first-child p{line-height:1.75;font-size:14px;color:#a0afc1;}
+#tab-custodial .chart-container,#tab-field .chart-container{min-height:310px;}
+#tab-custodial table,#tab-field table{border-collapse:collapse;}
+#tab-custodial input,#tab-custodial select,#tab-field input{background:#08101c;border-color:#334257;}
+@media(max-width:1150px){
+ .report-daterange{display:none;}.report-header-status{display:none;}
+ .report-hero{grid-template-columns:1.02fr 1fr;min-height:625px;gap:8px;}.report-hero-title{font-size:clamp(48px,6.2vw,70px);}
+ .report-hero-visual{width:min(100%,480px);}.report-orbit-value{font-size:clamp(39px,5vw,62px);}
+ .report-metric{padding:22px 16px;}.report-metric:first-child{padding-left:0;}.report-metric-index span{display:none;}.report-metric-value{font-size:clamp(35px,4.4vw,53px);}
+}
+@media(max-width:800px){
+ .report-header-main{height:67px;}.report-nav-wrap{min-height:51px;}.report-nav{gap:25px;}
+ .report-main{padding-bottom:70px;}.report-hero{grid-template-columns:1fr;grid-template-rows:auto auto auto;min-height:0;padding-top:52px;}
+ .report-hero-copy{padding:10px 0 0;}.report-hero-title{font-size:clamp(51px,8.4vw,76px);}.report-hero-lede{max-width:650px;}
+ .report-hero-visual{width:min(78vw,520px);margin:8px auto 28px;}.report-orbit-value{font-size:clamp(48px,8vw,73px);}
+ .report-hero-timeline{grid-column:1;}.report-metrics{grid-template-columns:repeat(2,minmax(0,1fr));}.report-metric{padding:25px 20px;border-bottom:1px solid rgba(131,150,176,.18);}.report-metric:first-child{padding-left:20px;}.report-metric:nth-child(2){border-right:0;}.report-metric:nth-child(n+3){border-bottom:0;}
+ .report-chart-grid{grid-template-columns:1fr;}.report-next-grid{grid-template-columns:1fr;}.report-next-card{min-height:195px;}
+ .report-next-card>span:nth-child(3){max-width:none;}
+ .report-metrics-section,.report-analysis,.report-ledger,.report-next{padding-top:66px;}
+ .report-section-heading-inline{display:block;}.report-section-heading-inline>p{text-align:left;max-width:600px;}
+}
+@media(max-width:520px){
+ .report-header-main,.report-nav-wrap,.report-footer-inner{padding-left:20px;padding-right:20px;}.report-header-main{height:62px;}
+ .report-brand{font-size:9px;letter-spacing:.1em;gap:8px;}.report-brand-symbol{width:24px;height:24px;font-size:15px;}
+ .report-replay{font-size:9px;letter-spacing:.02em;padding:9px 8px;}.report-replay span{margin-right:2px;}
+ .report-nav{gap:20px;}.report-nav .tab-btn{font-size:9px!important;letter-spacing:.08em!important;}.report-nav-num{font-size:8px;}
+ .report-main{padding-left:20px;padding-right:20px;}.report-hero{padding-top:35px;}.report-eyebrow{font-size:9px;margin-bottom:25px;}.report-chapter{font-size:10px;margin-bottom:18px;}
+ .report-hero-title{font-size:clamp(43px,12vw,62px);margin-bottom:22px;}.report-hero-lede{font-size:14px;line-height:1.7;margin-bottom:25px;}
+ .report-hero-actions{gap:24px;}.report-btn-primary{padding:15px 12px 15px 15px;font-size:10px;}.report-btn-primary span{padding-left:7px;}.report-btn-text{font-size:9px;}.report-btn-text span{margin-left:4px;}
+ .report-hero-note{margin-top:24px;font-size:8px;}.report-hero-visual{width:100%;max-width:390px;}.report-orbit-core{width:72%;padding:14px;}.report-orbit-value{font-size:clamp(42px,11vw,58px);}
+ .report-orbit-eyebrow{font-size:8px;margin-bottom:14px;}.report-orbit-rule{margin:15px auto 12px;}.report-orbit-caption{font-size:9px;}.report-orbit-caption2{font-size:8px;}.report-visual-coordinate{font-size:7px;}
+ .report-timeline-top{font-size:8px;}.report-timeline-years{font-size:9px;}.report-section-heading h2{font-size:36px;}
+ .report-metric{padding:21px 11px;}.report-metric:first-child{padding-left:11px;}.report-metric-value{font-size:clamp(34px,9vw,49px);}.report-metric h3{font-size:9px;letter-spacing:.1em;}.report-metric p{font-size:11px;min-height:70px;}.report-metric-lower{font-size:8px;}.report-metric-index{font-size:9px;}
+ .report-data-panel{padding:20px 17px;}.report-panel-top{font-size:8px;}.report-panel-heading h3{font-size:21px;}.report-chart-container{height:300px;}
+ .report-panel-insight{display:block;}.report-panel-insight span{display:block;margin:0 0 6px;}
+ .report-ledger-panel{padding:19px 15px;}.report-footer-inner{display:block;}.report-footer-right{text-align:left;margin-top:25px;}
+ #tab-custodial,#tab-field,#tab-systemic{padding-top:27px;}
+}
+@media(prefers-reduced-motion:reduce){html{scroll-behavior:auto;}.report-orbit-a,.report-orbit-arc,.report-status-dot{animation:none!important;}.report-next-card,.report-btn-primary{transition:none!important;}body:not(.mi-locked) .report-hero-copy,body:not(.mi-locked) .report-orbit-core{animation:none!important;}}
+
     </style>
 </head>
 <body class="bg-slate-950 text-slate-100 font-sans antialiased min-h-screen flex flex-col">
 
-    <!-- TOP HEADER / BANNER -->
-    <header class="bg-slate-900/90 border-b border-slate-800 sticky top-0 z-30 backdrop-blur-md shadow-lg">
-        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-4">
-            <div class="flex flex-col md:flex-row md:items-center md:justify-between gap-4">
-                <div>
-                    <div class="flex items-center gap-2">
-                        <span class="inline-block w-3 h-3 rounded-full bg-red-500 animate-pulse"></span>
-                        <span class="text-xs font-semibold uppercase tracking-wider text-slate-400">Epidemiological & Operational Accounting Report</span>
-                    </div>
-                    <h1 class="text-xl sm:text-2xl font-bold tracking-tight text-white mt-1">
-                        Mortality Attributable to U.S. Immigration and Customs Enforcement
-                    </h1>
-                    <p class="text-xs sm:text-sm text-slate-400 mt-0.5">
-                        Documented Timeframe: October 2003 – October 2026 | Verified Baseline: <span class="text-red-400 font-bold">324 to 333+ Fatalities</span>
-                    </p>
+
+    <!-- OPENING VISUALIZATION: cinematic, skippable, and automatically transitions to the source dashboard. -->
+    <section id="mortalityIntro" class="mi-intro" role="dialog" aria-modal="true" aria-labelledby="miTitle">
+        <div class="mi-shell">
+            <div class="mi-topbar">
+                <div class="mi-wordmark"><span class="mi-mark" aria-hidden="true">✳</span> Mortality / An accounting</div>
+                <div class="mi-topright">
+                    <span class="mi-edition">2003 — 2026&nbsp;&nbsp; / &nbsp;&nbsp;U.S. immigration enforcement</span>
+                    <button type="button" id="miSkip" class="mi-skip">Skip intro <span aria-hidden="true">↗</span></button>
                 </div>
-                <!-- Quick Metric Badge -->
-                <div class="flex items-center gap-3 bg-slate-950/80 border border-slate-800 rounded-lg p-3 self-start md:self-auto">
-                    <div class="text-center px-2">
-                        <div class="text-xs text-slate-400 font-medium">Cumulative Minimum</div>
-                        <div class="text-xl font-extrabold text-red-500">324 – 333+</div>
-                    </div>
-                    <div class="h-8 w-px bg-slate-800"></div>
-                    <div class="text-center px-2">
-                        <div class="text-xs text-slate-400 font-medium">Custodial / Field</div>
-                        <div class="text-sm font-bold text-slate-200">293 / 40+</div>
+            </div>
+            <div class="mi-main">
+                <div class="mi-copy" aria-live="polite" aria-atomic="true">
+                    <div class="mi-eyebrow">An interactive record</div>
+                    <p class="mi-chapter" id="miChapter">CHAPTER <b>01</b> / 05</p>
+                    <h2 class="mi-title" id="miTitle">The record <em>begins.</em></h2>
+                    <p class="mi-description" id="miDescription">A long-form accounting of detention and field-enforcement mortality, beginning in October 2003.</p>
+                    <p class="mi-message" id="miMessage">The reported figures tell only part of the story</p>
+                </div>
+                <div class="mi-visual" aria-label="Animated abstract case-record visualization with a highlighted figure">
+                    <div class="mi-field" id="miField" aria-hidden="true"></div>
+                    <div class="mi-orbit outer" aria-hidden="true"></div>
+                    <div class="mi-orbit middle" aria-hidden="true"></div>
+                    <div class="mi-orbit inner" aria-hidden="true"></div>
+                    <div class="mi-sweep" aria-hidden="true"></div>
+                    <span class="mi-coordinate top" aria-hidden="true">Archive / 01</span>
+                    <span class="mi-coordinate bottom" aria-hidden="true">Documented record</span>
+                    <div class="mi-center">
+                        <div class="mi-center-tag">Reported record</div>
+                        <div class="mi-number" id="miNumber" aria-live="off">2003</div>
+                        <div class="mi-unit" id="miUnit">Beginning of the reporting period</div>
                     </div>
                 </div>
             </div>
-
-            <!-- NAVIGATION TABS -->
-            <nav class="flex space-x-1 sm:space-x-4 mt-4 border-t border-slate-800 pt-3 overflow-x-auto custom-scrollbar text-xs sm:text-sm font-medium">
-                <button id="tab-btn-executive" onclick="switchTab('executive')" class="tab-btn px-3 py-2 rounded-md transition-colors bg-red-700 text-white font-semibold flex items-center gap-1.5 whitespace-nowrap">
-                    <span>&#x1F4CA;</span> Executive Dashboard
-                </button>
-                <button id="tab-btn-custodial" onclick="switchTab('custodial')" class="tab-btn px-3 py-2 rounded-md transition-colors text-slate-400 hover:text-white hover:bg-slate-800 flex items-center gap-1.5 whitespace-nowrap">
-                    <span>&#x1F3E5;</span> Custodial Deaths (2003–2026)
-                </button>
-                <button id="tab-btn-field" onclick="switchTab('field')" class="tab-btn px-3 py-2 rounded-md transition-colors text-slate-400 hover:text-white hover:bg-slate-800 flex items-center gap-1.5 whitespace-nowrap">
-                    <span>&#x1F6A8;</span> Field Fatalities & Agent Force
-                </button>
-                <button id="tab-btn-systemic" onclick="switchTab('systemic')" class="tab-btn px-3 py-2 rounded-md transition-colors text-slate-400 hover:text-white hover:bg-slate-800 flex items-center gap-1.5 whitespace-nowrap">
-                    <span>&#x26A0;</span> Systemic Drivers & Policy
-                </button>
-            </nav>
+            <div class="mi-bottom">
+                <div class="mi-bottom-meta"><span>Evolution of the record</span><span id="miSequence">Sequence 01 / 05</span></div>
+                <div class="mi-progress-track" aria-hidden="true"><div class="mi-progress-fill" id="miProgress"></div></div>
+                <div class="mi-years" aria-hidden="true"><span>OCT 2003</span><span>2010</span><span>2015</span><span>2020</span><span>2026</span></div>
+                <div class="mi-footer-row">
+                    <p class="mi-method">Figures shown are those presented in the supplied report; they have not been independently verified for this visualization. Categories, reporting windows, and methodologies may differ.</p>
+                    <div class="mi-controls">
+                        <button type="button" class="mi-pause" id="miPause" aria-pressed="false">Pause</button>
+                        <button type="button" class="mi-enter" id="miEnter">Explore report <span aria-hidden="true">→</span></button>
+                    </div>
+                </div>
+            </div>
         </div>
+    </section>
+
+    <!-- DASHBOARD SHELL: redesigned to carry the cinematic intro language into the report -->
+    <header class="report-header" id="reportHeader">
+      <div class="report-header-main">
+        <a href="#reportHeroTitle" class="report-brand" aria-label="Mortality accounting report, back to top" onclick="switchTab('executive')">
+          <span class="report-brand-symbol" aria-hidden="true">✳</span>
+          <span>MORTALITY <span class="report-brand-slash">/</span> AN ACCOUNTING</span>
+        </a>
+        <div class="report-header-right">
+          <span class="report-daterange">2003 — 2026 <span class="report-header-slash">/</span> U.S. IMMIGRATION ENFORCEMENT</span>
+          <button type="button" id="miReplay" class="report-replay" title="Replay the opening visualization"><span aria-hidden="true">↺</span> REPLAY INTRO</button>
+        </div>
+      </div>
+      <div class="report-nav-wrap">
+        <nav class="report-nav" aria-label="Report sections">
+          <button type="button" id="tab-btn-executive" onclick="switchTab('executive')" class="tab-btn bg-red-700 text-white font-semibold"><span class="report-nav-num">01</span> OVERVIEW</button>
+          <button type="button" id="tab-btn-custodial" onclick="switchTab('custodial')" class="tab-btn text-slate-400"><span class="report-nav-num">02</span> CUSTODIAL DEATHS</button>
+          <button type="button" id="tab-btn-field" onclick="switchTab('field')" class="tab-btn text-slate-400"><span class="report-nav-num">03</span> FIELD ENCOUNTERS</button>
+          <button type="button" id="tab-btn-systemic" onclick="switchTab('systemic')" class="tab-btn text-slate-400"><span class="report-nav-num">04</span> SYSTEMIC DRIVERS</button>
+        </nav>
+        <div class="report-header-status"><span class="report-status-dot"></span> INTERACTIVE DATA ARCHIVE</div>
+      </div>
     </header>
 
     <!-- MAIN CONTENT CONTAINER -->
-    <main class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6 flex-grow w-full">
-
-        <!-- ================================================================================= -->
-        <!-- TAB 1: EXECUTIVE DASHBOARD -->
-        <!-- ================================================================================= -->
-        <div id="tab-executive" class="tab-content space-y-6">
-            
-            <!-- Section Intro -->
-            <div class="bg-slate-900 p-5 rounded-xl border border-slate-800 shadow-sm">
-                <h2 class="text-lg font-bold text-white mb-2 flex items-center gap-2">
-                    <span class="text-red-500">&#x25FC;</span> Macro Mortality Synthesis & Ledger Baseline
-                </h2>
-                <p class="text-sm text-slate-300 leading-relaxed">
-                    This section provides a high-level operational accounting of all human life lost directly attributable to U.S. Immigration and Customs Enforcement (ICE) operations since its creation in 2003 through October 2026. Mortality is divided into two distinct operational spheres: civil detention custodial deaths and field force fatalities (firearms discharges, high-speed vehicle pursuits, and foot chases). Data is synthesized from longitudinal epidemiological studies (such as the 2026 <em>JAMA</em> study), FOIA releases, congressional oversight records, and civil rights databases.
-                </p>
+    <main class="report-main" id="reportMain">
+      <!-- TAB 1: redesigned editorial overview; charts and ledger retained -->
+      <div id="tab-executive" class="tab-content">
+        <section class="report-hero" aria-labelledby="reportHeroTitle">
+          <div class="report-hero-grid" aria-hidden="true"></div>
+          <div class="report-hero-glow" aria-hidden="true"></div>
+          <div class="report-hero-copy">
+            <div class="report-eyebrow"><i></i> A DEEPER LOOK AT THE RECORD</div>
+            <p class="report-chapter">REPORT <b>01</b> / 04 <span class="report-chapter-separator">—</span> THE OVERVIEW</p>
+            <h1 class="report-hero-title" id="reportHeroTitle" tabindex="-1">The cost behind<br>the <em>record.</em></h1>
+            <p class="report-hero-lede">An examination of deaths in U.S. immigration detention and field enforcement, drawing on the case files, mortality data, and oversight records presented in this report.</p>
+            <div class="report-hero-actions">
+              <button class="report-btn-primary" type="button" onclick="switchTab('custodial'); window.scrollTo({top:0,behavior:'smooth'})">EXPLORE THE RECORDS <span aria-hidden="true">↗</span></button>
+              <a class="report-btn-text" href="#report-analysis">VIEW THE ANALYSIS <span aria-hidden="true">↓</span></a>
             </div>
-
-            <!-- Metric Summary Cards -->
-            <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
-                <div class="bg-slate-900 p-4 rounded-xl border border-slate-800 shadow-sm border-l-4 border-l-red-600">
-                    <div class="text-xs font-semibold text-slate-400 uppercase tracking-wide">Total Cumulative Baseline</div>
-                    <div class="text-3xl font-extrabold text-white mt-1">324 – 333+</div>
-                    <div class="text-xs text-slate-400 mt-1">Empirical floor across all ICE domains (2003–2026)</div>
-                </div>
-                <div class="bg-slate-900 p-4 rounded-xl border border-slate-800 shadow-sm border-l-4 border-l-amber-500">
-                    <div class="text-xs font-semibold text-slate-400 uppercase tracking-wide">Custodial Detention Deaths</div>
-                    <div class="text-3xl font-extrabold text-amber-400 mt-1">289 – 293+</div>
-                    <div class="text-xs text-slate-400 mt-1">272 (JAMA 2003–Jan 2026) + 21+ post-study surge</div>
-                </div>
-                <div class="bg-slate-900 p-4 rounded-xl border border-slate-800 shadow-sm border-l-4 border-l-blue-500">
-                    <div class="text-xs font-semibold text-slate-400 uppercase tracking-wide">Field Encounter Fatalities</div>
-                    <div class="text-3xl font-extrabold text-blue-400 mt-1">35 – 40+</div>
-                    <div class="text-xs text-slate-400 mt-1">29+ shootings (2015–26) + 11+ pursuit/chase deaths</div>
-                </div>
-                <div class="bg-slate-900 p-4 rounded-xl border border-slate-800 shadow-sm border-l-4 border-l-rose-500">
-                    <div class="text-xs font-semibold text-slate-400 uppercase tracking-wide">2025–2026 Custodial Surge</div>
-                    <div class="text-3xl font-extrabold text-rose-400 mt-1">+140%</div>
-                    <div class="text-xs text-slate-400 mt-1">Annual mortality rate surge reaching 8.4 per 10k</div>
-                </div>
+            <p class="report-hero-note"><span aria-hidden="true"></span> SOURCE-REPORTED FIGURES · REPORTING PERIOD: OCT 2003 – OCT 2026</p>
+          </div>
+          <div class="report-hero-visual" role="img" aria-label="Decorative circular visualization highlighting a reported composite range of 324 to 333 or more fatalities across the report window. Figures come from the supplied report and are not independently verified.">
+            <div class="report-visual-halo"></div>
+            <div class="report-orbit report-orbit-a"></div>
+            <div class="report-orbit report-orbit-b"></div>
+            <div class="report-orbit report-orbit-c"></div>
+            <div class="report-orbit-arc"></div>
+            <div class="report-visual-coordinate report-coordinate-top">SOURCE ARCHIVE / 2003—26</div>
+            <div class="report-visual-coordinate report-coordinate-bottom">COMPOSITE ACCOUNTING</div>
+            <div class="report-orbit-core">
+              <p class="report-orbit-eyebrow">REPORTED COMPOSITE</p>
+              <strong class="report-orbit-value">324<span>–</span>333<sup>+</sup></strong>
+              <div class="report-orbit-rule"></div>
+              <p class="report-orbit-caption">REPORTED MINIMUM RANGE</p>
+              <span class="report-orbit-caption2">DETENTION + FIELD OPERATIONS</span>
             </div>
+          </div>
+          <div class="report-hero-timeline" aria-label="Report spans from October 2003 through 2026">
+            <div class="report-timeline-top"><span>EVOLUTION OF THE RECORD</span><span>23-YEAR REPORTING WINDOW</span></div>
+            <div class="report-timeline-track"><i class="report-timeline-dot first"></i><i class="report-timeline-dot second"></i><i class="report-timeline-dot third"></i><i class="report-timeline-dot fourth"></i><span class="report-timeline-beam"></span></div>
+            <div class="report-timeline-years"><span>OCT 2003</span><span>2010</span><span>2020</span><span>OCT 2026</span></div>
+          </div>
+        </section>
 
-            <!-- Charts Grid Row 1 -->
-            <div class="grid grid-cols-1 lg:grid-cols-12 gap-6">
-                <!-- Donut Chart: Categorical Breakdown -->
-                <div class="lg:col-span-5 bg-slate-900 p-5 rounded-xl border border-slate-800 shadow-sm flex flex-col justify-between">
-                    <div>
-                        <h3 class="text-base font-bold text-white mb-1">Mortality Domain Share</h3>
-                        <p class="text-xs text-slate-400 mb-4">Distribution of verified deaths between civil detention and field enforcement operations.</p>
-                        <div class="chart-container">
-                            <canvas id="cumulativeDonutChart"></canvas>
-                        </div>
-                    </div>
-                    <div class="mt-4 pt-3 border-t border-slate-800 text-xs text-slate-300 bg-slate-950/60 p-3 rounded-lg border border-slate-800">
-                        <span class="font-semibold text-red-400">Key Context:</span> Over 88% of documented fatalities occur in civil detention facilities. However, field fatalities have surged dramatically during 2025–2026 tactical enforcement surges.
-                    </div>
-                </div>
+        <section class="report-metrics-section" aria-labelledby="reportMetricsTitle">
+          <div class="report-section-heading report-section-heading-inline">
+            <div><div class="report-section-kicker"><span>01</span> / THE NUMBERS</div><h2 id="reportMetricsTitle">A record in <em>four figures.</em></h2></div>
+            <p>Key totals and trends summarized from the supplied report.</p>
+          </div>
+          <div class="report-metrics">
+            <article class="report-metric"><div class="report-metric-index">01 <span> / LONGITUDINAL STUDY</span></div><div class="report-metric-value">272</div><h3>JAMA BASELINE</h3><p>Recorded in-custody deaths, Oct 2003 – Jan 2026</p><div class="report-metric-lower">SOURCE STUDY <span>↗</span></div></article>
+            <article class="report-metric"><div class="report-metric-index">02 <span> / DETENTION FACILITIES</span></div><div class="report-metric-value">289<span class="report-metric-range">–293<sup>+</sup></span></div><h3>CUSTODIAL DEATHS</h3><p>Reported cumulative range through Aug 2026</p><div class="report-metric-lower">IN CUSTODY <span class="report-metric-indicator"></span></div></article>
+            <article class="report-metric"><div class="report-metric-index">03 <span> / ENFORCEMENT OPERATIONS</span></div><div class="report-metric-value">35<span class="report-metric-range">–40<sup>+</sup></span></div><h3>FIELD FATALITIES</h3><p>Firearms discharges, pursuits, and chases in the report</p><div class="report-metric-lower">IN THE FIELD <span class="report-metric-indicator amber"></span></div></article>
+            <article class="report-metric"><div class="report-metric-index">04 <span> / RATE CHANGE</span></div><div class="report-metric-value report-metric-emphasis">+140<span class="report-metric-percent">%</span></div><h3>REPORTED SURGE</h3><p>Mortality-rate increase cited for 2025–2026</p><div class="report-metric-lower">2025 — 2026 <span class="report-metric-arrow">↗</span></div></article>
+          </div>
+          <p class="report-source-note">Methodology note: figures and labels are preserved from the supplied HTML. They are presented here for visualization and have not been independently fact-checked or reconciled across sources.</p>
+        </section>
 
-                <!-- Combo Chart: Longitudinal Trajectory -->
-                <div class="lg:col-span-7 bg-slate-900 p-5 rounded-xl border border-slate-800 shadow-sm flex flex-col justify-between">
-                    <div>
-                        <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between mb-2">
-                            <h3 class="text-base font-bold text-white">22-Year Custodial Mortality Rate & Trajectory</h3>
-                            <span class="text-xs font-semibold bg-slate-800 text-slate-300 px-2 py-1 rounded border border-slate-700 mt-1 sm:mt-0">Rate per 100,000 Person-Years</span>
-                        </div>
-                        <p class="text-xs text-slate-400 mb-4">Tracking rate shifts from FY2004 peak, FY2023 historical low (13.0), to 2025–2026 surge (84.0 equivalent).</p>
-                        <div class="chart-container">
-                            <canvas id="longitudinalChart"></canvas>
-                        </div>
-                    </div>
-                    <div class="mt-4 pt-3 border-t border-slate-800 text-xs text-slate-300 bg-slate-950/60 p-3 rounded-lg border border-slate-800">
-                        <span class="font-semibold text-amber-400">U-Shaped Trend:</span> After reaching a low in FY2023, the mortality rate accelerated by 140% in 2025–2026 as detention populations peaked above 71,000 detainees, exceeding the rate recorded during the 2020 COVID-19 pandemic peak.
-                    </div>
-                </div>
+        <section class="report-analysis" id="report-analysis" aria-labelledby="reportAnalysisTitle">
+          <div class="report-section-heading">
+            <div class="report-section-kicker"><span>02</span> / EXPLORING THE DATA</div>
+            <h2 id="reportAnalysisTitle">Follow the <em>patterns.</em></h2>
+            <p>Two distinct forms of mortality. One composite account. Explore the shares and trajectory in the underlying reported figures.</p>
+          </div>
+          <div class="report-chart-grid">
+            <article class="report-data-panel">
+              <div class="report-panel-top"><span>FIGURE 01</span><span>COMPOSITION / DISTRIBUTION</span></div>
+              <div class="report-panel-heading"><h3>Mortality domain share</h3><p>Reported distribution between civil detention and field enforcement.</p></div>
+              <div class="chart-container report-chart-container"><canvas id="cumulativeDonutChart" aria-label="Distribution of reported mortality by operational domain" role="img"></canvas></div>
+              <div class="report-panel-insight"><span>INSIGHT / 01</span><p>Over 88% of the reported fatalities fall within civil detention in this dataset. Source categories and periods differ.</p></div>
+            </article>
+            <article class="report-data-panel">
+              <div class="report-panel-top"><span>FIGURE 02</span><span>LONGITUDINAL / TRAJECTORY</span></div>
+              <div class="report-panel-heading"><h3>Custodial mortality over time</h3><p>Reported rates per 100,000 person-years, across the 22-year study and subsequent period.</p></div>
+              <div class="chart-container report-chart-container"><canvas id="longitudinalChart" aria-label="Historical custodial mortality rate and trajectory" role="img"></canvas></div>
+              <div class="report-panel-insight"><span>INSIGHT / 02</span><p>The source describes a U-shaped trajectory, with a low in FY2023 followed by a sharp increase in 2025–2026.</p></div>
+            </article>
+          </div>
+        </section>
+
+        <section class="report-ledger" id="report-ledger" aria-labelledby="reportLedgerTitle">
+          <div class="report-section-heading report-section-heading-inline">
+            <div><div class="report-section-kicker"><span>03</span> / EVIDENCE LEDGER</div><h2 id="reportLedgerTitle">The underlying <em>account.</em></h2></div>
+            <p>Breakdown by timeframe, classification, mechanism, and cited source.</p>
+          </div>
+          <div class="report-ledger-panel">
+            <div class="report-ledger-top"><span>COMPOSITE SOURCE TABLE</span><span>OCT 2003 — OCT 2026</span></div>
+            <div class="report-ledger-scroll">
+                <table class="w-full text-left text-xs sm:text-sm border-collapse">
+<thead>
+<tr class="bg-slate-800/90 text-slate-300 uppercase font-semibold border-b border-slate-700">
+<th class="p-3">Mortality Category</th>
+<th class="p-3">Documented Timeframe</th>
+<th class="p-3 text-center">Verified Toll</th>
+<th class="p-3">Primary Mechanisms &amp; Epidemiological Context</th>
+<th class="p-3">Primary Empirical Sources</th>
+</tr>
+</thead>
+<tbody class="divide-y divide-slate-800 text-slate-300">
+<tr class="hover:bg-slate-800/50 transition-colors">
+<td class="p-3 font-semibold text-white">In-Custody Deaths (JAMA Baseline)</td>
+<td class="p-3 whitespace-nowrap">Oct 2003 – Jan 19, 2026</td>
+<td class="p-3 text-center font-bold text-slate-100 bg-slate-950/60">272</td>
+<td class="p-3">48.9% undetermined/other, 20.6% cardiovascular, 15.4% infectious, 8.5% suicide across 731,361 person-years</td>
+<td class="p-3 italic text-xs text-slate-400">JAMA Longitudinal Study (Basu et al., May 2026); ICE FOIA</td>
+</tr>
+<tr class="hover:bg-slate-800/50 transition-colors">
+<td class="p-3 font-semibold text-white">In-Custody Deaths (2026 Post-Study)</td>
+<td class="p-3 whitespace-nowrap">Jan 20, 2026 – Aug 1, 2026</td>
+<td class="p-3 text-center font-bold text-slate-100 bg-slate-950/60">17 – 21+</td>
+<td class="p-3">Rapid detention expansion (&gt;71,000 peak); spike in untreated chronic conditions, suicides, restraint homicide</td>
+<td class="p-3 italic text-xs text-slate-400">AILA Death Tracker; U.S. Senate Oversight; HRW/PHR Audit</td>
+</tr>
+<tr class="hover:bg-slate-800/50 transition-colors bg-red-950/30 border-l-2 border-l-red-600">
+<td class="p-3 font-bold text-red-300">Total Documented In-Custody</td>
+<td class="p-3 whitespace-nowrap font-semibold">2003 – Aug 2026</td>
+<td class="p-3 text-center font-extrabold text-red-400 bg-red-950/60">289 – 293+</td>
+<td class="p-3 text-slate-200">Excludes detainees released in terminal condition shortly before death to evade reporting</td>
+<td class="p-3 italic text-xs text-red-300">Aggregated FOIA, JAMA, AILA, Congressional Records</td>
+</tr>
+<tr class="hover:bg-slate-800/50 transition-colors">
+<td class="p-3 font-semibold text-white">Field Shootings (Historical Audit)</td>
+<td class="p-3 whitespace-nowrap">Jan 2015 – Dec 2021</td>
+<td class="p-3 text-center font-bold text-slate-100 bg-slate-950/60">23</td>
+<td class="p-3">Derived from 59 total ICE officer shootings (HSI &amp; ERO); 11 off-duty shootings; &gt;25% unarmed victims</td>
+<td class="p-3 italic text-xs text-slate-400">The Trace, Business Insider &amp; Type Investigations Audit</td>
+</tr>
+<tr class="hover:bg-slate-800/50 transition-colors">
+<td class="p-3 font-semibold text-white">Field Shootings (Enforcement Surge)</td>
+<td class="p-3 whitespace-nowrap">Jan 2025 – Oct 2026</td>
+<td class="p-3 text-center font-bold text-slate-100 bg-slate-950/60">6+</td>
+<td class="p-3">Part of 43 federal immigration agent shootings (11 total DHS shooting deaths); vehicle stops &amp; raids</td>
+<td class="p-3 italic text-xs text-slate-400">Southern Border Communities Coalition (SBCC); Court Records</td>
+</tr>
+<tr class="hover:bg-slate-800/50 transition-colors">
+<td class="p-3 font-semibold text-white">Field Pursuits &amp; Chases</td>
+<td class="p-3 whitespace-nowrap">Jul 2025 – Sep 2026</td>
+<td class="p-3 text-center font-bold text-slate-100 bg-slate-950/60">5+</td>
+<td class="p-3">Fatal falls during workplace raids, highway foot chase strikes, high-speed vehicle pursuit collisions</td>
+<td class="p-3 italic text-xs text-slate-400">SBCC Fatal Encounters Database; Incident Logs</td>
+</tr>
+<tr class="hover:bg-slate-800/50 transition-colors">
+<td class="p-3 font-semibold text-white">Pre-2015 / Unredacted Field Force</td>
+<td class="p-3 whitespace-nowrap">2003–2014 &amp; 2022–2024</td>
+<td class="p-3 text-center font-bold text-slate-100 bg-slate-950/60">1+</td>
+<td class="p-3">Includes 2010 beating/tasing death of Anastasio Hernández Rojas; ICE retains locked logs for other years</td>
+<td class="p-3 italic text-xs text-slate-400">Inter-American Commission on Human Rights</td>
+</tr>
+<tr class="bg-slate-950 text-white font-bold border-t-2 border-slate-700">
+<td class="p-3 text-white">Cumulative Minimum ICE Mortality</td>
+<td class="p-3 whitespace-nowrap text-slate-400">2003 – Oct 2026</td>
+<td class="p-3 text-center font-extrabold text-red-400 text-base bg-slate-900 border border-slate-800">324 – 333+</td>
+<td class="p-3 text-slate-200">Conservative empirical floor combining civil detention and lethal field operations</td>
+<td class="p-3 italic text-xs text-slate-400">Composite Synthesis of Federal and Legal Records</td>
+</tr>
+</tbody>
+</table>
             </div>
+          </div>
+        </section>
 
-            <!-- Table: Cumulative Mortality Ledger Summary -->
-            <div class="bg-slate-900 p-5 rounded-xl border border-slate-800 shadow-sm">
-                <h3 class="text-base font-bold text-white mb-3">Cumulative Mortality Ledger Summary</h3>
-                <div class="overflow-x-auto custom-scrollbar">
-                    <table class="w-full text-left text-xs sm:text-sm border-collapse">
-                        <thead>
-                            <tr class="bg-slate-800/90 text-slate-300 uppercase font-semibold border-b border-slate-700">
-                                <th class="p-3">Mortality Category</th>
-                                <th class="p-3">Documented Timeframe</th>
-                                <th class="p-3 text-center">Verified Toll</th>
-                                <th class="p-3">Primary Mechanisms & Epidemiological Context</th>
-                                <th class="p-3">Primary Empirical Sources</th>
-                            </tr>
-                        </thead>
-                        <tbody class="divide-y divide-slate-800 text-slate-300">
-                            <tr class="hover:bg-slate-800/50 transition-colors">
-                                <td class="p-3 font-semibold text-white">In-Custody Deaths (JAMA Baseline)</td>
-                                <td class="p-3 whitespace-nowrap">Oct 2003 – Jan 19, 2026</td>
-                                <td class="p-3 text-center font-bold text-slate-100 bg-slate-950/60">272</td>
-                                <td class="p-3">48.9% undetermined/other, 20.6% cardiovascular, 15.4% infectious, 8.5% suicide across 731,361 person-years</td>
-                                <td class="p-3 italic text-xs text-slate-400">JAMA Longitudinal Study (Basu et al., May 2026); ICE FOIA</td>
-                            </tr>
-                            <tr class="hover:bg-slate-800/50 transition-colors">
-                                <td class="p-3 font-semibold text-white">In-Custody Deaths (2026 Post-Study)</td>
-                                <td class="p-3 whitespace-nowrap">Jan 20, 2026 – Aug 1, 2026</td>
-                                <td class="p-3 text-center font-bold text-slate-100 bg-slate-950/60">17 – 21+</td>
-                                <td class="p-3">Rapid detention expansion (>71,000 peak); spike in untreated chronic conditions, suicides, restraint homicide</td>
-                                <td class="p-3 italic text-xs text-slate-400">AILA Death Tracker; U.S. Senate Oversight; HRW/PHR Audit</td>
-                            </tr>
-                            <tr class="hover:bg-slate-800/50 transition-colors bg-red-950/30 border-l-2 border-l-red-600">
-                                <td class="p-3 font-bold text-red-300">Total Documented In-Custody</td>
-                                <td class="p-3 whitespace-nowrap font-semibold">2003 – Aug 2026</td>
-                                <td class="p-3 text-center font-extrabold text-red-400 bg-red-950/60">289 – 293+</td>
-                                <td class="p-3 text-slate-200">Excludes detainees released in terminal condition shortly before death to evade reporting</td>
-                                <td class="p-3 italic text-xs text-red-300">Aggregated FOIA, JAMA, AILA, Congressional Records</td>
-                            </tr>
-                            <tr class="hover:bg-slate-800/50 transition-colors">
-                                <td class="p-3 font-semibold text-white">Field Shootings (Historical Audit)</td>
-                                <td class="p-3 whitespace-nowrap">Jan 2015 – Dec 2021</td>
-                                <td class="p-3 text-center font-bold text-slate-100 bg-slate-950/60">23</td>
-                                <td class="p-3">Derived from 59 total ICE officer shootings (HSI & ERO); 11 off-duty shootings; >25% unarmed victims</td>
-                                <td class="p-3 italic text-xs text-slate-400">The Trace, Business Insider & Type Investigations Audit</td>
-                            </tr>
-                            <tr class="hover:bg-slate-800/50 transition-colors">
-                                <td class="p-3 font-semibold text-white">Field Shootings (Enforcement Surge)</td>
-                                <td class="p-3 whitespace-nowrap">Jan 2025 – Oct 2026</td>
-                                <td class="p-3 text-center font-bold text-slate-100 bg-slate-950/60">6+</td>
-                                <td class="p-3">Part of 43 federal immigration agent shootings (11 total DHS shooting deaths); vehicle stops & raids</td>
-                                <td class="p-3 italic text-xs text-slate-400">Southern Border Communities Coalition (SBCC); Court Records</td>
-                            </tr>
-                            <tr class="hover:bg-slate-800/50 transition-colors">
-                                <td class="p-3 font-semibold text-white">Field Pursuits & Chases</td>
-                                <td class="p-3 whitespace-nowrap">Jul 2025 – Sep 2026</td>
-                                <td class="p-3 text-center font-bold text-slate-100 bg-slate-950/60">5+</td>
-                                <td class="p-3">Fatal falls during workplace raids, highway foot chase strikes, high-speed vehicle pursuit collisions</td>
-                                <td class="p-3 italic text-xs text-slate-400">SBCC Fatal Encounters Database; Incident Logs</td>
-                            </tr>
-                            <tr class="hover:bg-slate-800/50 transition-colors">
-                                <td class="p-3 font-semibold text-white">Pre-2015 / Unredacted Field Force</td>
-                                <td class="p-3 whitespace-nowrap">2003–2014 & 2022–2024</td>
-                                <td class="p-3 text-center font-bold text-slate-100 bg-slate-950/60">1+</td>
-                                <td class="p-3">Includes 2010 beating/tasing death of Anastasio Hernández Rojas; ICE retains locked logs for other years</td>
-                                <td class="p-3 italic text-xs text-slate-400">Inter-American Commission on Human Rights</td>
-                            </tr>
-                            <tr class="bg-slate-950 text-white font-bold border-t-2 border-slate-700">
-                                <td class="p-3 text-white">Cumulative Minimum ICE Mortality</td>
-                                <td class="p-3 whitespace-nowrap text-slate-400">2003 – Oct 2026</td>
-                                <td class="p-3 text-center font-extrabold text-red-400 text-base bg-slate-900 border border-slate-800">324 – 333+</td>
-                                <td class="p-3 text-slate-200">Conservative empirical floor combining civil detention and lethal field operations</td>
-                                <td class="p-3 italic text-xs text-slate-400">Composite Synthesis of Federal and Legal Records</td>
-                            </tr>
-                        </tbody>
-                    </table>
-                </div>
-            </div>
-        </div>
+        <section class="report-next" aria-labelledby="reportNextTitle">
+          <div class="report-section-heading"><div class="report-section-kicker"><span>04</span> / CONTINUE THE EXPLORATION</div><h2 id="reportNextTitle">Go beyond the <em>overview.</em></h2></div>
+          <div class="report-next-grid">
+            <button type="button" onclick="switchTab('custodial'); window.scrollTo({top:0,behavior:'smooth'})" class="report-next-card"><span class="report-next-number">02 / ARCHIVE</span><strong>Inside detention.</strong><span>Individual custodial cases, facilities and recorded causes of death.</span><b>EXPLORE CUSTODIAL DEATHS <i>↗</i></b></button>
+            <button type="button" onclick="switchTab('field'); window.scrollTo({top:0,behavior:'smooth'})" class="report-next-card"><span class="report-next-number">03 / ARCHIVE</span><strong>Outside the facility.</strong><span>Field encounters, shootings and fatal pursuit incidents.</span><b>EXPLORE FIELD OPERATIONS <i>↗</i></b></button>
+            <button type="button" onclick="switchTab('systemic'); window.scrollTo({top:0,behavior:'smooth'})" class="report-next-card"><span class="report-next-number">04 / ARCHIVE</span><strong>The systemic picture.</strong><span>Reported clinical failures, oversight and policy changes.</span><b>EXPLORE SYSTEMIC DRIVERS <i>↗</i></b></button>
+          </div>
+        </section>
+      </div>
 
         <!-- ================================================================================= -->
         <!-- TAB 2: CUSTODIAL MORTALITY EXPLORER -->
@@ -615,17 +1003,12 @@
 
     </main>
 
-    <!-- FOOTER -->
-    <footer class="bg-slate-950 text-slate-400 text-xs py-6 border-t border-slate-800 mt-8">
-        <div class="max-w-7xl mx-auto px-4 text-center sm:flex sm:justify-between sm:text-left">
-            <div>
-                <p class="font-semibold text-slate-300">Epidemiological and Operational Accounting of Mortality Attributable to ICE</p>
-                <p class="mt-0.5 text-slate-500">Source Report Data Synthesis (2003–2026) | JAMA, FOIA, ACLU, SBCC, HRW & Congressional Records</p>
-            </div>
-            <div class="mt-4 sm:mt-0 text-slate-500">
-                <p>Single-Page Interactive Application</p>
-            </div>
-        </div>
+    <!-- REPORT FOOTER -->
+    <footer class="report-footer">
+      <div class="report-footer-inner">
+        <div><div class="report-footer-brand"><span aria-hidden="true">✳</span> MORTALITY / AN ACCOUNTING</div><p>Epidemiological & operational accounting · source synthesis (2003–2026)</p></div>
+        <div class="report-footer-right"><span>JAMA · FOIA · ACLU · SBCC · HRW · CONGRESSIONAL RECORDS</span><p>Interactive source report · Figures require independent verification</p></div>
+      </div>
     </footer>
 
     <!-- MODAL FOR DETAIL VIEW -->
@@ -637,6 +1020,158 @@
             </div>
         </div>
     </div>
+
+
+    <!-- INTRO SEQUENCER: independent of the Chart.js application below. -->
+    <script>
+    (function () {
+        'use strict';
+        const beats = [
+            {
+                value: '2003', title: 'The record <em>begins.</em>',
+                description: 'A long-form accounting of deaths linked to detention and field enforcement, beginning in October 2003.',
+                message: 'An agency begins. A record follows.',
+                unit: 'Beginning of the reporting period', duration: 2600, lights: 18
+            },
+            {
+                value: '272', title: 'Deaths recorded <em>in custody.</em>',
+                description: 'The report cites a longitudinal study covering October 2003 through January 19, 2026.',
+                message: 'One longitudinal study / more than two decades',
+                unit: 'In-custody deaths in the cited study', duration: 2800, lights: 36
+            },
+            {
+                value: '289–293+', title: 'The ledger <em>continues.</em>',
+                description: 'The supplied report combines its cited study with additional custodial deaths reported after the study cutoff.',
+                message: 'Detention / expanded reported total',
+                unit: 'Reported cumulative custodial deaths', duration: 2800, lights: 55
+            },
+            {
+                value: '35–40+', title: 'Beyond the <em>detention walls.</em>',
+                description: 'The report also includes deaths associated with enforcement operations, shootings, vehicle pursuits, and foot chases.',
+                message: 'Field operations / a separate category',
+                unit: 'Reported field-enforcement fatalities', duration: 2800, lights: 75
+            },
+            {
+                value: '324–333+', title: 'Behind each figure, <em>a human life.</em>',
+                description: 'Explore the report’s mortality breakdown, cited evidence, interactive incident records, and policy analysis.',
+                message: 'The data is the beginning of the investigation',
+                unit: 'Composite estimate in the supplied report', duration: 3800, lights: 97
+            }
+        ];
+        let intro, pixels, active = false, paused = false, elapsed = 0, lastTime = null, frame = 0, currentBeat = -1;
+        const reducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+        const totalDuration = beats.reduce((sum, beat) => sum + beat.duration, 0);
+        const el = id => document.getElementById(id);
+
+        function renderBeat(index) {
+            if (index === currentBeat) return;
+            currentBeat = index;
+            const beat = beats[index];
+            el('miTitle').innerHTML = beat.title; // fixed literal strings defined above
+            el('miDescription').textContent = beat.description;
+            el('miMessage').textContent = beat.message;
+            el('miNumber').textContent = beat.value;
+            el('miNumber').classList.toggle('is-range', beat.value.length > 4);
+            el('miUnit').textContent = beat.unit;
+            el('miChapter').innerHTML = `CHAPTER <b>${String(index + 1).padStart(2, '0')}</b> / 05`;
+            el('miSequence').textContent = `Sequence ${String(index + 1).padStart(2, '0')} / 05`;
+            ['miTitle', 'miDescription', 'miNumber'].forEach(id => {
+                const node = el(id);
+                node.classList.remove('mi-stage-enter');
+                void node.offsetWidth; // restart entry animation on the new chapter
+                node.classList.add('mi-stage-enter');
+            });
+            pixels.forEach((p, i) => {
+                // Decorative pattern only: visual dots are NOT a count of actual people.
+                p.classList.toggle('lit', ((i * 43 + 17) % 113) < beat.lights);
+            });
+        }
+        function closeIntro() {
+            if (!active) return;
+            active = false;
+            window.cancelAnimationFrame(frame);
+            intro.classList.add('is-exiting');
+            document.body.classList.remove('mi-locked');
+            const delay = reducedMotion ? 0 : 790;
+            window.setTimeout(() => {
+                if (active) return; // ignored when the user has replayed it
+                intro.hidden = true;
+                intro.setAttribute('aria-hidden', 'true');
+            }, delay);
+            const dashboardHeading = el('reportHeroTitle');
+            if (dashboardHeading) dashboardHeading.focus({ preventScroll: true });
+        }
+        function loop(timestamp) {
+            if (!active) return;
+            if (lastTime === null) lastTime = timestamp;
+            if (!paused) {
+                elapsed += Math.min(100, Math.max(0, timestamp - lastTime));
+                if (elapsed >= totalDuration) {
+                    el('miProgress').style.width = '100%';
+                    closeIntro();
+                    return;
+                }
+                let cumulative = 0;
+                let index = 0;
+                while (index < beats.length - 1 && elapsed >= cumulative + beats[index].duration) {
+                    cumulative += beats[index].duration;
+                    index++;
+                }
+                renderBeat(index);
+                el('miProgress').style.width = `${(elapsed / totalDuration) * 100}%`;
+            }
+            lastTime = timestamp;
+            frame = window.requestAnimationFrame(loop);
+        }
+        function openIntro() {
+            intro.hidden = false;
+            intro.removeAttribute('aria-hidden');
+            intro.classList.remove('is-exiting');
+            document.body.classList.add('mi-locked');
+            window.cancelAnimationFrame(frame);
+            active = true;
+            paused = false;
+            elapsed = 0;
+            lastTime = null;
+            currentBeat = -1;
+            el('miPause').textContent = 'Pause';
+            el('miPause').setAttribute('aria-pressed', 'false');
+            el('miProgress').style.width = '0%';
+            renderBeat(reducedMotion ? beats.length - 1 : 0);
+            if (reducedMotion) {
+                el('miProgress').style.width = '100%';
+                el('miPause').hidden = true;
+            } else {
+                el('miPause').hidden = false;
+                frame = window.requestAnimationFrame(loop);
+            }
+            el('miSkip').focus({ preventScroll: true });
+        }
+        document.addEventListener('DOMContentLoaded', () => {
+            intro = el('mortalityIntro');
+            const fragment = document.createDocumentFragment();
+            for (let i = 0; i < 247; i++) {
+                const dot = document.createElement('i');
+                dot.className = 'mi-pixel';
+                fragment.appendChild(dot);
+            }
+            el('miField').appendChild(fragment);
+            pixels = Array.from(el('miField').children);
+            el('miSkip').addEventListener('click', closeIntro);
+            el('miEnter').addEventListener('click', closeIntro);
+            el('miPause').addEventListener('click', () => {
+                paused = !paused;
+                el('miPause').textContent = paused ? 'Resume' : 'Pause';
+                el('miPause').setAttribute('aria-pressed', String(paused));
+            });
+            el('miReplay').addEventListener('click', openIntro);
+            document.addEventListener('keydown', event => {
+                if (event.key === 'Escape' && active) { event.preventDefault(); closeIntro(); }
+            });
+            openIntro();
+        });
+    }());
+    </script>
 
     <!-- JAVASCRIPT LOGIC -->
     <script>
@@ -741,9 +1276,9 @@
                     labels: ['Custodial Detention Deaths', 'Field Firearms Discharge Fatalities', 'Field Pursuits & Tactical Chases'],
                     datasets: [{
                         data: [291, 29, 11],
-                        backgroundColor: ['#ef4444', '#3b82f6', '#f59e0b'],
+                        backgroundColor: ['#e66c78', '#78a5d2', '#ddae70'],
                         borderWidth: 2,
-                        borderColor: '#0f172a'
+                        borderColor: '#0c1420'
                     }]
                 },
                 options: {
@@ -869,7 +1404,7 @@
                         data: [20, 15, 11, 9, 4],
                         backgroundColor: ['#3b82f6', '#38bdf8', '#8b5cf6', '#ec4899', '#64748b'],
                         borderWidth: 2,
-                        borderColor: '#0f172a'
+                        borderColor: '#0c1420'
                     }]
                 },
                 options: {
