@@ -45,7 +45,17 @@ trap cleanup EXIT
   echo "Page: $target"
   git clone --depth 1 --branch "$BRANCH" "$REPOSITORY" "$workdir/repository"
   cd "$workdir/repository"
-  "$CODEX_BIN" exec -C "$PWD" -s danger-full-access -a never "$prompt"
+  # Codex can return non-zero after completing an edit (for example, on a
+  # token-limit warning).  Preserve that failure when no edit was made, but
+  # allow the strict target/diff checks below to validate and publish an edit
+  # that was completed successfully.
+  if ! "$CODEX_BIN" exec -C "$PWD" --dangerously-bypass-approvals-and-sandbox "$prompt"; then
+    if git diff --quiet; then
+      echo "Codex exited non-zero without making an update." >&2
+      exit 1
+    fi
+    echo "Codex exited non-zero after making changes; validating the diff before publishing." >&2
+  fi
 
   if git diff --quiet; then
     echo "No source-supported update; nothing pushed."
