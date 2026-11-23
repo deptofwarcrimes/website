@@ -1,0 +1,875 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Kiryas Joel, NY — Federal Grants & Awards Explorer (2001–2026)</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  <style>
+    .chart-container {
+      position: relative;
+      width: 100%;
+      max-width: 650px;
+      margin-left: auto;
+      margin-right: auto;
+      height: 300px;
+      max-height: 380px;
+    }
+    @media (min-width: 768px) {
+      .chart-container {
+        height: 340px;
+      }
+    }
+    .tab-active {
+      border-bottom: 3px solid #60a5fa;
+      color: #60a5fa;
+      font-weight: 600;
+    }
+  </style>
+</head>
+<body class="bg-slate-950 text-slate-200 font-sans antialiased selection:bg-blue-500/30 selection:text-blue-200">
+
+  <!-- Chosen Palette: Deep Slate Dark Mode (#020617 / #0f172a) with Elevated Slate Cards (#1e293b / #1e293b80), Crisp Blue Accents (#3b82f6 / #60a5fa), and Muted Emerald/Amber/Purple Highlights -->
+  <!-- Application Structure Plan: Designed as an interactive analytical dashboard and ledger explorer divided into 4 thematic sections: (1) Executive Overview & The Reporting Gap (contrasting USAspending.gov direct obligations vs. actual audited/pass-through inflows and demographic drivers), (2) The Six-Channel Institutional Architecture (interactive entity cards revealing EINs, channels, and audit status), (3) Sectoral & Financial Deep-Dive (interactive Chart.js visualizations covering FY 2024 municipal audit breakdown, FY 2023–2026 water & transit obligations, transit operating funding mix, and education formula dynamics), and (4) Filterable Chronological Ledger & Data Gaps Explorer (allowing users to search/filter all verified 2001–2026 awards by entity, sector, or mechanism, paired with an interactive checklist of the 5 public-data disclosure boundaries). This non-linear, task-oriented architecture prioritizes clarity over the report's linear text so users immediately grasp WHY public portals undercount inflows before drilling into specific entities and dollar figures. -->
+  <!-- Visualization & Content Choices:
+       1. Reporting Gap & Demographic Growth KPI Cards + Interactive Toggle -> Goal: Inform -> Styled HTML/Tailwind cards with JS state toggle -> Clarifies the $0–$250K USAspending illusion vs. $4.8M FY24 Single Audit and $10.88M FY26 FTA obligations.
+       2. Six-Channel Institutional Matrix -> Goal: Organize -> Interactive Entity Selector Grid + Detail Panel (HTML/Tailwind + JS) -> Replaces dense multi-page prose with clickable inspection of all 6 legal entities (Village/Town of Palm Tree, KJUFSD, KJHA, KJM-LDC, Aizer Health, Private Yeshivas).
+       3. FY 2024 Audited Municipal Outlays ($4.818M) -> Goal: Compare/Inform -> Doughnut Chart (Chart.js Canvas) -> Shows exact SEFA distribution (HOME $2.1M, FTA $1.8M, FEMA $595K, SS4A $191K, Highway $132K).
+       4. Major Verified Obligations & Benchmarks by Sector -> Goal: Compare -> Interactive Grouped/Filtered Horizontal Bar Chart (Chart.js Canvas) -> Compares verified non-debt grants across Transit, Education/COVID, Water Earmarks, and Municipal Audits, separating the $57.15M Clean Water SRF loan via toggle so debt is never conflated with grants.
+       5. 2025 Transit Operating Budget Mix ($7.83M) -> Goal: Inform -> Horizontal Stacked/Doughnut Breakdown (Chart.js Canvas) -> Highlights $3.01M (38.4%) federal aid and $0 local municipal operating tax subsidy across 1.40M rides.
+       6. Chronological Award Ledger (2001–2026) -> Goal: Organize/Search -> Searchable & Filterable HTML Table (JS) -> Enables instant filtering of all 33 documented entries by entity, mechanism (Grant vs. Audit vs. Debt vs. Pending), and keyword.
+       NO SVG graphics used. NO Mermaid JS used. -->
+  <!-- CONFIRMATION: NO SVG graphics used. NO Mermaid JS used. -->
+
+  <header class="bg-slate-900/95 backdrop-blur border-b border-slate-800 sticky top-0 z-30 shadow-md">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div class="flex flex-col md:flex-row md:items-center md:justify-between py-4 gap-3">
+        <div>
+          <div class="flex items-center gap-2">
+            <span class="inline-block px-2.5 py-0.5 text-xs font-semibold tracking-wide uppercase bg-blue-600 text-white rounded">Orange County, NY • NY-18</span>
+            <span class="text-xs text-slate-400 font-medium">2001 – November 2026 Public Record Synthesis</span>
+          </div>
+          <h1 class="text-xl sm:text-2xl font-bold text-slate-100 mt-1">Federal Grants & Awards to Kiryas Joel, New York</h1>
+        </div>
+        <nav class="flex flex-wrap gap-1 sm:gap-4 text-sm border-t md:border-t-0 pt-2 md:pt-0 border-slate-800">
+          <a href="#overview" class="px-2 py-1.5 text-slate-300 hover:text-blue-400 font-medium transition">Overview & Gap</a>
+          <a href="#entities" class="px-2 py-1.5 text-slate-300 hover:text-blue-400 font-medium transition">6 Recipient Entities</a>
+          <a href="#visuals" class="px-2 py-1.5 text-slate-300 hover:text-blue-400 font-medium transition">Sector Analytics</a>
+          <a href="#ledger" class="px-2 py-1.5 text-slate-300 hover:text-blue-400 font-medium transition">2001–2026 Ledger</a>
+          <a href="#oversight" class="px-2 py-1.5 text-slate-300 hover:text-blue-400 font-medium transition">Audits & Data Gaps</a>
+        </nav>
+      </div>
+    </div>
+  </header>
+
+  <main class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 space-y-12">
+
+    <section id="overview" class="space-y-6">
+      <div class="bg-slate-900 rounded-xl border border-slate-800 p-6 sm:p-8 shadow-lg">
+        <div class="max-w-4xl">
+          <h2 class="text-lg sm:text-xl font-bold text-slate-100">Executive Summary: Why Standard Federal Portals Undercount Kiryas Joel</h2>
+          <p class="mt-2 text-sm sm:text-base text-slate-300 leading-relaxed">
+            This interactive dashboard synthesizes 25 years of verified federal financial assistance flowing into Kiryas Joel (coterminous since January 1, 2019, with the Town of Palm Tree). Standard prime-award searches on <span class="font-semibold text-white">USAspending.gov</span> plot direct obligations to the Village government on a scale of only <span class="font-semibold text-amber-400">$0 to $250,000 per year</span>, masking tens of millions of dollars entering the community through Orange County transit pass-throughs, New York State education and relief formulas, and five independent local entities.
+          </p>
+        </div>
+
+        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 mt-6">
+          <div class="bg-slate-800/70 border border-slate-700/80 rounded-lg p-4">
+            <div class="text-xs font-semibold uppercase tracking-wider text-slate-400">FY 2024 Municipal Audit</div>
+            <div class="text-2xl sm:text-3xl font-bold text-blue-400 mt-1">$4.82M</div>
+            <div class="text-xs text-slate-300 mt-1">Up <span class="text-emerald-400 font-semibold">+41.2%</span> from $3.40M in FY 2023 (~20% of General Fund revenue)</div>
+          </div>
+          <div class="bg-slate-800/70 border border-slate-700/80 rounded-lg p-4">
+            <div class="text-xs font-semibold uppercase tracking-wider text-slate-400">FY 2026 Transit Capital</div>
+            <div class="text-2xl sm:text-3xl font-bold text-blue-400 mt-1">$10.88M</div>
+            <div class="text-xs text-slate-300 mt-1">Two FTA bus/software grants via Orange County (thru 2029–2030)</div>
+          </div>
+          <div class="bg-slate-800/70 border border-slate-700/80 rounded-lg p-4">
+            <div class="text-xs font-semibold uppercase tracking-wider text-slate-400">FY23–FY26 Water Earmarks</div>
+            <div class="text-2xl sm:text-3xl font-bold text-blue-400 mt-1">$5.50M</div>
+            <div class="text-xs text-slate-300 mt-1">Enacted EPA STAG grants (separate from $57.15M SRF loan debt)</div>
+          </div>
+          <div class="bg-slate-800/70 border border-slate-700/80 rounded-lg p-4">
+            <div class="text-xs font-semibold uppercase tracking-wider text-slate-400">Population Growth (00–25)</div>
+            <div class="text-2xl sm:text-3xl font-bold text-emerald-400 mt-1">+259%</div>
+            <div class="text-xs text-slate-300 mt-1">13,138 to 47,147 residents; median age 15.7 drives poverty formulas</div>
+          </div>
+        </div>
+
+        <div class="mt-6 bg-blue-950/40 border border-blue-900/60 rounded-lg p-4 sm:p-5">
+          <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-3">
+            <div>
+              <h3 class="text-sm font-bold text-blue-200">Interactive Lens: Compare Reporting Perspectives</h3>
+              <p class="text-xs text-blue-300/80 mt-0.5">Toggle between what appears in a naive USAspending.gov municipal query versus what emerges across Single Audits and subrecipient records.</p>
+            </div>
+            <div class="inline-flex rounded-lg bg-slate-900 p-1 border border-slate-700 self-start">
+              <button id="btn-lens-portal" onclick="setPerspective('portal')" class="px-3 py-1.5 text-xs font-semibold rounded-md bg-blue-600 text-white transition">USAspending Direct View</button>
+              <button id="btn-lens-full" onclick="setPerspective('full')" class="px-3 py-1.5 text-xs font-semibold rounded-md text-slate-300 hover:bg-slate-800 transition">Full Multi-Channel Reality</button>
+            </div>
+          </div>
+          <div id="perspective-panel" class="mt-4 grid grid-cols-1 md:grid-cols-3 gap-4 text-xs">
+            <div class="bg-slate-900/90 p-3.5 rounded border border-slate-800">
+              <span class="font-bold text-slate-100 block mb-1">1. Prime Recipient Attribution</span>
+              <p id="persp-1" class="text-slate-300 leading-relaxed">USAspending.gov tracks direct prime obligations to UEI <code class="bg-slate-800 text-blue-300 px-1 rounded">NBYPFKZW4LT3</code>, plotting annual direct awards on a $0–$250K scale because major FTA, education, and disaster grants list Orange County or NY State as prime awardee.</p>
+            </div>
+            <div class="bg-slate-900/90 p-3.5 rounded border border-slate-800">
+              <span class="font-bold text-slate-100 block mb-1">2. Institutional Fragmentation</span>
+              <p id="persp-2" class="text-slate-300 leading-relaxed">Searching only "Village of Kiryas Joel" omits five legally independent local recipients—the School District, Housing Authority, Municipal LDC, Aizer Health, and private yeshivas—each holding separate EINs and federal identifiers.</p>
+            </div>
+            <div class="bg-slate-900/90 p-3.5 rounded border border-slate-800">
+              <span class="font-bold text-slate-100 block mb-1">3. Formula & Demographic Multiplier</span>
+              <p id="persp-3" class="text-slate-300 leading-relaxed">Federal Title I, Head Start, and HUD formulas count all income-qualified children in the village regardless of private yeshiva attendance, magnifying per-pupil and per-square-mile allocations.</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section id="entities" class="space-y-4">
+      <div class="bg-slate-900 rounded-xl border border-slate-800 p-6 sm:p-8 shadow-lg">
+        <div class="max-w-4xl">
+          <h2 class="text-lg sm:text-xl font-bold text-slate-100">The Six-Channel Federal Funding Architecture</h2>
+          <p class="mt-2 text-sm text-slate-300 leading-relaxed">
+            Federal dollars enter Kiryas Joel through six distinct legal entities. Select any entity below to inspect its federal identifiers, primary grant conduits, verified dollar benchmarks, oversight record, and disclosure limitations.
+          </p>
+        </div>
+
+        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3 mt-6" id="entity-cards-grid">
+        </div>
+
+        <div id="entity-detail-box" class="mt-6 bg-slate-800/60 border border-slate-700 rounded-xl p-5 sm:p-6 transition-all">
+        </div>
+      </div>
+    </section>
+
+    <section id="visuals" class="space-y-6">
+      <div class="bg-slate-900 rounded-xl border border-slate-800 p-6 sm:p-8 shadow-lg">
+        <div class="flex flex-col md:flex-row md:items-end justify-between gap-4 border-b border-slate-800 pb-5">
+          <div class="max-w-3xl">
+            <h2 class="text-lg sm:text-xl font-bold text-slate-100">Sectoral Breakdown & Financial Analytics</h2>
+            <p class="mt-2 text-sm text-slate-300 leading-relaxed">
+              Explore how verified federal funds are distributed across municipal programs, transit operations, water infrastructure, and education. Use the chart controls to inspect audited municipal outlays or compare multi-year commitments while keeping subsidized loans strictly separate from grants.
+            </p>
+          </div>
+          <div class="flex items-center gap-2 bg-slate-800 p-2 rounded-lg border border-slate-700 self-start">
+            <input type="checkbox" id="toggle-srf-debt" class="h-4 w-4 rounded bg-slate-900 border-slate-600 text-blue-500 focus:ring-blue-500 cursor-pointer" onchange="updateBenchmarkChart()" />
+            <label for="toggle-srf-debt" class="text-xs font-semibold text-slate-200 cursor-pointer select-none">Include $57.15M Clean Water SRF Loan (Debt)</label>
+          </div>
+        </div>
+
+        <div class="grid grid-cols-1 lg:grid-cols-2 gap-8 mt-6">
+          <div class="bg-slate-800/60 border border-slate-700/80 rounded-xl p-5 flex flex-col justify-between">
+            <div>
+              <div class="flex items-center justify-between gap-2">
+                <h3 class="text-base font-bold text-slate-100">Major Verified Federal Commitments & Benchmarks</h3>
+                <span class="text-xs font-medium px-2 py-0.5 rounded bg-blue-950 text-blue-300 border border-blue-800">USD ($ Millions)</span>
+              </div>
+              <p class="text-xs text-slate-400 mt-1">
+                Compares key documented federal grants and audited annual outlays across sectors. Note that figures represent distinct mechanisms (annual audits vs. multi-year obligations) and should not be summed as a single year.
+              </p>
+            </div>
+            <div class="chart-container my-4">
+              <canvas id="benchmarkChart"></canvas>
+            </div>
+            <div class="text-xs text-slate-400 border-t border-slate-700/80 pt-2.5">
+              Source: FAC.gov Single Audits, FTA Grant Awards (`NY-2026-035`, `NY-2026-060`), EPA STAG Guidance, Ballotpedia ESSER I, and CGR Study.
+            </div>
+          </div>
+
+          <div class="bg-slate-800/60 border border-slate-700/80 rounded-xl p-5 flex flex-col justify-between">
+            <div>
+              <div class="flex items-center justify-between gap-2">
+                <h3 class="text-base font-bold text-slate-100">FY 2024 Municipal Single Audit Outlays ($4.818M)</h3>
+                <span class="text-xs font-medium px-2 py-0.5 rounded bg-emerald-950 text-emerald-300 border border-emerald-800">Clean Audit</span>
+              </div>
+              <p class="text-xs text-slate-400 mt-1">
+                Itemized federal expenditures by the Village of Kiryas Joel in FY 2024 (up 41.2% from $3.40M in FY 2023). HUD HOME and FTA transit funds account for 81% of municipal federal outlays.
+              </p>
+            </div>
+            <div class="chart-container my-4">
+              <canvas id="fy24AuditChart"></canvas>
+            </div>
+            <div class="text-xs text-slate-400 border-t border-slate-700/80 pt-2.5">
+              Source: Federal Audit Clearinghouse (FAC.gov) Single Audit summary via MyTownView (zero compliance findings).
+            </div>
+          </div>
+
+          <div class="bg-slate-800/60 border border-slate-700/80 rounded-xl p-5 flex flex-col justify-between">
+            <div>
+              <div class="flex items-center justify-between gap-2">
+                <h3 class="text-base font-bold text-slate-100">2025 Municipal Transit Operating Budget ($7.83M)</h3>
+                <span class="text-xs font-medium px-2 py-0.5 rounded bg-amber-950 text-amber-300 border border-amber-800">NTD ID 20187</span>
+              </div>
+              <p class="text-xs text-slate-400 mt-1">
+                Kiryas Joel's buses carried 1,402,170 passenger trips in 2025 ($5.59/trip). Federal FTA operating aid ($3.01M) and NY State transit aid ($3.19M) plus fares cover 100% of operating costs ($0 local tax subsidy).
+              </p>
+            </div>
+            <div class="chart-container my-4">
+              <canvas id="transitChart"></canvas>
+            </div>
+            <div class="text-xs text-slate-400 border-t border-slate-700/80 pt-2.5">
+              Source: FTA 2025 National Transit Database (NTD) Annual Agency Profile for Village of Kiryas Joel.
+            </div>
+          </div>
+
+          <div class="bg-slate-800/60 border border-slate-700/80 rounded-xl p-5 flex flex-col justify-between">
+            <div>
+              <div class="flex items-center justify-between gap-2">
+                <h3 class="text-base font-bold text-slate-100">Education & Early Childhood Trajectory</h3>
+                <span class="text-xs font-medium px-2 py-0.5 rounded bg-purple-950 text-purple-300 border border-purple-800">Formula Driven</span>
+              </div>
+              <p class="text-xs text-slate-400 mt-1">
+                Tracks documented KJUFSD federal education grants alongside KJM-LDC's total grant revenues (which blend federal Head Start & USDA CACFP with NY State Universal Pre-K).
+              </p>
+            </div>
+            <div class="chart-container my-4">
+              <canvas id="educationChart"></canvas>
+            </div>
+            <div class="text-xs text-slate-400 border-t border-slate-700/80 pt-2.5">
+              Note: KJUFSD serves ~123–217 public special-ed students while capturing Title I/ESSER formulas across all village youth in poverty.
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section id="ledger" class="space-y-4">
+      <div class="bg-slate-900 rounded-xl border border-slate-800 p-6 sm:p-8 shadow-lg">
+        <div class="max-w-4xl">
+          <h2 class="text-lg sm:text-xl font-bold text-slate-100">Chronological Ledger of Verified Federal Awards (2001–2026)</h2>
+          <p class="mt-2 text-sm text-slate-300 leading-relaxed">
+            Search and filter all 36 documented federal grants, congressional earmarks, formula allocations, audited expenditure benchmarks, and subsidized debt issuances. Each entry explicitly identifies its accounting mechanism to prevent double-counting.
+          </p>
+        </div>
+
+        <div class="grid grid-cols-1 sm:grid-cols-3 gap-3 mt-6">
+          <div>
+            <label for="filter-search" class="block text-xs font-semibold text-slate-300 mb-1">Search Program, Agency, or Keyword</label>
+            <input type="text" id="filter-search" placeholder="e.g., FTA, Head Start, EPA, Title I, Schumer..." oninput="renderLedger()" class="w-full px-3 py-2 text-sm bg-slate-800 text-slate-100 placeholder-slate-500 border border-slate-700 rounded-lg focus:outline-none focus:border-blue-500" />
+          </div>
+          <div>
+            <label for="filter-entity" class="block text-xs font-semibold text-slate-300 mb-1">Filter by Recipient Entity</label>
+            <select id="filter-entity" onchange="renderLedger()" class="w-full px-3 py-2 text-sm bg-slate-800 text-slate-100 border border-slate-700 rounded-lg focus:outline-none focus:border-blue-500">
+              <option value="ALL">All Recipient Entities (36)</option>
+              <option value="Village">Village of Kiryas Joel / Town of Palm Tree</option>
+              <option value="School">Kiryas Joel UFSD (School District)</option>
+              <option value="Housing">Kiryas Joel Housing Authority (NY158)</option>
+              <option value="LDC">Kiryas Joel Municipal LDC (Head Start)</option>
+              <option value="Health">Aizer Health (Ezras Choilim FQHC)</option>
+              <option value="Yeshivas">Private Yeshivas (UTA / Mesivta)</option>
+            </select>
+          </div>
+          <div>
+            <label for="filter-mechanism" class="block text-xs font-semibold text-slate-300 mb-1">Filter by Funding Mechanism</label>
+            <select id="filter-mechanism" onchange="renderLedger()" class="w-full px-3 py-2 text-sm bg-slate-800 text-slate-100 border border-slate-700 rounded-lg focus:outline-none focus:border-blue-500">
+              <option value="ALL">All Mechanisms</option>
+              <option value="Grant">Direct / Pass-Through Grants & Formulas</option>
+              <option value="Earmark">Congressional Earmarks & Pending Requests</option>
+              <option value="Audit">Single Audit Expenditure Benchmarks</option>
+              <option value="Debt">Subsidized Loan Debt (Non-Grant)</option>
+            </select>
+          </div>
+        </div>
+
+        <div class="mt-4 flex items-center justify-between text-xs text-slate-400">
+          <span id="ledger-count">Showing 36 of 36 verified records</span>
+          <button onclick="resetFilters()" class="text-blue-400 font-semibold hover:underline">Reset Filters</button>
+        </div>
+
+        <div class="mt-3 overflow-x-auto border border-slate-800 rounded-lg">
+          <table class="min-w-full divide-y divide-slate-800 text-left text-xs sm:text-sm">
+            <thead class="bg-slate-800/90 text-slate-200 font-semibold">
+              <tr>
+                <th class="px-4 py-3 whitespace-nowrap">Year / FY</th>
+                <th class="px-4 py-3">Recipient Entity</th>
+                <th class="px-4 py-3">Federal Agency & Program</th>
+                <th class="px-4 py-3 whitespace-nowrap">Verified Amount</th>
+                <th class="px-4 py-3">Mechanism & Status</th>
+              </tr>
+            </thead>
+            <tbody id="ledger-tbody" class="divide-y divide-slate-800/80 bg-slate-900/60">
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </section>
+
+    <section id="oversight" class="space-y-4">
+      <div class="bg-slate-900 rounded-xl border border-slate-800 p-6 sm:p-8 shadow-lg">
+        <div class="max-w-4xl">
+          <h2 class="text-lg sm:text-xl font-bold text-slate-100">Oversight Contrast & Public-Data Disclosure Boundaries</h2>
+          <p class="mt-2 text-sm text-slate-300 leading-relaxed">
+            Federal compliance records reveal a sharp institutional divide between municipal/housing entities and educational recipients, alongside five structural data gaps that prevent calculating an exact 25-year cumulative dollar sum from open portals alone.
+          </p>
+        </div>
+
+        <div class="grid grid-cols-1 lg:grid-cols-2 gap-6 mt-6">
+          <div class="space-y-4">
+            <h3 class="text-base font-bold text-slate-100">Institutional Audit & Compliance Comparison</h3>
+            <div class="bg-emerald-950/30 border border-emerald-800/60 rounded-lg p-4">
+              <div class="flex items-center gap-2">
+                <span class="text-emerald-400 font-bold text-sm">✓ Strong Municipal & Housing Audit Track Record</span>
+              </div>
+              <ul class="mt-2 space-y-1.5 text-xs text-slate-300 list-disc list-inside leading-relaxed">
+                <li><strong class="text-slate-100">Village of Kiryas Joel:</strong> Maintained <strong class="text-slate-100">7 consecutive unmodified ("clean") Single Audits</strong> on file back to 2017 through FY 2024 with zero material weaknesses or significant deficiencies.</li>
+                <li><strong class="text-slate-100">Kiryas Joel Housing Authority (NY158):</strong> Rated a HUD <strong class="text-slate-100">"High Performer"</strong> administering ~400–481 vouchers (with 79% of assisted households headed by working adults).</li>
+                <li><strong class="text-slate-100">Kiryas Joel Municipal LDC:</strong> Filed 7 consecutive Single Audits (FY 2019–FY 2025) confirming ≥$750K/year in federal Head Start and CACFP expenditures.</li>
+              </ul>
+            </div>
+
+            <div class="bg-amber-950/30 border border-amber-800/60 rounded-lg p-4">
+              <div class="flex items-center gap-2">
+                <span class="text-amber-400 font-bold text-sm">! Educational Audit Findings & Federal Enforcement</span>
+              </div>
+              <ul class="mt-2 space-y-1.5 text-xs text-slate-300 list-disc list-inside leading-relaxed">
+                <li><strong class="text-slate-100">KJUFSD (2009 ED-OIG ARRA Audit):</strong> Report <code class="bg-slate-800 text-amber-300 px-1 rounded">ED-OIG/A02J0009</code> found the district lacked sufficient accounting controls for ARRA § 1512 reporting, software training, and an accounting manual; a 2009 NY State audit also cited board lease conflicts.</li>
+                <li><strong class="text-slate-100">UTA of Kiryas Joel (FY 2023 Single Audit):</strong> Flagged a <em class="text-slate-200">"Significant deficiency in internal controls"</em> across its federal grant compliance.</li>
+                <li><strong class="text-slate-100">2016–2018 FBI E-Rate Raids & Indictments:</strong> Federal agents raided religious schools in Kiryas Joel and Rockland County, arresting seven residents in an alleged $35M application / $14M payout FCC E-Rate fraud scheme (plus a separate $113,023 EPA Clean Water Act penalty at UTA Boys School).</li>
+              </ul>
+            </div>
+          </div>
+
+          <div class="space-y-3">
+            <h3 class="text-base font-bold text-slate-100">Five Public-Data Gaps Preventing a Penny-Exact 25-Year Total</h3>
+            <p class="text-xs text-slate-400">Click each disclosure boundary below to view what is missing in public portals and which primary federal filing is required to resolve it.</p>
+            <div id="gaps-accordion" class="space-y-2">
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+  </main>
+
+  <footer class="bg-slate-900 border-t border-slate-800 mt-12 py-6">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex flex-col sm:flex-row items-center justify-between gap-3 text-xs text-slate-400">
+      <div>Compiled from FAC.gov Single Audits, FTA NTD & Grant Awards, EPA STAG, HUD Federal Register, NYSED/CGR, and IRS Form 990 records (2001–Nov 2026).</div>
+      <div class="font-medium text-slate-300">Kiryas Joel / Town of Palm Tree, Orange County, NY</div>
+    </div>
+  </footer>
+
+  <script>
+    const entitiesData = [
+      {
+        id: 'village',
+        name: 'Village of Kiryas Joel & Town of Palm Tree',
+        shortTag: 'Municipal Government',
+        badgeColor: 'bg-blue-950 text-blue-300 border border-blue-800',
+        ids: 'UEI: NBYPFKZW4LT3 | DUNS: 067559476 | NTD: 20187 | Town est. Jan 1, 2019',
+        headline: '$4.82M FY24 Audited Outlays + $10.88M FY26 FTA Grants + $5.50M EPA Water Earmarks',
+        channels: 'Direct HUD CDBG/HOME entitlement; Orange County-passed FTA transit capital & operating grants; EPA STAG drinking water earmarks; NYS-passed ARPA ($1.37M+ col. 1 Village; $7,487.15 Town of Palm Tree), FEMA PA ($595K), and CDBG-DR.',
+        oversight: '7 consecutive unmodified ("clean") Single Audits on file back to 2017 through FY 2024 with zero material weaknesses or significant deficiencies.',
+        caveat: 'USAspending.gov plots direct prime awards on a $0–$250K scale because county/state pass-throughs are attributed to Orange County or NY State. Separate $57.15M Clean Water SRF (2021) is subsidized debt, not a grant.'
+      },
+      {
+        id: 'school',
+        name: 'Kiryas Joel Union Free School District (KJUFSD)',
+        shortTag: 'Public Special-Ed District',
+        badgeColor: 'bg-purple-950 text-purple-300 border border-purple-800',
+        ids: 'FCC Billed Entity: 157613 | NYSED Pass-Through Recipient',
+        headline: '$5.3M Title I (2008) → ~$7M/yr Title Funds (2015) + $7.59M ESSER I (2020)',
+        channels: 'NYSED-passed U.S. Dept. of Education Title I Part A, IDEA Part B, ARRA stimulus, Race to the Top ($1.6M in 2010 — highest per-public-pupil in NY at ~$13,008), and CARES Act ESSER I ($7,585,982), plus direct FCC E-Rate discounts.',
+        oversight: '2009 ED-OIG ARRA Audit (ED-OIG/A02J0009) flagged internal-control gaps in ARRA § 1512 reporting and software manuals; 2009 NYS audit cited board lease conflicts.',
+        caveat: 'Public enrollment consists exclusively of 123–217 students with disabilities, yet Title I/ESSER formulas count all village children in poverty regardless of private yeshiva attendance. Full 25-year Title I/IDEA/ESSER II–III series requires NYSED ST-3 reports.'
+      },
+      {
+        id: 'housing',
+        name: 'Village of Kiryas Joel Housing Authority (KJHA)',
+        shortTag: 'Public Housing Agency',
+        badgeColor: 'bg-emerald-950 text-emerald-300 border border-emerald-800',
+        ids: 'HUD PHA Code: NY158 | NY Public Housing Law § 549',
+        headline: 'HUD "High Performer" Managing ~400–481 Section 8 Vouchers',
+        channels: 'Direct HUD Section 8 Housing Choice Vouchers (HCV) and Project-Based Vouchers (converted from 60 public housing units via RAD), plus competitive HCV Family Self-Sufficiency (FSS) coordinator grants ($63,000 in FY05; $66,200 in FY12; awards in FY10, FY11, FY21).',
+        oversight: 'Rated "High Performer" by HUD; 90% of served households are Extremely Low Income (<30% AMI) and 79% are headed by working adults. Referenced in HUD OIG Semiannual Report No. 58.',
+        caveat: 'Exact cumulative annual HUD Housing Assistance Payment (HAP) disbursements since 2001 are not itemized in open datasets and require HUD Voucher Management System (VMS) records.'
+      },
+      {
+        id: 'ldc',
+        name: 'Kiryas Joel Municipal Local Development Corp.',
+        shortTag: '501(c)(3) Early Childhood',
+        badgeColor: 'bg-amber-950 text-amber-300 border border-amber-800',
+        ids: 'EIN: 14-1756790 | FCC E-Rate Entity: 16051828 | Est. 1993',
+        headline: '$51.87M Total Grant Revenue (FY15–FY25) | 7 Consecutive Single Audits',
+        channels: 'Direct HHS/ACF Head Start & Early Head Start grants (dedicated 2012–2013 FOA posted up to $1,859,389/yr), USDA Child and Adult Care Food Program (CACFP), FCC E-Rate telecommunications subsidies, and NY State Universal Pre-K (UPK).',
+        oversight: '7 consecutive Federal Single Audits on file (FY 2019–FY 2025), confirming federal grant expenditures of at least $750,000 every year.',
+        caveat: 'IRS Form 990 filings show total annual grant revenue grew 83.4% from $3.60M (FY15) to $6.60M (FY25), but Form 990 lines aggregate federal Head Start/CACFP with NY State UPK.'
+      },
+      {
+        id: 'health',
+        name: 'Aizer Health (formerly Ezras Choilim Health Center)',
+        shortTag: 'FQHC Community Clinic',
+        badgeColor: 'bg-rose-950 text-rose-300 border border-rose-800',
+        ids: 'EIN: 13-3595755 | HRSA Grant: H80CS24138 | UDS: 02E00487',
+        headline: 'HRSA Section 330 FQHC + FTCA Malpractice Coverage | 170,000+ Annual Visits',
+        channels: 'Direct HHS/HRSA Section 330 Federally Qualified Health Center operational grants, Outreach & Enrollment ($69,190 in FY13), HRSA Quality Improvement awards (FY14+), HCCN network participation ($1.56M NY pool in FY19), FY20 COVID-19 supplemental grants, and Federal Tort Claims Act (FTCA) deemed coverage.',
+        oversight: 'Subject to ongoing HRSA Operational Site Visits (OSVs) and statutory FTCA clinical quality/deeming compliance; $53.15M total organizational revenue in 2024 (including Medicaid/insurance).',
+        caveat: 'HRSA Uniform Data System (UDS) 2021–2025 financial tables were inaccessible during portal retrieval, preventing extraction of exact annual Section 330 base grant awards.'
+      },
+      {
+        id: 'yeshivas',
+        name: 'Private Yeshivas (UTA of Kiryas Joel & UTA Mesivta)',
+        shortTag: 'Church-Exempt Academies',
+        badgeColor: 'bg-slate-800 text-slate-300 border border-slate-700',
+        ids: 'EIN: 13-3096282 (UTA KJ) | EIN: 06-1555313 (UTA Mesivta)',
+        headline: '20 Combined Single Audits Confirming ≥$1.5M/yr Combined Federal Spend',
+        channels: 'NYS-passed USDA National School Lunch / child nutrition subsidies, direct FCC E-Rate telecommunications subsidies, and equitable Title I secular instructional services via KJUFSD.',
+        oversight: '10 consecutive Single Audits for UTA of Kiryas Joel (FY16–FY25; FY23 audit flagged a "Significant deficiency in internal controls") and 10 audits for UTA Mesivta. Target of 2016–2018 FBI E-Rate raids/indictments ($35M applied / $14M collected across Monsey & KJ).',
+        caveat: 'IRS church classification exempts both academies from filing public Form 990s; underlying Single Audit PDFs are required to view exact annual federal line items.'
+      }
+    ];
+
+    const ledgerData = [
+      { year: 'FY 2005', entityKey: 'Housing', entity: 'Kiryas Joel Housing Authority (NY158)', program: 'HUD HCV Family Self-Sufficiency (FSS)', amount: '$63,000', numVal: 63000, mechKey: 'Grant', mech: 'Direct competitive grant' },
+      { year: 'Legacy', entityKey: 'Village', entity: 'Village of Kiryas Joel', program: 'DOT / FHWA Sidewalk Project Earmark ($171,876 spent)', amount: '$600,885', numVal: 600885, mechKey: 'Earmark', mech: 'Congressional highway earmark' },
+      { year: 'FY 2008', entityKey: 'Village', entity: 'Village of Kiryas Joel', program: "HHS Women's Health Center Equipment", amount: '$150,000', numVal: 150000, mechKey: 'Earmark', mech: 'Congressional earmark (Schumer)' },
+      { year: '2008', entityKey: 'School', entity: 'Kiryas Joel UFSD', program: 'Dept. of Education Title I, Part A', amount: '$5,300,000', numVal: 5300000, mechKey: 'Grant', mech: 'Formula pass-through (NYSED)' },
+      { year: '2009', entityKey: 'School', entity: 'Kiryas Joel UFSD', program: 'Dept. of Education ARRA (Title I / IDEA)', amount: 'Not itemized', numVal: 0, mechKey: 'Grant', mech: 'Stimulus pass-through; ED-OIG audited' },
+      { year: '2010', entityKey: 'School', entity: 'Kiryas Joel UFSD', program: 'Dept. of Education Race to the Top (RTTT)', amount: '$1,600,000', numVal: 1600000, mechKey: 'Grant', mech: 'Formula pass-through (NYSED)' },
+      { year: 'FY 2010–11', entityKey: 'Housing', entity: 'Kiryas Joel Housing Authority (NY158)', program: 'HUD HCV Family Self-Sufficiency (FSS)', amount: 'Amt. truncated', numVal: 0, mechKey: 'Grant', mech: 'Direct competitive grants' },
+      { year: 'FY 2012', entityKey: 'Housing', entity: 'Kiryas Joel Housing Authority (NY158)', program: 'HUD HCV Family Self-Sufficiency (FSS)', amount: '$66,200', numVal: 66200, mechKey: 'Grant', mech: 'Direct competitive grant' },
+      { year: '2012–2013', entityKey: 'LDC', entity: 'Village / KJM-LDC Head Start', program: 'HHS/ACF Head Start (HHS-2013-ACF-OHS-CH-R02-0335)', amount: '$1,859,389', numVal: 1859389, mechKey: 'Grant', mech: 'Posted max annual FOA for Kiryas Joel' },
+      { year: 'FY 2013', entityKey: 'Health', entity: 'Ezras Choilim Health Center (Aizer Health)', program: 'HHS/HRSA Outreach & Enrollment (CFDA 93.527)', amount: '$69,190', numVal: 69190, mechKey: 'Grant', mech: 'Direct FQHC supplemental grant' },
+      { year: 'FY 2014', entityKey: 'Health', entity: 'Ezras Choilim Health Center (Aizer Health)', program: 'HHS/HRSA Quality Improvement Award', amount: 'Amt. unstated', numVal: 0, mechKey: 'Grant', mech: 'Direct FQHC quality award' },
+      { year: '~2015', entityKey: 'School', entity: 'Kiryas Joel UFSD', program: 'Dept. of Education Federal Title Funds', amount: '~$7,000,000/yr', numVal: 7000000, mechKey: 'Grant', mech: 'Annual formula pass-through (CGR study)' },
+      { year: '~2010s', entityKey: 'Village', entity: 'Village of Kiryas Joel', program: 'Catskill Aqueduct Water Pipeline Grant', amount: '$5,000,000 (Cancelled)', numVal: 0, mechKey: 'Earmark', mech: 'Reported dead / not awarded' },
+      { year: 'FY 2016–25', entityKey: 'Yeshivas', entity: 'UTA of Kiryas Joel & UTA Mesivta', program: 'Federal Nonprofit Grants (USDA / E-Rate / etc.)', amount: '≥$750,000/yr each', numVal: 1500000, mechKey: 'Audit', mech: '10 Single Audits each (statutory floor)' },
+      { year: '2017–2022', entityKey: 'Village', entity: 'Village of Kiryas Joel', program: 'Municipal Federal Programs (5 Single Audits)', amount: '≥$750,000/yr', numVal: 750000, mechKey: 'Audit', mech: 'Clean Single Audits (exact PDFs unextracted)' },
+      { year: 'FY 2019', entityKey: 'Health', entity: 'Ezras Choilim Health Center (Aizer Health)', program: 'HHS/HRSA Health Center Controlled Network', amount: 'Part of $1.56M NY pool', numVal: 0, mechKey: 'Grant', mech: 'Network grant (51 NY clinics)' },
+      { year: 'FY 2019–25', entityKey: 'LDC', entity: 'Kiryas Joel Municipal LDC (14-1756790)', program: 'HHS Head Start / USDA CACFP (+ NYS UPK)', amount: '≥$750,000/yr fed.', numVal: 750000, mechKey: 'Audit', mech: '7 Single Audits ($36.14M total Form 990 grants)' },
+      { year: '2020', entityKey: 'Village', entity: 'Village of Kiryas Joel', program: 'HUD CDBG Economic Development (via NYS HCR)', amount: '$300,000', numVal: 300000, mechKey: 'Grant', mech: 'State-administered CDBG grant' },
+      { year: '2020', entityKey: 'Health', entity: 'Ezras Choilim Health Center (Aizer Health)', program: 'HHS/HRSA FY2020 Coronavirus Supplemental', amount: 'Part of $2.2M+ pool', numVal: 0, mechKey: 'Grant', mech: 'COVID-19 direct FQHC grant' },
+      { year: '2020', entityKey: 'School', entity: 'Kiryas Joel UFSD', program: 'Dept. of Education ESSER I (CARES Act)', amount: '$7,585,982', numVal: 7585982, mechKey: 'Grant', mech: 'COVID-19 formula grant (Ballotpedia)' },
+      { year: '2021', entityKey: 'Village', entity: 'Village of Kiryas Joel', program: 'NYS EFC Clean Water SRF (Project #18208B)', amount: '$57,151,701', numVal: 57151701, mechKey: 'Debt', mech: 'Subsidized BAN Debt (Not a Grant)' },
+      { year: '2021', entityKey: 'Village', entity: 'Village of Kiryas Joel & Town of Palm Tree', program: 'Treasury ARPA SLFRF (NEU via NYS DOB)', amount: '$1,376,918+', numVal: 1376918, mechKey: 'Grant', mech: '$1,369,430.45 KJ col. 1 + $7,487.15 Palm Tree' },
+      { year: 'FY 2021', entityKey: 'Housing', entity: 'Kiryas Joel Housing Authority (NY158)', program: 'HUD HCV/PH Family Self-Sufficiency (FSS)', amount: 'Amt. truncated', numVal: 0, mechKey: 'Grant', mech: 'Direct competitive grant' },
+      { year: 'FY 2023', entityKey: 'Village', entity: 'Village of Kiryas Joel', program: 'EPA STAG – Drinking Water SRF (Phase II WTF)', amount: '$1,500,000', numVal: 1500000, mechKey: 'Earmark', mech: 'Enacted earmark (Schumer, Gillibrand)' },
+      { year: 'FY 2023', entityKey: 'Village', entity: 'Village of Kiryas Joel', program: 'All Municipal Federal Programs (Single Audit)', amount: '$3,400,000', numVal: 3400000, mechKey: 'Audit', mech: 'Audited annual expenditure (Clean)' },
+      { year: 'FY 2024', entityKey: 'Village', entity: 'Village of Kiryas Joel', program: 'EPA STAG – Drinking Water SRF (Water Infra.)', amount: '$2,000,000', numVal: 2000000, mechKey: 'Earmark', mech: 'Enacted earmark (Ryan, Schumer, Gillibrand)' },
+      { year: 'FY 2024', entityKey: 'Village', entity: 'Village of Kiryas Joel', program: 'Single Audit: HOME ($2.1M), FTA ($1.8M), FEMA ($595K), SS4A ($191K), Hwy ($132K)', amount: '$4,818,000', numVal: 4818000, mechKey: 'Audit', mech: 'Audited annual expenditure (Clean)' },
+      { year: '2024', entityKey: 'Village', entity: 'Village of Kiryas Joel', program: 'USACE WRDA 2024 § 219(f)(184) Authorization', amount: 'Ceiling unextracted', numVal: 0, mechKey: 'Earmark', mech: 'Statutory authorization (unappropriated)' },
+      { year: 'FY 2025', entityKey: 'Village', entity: 'Village of Kiryas Joel', program: 'THUD — Acres Road Improvements Project', amount: '$2,000,000', numVal: 2000000, mechKey: 'Earmark', mech: 'Senate Approps Report (unconfirmed)' },
+      { year: '2025', entityKey: 'Village', entity: 'Village of Kiryas Joel (NTD 20187)', program: 'DOT / FTA Transit Operating Assistance', amount: '$3,007,906', numVal: 3007906, mechKey: 'Grant', mech: 'Annual federal operating aid (38.4% budget)' },
+      { year: 'FY 2026', entityKey: 'Village', entity: 'Village of Kiryas Joel', program: 'EPA STAG – Drinking Water SRF (WTF Constr.)', amount: '$2,000,000', numVal: 2000000, mechKey: 'Earmark', mech: 'Enacted earmark (Ryan, Schumer, Gillibrand)' },
+      { year: 'FY 2026', entityKey: 'Village', entity: 'Village of Kiryas Joel (via Orange County)', program: 'DOT / FTA Formula NY-2026-035 (Software + 11 Buses)', amount: '$5,100,000', numVal: 5100000, mechKey: 'Grant', mech: 'Obligated pass-through grant (thru 2030)' },
+      { year: 'FY 2026', entityKey: 'Village', entity: 'Village of Kiryas Joel (via Orange County)', program: 'DOT / FTA Bus Competitive NY-2026-060 (8 New Buses)', amount: '$5,780,000', numVal: 5780000, mechKey: 'Grant', mech: 'Obligated pass-through grant (thru 2029)' },
+      { year: 'FY 2026', entityKey: 'Village', entity: 'Village of Kiryas Joel (verify vs. Orange Co.)', program: 'HUD Direct Entitlement Formulas (CDBG & HOME)', amount: '~$2.8M cited (caveated)', numVal: 0, mechKey: 'Grant', mech: 'Requires HUD table verification vs. County' },
+      { year: '2026', entityKey: 'Village', entity: 'Village of Kiryas Joel & Town of Palm Tree', program: 'HUD CDBG-DR (Daj Boulevard Connector Road)', amount: 'Bid solicitation', numVal: 0, mechKey: 'Grant', mech: 'Joint federal-funded construction bid' },
+      { year: 'FY 2027', entityKey: 'Village', entity: 'Village of Kiryas Joel', program: 'Rep. Pat Ryan CPF — Schunnemunk Road', amount: '$5,000,000', numVal: 5000000, mechKey: 'Earmark', mech: 'Pending Congressional request' }
+    ];
+
+    const dataGaps = [
+      {
+        title: '1. Pass-Through Omissions on USAspending.gov',
+        detail: 'County-administered FTA transit awards (NY-2026-035, NY-2026-060) and state-passed education, disaster, and ARPA awards are reported under Orange County or New York State as prime awardees, causing direct municipal queries on USAspending.gov to understate total inflows.'
+      },
+      {
+        title: '2. Unextracted Single Audit SEFA Schedules',
+        detail: 'Full Schedule of Expenditures of Federal Awards (SEFA) PDFs from FAC.gov are required to verify exact annual federal totals for the Village (5 audits covering 2017–2022), KJM-LDC (separating federal Head Start/CACFP from NY State UPK), and both church-exempt UTA yeshivas (10 audits each).'
+      },
+      {
+        title: '3. Incomplete 25-Year School District Ledger (KJUFSD)',
+        detail: 'While benchmark years (2008 Title I, 2010 Race to the Top, 2015 Title funds, and 2020 ESSER I) are verified, compiling full 2001–2026 Title I, IDEA, and ESSER II/III totals requires NYSED annual ST-3 financial reports.'
+      },
+      {
+        title: '4. Inaccessible HRSA UDS Clinic Financials (Aizer Health)',
+        detail: 'Determining exact annual Section 330 base grants and COVID-19/ARPA supplemental awards for Aizer Health (H80CS24138) requires direct HRSA Data Warehouse queries for 2012–2026.'
+      },
+      {
+        title: '5. Unitemized HUD Voucher Outlays & Entitlement Ceilings',
+        detail: 'Establishing exact cumulative Section 8 HAP outlays for NY158 since 2001 requires HUD Voucher Management System (VMS) data, and confirming Kiryas Joel Village\'s standalone FY 2026 CDBG/HOME allocation requires HUD\'s primary grantee tables rather than third-party county summaries.'
+      }
+    ];
+
+    let selectedEntityId = 'village';
+    let benchmarkChartInstance = null;
+
+    function setPerspective(mode) {
+      const btnPortal = document.getElementById('btn-lens-portal');
+      const btnFull = document.getElementById('btn-lens-full');
+      const p1 = document.getElementById('persp-1');
+      const p2 = document.getElementById('persp-2');
+      const p3 = document.getElementById('persp-3');
+
+      if (mode === 'portal') {
+        btnPortal.className = 'px-3 py-1.5 text-xs font-semibold rounded-md bg-blue-600 text-white transition';
+        btnFull.className = 'px-3 py-1.5 text-xs font-semibold rounded-md text-slate-300 hover:bg-slate-800 transition';
+        p1.innerHTML = 'USAspending.gov tracks direct prime obligations to UEI <code class="bg-slate-800 text-blue-300 px-1 rounded">NBYPFKZW4LT3</code>, plotting annual direct awards on a $0–$250K scale because major FTA, education, and disaster grants list Orange County or NY State as prime awardee.';
+        p2.innerHTML = 'Searching only "Village of Kiryas Joel" omits five legally independent local recipients—the School District, Housing Authority, Municipal LDC, Aizer Health, and private yeshivas—each holding separate EINs and federal identifiers.';
+        p3.innerHTML = 'Federal Title I, Head Start, and HUD formulas count all income-qualified children in the village regardless of private yeshiva attendance, magnifying per-pupil and per-square-mile allocations.';
+      } else {
+        btnFull.className = 'px-3 py-1.5 text-xs font-semibold rounded-md bg-blue-600 text-white transition';
+        btnPortal.className = 'px-3 py-1.5 text-xs font-semibold rounded-md text-slate-300 hover:bg-slate-800 transition';
+        p1.innerHTML = '<strong class="text-white">Verified Reality:</strong> Municipal Single Audits confirm <strong class="text-blue-300">$3.40M (FY23)</strong> and <strong class="text-blue-300">$4.82M (FY24)</strong> in federal expenditures, alongside <strong class="text-blue-300">$10.88M</strong> in FY26 FTA capital obligations and <strong class="text-blue-300">$5.50M</strong> in FY23–FY26 EPA water earmarks.';
+        p2.innerHTML = '<strong class="text-white">Community-Wide Scale:</strong> Adding KJUFSD (~$7M/yr Title I; $7.59M ESSER I), KJHA (~400–481 Section 8 vouchers), KJM-LDC (Head Start/CACFP), Aizer Health (FQHC), and 20 yeshiva Single Audits pushes community inflows into tens of millions.';
+        p3.innerHTML = '<strong class="text-white">State Fiscal Offset:</strong> According to the 2015 CGR study, private yeshiva enrollment saves NY State <strong class="text-emerald-300">$100M–$150M annually</strong> in public school aid while increasing federal Title I equity allocations.';
+      }
+    }
+
+    function renderEntityCards() {
+      const grid = document.getElementById('entity-cards-grid');
+      grid.innerHTML = entitiesData.map(ent => {
+        const isSelected = ent.id === selectedEntityId;
+        return `
+          <button onclick="selectEntity('${ent.id}')" class="text-left p-4 rounded-xl border transition-all ${isSelected ? 'bg-blue-950/50 border-blue-500 ring-1 ring-blue-500 shadow-md' : 'bg-slate-800/50 border-slate-700/80 hover:bg-slate-800 hover:border-slate-600'}">
+            <div class="flex items-center justify-between gap-2">
+              <span class="text-[11px] font-semibold px-2 py-0.5 rounded ${ent.badgeColor}">${ent.shortTag}</span>
+              <span class="text-xs font-bold ${isSelected ? 'text-blue-400' : 'text-slate-500'}">${isSelected ? 'Viewing ●' : 'Inspect →'}</span>
+            </div>
+            <div class="font-bold text-sm text-slate-100 mt-2 leading-snug">${ent.name}</div>
+            <div class="text-xs text-slate-400 mt-1 line-clamp-2">${ent.headline}</div>
+          </button>
+        `;
+      }).join('');
+      renderEntityDetail();
+    }
+
+    function selectEntity(id) {
+      selectedEntityId = id;
+      renderEntityCards();
+    }
+
+    function renderEntityDetail() {
+      const ent = entitiesData.find(e => e.id === selectedEntityId);
+      const box = document.getElementById('entity-detail-box');
+      box.innerHTML = `
+        <div class="flex flex-col md:flex-row md:items-center justify-between gap-2 border-b border-slate-700 pb-3">
+          <div>
+            <span class="text-xs font-semibold px-2.5 py-0.5 rounded ${ent.badgeColor}">${ent.shortTag}</span>
+            <h3 class="text-base sm:text-lg font-bold text-slate-100 mt-1.5">${ent.name}</h3>
+          </div>
+          <div class="text-xs font-mono bg-slate-900 px-3 py-1.5 rounded border border-slate-700 text-slate-300">${ent.ids}</div>
+        </div>
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-4 mt-4 text-xs sm:text-sm">
+          <div class="bg-slate-900/90 p-4 rounded-lg border border-slate-700/80">
+            <div class="font-bold text-blue-400 text-xs uppercase tracking-wider mb-1.5">Primary Funding Channels</div>
+            <p class="text-slate-300 leading-relaxed">${ent.channels}</p>
+          </div>
+          <div class="bg-slate-900/90 p-4 rounded-lg border border-slate-700/80">
+            <div class="font-bold text-emerald-400 text-xs uppercase tracking-wider mb-1.5">Oversight & Audit Record</div>
+            <p class="text-slate-300 leading-relaxed">${ent.oversight}</p>
+          </div>
+          <div class="bg-slate-900/90 p-4 rounded-lg border border-slate-700/80">
+            <div class="font-bold text-amber-400 text-xs uppercase tracking-wider mb-1.5">Data & Accounting Nuances</div>
+            <p class="text-slate-300 leading-relaxed">${ent.caveat}</p>
+          </div>
+        </div>
+      `;
+    }
+
+    function wrapLabel(str, maxLen = 16) {
+      if (str.length <= maxLen) return str;
+      const words = str.split(' ');
+      const lines = [];
+      let current = '';
+      words.forEach(w => {
+        if ((current + ' ' + w).trim().length <= maxLen) {
+          current = (current + ' ' + w).trim();
+        } else {
+          if (current) lines.push(current);
+          current = w;
+        }
+      });
+      if (current) lines.push(current);
+      return lines;
+    }
+
+    function initCharts() {
+      Chart.defaults.font.family = 'system-ui, -apple-system, sans-serif';
+      Chart.defaults.color = '#cbd5e1';
+
+      updateBenchmarkChart();
+
+      const ctxAudit = document.getElementById('fy24AuditChart').getContext('2d');
+      new Chart(ctxAudit, {
+        type: 'doughnut',
+        data: {
+          labels: [
+            'HUD HOME Program ($2.10M)',
+            'FTA Transit Formula ($1.80M)',
+            'FEMA Public Assistance ($0.595M)',
+            'FHWA Safe Streets SS4A ($0.191M)',
+            'FHWA Highway Planning ($0.132M)'
+          ],
+          datasets: [{
+            data: [2.10, 1.80, 0.595, 0.191, 0.132],
+            backgroundColor: ['#3b82f6', '#38bdf8', '#f59e0b', '#10b981', '#94a3b8'],
+            borderWidth: 2,
+            borderColor: '#1e293b'
+          }]
+        },
+        options: {
+          responsive: true,
+          maintainAspectRatio: false,
+          plugins: {
+            legend: {
+              position: 'right',
+              labels: { color: '#cbd5e1', boxWidth: 12, font: { size: 11 } }
+            },
+            tooltip: {
+              backgroundColor: '#0f172a',
+              titleColor: '#f8fafc',
+              bodyColor: '#e2e8f0',
+              borderColor: '#334155',
+              borderWidth: 1,
+              callbacks: {
+                label: (ctx) => ` $${ctx.parsed.toFixed(3)}M (${((ctx.parsed / 4.818) * 100).toFixed(1)}%)`
+              }
+            }
+          }
+        }
+      });
+
+      const ctxTransit = document.getElementById('transitChart').getContext('2d');
+      new Chart(ctxTransit, {
+        type: 'bar',
+        data: {
+          labels: ['NY State Transit Aid', 'Federal FTA Operating', 'Passenger Fares', 'Local Municipal Tax'],
+          datasets: [{
+            label: '2025 Operating Funding ($M)',
+            data: [3.190, 3.008, 1.636, 0.000],
+            backgroundColor: ['#14b8a6', '#3b82f6', '#f59e0b', '#475569'],
+            borderRadius: 6
+          }]
+        },
+        options: {
+          indexAxis: 'y',
+          responsive: true,
+          maintainAspectRatio: false,
+          plugins: {
+            legend: { display: false },
+            tooltip: {
+              backgroundColor: '#0f172a',
+              titleColor: '#f8fafc',
+              bodyColor: '#e2e8f0',
+              borderColor: '#334155',
+              borderWidth: 1,
+              callbacks: {
+                label: (ctx) => ` $${ctx.parsed.x.toFixed(3)}M (${((ctx.parsed.x / 7.833) * 100).toFixed(1)}% of $7.83M budget)`
+              }
+            }
+          },
+          scales: {
+            x: {
+              beginAtZero: true,
+              max: 3.6,
+              grid: { color: '#334155' },
+              ticks: { color: '#94a3b8' },
+              title: { display: true, text: 'USD ($ Millions)', color: '#94a3b8', font: { size: 11 } }
+            },
+            y: {
+              grid: { display: false },
+              ticks: { color: '#cbd5e1', font: { size: 11 } }
+            }
+          }
+        }
+      });
+
+      const ctxEdu = document.getElementById('educationChart').getContext('2d');
+      new Chart(ctxEdu, {
+        type: 'bar',
+        data: {
+          labels: [
+            wrapLabel('KJUFSD Title I (2008)'),
+            wrapLabel('KJUFSD Race to Top (2010)'),
+            wrapLabel('KJUFSD Title Funds (~2015/yr)'),
+            wrapLabel('KJUFSD ESSER I (2020)'),
+            wrapLabel('KJM-LDC Grants (FY15 Form 990)'),
+            wrapLabel('KJM-LDC Grants (FY25 Form 990)')
+          ],
+          datasets: [{
+            label: 'Documented Amount ($M)',
+            data: [5.30, 1.60, 7.00, 7.59, 3.60, 6.60],
+            backgroundColor: ['#8b5cf6', '#a78bfa', '#8b5cf6', '#7c3aed', '#d97706', '#f59e0b'],
+            borderRadius: 5
+          }]
+        },
+        options: {
+          responsive: true,
+          maintainAspectRatio: false,
+          plugins: {
+            legend: { display: false },
+            tooltip: {
+              backgroundColor: '#0f172a',
+              titleColor: '#f8fafc',
+              bodyColor: '#e2e8f0',
+              borderColor: '#334155',
+              borderWidth: 1,
+              callbacks: {
+                label: (ctx) => ` $${ctx.parsed.y.toFixed(2)}M`
+              }
+            }
+          },
+          scales: {
+            y: {
+              beginAtZero: true,
+              grid: { color: '#334155' },
+              ticks: { color: '#94a3b8' },
+              title: { display: true, text: 'USD ($ Millions)', color: '#94a3b8', font: { size: 11 } }
+            },
+            x: {
+              grid: { display: false },
+              ticks: { color: '#cbd5e1', font: { size: 10 } }
+            }
+          }
+        }
+      });
+    }
+
+    function updateBenchmarkChart() {
+      const includeDebt = document.getElementById('toggle-srf-debt').checked;
+      const labels = [
+        wrapLabel('FY26 FTA Capital (2 Grants)'),
+        wrapLabel('KJUFSD ESSER I (2020)'),
+        wrapLabel('KJUFSD Title Funds (~2015/yr)'),
+        wrapLabel('FY23–26 EPA Water Earmarks'),
+        wrapLabel('FY24 Municipal Single Audit'),
+        wrapLabel('FY23 Municipal Single Audit'),
+        wrapLabel('2025 FTA Transit Operating')
+      ];
+      const values = [10.88, 7.59, 7.00, 5.50, 4.82, 3.40, 3.01];
+      const colors = ['#3b82f6', '#8b5cf6', '#a78bfa', '#38bdf8', '#10b981', '#34d399', '#14b8a6'];
+
+      if (includeDebt) {
+        labels.unshift(wrapLabel('2021 Clean Water SRF Loan (DEBT)'));
+        values.unshift(57.15);
+        colors.unshift('#ef4444');
+      }
+
+      if (benchmarkChartInstance) {
+        benchmarkChartInstance.destroy();
+      }
+
+      const ctx = document.getElementById('benchmarkChart').getContext('2d');
+      benchmarkChartInstance = new Chart(ctx, {
+        type: 'bar',
+        data: {
+          labels: labels,
+          datasets: [{
+            label: 'Verified Amount ($M)',
+            data: values,
+            backgroundColor: colors,
+            borderRadius: 5
+          }]
+        },
+        options: {
+          indexAxis: 'y',
+          responsive: true,
+          maintainAspectRatio: false,
+          plugins: {
+            legend: { display: false },
+            tooltip: {
+              backgroundColor: '#0f172a',
+              titleColor: '#f8fafc',
+              bodyColor: '#e2e8f0',
+              borderColor: '#334155',
+              borderWidth: 1,
+              callbacks: {
+                label: (ctx) => ` $${ctx.parsed.x.toFixed(2)}M`
+              }
+            }
+          },
+          scales: {
+            x: {
+              beginAtZero: true,
+              grid: { color: '#334155' },
+              ticks: { color: '#94a3b8' },
+              title: { display: true, text: 'USD ($ Millions)', color: '#94a3b8', font: { size: 11 } }
+            },
+            y: {
+              grid: { display: false },
+              ticks: { color: '#cbd5e1', font: { size: 10 } }
+            }
+          }
+        }
+      });
+    }
+
+    function renderLedger() {
+      const search = document.getElementById('filter-search').value.toLowerCase().trim();
+      const entityFilter = document.getElementById('filter-entity').value;
+      const mechFilter = document.getElementById('filter-mechanism').value;
+
+      const filtered = ledgerData.filter(item => {
+        const matchesEntity = entityFilter === 'ALL' || item.entityKey === entityFilter;
+        const matchesMech = mechFilter === 'ALL' || item.mechKey === mechFilter;
+        const matchesSearch = !search ||
+          item.year.toLowerCase().includes(search) ||
+          item.entity.toLowerCase().includes(search) ||
+          item.program.toLowerCase().includes(search) ||
+          item.amount.toLowerCase().includes(search) ||
+          item.mech.toLowerCase().includes(search);
+        return matchesEntity && matchesMech && matchesSearch;
+      });
+
+      document.getElementById('ledger-count').textContent = `Showing ${filtered.length} of ${ledgerData.length} verified records`;
+
+      const tbody = document.getElementById('ledger-tbody');
+      if (filtered.length === 0) {
+        tbody.innerHTML = `<tr><td colspan="5" class="px-4 py-8 text-center text-slate-400">No matching federal award records found. Try clearing your filters.</td></tr>`;
+        return;
+      }
+
+      tbody.innerHTML = filtered.map(row => {
+        let badgeStyle = 'bg-slate-800 text-slate-300';
+        if (row.mechKey === 'Grant') badgeStyle = 'bg-blue-950/80 text-blue-300 border border-blue-800/80';
+        if (row.mechKey === 'Earmark') badgeStyle = 'bg-amber-950/80 text-amber-300 border border-amber-800/80';
+        if (row.mechKey === 'Audit') badgeStyle = 'bg-emerald-950/80 text-emerald-300 border border-emerald-800/80';
+        if (row.mechKey === 'Debt') badgeStyle = 'bg-rose-950/80 text-rose-300 border border-rose-800/80';
+
+        return `
+          <tr class="hover:bg-slate-800/60 transition">
+            <td class="px-4 py-3 font-semibold text-slate-200 whitespace-nowrap">${row.year}</td>
+            <td class="px-4 py-3 text-slate-300 font-medium">${row.entity}</td>
+            <td class="px-4 py-3 text-slate-300">${row.program}</td>
+            <td class="px-4 py-3 font-bold text-white whitespace-nowrap">${row.amount}</td>
+            <td class="px-4 py-3"><span class="inline-block px-2 py-0.5 text-xs font-medium rounded ${badgeStyle}">${row.mech}</span></td>
+          </tr>
+        `;
+      }).join('');
+    }
+
+    function resetFilters() {
+      document.getElementById('filter-search').value = '';
+      document.getElementById('filter-entity').value = 'ALL';
+      document.getElementById('filter-mechanism').value = 'ALL';
+      renderLedger();
+    }
+
+    function renderDataGaps() {
+      const container = document.getElementById('gaps-accordion');
+      container.innerHTML = dataGaps.map((gap, idx) => `
+        <div class="border border-slate-700/80 rounded-lg bg-slate-800/60 overflow-hidden">
+          <button onclick="toggleGap(${idx})" class="w-full px-4 py-3 text-left flex items-center justify-between text-xs sm:text-sm font-bold text-slate-100 hover:bg-slate-800 transition">
+            <span>${gap.title}</span>
+            <span id="gap-icon-${idx}" class="text-blue-400 font-mono text-base">+</span>
+          </button>
+          <div id="gap-body-${idx}" class="hidden px-4 pb-3 pt-2 text-xs text-slate-300 leading-relaxed border-t border-slate-700/80 bg-slate-900/90">
+            ${gap.detail}
+          </div>
+        </div>
+      `).join('');
+    }
+
+    function toggleGap(idx) {
+      const body = document.getElementById(`gap-body-${idx}`);
+      const icon = document.getElementById(`gap-icon-${idx}`);
+      const isHidden = body.classList.contains('hidden');
+      if (isHidden) {
+        body.classList.remove('hidden');
+        icon.textContent = '−';
+      } else {
+        body.classList.add('hidden');
+        icon.textContent = '+';
+      }
+    }
+
+    window.addEventListener('DOMContentLoaded', () => {
+      renderEntityCards();
+      initCharts();
+      renderLedger();
+      renderDataGaps();
+    });
+  </script>
+</body>
+</html>
