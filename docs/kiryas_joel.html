@@ -31,14 +31,15 @@
 <body class="bg-slate-950 text-slate-200 font-sans antialiased selection:bg-blue-500/30 selection:text-blue-200">
 
   <!-- Chosen Palette: Deep Slate Dark Mode (#020617 / #0f172a) with Elevated Slate Cards (#1e293b / #1e293b80), Crisp Blue Accents (#3b82f6 / #60a5fa), and Muted Emerald/Amber/Purple Highlights -->
-  <!-- Application Structure Plan: Designed as an interactive analytical dashboard and ledger explorer divided into 4 thematic sections: (1) Executive Overview & The Reporting Gap (contrasting USAspending.gov direct obligations vs. actual audited/pass-through inflows and demographic drivers), (2) The Six-Channel Institutional Architecture (interactive entity cards revealing EINs, channels, and audit status), (3) Sectoral & Financial Deep-Dive (interactive Chart.js visualizations covering FY 2024 municipal audit breakdown, FY 2023–2026 water & transit obligations, transit operating funding mix, and education formula dynamics), and (4) Filterable Chronological Ledger & Data Gaps Explorer (allowing users to search/filter all verified 2001–2026 awards by entity, sector, or mechanism, paired with an interactive checklist of the 5 public-data disclosure boundaries). This non-linear, task-oriented architecture prioritizes clarity over the report's linear text so users immediately grasp WHY public portals undercount inflows before drilling into specific entities and dollar figures. -->
+  <!-- Application Structure Plan: Designed as an interactive analytical dashboard and ledger explorer divided into 4 thematic sections: (1) Executive Overview & The Reporting Gap (contrasting USAspending.gov direct obligations vs. actual audited/pass-through inflows, demographic growth, and Census ACS educational attainment), (2) The Six-Channel Institutional Architecture (interactive entity cards revealing EINs, channels, and audit status), (3) Sectoral & Financial Deep-Dive (interactive Chart.js visualizations covering FY 2024 municipal audit breakdown, FY 2023–2026 water & transit obligations, transit operating funding mix, education formula dynamics, and community educational attainment), and (4) Filterable Chronological Ledger & Data Gaps Explorer (allowing users to search/filter all verified 2001–2026 awards by entity, sector, or mechanism, paired with an interactive checklist of the 5 public-data disclosure boundaries). This non-linear, task-oriented architecture prioritizes clarity over the report's linear text so users immediately grasp WHY public portals undercount inflows and how community demographics/education shape federal formulas before drilling into specific entities and dollar figures. -->
   <!-- Visualization & Content Choices:
-       1. Reporting Gap & Demographic Growth KPI Cards + Interactive Toggle -> Goal: Inform -> Styled HTML/Tailwind cards with JS state toggle -> Clarifies the $0–$250K USAspending illusion vs. $4.8M FY24 Single Audit and $10.88M FY26 FTA obligations.
+       1. Reporting Gap, Demographic Growth & Educational Attainment KPI Cards + Interactive Toggle -> Goal: Inform -> Styled HTML/Tailwind cards with JS state toggle -> Clarifies the $0–$250K USAspending illusion vs. $4.8M FY24 Single Audit, $10.88M FY26 FTA obligations, and Census ACS adult education levels (~41.5% HS+, ~5.1% Bachelor's+).
        2. Six-Channel Institutional Matrix -> Goal: Organize -> Interactive Entity Selector Grid + Detail Panel (HTML/Tailwind + JS) -> Replaces dense multi-page prose with clickable inspection of all 6 legal entities (Village/Town of Palm Tree, KJUFSD, KJHA, KJM-LDC, Aizer Health, Private Yeshivas).
        3. FY 2024 Audited Municipal Outlays ($4.818M) -> Goal: Compare/Inform -> Doughnut Chart (Chart.js Canvas) -> Shows exact SEFA distribution (HOME $2.1M, FTA $1.8M, FEMA $595K, SS4A $191K, Highway $132K).
        4. Major Verified Obligations & Benchmarks by Sector -> Goal: Compare -> Interactive Grouped/Filtered Horizontal Bar Chart (Chart.js Canvas) -> Compares verified non-debt grants across Transit, Education/COVID, Water Earmarks, and Municipal Audits, separating the $57.15M Clean Water SRF loan via toggle so debt is never conflated with grants.
-       5. 2025 Transit Operating Budget Mix ($7.83M) -> Goal: Inform -> Horizontal Stacked/Doughnut Breakdown (Chart.js Canvas) -> Highlights $3.01M (38.4%) federal aid and $0 local municipal operating tax subsidy across 1.40M rides.
-       6. Chronological Award Ledger (2001–2026) -> Goal: Organize/Search -> Searchable & Filterable HTML Table (JS) -> Enables instant filtering of all 33 documented entries by entity, mechanism (Grant vs. Audit vs. Debt vs. Pending), and keyword.
+       5. 2025 Transit Operating Budget Mix ($7.83M) -> Goal: Inform -> Horizontal Bar Breakdown (Chart.js Canvas) -> Highlights $3.01M (38.4%) federal aid and $0 local municipal operating tax subsidy across 1.40M rides.
+       6. Education & Early Childhood Trajectory + Community Educational Attainment (Age 25+) -> Goal: Inform/Compare -> Bar Charts (Chart.js Canvas) -> Connects KJUFSD/KJM-LDC federal formula funding with U.S. Census ACS adult educational attainment and >98% private yeshiva K–12 enrollment.
+       7. Chronological Award Ledger (2001–2026) -> Goal: Organize/Search -> Searchable & Filterable HTML Table (JS) -> Enables instant filtering of all 36 documented entries by entity, mechanism (Grant vs. Audit vs. Debt vs. Pending), and keyword.
        NO SVG graphics used. NO Mermaid JS used. -->
   <!-- CONFIRMATION: NO SVG graphics used. NO Mermaid JS used. -->
 
@@ -53,7 +54,7 @@
           <h1 class="text-xl sm:text-2xl font-bold text-slate-100 mt-1">Federal Grants & Awards to Kiryas Joel, New York</h1>
         </div>
         <nav class="flex flex-wrap gap-1 sm:gap-4 text-sm border-t md:border-t-0 pt-2 md:pt-0 border-slate-800">
-          <a href="#overview" class="px-2 py-1.5 text-slate-300 hover:text-blue-400 font-medium transition">Overview & Gap</a>
+          <a href="#overview" class="px-2 py-1.5 text-slate-300 hover:text-blue-400 font-medium transition">Overview & Education</a>
           <a href="#entities" class="px-2 py-1.5 text-slate-300 hover:text-blue-400 font-medium transition">6 Recipient Entities</a>
           <a href="#visuals" class="px-2 py-1.5 text-slate-300 hover:text-blue-400 font-medium transition">Sector Analytics</a>
           <a href="#ledger" class="px-2 py-1.5 text-slate-300 hover:text-blue-400 font-medium transition">2001–2026 Ledger</a>
@@ -97,7 +98,39 @@
           </div>
         </div>
 
-        <div class="mt-6 bg-blue-950/40 border border-blue-900/60 rounded-lg p-4 sm:p-5">
+        <div class="mt-5 bg-slate-800/50 border border-slate-700/80 rounded-lg p-4 sm:p-5">
+          <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-2 border-b border-slate-700/80 pb-3">
+            <div>
+              <h3 class="text-sm font-bold text-slate-100">Community Education Level & School Enrollment Profile (U.S. Census ACS)</h3>
+              <p class="text-xs text-slate-400 mt-0.5">Educational attainment for Kiryas Joel adults (age 25+) and K–12 enrollment structure shaping federal education & social-service grants.</p>
+            </div>
+            <span class="text-xs font-semibold px-2.5 py-1 rounded bg-purple-950 text-purple-300 border border-purple-800 self-start">Census ACS 5-Yr Estimates</span>
+          </div>
+          <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 mt-3.5 text-xs">
+            <div class="bg-slate-900/80 p-3.5 rounded-lg border border-slate-800">
+              <div class="text-slate-400 font-semibold uppercase tracking-wider">High School Grad or Higher</div>
+              <div class="text-xl font-bold text-purple-400 mt-1">~41.5%</div>
+              <p class="text-slate-300 mt-1 leading-relaxed">Adults age 25+ holding a secular high school diploma or GED (~26.8% HS/GED only; ~58.5% without secular diploma due to Talmudic yeshiva track).</p>
+            </div>
+            <div class="bg-slate-900/80 p-3.5 rounded-lg border border-slate-800">
+              <div class="text-slate-400 font-semibold uppercase tracking-wider">Bachelor's Degree or Higher</div>
+              <div class="text-xl font-bold text-purple-400 mt-1">~5.1%</div>
+              <p class="text-slate-300 mt-1 leading-relaxed">~2.9% hold a Bachelor's degree and ~2.2% hold a Graduate or Professional degree; ~9.6% completed some college or an Associate's degree.</p>
+            </div>
+            <div class="bg-slate-900/80 p-3.5 rounded-lg border border-slate-800">
+              <div class="text-slate-400 font-semibold uppercase tracking-wider">K–12 Private Yeshiva Share</div>
+              <div class="text-xl font-bold text-blue-400 mt-1">&gt;98%</div>
+              <p class="text-slate-300 mt-1 leading-relaxed">Nearly all K–12 youth attend private religious academies (UTA / Bais Yaakov), saving NY State $100M–$150M/yr in public school operating aid.</p>
+            </div>
+            <div class="bg-slate-900/80 p-3.5 rounded-lg border border-slate-800">
+              <div class="text-slate-400 font-semibold uppercase tracking-wider">Public District (KJUFSD)</div>
+              <div class="text-xl font-bold text-emerald-400 mt-1">123–217</div>
+              <p class="text-slate-300 mt-1 leading-relaxed">Public enrollment consists exclusively of students with disabilities (IEPs), yet federal Title I & ESSER count all low-income village youth.</p>
+            </div>
+          </div>
+        </div>
+
+        <div class="mt-5 bg-blue-950/40 border border-blue-900/60 rounded-lg p-4 sm:p-5">
           <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-3">
             <div>
               <h3 class="text-sm font-bold text-blue-200">Interactive Lens: Compare Reporting Perspectives</h3>
@@ -147,9 +180,9 @@
       <div class="bg-slate-900 rounded-xl border border-slate-800 p-6 sm:p-8 shadow-lg">
         <div class="flex flex-col md:flex-row md:items-end justify-between gap-4 border-b border-slate-800 pb-5">
           <div class="max-w-3xl">
-            <h2 class="text-lg sm:text-xl font-bold text-slate-100">Sectoral Breakdown & Financial Analytics</h2>
+            <h2 class="text-lg sm:text-xl font-bold text-slate-100">Sectoral Breakdown, Financial & Educational Analytics</h2>
             <p class="mt-2 text-sm text-slate-300 leading-relaxed">
-              Explore how verified federal funds are distributed across municipal programs, transit operations, water infrastructure, and education. Use the chart controls to inspect audited municipal outlays or compare multi-year commitments while keeping subsidized loans strictly separate from grants.
+              Explore how verified federal funds are distributed across municipal programs, transit operations, water infrastructure, and education, alongside Kiryas Joel's Census ACS adult educational attainment distribution. Use the toggle to inspect subsidized SRF water loan debt separately from grants.
             </p>
           </div>
           <div class="flex items-center gap-2 bg-slate-800 p-2 rounded-lg border border-slate-700 self-start">
@@ -228,6 +261,24 @@
             </div>
             <div class="text-xs text-slate-400 border-t border-slate-700/80 pt-2.5">
               Note: KJUFSD serves ~123–217 public special-ed students while capturing Title I/ESSER formulas across all village youth in poverty.
+            </div>
+          </div>
+
+          <div class="lg:col-span-2 bg-slate-800/60 border border-slate-700/80 rounded-xl p-5 flex flex-col justify-between">
+            <div>
+              <div class="flex items-center justify-between gap-2">
+                <h3 class="text-base font-bold text-slate-100">Educational Attainment in Kiryas Joel (Population Age 25+)</h3>
+                <span class="text-xs font-medium px-2 py-0.5 rounded bg-purple-950 text-purple-300 border border-purple-800">U.S. Census ACS 5-Yr</span>
+              </div>
+              <p class="text-xs text-slate-400 mt-1">
+                Secular educational attainment among adults 25 and older in Kiryas Joel: ~41.5% hold a high school diploma/GED or higher and ~5.1% hold a Bachelor's degree or higher, reflecting post-elementary Talmudic yeshiva study among men and vocational/seminary tracks among women.
+              </p>
+            </div>
+            <div class="chart-container my-4">
+              <canvas id="attainmentChart"></canvas>
+            </div>
+            <div class="text-xs text-slate-400 border-t border-slate-700/80 pt-2.5">
+              Source: U.S. Census Bureau American Community Survey (ACS) 5-Year Estimates for Kiryas Joel Village, NY (Table S1501).
             </div>
           </div>
         </div>
@@ -344,7 +395,7 @@
 
   <footer class="bg-slate-900 border-t border-slate-800 mt-12 py-6">
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex flex-col sm:flex-row items-center justify-between gap-3 text-xs text-slate-400">
-      <div>Compiled from FAC.gov Single Audits, FTA NTD & Grant Awards, EPA STAG, HUD Federal Register, NYSED/CGR, and IRS Form 990 records (2001–Nov 2026).</div>
+      <div>Compiled from FAC.gov Single Audits, FTA NTD & Grant Awards, EPA STAG, HUD Federal Register, NYSED/CGR, U.S. Census ACS, and IRS Form 990 records (2001–Nov 2026).</div>
       <div class="font-medium text-slate-300">Kiryas Joel / Town of Palm Tree, Orange County, NY</div>
     </div>
   </footer>
@@ -371,7 +422,7 @@
         headline: '$5.3M Title I (2008) → ~$7M/yr Title Funds (2015) + $7.59M ESSER I (2020)',
         channels: 'NYSED-passed U.S. Dept. of Education Title I Part A, IDEA Part B, ARRA stimulus, Race to the Top ($1.6M in 2010 — highest per-public-pupil in NY at ~$13,008), and CARES Act ESSER I ($7,585,982), plus direct FCC E-Rate discounts.',
         oversight: '2009 ED-OIG ARRA Audit (ED-OIG/A02J0009) flagged internal-control gaps in ARRA § 1512 reporting and software manuals; 2009 NYS audit cited board lease conflicts.',
-        caveat: 'Public enrollment consists exclusively of 123–217 students with disabilities, yet Title I/ESSER formulas count all village children in poverty regardless of private yeshiva attendance. Full 25-year Title I/IDEA/ESSER II–III series requires NYSED ST-3 reports.'
+        caveat: 'Public enrollment consists exclusively of 123–217 students with disabilities, while >98% of K–12 youth attend private yeshivas (Census ACS adult attainment: ~41.5% HS+, ~5.1% Bachelor\'s+). Federal Title I/ESSER formulas count all village children in poverty.'
       },
       {
         id: 'housing',
@@ -502,7 +553,7 @@
         btnPortal.className = 'px-3 py-1.5 text-xs font-semibold rounded-md text-slate-300 hover:bg-slate-800 transition';
         p1.innerHTML = '<strong class="text-white">Verified Reality:</strong> Municipal Single Audits confirm <strong class="text-blue-300">$3.40M (FY23)</strong> and <strong class="text-blue-300">$4.82M (FY24)</strong> in federal expenditures, alongside <strong class="text-blue-300">$10.88M</strong> in FY26 FTA capital obligations and <strong class="text-blue-300">$5.50M</strong> in FY23–FY26 EPA water earmarks.';
         p2.innerHTML = '<strong class="text-white">Community-Wide Scale:</strong> Adding KJUFSD (~$7M/yr Title I; $7.59M ESSER I), KJHA (~400–481 Section 8 vouchers), KJM-LDC (Head Start/CACFP), Aizer Health (FQHC), and 20 yeshiva Single Audits pushes community inflows into tens of millions.';
-        p3.innerHTML = '<strong class="text-white">State Fiscal Offset:</strong> According to the 2015 CGR study, private yeshiva enrollment saves NY State <strong class="text-emerald-300">$100M–$150M annually</strong> in public school aid while increasing federal Title I equity allocations.';
+        p3.innerHTML = '<strong class="text-white">State Fiscal Offset:</strong> According to the 2015 CGR study, >98% private yeshiva enrollment saves NY State <strong class="text-emerald-300">$100M–$150M annually</strong> in public school aid while increasing federal Title I equity allocations.';
       }
     }
 
@@ -710,6 +761,58 @@
             x: {
               grid: { display: false },
               ticks: { color: '#cbd5e1', font: { size: 10 } }
+            }
+          }
+        }
+      });
+
+      const ctxAttainment = document.getElementById('attainmentChart').getContext('2d');
+      new Chart(ctxAttainment, {
+        type: 'bar',
+        data: {
+          labels: [
+            'Less than 9th Grade',
+            '9th–12th Grade (No Diploma)',
+            'High School Grad / GED',
+            'Some College / Associate\'s',
+            'Bachelor\'s Degree',
+            'Graduate / Professional'
+          ],
+          datasets: [{
+            label: 'Share of Population Age 25+ (%)',
+            data: [37.2, 21.3, 26.8, 9.6, 2.9, 2.2],
+            backgroundColor: ['#475569', '#64748b', '#8b5cf6', '#a78bfa', '#3b82f6', '#10b981'],
+            borderRadius: 6
+          }]
+        },
+        options: {
+          indexAxis: 'y',
+          responsive: true,
+          maintainAspectRatio: false,
+          plugins: {
+            legend: { display: false },
+            tooltip: {
+              backgroundColor: '#0f172a',
+              titleColor: '#f8fafc',
+              bodyColor: '#e2e8f0',
+              borderColor: '#334155',
+              borderWidth: 1,
+              callbacks: {
+                label: (ctx) => ` ${ctx.parsed.x.toFixed(1)}% of adults age 25+`
+              }
+            }
+          },
+          scales: {
+            x: {
+              beginAtZero: true,
+              max: 45,
+              grid: { color: '#334155' },
+              ticks: { color: '#94a3b8', callback: (val) => `${val}%` },
+              title: { display: true, text: 'Percentage of Adults Age 25+ (%)', color: '#94a3b8', font: { size: 11 } }
+            },
+            y: {
+              grid: { display: false },
+              ticks: { color: '#cbd5e1', font: { size: 11 } }
             }
           }
         }
