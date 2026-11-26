@@ -48,7 +48,13 @@ def first_item(category: str, label: str, category_type: str, query: str) -> dic
     if item is None:
         raise RuntimeError(f"No Google News RSS items for {category}")
     raw_title = (item.findtext("title") or "").strip()
+    feed_source = (item.findtext("source") or "").strip()
     source_name, headline = source_and_title(raw_title)
+    if feed_source:
+        source_name = feed_source
+        suffix = f" - {feed_source}"
+        if raw_title.endswith(suffix):
+            headline = raw_title[: -len(suffix)]
     source_url = (item.findtext("link") or rss_url).strip()
     published = parsedate_to_datetime(item.findtext("pubDate") or "").astimezone(UTC)
     return {
