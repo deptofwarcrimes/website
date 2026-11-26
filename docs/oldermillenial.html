@@ -1,0 +1,820 @@
+<!DOCTYPE html>
+<html lang="en" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Consolidated Media Architecture & Cross-Platform Creator Audit (2024–2026)</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;600&family=Space+Grotesk:wght@500;600;700&display=swap" rel="stylesheet">
+    <style>
+        body {
+            background-color: #0b0f17;
+            color: #e2e8f0;
+            font-family: 'Inter', system-ui, -apple-system, sans-serif;
+        }
+        h1, h2, h3, h4, .font-heading {
+            font-family: 'Space Grotesk', sans-serif;
+        }
+        .font-mono-code {
+            font-family: 'JetBrains Mono', monospace;
+        }
+        .chart-container {
+            position: relative;
+            width: 100%;
+            height: 300px;
+            max-height: 360px;
+        }
+        .network-canvas-wrap {
+            position: relative;
+            width: 100%;
+            height: 400px;
+        }
+        .badge-tag {
+            font-size: 10px;
+            letter-spacing: 0.05em;
+            text-transform: uppercase;
+            padding: 3px 8px;
+            border-radius: 2px;
+            font-weight: 600;
+            white-space: nowrap;
+        }
+        .badge-autonomous { background-color: #211910; color: #d4a359; border: 1px solid #4a341b; }
+        .badge-enterprise { background-color: #111827; color: #9ca3af; border: 1px solid #374151; }
+        .badge-aggregator { background-color: #0d2019; color: #6ee7b7; border: 1px solid #134e3a; }
+        .badge-hybrid { background-color: #23111b; color: #f472b6; border: 1px solid #501b38; }
+        .badge-dual { background-color: #1c152b; color: #c084fc; border: 1px solid #402868; }
+        .badge-core { background-color: #0c2338; color: #38bdf8; border: 1px solid #1e4b75; }
+        .badge-variant { background-color: #261b0b; color: #fbbf24; border: 1px solid #5c3f12; }
+        .badge-outlier { background-color: #2b1118; color: #fb7185; border: 1px solid #632233; }
+    </style>
+</head>
+<body class="min-h-screen flex flex-col bg-[#0b0f17] text-slate-200 antialiased selection:bg-[#d4a359] selection:text-slate-950">
+
+    <!-- Top Header -->
+    <header class="bg-[#111622] text-slate-100 border-b border-slate-800/80 sticky top-0 z-40">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-4">
+            <div class="flex flex-col md:flex-row md:items-center md:justify-between gap-3">
+                <div>
+                    <div class="flex items-center gap-2.5 text-xs font-mono-code">
+                        <span class="uppercase tracking-widest text-[#d4a359]">Consolidated OSINT Registry</span>
+                        <span class="text-slate-600">|</span>
+                        <span class="text-slate-400">2024 – Nov 2026</span>
+                    </div>
+                    <h1 class="text-xl sm:text-2xl font-bold tracking-tight text-slate-100 mt-1">
+                        Digital Domain Architecture &amp; Cross-Platform Creator Audit
+                    </h1>
+                </div>
+                <div class="flex flex-wrap items-center gap-2 text-xs font-mono-code">
+                    <span class="bg-[#0b0f17] px-3 py-1.5 rounded-sm border border-slate-800 text-slate-300 flex items-center gap-2">
+                        <span class="w-2 h-2 bg-[#d4a359]"></span>
+                        19 TOTAL RECORDS (13 DOMAINS + 6 TIKTOK)
+                    </span>
+                </div>
+            </div>
+            <!-- Quick Section Nav -->
+            <nav class="flex items-center gap-2 overflow-x-auto pt-3 mt-3 border-t border-slate-800/70 text-xs font-mono-code">
+                <a href="#summary" class="px-2.5 py-1 rounded-sm bg-[#0b0f17] border border-slate-800 hover:border-[#d4a359] text-slate-300 whitespace-nowrap transition">01. Summary &amp; Linkages</a>
+                <a href="#domains" class="px-2.5 py-1 rounded-sm bg-[#0b0f17] border border-slate-800 hover:border-[#d4a359] text-slate-300 whitespace-nowrap transition">02. Domain Directory (13)</a>
+                <a href="#tiktok-audit" class="px-2.5 py-1 rounded-sm bg-[#0b0f17] border border-slate-800 hover:border-[#d4a359] text-slate-300 whitespace-nowrap transition">03. TikTok Audit (6)</a>
+                <a href="#network" class="px-2.5 py-1 rounded-sm bg-[#0b0f17] border border-slate-800 hover:border-[#d4a359] text-slate-300 whitespace-nowrap transition">04. Bridges &amp; Themes</a>
+                <a href="#chronology" class="px-2.5 py-1 rounded-sm bg-[#0b0f17] border border-slate-800 hover:border-[#d4a359] text-slate-300 whitespace-nowrap transition">05. Timeline &amp; Caveats</a>
+            </nav>
+        </div>
+    </header>
+
+    <main class="flex-grow max-w-7xl w-full mx-auto px-4 sm:px-6 lg:px-8 py-8 space-y-12">
+
+        <!-- SECTION 1: Executive Summary & Cross-Dataset Linkages -->
+        <section id="summary" class="scroll-mt-32 space-y-6">
+            <div class="bg-[#111622] rounded-md p-6 border border-slate-800/80">
+                <div class="max-w-4xl">
+                    <span class="text-xs font-mono-code uppercase tracking-wider text-[#d4a359]">Section 01 &bull; Executive Consolidation</span>
+                    <h2 class="text-xl font-bold text-slate-100 mt-1 mb-2 font-heading">Unified Media &amp; Creator Ecosystem Overview</h2>
+                    <p class="text-slate-300 text-sm leading-relaxed mb-6">
+                        This consolidated registry merges two datasets mapping <strong>19 total digital records</strong> across the conservative and "America First" media landscape: <strong>13 established public figure web domains</strong> (sovereign portals, enterprise networks, newsletters, and dual profiles) and <strong>6 queried TikTok handles</strong> audited across X, YouTube, Rumble, Twitch, legal dockets, and real-world events (2024–November 2026).
+                    </p>
+                </div>
+
+                <!-- KPI Grid -->
+                <div class="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-6 gap-3 mb-6">
+                    <div class="bg-[#0b0f17] border border-slate-800 p-3.5 rounded-sm">
+                        <span class="block text-2xl font-bold font-heading text-[#d4a359]">19</span>
+                        <span class="text-[11px] uppercase tracking-wider text-slate-400">Total Indexed</span>
+                    </div>
+                    <div class="bg-[#0b0f17] border border-slate-800 p-3.5 rounded-sm">
+                        <span class="block text-2xl font-bold font-heading text-slate-100">13</span>
+                        <span class="text-[11px] uppercase tracking-wider text-slate-400">Domain Figures</span>
+                    </div>
+                    <div class="bg-[#0b0f17] border border-slate-800 p-3.5 rounded-sm">
+                        <span class="block text-2xl font-bold font-heading text-sky-400">4</span>
+                        <span class="text-[11px] uppercase tracking-wider text-slate-400">TikTok Core</span>
+                    </div>
+                    <div class="bg-[#0b0f17] border border-slate-800 p-3.5 rounded-sm">
+                        <span class="block text-2xl font-bold font-heading text-amber-400">1</span>
+                        <span class="text-[11px] uppercase tracking-wider text-slate-400">Handle Variant</span>
+                    </div>
+                    <div class="bg-[#0b0f17] border border-slate-800 p-3.5 rounded-sm">
+                        <span class="block text-2xl font-bold font-heading text-rose-400">1</span>
+                        <span class="text-[11px] uppercase tracking-wider text-slate-400">Unlinked Outlier</span>
+                    </div>
+                    <div class="bg-[#0b0f17] border border-slate-800 p-3.5 rounded-sm">
+                        <span class="block text-2xl font-bold font-heading text-emerald-400">~100&times;</span>
+                        <span class="text-[11px] uppercase tracking-wider text-slate-400">TikTok Scale Spread</span>
+                    </div>
+                </div>
+
+                <!-- Cross-Dataset Bridges -->
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-4 text-xs">
+                    <div class="bg-[#0b0f17] border-l-2 border-[#d4a359] border-y border-r border-slate-800 p-4 rounded-sm">
+                        <div class="font-mono-code text-[11px] uppercase text-[#d4a359] mb-1">Direct Personnel Bridge</div>
+                        <h3 class="font-bold text-slate-100 text-sm mb-1">Cam Higby</h3>
+                        <p class="text-slate-400 leading-relaxed">
+                            Indexed in the domain directory (<span class="font-mono-code text-slate-200">camhigbyusa.com</span> / Fearless Media) and in the TikTok audit as a mutual X connection of <strong>Unreelness</strong> and <strong>Meghan Elinor</strong>, and co-organizer of the Nov 1, 2026 U-M Reawaken USA table alongside <strong>Joe Redden</strong>.
+                        </p>
+                    </div>
+                    <div class="bg-[#0b0f17] border-l-2 border-sky-400 border-y border-r border-slate-800 p-4 rounded-sm">
+                        <div class="font-mono-code text-[11px] uppercase text-sky-400 mb-1">Shared Ideological Anchor</div>
+                        <h3 class="font-bold text-slate-100 text-sm mb-1">Charlie Kirk</h3>
+                        <p class="text-slate-400 leading-relaxed">
+                            Cataloged as a sovereign hub (<span class="font-mono-code text-slate-200">charliekirk.com</span> / TPUSA) in the domain registry; post-assassination solidarity acts as a unifying theme across <strong>MillieShushies</strong>, <strong>Unreelness</strong>, and <strong>Joe Redden</strong>.
+                        </p>
+                    </div>
+                    <div class="bg-[#0b0f17] border-l-2 border-emerald-400 border-y border-r border-slate-800 p-4 rounded-sm">
+                        <div class="font-mono-code text-[11px] uppercase text-emerald-400 mb-1">Common Infrastructure</div>
+                        <h3 class="font-bold text-slate-100 text-sm mb-1">Ban-Resilient Routing</h3>
+                        <p class="text-slate-400 leading-relaxed">
+                            Both tiers hedge against moderation and algorithmic throttling via sovereign domains, Substack/Linktree/Beacons hubs, Rumble/X diversification, backup handles, and direct subscriber or P2P (Venmo/Cash App/PayPal) rails.
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- SECTION 2: Established Public Figure Domain Directory (13 Records) -->
+        <section id="domains" class="scroll-mt-32 space-y-5">
+            <div class="border-b border-slate-800 pb-3 flex flex-col sm:flex-row sm:items-end justify-between gap-2">
+                <div>
+                    <span class="text-xs font-mono-code uppercase tracking-wider text-[#d4a359]">Section 02 &bull; Established Web Architecture</span>
+                    <h2 class="text-xl font-bold text-slate-100 font-heading mt-0.5">Public Figure Domain Directory (13 Records)</h2>
+                </div>
+                <p class="text-slate-400 text-xs">Click any card to inspect full architectural notes and monetization details.</p>
+            </div>
+
+            <!-- Search & Filters -->
+            <div class="flex flex-col md:flex-row gap-3 justify-between items-stretch md:items-center bg-[#111622] p-3 rounded-md border border-slate-800">
+                <div class="relative flex-grow max-w-md">
+                    <input type="text" id="domain-search" placeholder="Search name, domain URL, or focus..." class="w-full pl-3 pr-8 py-2 text-xs bg-[#0b0f17] text-slate-100 placeholder-slate-500 border border-slate-700/80 rounded-sm focus:outline-none focus:border-[#d4a359] font-mono-code">
+                    <button id="clear-domain-search" class="absolute right-2.5 top-2 text-slate-400 hover:text-slate-200 hidden text-xs font-bold">&#10005;</button>
+                </div>
+                <div class="flex flex-wrap gap-1.5 text-xs" id="domain-filters">
+                    <button data-filter="all" class="domain-filter-btn px-3 py-1.5 rounded-sm font-medium bg-[#d4a359] text-slate-950 font-mono-code text-[11px] uppercase">All (13)</button>
+                    <button data-filter="Autonomous" class="domain-filter-btn px-3 py-1.5 rounded-sm font-medium bg-[#0b0f17] border border-slate-700 hover:border-slate-500 text-slate-300 font-mono-code text-[11px] uppercase">Autonomous (6)</button>
+                    <button data-filter="Enterprise" class="domain-filter-btn px-3 py-1.5 rounded-sm font-medium bg-[#0b0f17] border border-slate-700 hover:border-slate-500 text-slate-300 font-mono-code text-[11px] uppercase">Enterprise (3)</button>
+                    <button data-filter="Aggregator" class="domain-filter-btn px-3 py-1.5 rounded-sm font-medium bg-[#0b0f17] border border-slate-700 hover:border-slate-500 text-slate-300 font-mono-code text-[11px] uppercase">Aggregator (2)</button>
+                    <button data-filter="Specialized" class="domain-filter-btn px-3 py-1.5 rounded-sm font-medium bg-[#0b0f17] border border-slate-700 hover:border-slate-500 text-slate-300 font-mono-code text-[11px] uppercase">Specialized (2)</button>
+                </div>
+            </div>
+
+            <!-- Cards Grid -->
+            <div id="domain-grid" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4"></div>
+            <div id="domain-empty" class="hidden text-center py-10 bg-[#111622] rounded-md border border-slate-800 text-xs font-mono-code text-slate-400">
+                NO MATCHING DOMAIN RECORDS FOUND.
+            </div>
+        </section>
+
+        <!-- SECTION 3: Cross-Platform TikTok Creator Audit (6 Handles) -->
+        <section id="tiktok-audit" class="scroll-mt-32 space-y-6">
+            <div class="border-b border-slate-800 pb-3">
+                <span class="text-xs font-mono-code uppercase tracking-wider text-sky-400">Section 03 &bull; Investigative OSINT Audit</span>
+                <h2 class="text-xl font-bold text-slate-100 font-heading mt-0.5">Cross-Platform TikTok Creator Audit (6 Queried Handles)</h2>
+                <p class="text-slate-400 text-xs mt-1">Four handles resolve into a verified pro-Trump commentary cohort; one aligns with a probable spelling variant (<span class="font-mono-code text-amber-300">texusoftrump</span> &rarr; <span class="font-mono-code text-slate-200">texasfortrump</span>); one (<span class="font-mono-code text-rose-300">penny lanee</span>) is an unlinked name-collision outlier.</p>
+            </div>
+
+            <!-- Roster Table -->
+            <div class="bg-[#111622] rounded-md border border-slate-800 overflow-x-auto">
+                <table class="w-full text-left text-xs border-collapse">
+                    <thead>
+                        <tr class="bg-[#0b0f17] border-b border-slate-800 text-slate-400 font-mono-code text-[11px] uppercase tracking-wider">
+                            <th class="py-3 px-4">Queried Handle</th>
+                            <th class="py-3 px-4">Resolved Identity &amp; Backups</th>
+                            <th class="py-3 px-4">Tracked Reach</th>
+                            <th class="py-3 px-4">External Hubs &amp; Monetization</th>
+                            <th class="py-3 px-4">Status</th>
+                        </tr>
+                    </thead>
+                    <tbody id="tiktok-roster-body" class="divide-y divide-slate-800/80 text-slate-300"></tbody>
+                </table>
+            </div>
+
+            <!-- Tabbed Creator Dossiers -->
+            <div class="bg-[#111622] rounded-md border border-slate-800 overflow-hidden">
+                <div class="flex overflow-x-auto border-b border-slate-800 bg-[#0b0f17] px-2 pt-2 gap-1 font-mono-code text-xs" id="dossier-tabs">
+                    <button data-tab="redden" class="dossier-tab px-4 py-2.5 rounded-t-sm bg-[#111622] text-[#d4a359] border-t border-x border-slate-800 font-bold whitespace-nowrap">theoldermillenial</button>
+                    <button data-tab="jamminlu" class="dossier-tab px-4 py-2.5 rounded-t-sm text-slate-400 hover:text-slate-200 whitespace-nowrap">jamminlu</button>
+                    <button data-tab="unreelness" class="dossier-tab px-4 py-2.5 rounded-t-sm text-slate-400 hover:text-slate-200 whitespace-nowrap">unreelness</button>
+                    <button data-tab="millie" class="dossier-tab px-4 py-2.5 rounded-t-sm text-slate-400 hover:text-slate-200 whitespace-nowrap">milliexshushies</button>
+                    <button data-tab="texus" class="dossier-tab px-4 py-2.5 rounded-t-sm text-slate-400 hover:text-slate-200 whitespace-nowrap">texusoftrump (Variant)</button>
+                    <button data-tab="penny" class="dossier-tab px-4 py-2.5 rounded-t-sm text-slate-400 hover:text-slate-200 whitespace-nowrap">penny lanee (Outlier)</button>
+                </div>
+                <div id="dossier-panel" class="p-6"></div>
+            </div>
+
+            <!-- Analytics Charts: Audience Scale & Redden Audit -->
+            <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
+                <div class="bg-[#111622] p-5 rounded-md border border-slate-800">
+                    <h3 class="text-sm font-bold text-slate-100 font-heading">Verified Off-TikTok &amp; Snapshot Reach</h3>
+                    <p class="text-slate-400 text-xs mb-4">Independently indexed follower/subscriber counts across X, TikTok archives, and YouTube.</p>
+                    <div class="chart-container">
+                        <canvas id="audienceScaleChart"></canvas>
+                    </div>
+                </div>
+                <div class="bg-[#111622] p-5 rounded-md border border-slate-800">
+                    <h3 class="text-sm font-bold text-slate-100 font-heading">Joe Redden: Media Kit Claims vs. Tracked Audit</h3>
+                    <p class="text-slate-400 text-xs mb-4">Comparing 2026 self-reported marketing copy against third-party platform snapshots.</p>
+                    <div class="chart-container">
+                        <canvas id="reddenAuditChart"></canvas>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- SECTION 4: Network Bridges & Thematic Convergence -->
+        <section id="network" class="scroll-mt-32 space-y-6">
+            <div class="border-b border-slate-800 pb-3">
+                <span class="text-xs font-mono-code uppercase tracking-wider text-emerald-400">Section 04 &bull; Social Graph &amp; Narrative Sync</span>
+                <h2 class="text-xl font-bold text-slate-100 font-heading mt-0.5">Inter-Creator Bridges &amp; 2025–2026 Thematic Convergence</h2>
+            </div>
+
+            <div class="grid grid-cols-1 lg:grid-cols-12 gap-6">
+                <!-- Interactive Canvas Topology -->
+                <div class="lg:col-span-7 bg-[#111622] rounded-md border border-slate-800 p-5 flex flex-col justify-between">
+                    <div class="flex flex-wrap items-center justify-between gap-2 mb-3">
+                        <div>
+                            <h3 class="text-sm font-bold text-slate-100 font-heading">Interactive Ecosystem Bridge Topology</h3>
+                            <p class="text-xs text-slate-400">Click any node to inspect verified cross-creator links and intermediaries.</p>
+                        </div>
+                        <div class="flex flex-wrap gap-2 text-[10px] font-mono-code">
+                            <span class="text-sky-400">&#9679; TikTok Core</span>
+                            <span class="text-[#d4a359]">&#9679; Domain/Host Bridge</span>
+                            <span class="text-rose-400">&#9679; Debate Opponent</span>
+                            <span class="text-amber-400">&#9679; Variant/Outlier</span>
+                        </div>
+                    </div>
+                    <div class="network-canvas-wrap bg-[#0b0f17] rounded-sm border border-slate-800 overflow-hidden">
+                        <canvas id="topologyCanvas"></canvas>
+                    </div>
+                    <div id="node-inspector" class="mt-3 bg-[#0b0f17] border border-slate-800 rounded-sm p-3.5 text-xs text-slate-300">
+                        <div class="font-bold text-[#d4a359] font-heading text-sm">Joe Redden (@theoldermillennial) — Ecosystem Anchor</div>
+                        <p class="mt-1 leading-relaxed">Directly bridges to <strong>Unreelness</strong> via the Oct 2026 <em>Conservative Roundtable</em>, to <strong>Jamie Lujan</strong> via Oct 2026 <em>Paramount Tactical</em> guest appearances, and to domain figure <strong>Cam Higby</strong> at the Nov 1, 2026 U-M Reawaken USA table.</p>
+                    </div>
+                </div>
+
+                <!-- Thematic Stacked Bar + 5 Pillars -->
+                <div class="lg:col-span-5 bg-[#111622] rounded-md border border-slate-800 p-5 flex flex-col justify-between space-y-4">
+                    <div>
+                        <h3 class="text-sm font-bold text-slate-100 font-heading">5 Synchronized Content Pillars (2025–2026)</h3>
+                        <p class="text-xs text-slate-400 mb-3">Prominence across the 4 verified TikTok core creators (0 = minimal, 1 = periodic, 2 = core).</p>
+                        <div class="chart-container" style="height: 230px;">
+                            <canvas id="thematicChart"></canvas>
+                        </div>
+                    </div>
+                    <div class="space-y-2 text-xs">
+                        <div class="bg-[#0b0f17] border border-slate-800 p-2.5 rounded-sm">
+                            <strong class="text-rose-400">ICE &amp; Minneapolis (4/4):</strong> JamminLu (deportations), Redden (Renee Nicole Good), MillieShushies (Alex Pretti / Austin ICE), Unreelness (Aliya Rahman lawsuit / Twitchy).
+                        </div>
+                        <div class="bg-[#0b0f17] border border-slate-800 p-2.5 rounded-sm">
+                            <strong class="text-sky-400">2026 Senate Races (4/4):</strong> Coordinated fire on MI nominee Abdul El-Sayed &amp; TX nominee James Talarico; JamminLu TX GOP voter guides.
+                        </div>
+                        <div class="bg-[#0b0f17] border border-slate-800 p-2.5 rounded-sm">
+                            <strong class="text-[#d4a359]">Israel/Iran &amp; Culture Wars (3/4):</strong> Redden (CUFI, Israel/Poland, May 2025 Iran strikes), MillieShushies (Ilhan Omar, Mamdani), plus gender wars &amp; Charlie Kirk solidarity.
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- SECTION 5: Chronology & Evidentiary Guardrails -->
+        <section id="chronology" class="scroll-mt-32 space-y-6">
+            <div class="border-b border-slate-800 pb-3 flex flex-col sm:flex-row sm:items-end justify-between gap-3">
+                <div>
+                    <span class="text-xs font-mono-code uppercase tracking-wider text-rose-400">Section 05 &bull; Timeline &amp; Methodology</span>
+                    <h2 class="text-xl font-bold text-slate-100 font-heading mt-0.5">Documented Chronology (2024–Nov 2026) &amp; Guardrails</h2>
+                </div>
+                <div class="flex flex-wrap gap-1.5 font-mono-code text-[11px]" id="timeline-filters">
+                    <button data-tfilter="all" class="tfilter-btn px-2.5 py-1 rounded-sm bg-[#d4a359] text-slate-950 font-bold uppercase">All</button>
+                    <button data-tfilter="legal" class="tfilter-btn px-2.5 py-1 rounded-sm bg-[#111622] border border-slate-700 text-rose-300 uppercase">Legal</button>
+                    <button data-tfilter="events" class="tfilter-btn px-2.5 py-1 rounded-sm bg-[#111622] border border-slate-700 text-sky-300 uppercase">Events</button>
+                    <button data-tfilter="media" class="tfilter-btn px-2.5 py-1 rounded-sm bg-[#111622] border border-slate-700 text-emerald-300 uppercase">Media</button>
+                </div>
+            </div>
+
+            <div class="grid grid-cols-1 lg:grid-cols-12 gap-6">
+                <!-- Timeline -->
+                <div class="lg:col-span-7 bg-[#111622] rounded-md border border-slate-800 p-6">
+                    <div id="timeline-list" class="relative border-l border-slate-700 ml-2 space-y-5 pl-6"></div>
+                </div>
+
+                <!-- Evidentiary Guardrails -->
+                <div class="lg:col-span-5 space-y-4">
+                    <div class="bg-[#111622] rounded-md border border-slate-800 p-5">
+                        <span class="text-[11px] font-mono-code uppercase tracking-wider text-amber-400">Evidentiary Guardrails</span>
+                        <h3 class="text-base font-bold text-slate-100 font-heading mt-1 mb-4">Four Methodological Caveats</h3>
+                        <div class="space-y-3 text-xs">
+                            <div class="bg-[#0b0f17] border border-slate-800 p-3.5 rounded-sm">
+                                <h4 class="font-bold text-sky-400 mb-1">1. Ephemeral Live Indexing</h4>
+                                <p class="text-slate-400 leading-relaxed">Multi-guest TikTok Live debates leave minimal permanent web footprints unless re-uploaded to YouTube, X, or Reddit; low link density does not equate to low in-app activity.</p>
+                            </div>
+                            <div class="bg-[#0b0f17] border border-slate-800 p-3.5 rounded-sm">
+                                <h4 class="font-bold text-sky-400 mb-1">2. Handle Cycling &amp; Bans</h4>
+                                <p class="text-slate-400 leading-relaxed">Recurring ~90-day ban cycles fracture TikTok histories across sequential handles (<span class="font-mono-code text-slate-300">@thenewoldermillennial</span>, <span class="font-mono-code text-slate-300">@unreelnessthegreat</span>), making X and YouTube more reliable longitudinal benchmarks.</p>
+                            </div>
+                            <div class="bg-[#0b0f17] border border-slate-800 p-3.5 rounded-sm">
+                                <h4 class="font-bold text-amber-400 mb-1">3. Media-Kit vs. Audited Metrics</h4>
+                                <p class="text-slate-400 leading-relaxed">Redden's 1.0M TikTok claim stems from self-reported marketing copy (<span class="font-mono-code text-slate-300">oldermillennialmedia.com</span>) and pre-ban peaks, whereas tracked snapshots on <span class="font-mono-code text-slate-300">@thenewoldermillennial</span> show 291.6K alongside 310.1K X followers.</p>
+                            </div>
+                            <div class="bg-[#0b0f17] border border-slate-800 p-3.5 rounded-sm">
+                                <h4 class="font-bold text-amber-400 mb-1">4. Unverified Travel Financing</h4>
+                                <p class="text-slate-400 leading-relaxed">While Redden's 2026 trips to Israel, Poland, and Michigan and his CUFI/Reawaken USA partnerships are documented, no public financial filings confirm who funded the Poland delegation or Michigan stops.</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+    </main>
+
+    <!-- Domain Detail Modal -->
+    <div id="detail-modal" class="fixed inset-0 bg-[#070a0f]/85 backdrop-blur-xs z-50 flex items-center justify-center hidden p-4">
+        <div class="bg-[#111622] rounded-md max-w-2xl w-full p-6 border border-slate-700 relative max-h-[90vh] overflow-y-auto shadow-2xl">
+            <button id="close-modal" class="absolute top-4 right-4 text-slate-400 hover:text-slate-100 text-xs font-mono-code px-2 py-1 border border-slate-700 rounded-sm">ESC &#10005;</button>
+            <div id="modal-content" class="space-y-4"></div>
+        </div>
+    </div>
+
+    <footer class="bg-[#070a0f] text-slate-500 text-xs border-t border-slate-800/80 py-6 mt-12">
+        <div class="max-w-7xl mx-auto px-4 text-center space-y-1 font-mono-code">
+            <p class="text-slate-400">Consolidated Media Architecture &amp; Cross-Platform Creator Audit (19 Indexed Records)</p>
+            <p class="text-slate-600">Built with Vanilla JS, Tailwind CSS, Chart.js &amp; HTML5 Canvas. Zero SVG / Zero Mermaid.</p>
+        </div>
+    </footer>
+
+    <script>
+        // ==========================================
+        // 1. DOMAIN DIRECTORY DATA (13 RECORDS)
+        // ==========================================
+        const domainData = [
+            { name: "Nick Shirley", primaryUrl: "https://nickshirley.us/", secondaryUrl: "https://www.nickshirley.com/", category: "Autonomous", badge: "badge-autonomous", model: "Autonomous Field Reporting Portal", monetization: "501(c)(3) fundraising (Lincoln Media Foundation) & ad-free dispatches", focus: "On-the-ground investigative video dispatches, public audit reporting, and congressional testimony clips.", notes: "Anchored at NickShirley.us with support through the Lincoln Media Foundation." },
+            { name: "Benny Johnson", primaryUrl: "https://www.bennyjohnson.com/", secondaryUrl: "https://rumble.com/BennyJohnson", category: "Autonomous", badge: "badge-autonomous", model: "Proprietary Media & Subscriber Hub", monetization: "Paid membership community, merchandise, Rumble live integrations", focus: "Broadcasting hub for The Benny Show, exclusive membership community, and direct store access.", notes: "Routes live video traffic through Rumble while centralizing subscriptions on his sovereign domain." },
+            { name: "Tim Pool", primaryUrl: "https://timcast.com/", secondaryUrl: "https://timcast.com/shop", category: "Autonomous", badge: "badge-autonomous", model: "Digital Newsroom & Media Network", monetization: "E-commerce shop, members area, programmatic ads", focus: "Daily political commentary, roundtables (Timcast IRL), written journalism, and retail merchandising.", notes: "Evolved from an individual site into a multi-author digital newsroom with a dedicated storefront." },
+            { name: "Cam Higby", primaryUrl: "https://www.camhigbyusa.com/", secondaryUrl: "https://www.youtube.com/@CamHigby", category: "Autonomous", badge: "badge-autonomous", model: "Independent Documentary & Dispatch Portal", monetization: "YouTube syndication, independent donations", focus: "Frontline campus debates, interactive maps, and political tracking under Fearless Media.", notes: "Direct cross-dataset bridge: mutual X connection of Unreelness/Meghan Elinor and co-organizer of the Nov 1, 2026 U-M Reawaken USA table with Joe Redden." },
+            { name: "Charlie Kirk", primaryUrl: "https://www.charliekirk.com/", secondaryUrl: "https://members.charliekirk.com/", category: "Autonomous", badge: "badge-autonomous", model: "Syndicated Broadcasting & Membership Hub", monetization: "Salem Radio syndication, donor contributions, member portal", focus: "Daily podcast dispatches, Turning Point USA outreach, and ad-free subscriber portal.", notes: "Cross-dataset ideological anchor: post-assassination solidarity recurs across MillieShushies, Unreelness, and Joe Redden." },
+            { name: "Steven Crowder", primaryUrl: "https://www.louderwithcrowder.com/", secondaryUrl: "http://www.louderwithcrowder.com/mugclub", category: "Autonomous", badge: "badge-autonomous", model: "Sovereign Network & Subscription Community", monetization: "Direct MugClub recurring memberships", focus: "Daily comedic-political broadcasts, field investigations, and direct consumer club subscriptions.", notes: "Restructured around MugClub to guarantee direct subscriber revenue independent of third-party moderation." },
+            { name: "Jack Posobiec", primaryUrl: "https://humanevents.com/author/jack-posobiec", secondaryUrl: "https://humanevents.com/human-events-podcasts", category: "Enterprise", badge: "badge-enterprise", model: "Institutional Publishing Masthead & Show Hub", monetization: "Enterprise editorial network, podcast sponsorships", focus: "Daily written essays, opinion columns, and multimedia episodes of Human Events Daily.", notes: "Senior Editor at Human Events; nests written portfolio and podcast inside the legacy publication's domain." },
+            { name: "Matt Walsh", primaryUrl: "https://www.dailywire.com/show/the-matt-walsh-show", secondaryUrl: "https://www.dailywire.com/", category: "Enterprise", badge: "badge-enterprise", model: "Enterprise Media Network Show Hub", monetization: "Daily Wire SVOD subscription paywall, documentary releases", focus: "Long-form video commentary, documentary film distribution, and gated video archives.", notes: "Nested fully inside The Daily Wire's corporate VOD ecosystem rather than a standalone website." },
+            { name: "Ben Shapiro", primaryUrl: "https://www.dailywire.com/hosts/ben-shapiro", secondaryUrl: "https://www.dailywire.com/show/the-ben-shapiro-show", category: "Enterprise", badge: "badge-enterprise", model: "Corporate Media Masthead Host Hub", monetization: "Daily Wire co-ownership, subscription paywalls, ad syndication", focus: "Daily syndicated broadcast of The Ben Shapiro Show, analytical columns, and enterprise media.", notes: "Editor Emeritus and co-founder of The Daily Wire; drives enterprise cross-promotions." },
+            { name: "Nick Sortor", primaryUrl: "https://linktr.ee/nicksortor", secondaryUrl: "https://x.com/nicksortor", category: "Aggregator", badge: "badge-aggregator", model: "Centralized Dynamic Link Aggregator", monetization: "Social referral traffic, TV appearances, tips", focus: "Real-time civil unrest footage, field reporting feeds, and multi-platform media routing.", notes: "Uses a mobile-first Linktree to dynamically route breaking live event traffic to X, Rumble, and Newsmax." },
+            { name: "Chaya Raichik", primaryUrl: "https://www.libsoftiktok.com/", secondaryUrl: "https://x.com/libsoftiktok", category: "Aggregator", badge: "badge-aggregator", model: "Direct Subscription Newsletter Network", monetization: "Paid Substack subscriptions, direct fan contributions", focus: "Investigative cultural reporting, institutional critiques, and direct-to-inbox subscriber base.", notes: "Uses Substack publishing infrastructure at LibsofTikTok.com to bypass social algorithmic filtering." },
+            { name: "Spencer Pratt", primaryUrl: "https://mayorpratt.com/", secondaryUrl: "https://prattdaddy.com/", category: "Specialized", badge: "badge-hybrid", model: "Political Campaign & Commercial Portal", monetization: "DTC crystal sales, publishing, political contributions", focus: "Municipal electoral platform (MayorPratt.com) paired with crystal e-commerce (PrattDaddy.com).", notes: "Demonstrates cross-sector digital convergence between municipal campaigning and DTC retail." },
+            { name: "Ryan Amacher", primaryUrl: "https://x.com/RheinAmacher", secondaryUrl: "https://www.uta.edu/administration/president/investiture/past-presidents", category: "Specialized", badge: "badge-dual", model: "Social Distribution / Academic Archive", monetization: "Non-monetized social media / Institutional repository", focus: "Active political X commentary (@RheinAmacher) vs. legacy UT Arlington presidential archive.", notes: "Exhibits a dual-profile search dynamic between contemporary commentator and late economist Dr. Ryan C. Amacher." }
+        ];
+
+        let domainFilter = 'all';
+        let domainQuery = '';
+
+        function cleanUrl(url) {
+            return url.replace('https://', '').replace('http://', '').replace('www.', '');
+        }
+
+        function renderDomains() {
+            const grid = document.getElementById('domain-grid');
+            const empty = document.getElementById('domain-empty');
+            const filtered = domainData.filter(d => {
+                const matchCat = domainFilter === 'all' || d.category === domainFilter;
+                const matchQ = d.name.toLowerCase().includes(domainQuery) || d.primaryUrl.toLowerCase().includes(domainQuery) || d.focus.toLowerCase().includes(domainQuery) || d.model.toLowerCase().includes(domainQuery);
+                return matchCat && matchQ;
+            });
+
+            grid.innerHTML = filtered.map(item => `
+                <div class="bg-[#111622] rounded-md border border-slate-800 hover:border-[#d4a359]/60 transition-colors p-4 flex flex-col justify-between space-y-3 cursor-pointer group" onclick='openModal(${JSON.stringify(item).replace(/'/g, "&apos;")})'>
+                    <div class="space-y-2">
+                        <div class="flex items-start justify-between gap-2">
+                            <h3 class="text-base font-bold font-heading text-slate-100 group-hover:text-[#d4a359] transition-colors">${item.name}</h3>
+                            <span class="badge-tag ${item.badge}">${item.category}</span>
+                        </div>
+                        <p class="text-[11px] text-[#d4a359] font-mono-code">${item.model}</p>
+                        <p class="text-xs text-slate-300 leading-normal line-clamp-2">${item.focus}</p>
+                    </div>
+                    <div class="pt-2.5 border-t border-slate-800/80 space-y-1 text-[11px] font-mono-code">
+                        <div class="flex items-center justify-between gap-2">
+                            <span class="text-slate-500">Primary:</span>
+                            <a href="${item.primaryUrl}" target="_blank" onclick="event.stopPropagation()" class="text-[#d4a359] hover:underline truncate">${cleanUrl(item.primaryUrl)}</a>
+                        </div>
+                        <div class="flex items-center justify-between gap-2">
+                            <span class="text-slate-500">Secondary:</span>
+                            <a href="${item.secondaryUrl}" target="_blank" onclick="event.stopPropagation()" class="text-slate-300 hover:underline truncate">${cleanUrl(item.secondaryUrl)}</a>
+                        </div>
+                    </div>
+                </div>
+            `).join('');
+            empty.classList.toggle('hidden', filtered.length > 0);
+        }
+
+        document.getElementById('domain-search').addEventListener('input', e => {
+            domainQuery = e.target.value.toLowerCase().trim();
+            document.getElementById('clear-domain-search').classList.toggle('hidden', !domainQuery);
+            renderDomains();
+        });
+        document.getElementById('clear-domain-search').addEventListener('click', () => {
+            document.getElementById('domain-search').value = '';
+            domainQuery = '';
+            document.getElementById('clear-domain-search').classList.add('hidden');
+            renderDomains();
+        });
+        document.querySelectorAll('.domain-filter-btn').forEach(btn => {
+            btn.addEventListener('click', () => {
+                document.querySelectorAll('.domain-filter-btn').forEach(b => {
+                    b.className = 'domain-filter-btn px-3 py-1.5 rounded-sm font-medium bg-[#0b0f17] border border-slate-700 hover:border-slate-500 text-slate-300 font-mono-code text-[11px] uppercase';
+                });
+                btn.className = 'domain-filter-btn px-3 py-1.5 rounded-sm font-medium bg-[#d4a359] text-slate-950 font-mono-code text-[11px] uppercase';
+                domainFilter = btn.dataset.filter;
+                renderDomains();
+            });
+        });
+
+        function openModal(item) {
+            document.getElementById('modal-content').innerHTML = `
+                <div class="border-b border-slate-800 pb-3">
+                    <span class="badge-tag ${item.badge}">${item.category}</span>
+                    <h2 class="text-xl font-bold font-heading text-slate-100 mt-2">${item.name}</h2>
+                    <p class="text-[#d4a359] text-xs font-mono-code mt-0.5">${item.model}</p>
+                </div>
+                <div class="space-y-3 text-xs text-slate-300">
+                    <div class="bg-[#0b0f17] p-3 rounded-sm border border-slate-800 font-mono-code space-y-1.5">
+                        <div><span class="text-slate-500 block text-[10px]">PRIMARY DOMAIN:</span><a href="${item.primaryUrl}" target="_blank" class="text-[#d4a359] hover:underline break-all">${item.primaryUrl}</a></div>
+                        <div><span class="text-slate-500 block text-[10px]">SECONDARY HUB:</span><a href="${item.secondaryUrl}" target="_blank" class="text-slate-200 hover:underline break-all">${item.secondaryUrl}</a></div>
+                    </div>
+                    <div class="bg-[#0b0f17] p-3 rounded-sm border border-slate-800"><span class="text-slate-500 block font-mono-code text-[10px] mb-1">OPERATIONAL FOCUS</span>${item.focus}</div>
+                    <div class="bg-[#0b0f17] p-3 rounded-sm border border-slate-800"><span class="text-slate-500 block font-mono-code text-[10px] mb-1">MONETIZATION</span>${item.monetization}</div>
+                    <div class="bg-[#0b0f17] p-3 rounded-sm border border-slate-800"><span class="text-slate-500 block font-mono-code text-[10px] mb-1">ARCHITECTURAL NOTES</span>${item.notes}</div>
+                </div>
+            `;
+            document.getElementById('detail-modal').classList.remove('hidden');
+        }
+        const closeModal = () => document.getElementById('detail-modal').classList.add('hidden');
+        document.getElementById('close-modal').addEventListener('click', closeModal);
+        document.getElementById('detail-modal').addEventListener('click', e => { if (e.target.id === 'detail-modal') closeModal(); });
+        document.addEventListener('keydown', e => { if (e.key === 'Escape') closeModal(); });
+
+        // ==========================================
+        // 2. TIKTOK ROSTER & DOSSIERS (6 HANDLES)
+        // ==========================================
+        const tiktokRoster = [
+            { handle: "theoldermillenial", identity: "Joseph Anthony 'Joe' Redden (Pinellas Co., FL; veteran). Backups: @theoldermillennial, @thenewoldermillennial, X @teameffujoe", reach: "X: 310.1K | TT: 291.6K* | YT: 16.1K", hubs: "oldermillennialmedia.com, Beacons, CUFI, Reawaken USA, Rockets into Roses", status: "Core Anchor", badge: "badge-core" },
+            { handle: "jamminlu", identity: "Jamie Lujan (Texas; Latino veteran, ex-Democrat). Backups: @jamminlu21, archived @jamminlu_21_4life, X @JamminLu", reach: "X: 85K–87K | TT: 54.4K | YT: 1.72K", hubs: "linktr.ee/JamminLu21, Cash App, Venmo, PayPal, Sway 2026 Voter Guide", status: "Core (Mid-Tier)", badge: "badge-core" },
+            { handle: "unreelness", identity: "Undisclosed legal name ('America First' commentator). Backup: @unreelnessthegreat", reach: "YT: 4.73K | X: ~1K | Rumble: 26", hubs: "linktr.ee/Unreelness (Feb 2026), Venmo, Cash App, Twitch, Lemon8", status: "Core (Micro)", badge: "badge-core" },
+            { handle: "milliexshushies", identity: "Undisclosed legal name (TikTok Live debater & researcher). Handles: @millieshushies", reach: "YT: 3.08K | Rumble: 207 | Twitch: 5–16 avg", hubs: "Verified Rumble (Jan 2026), Twitch Talk Shows; no verified Linktree/X", status: "Core (Micro)", badge: "badge-core" },
+            { handle: "texusoftrump", identity: "Zero exact match; probable variant: texasfortrump", reach: "Unindexed", hubs: "No verified Linktree or site; cited in r/Destiny Live panel thread", status: "Handle Variant", badge: "badge-variant" },
+            { handle: "penny lanee", identity: "Ambiguous alias colliding with 6 non-political figures (Penny Bennett, SI model Penny Lane, filmmaker Penny Lane, etc.)", reach: "N/A", hubs: "Zero verified links to conservative cohort", status: "Unlinked Outlier", badge: "badge-outlier" }
+        ];
+
+        document.getElementById('tiktok-roster-body').innerHTML = tiktokRoster.map((r, i) => `
+            <tr class="${i % 2 === 0 ? 'bg-[#111622]' : 'bg-[#0e121c]'} hover:bg-slate-800/40">
+                <td class="py-3 px-4 font-mono-code font-bold text-[#d4a359]">${r.handle}</td>
+                <td class="py-3 px-4 text-slate-300">${r.identity}</td>
+                <td class="py-3 px-4 font-mono-code text-[11px] text-slate-200">${r.reach}</td>
+                <td class="py-3 px-4 text-slate-400">${r.hubs}</td>
+                <td class="py-3 px-4"><span class="badge-tag ${r.badge}">${r.status}</span></td>
+            </tr>
+        `).join('');
+
+        const dossiers = {
+            redden: `<div class="grid grid-cols-1 lg:grid-cols-3 gap-5 text-xs">
+                <div class="lg:col-span-2 space-y-3">
+                    <h3 class="text-lg font-bold font-heading text-slate-100">Joseph Anthony "Joe" Redden (<span class="font-mono-code text-[#d4a359]">@theoldermillennial</span>)</h3>
+                    <p class="text-slate-300 leading-relaxed">Macro-tier anchor operating <span class="font-mono-code text-slate-200">oldermillennialmedia.com</span> and <span class="font-mono-code text-slate-200">beacons.ai/theoldermillennial</span>. Pitches sponsorships aimed at middle-aged American men (95–98% U.S. audience) while cycling TikTok handles due to recurring bans.</p>
+                    <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                        <div class="bg-[#0b0f17] p-3.5 border border-slate-800 rounded-sm">
+                            <div class="font-bold text-[#d4a359] mb-1.5 font-mono-code uppercase text-[11px]">Sponsors &amp; Partners</div>
+                            <ul class="space-y-1 text-slate-300"><li>&bull; Christians United for Israel (CUFI)</li><li>&bull; Reawaken USA (Nov 1, 2026 U-M table)</li><li>&bull; Rockets into Roses, GoDaddy, Spotify, Preborn!</li></ul>
+                        </div>
+                        <div class="bg-[#0b0f17] p-3.5 border border-rose-900/50 rounded-sm">
+                            <div class="font-bold text-rose-400 mb-1.5 font-mono-code uppercase text-[11px]">Legal &amp; Regulatory Record</div>
+                            <ul class="space-y-1 text-slate-300"><li>&bull; <strong>MD Securities (July 9, 2026):</strong> Permanent bar &amp; $5K penalty over $3M+ Middle Class United, Inc. offering.</li><li>&bull; <strong>FL Arrest (June 26, 2025):</strong> Clearwater VOP/DUI &amp; resisting without violence.</li><li>&bull; <strong>U-M Incident (Nov 2026):</strong> Felony/misdemeanor charges filed against student Temulun Togochog.</li></ul>
+                        </div>
+                    </div>
+                </div>
+                <div class="bg-[#0b0f17] p-4 border border-slate-800 rounded-sm font-mono-code space-y-2">
+                    <div class="text-sky-400 uppercase text-[11px] font-bold mb-2">Platform Footprint</div>
+                    <div class="flex justify-between border-b border-slate-800 pb-1"><span class="text-slate-400">X (@teameffujoe)</span><span>310,130</span></div>
+                    <div class="flex justify-between border-b border-slate-800 pb-1"><span class="text-slate-400">TikTok (Media Kit)</span><span class="text-amber-400">1,000,000*</span></div>
+                    <div class="flex justify-between border-b border-slate-800 pb-1"><span class="text-slate-400">TikTok (Tracked)</span><span>291,600</span></div>
+                    <div class="flex justify-between border-b border-slate-800 pb-1"><span class="text-slate-400">IG / FB (Media Kit)</span><span class="text-amber-400">215K / 114K*</span></div>
+                    <div class="flex justify-between"><span class="text-slate-400">YouTube</span><span>16,100</span></div>
+                </div>
+            </div>`,
+            jamminlu: `<div class="grid grid-cols-1 lg:grid-cols-3 gap-5 text-xs">
+                <div class="lg:col-span-2 space-y-3">
+                    <h3 class="text-lg font-bold font-heading text-slate-100">Jamie Lujan (<span class="font-mono-code text-[#d4a359]">@jamminlu21</span> / <span class="font-mono-code text-[#d4a359]">@JamminLu</span>)</h3>
+                    <p class="text-slate-300 leading-relaxed">Texas-based Latino U.S. veteran and ex-Democrat bridging TikTok/X commentary with in-person Texas GOP grassroots organizing. Routes followers via <span class="font-mono-code text-slate-200">linktr.ee/JamminLu21</span> to Cash App, Venmo, PayPal, and a Linktree shop.</p>
+                    <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                        <div class="bg-[#0b0f17] p-3.5 border border-slate-800 rounded-sm">
+                            <div class="font-bold text-sky-400 mb-1.5 font-mono-code uppercase text-[11px]">Events &amp; Media</div>
+                            <ul class="space-y-1 text-slate-300"><li>&bull; <strong>Dallas Common Sense Conf (Sept 13, 2025):</strong> Keynote with Col. Allen West &amp; Zeek Arkham.</li><li>&bull; <strong>Sway 2026 TX Voter Guide:</strong> Endorsing Abbott, Paxton &amp; Patrick.</li><li>&bull; <strong>Paramount Tactical (Oct 21, 2026):</strong> Featured guest on ICE &amp; deportations.</li></ul>
+                        </div>
+                        <div class="bg-[#0b0f17] p-3.5 border border-slate-800 rounded-sm">
+                            <div class="font-bold text-slate-300 mb-1.5 font-mono-code uppercase text-[11px]">Disambiguation</div>
+                            <p class="text-slate-400 leading-relaxed">Distinct from Latina business consultant Jamie Lujan (Saluzo Business Solutions) and voice actor Jamie Lujan (<em>Leylines</em>). Covered by 106.3 The Buzz (Dec 31, 2024) over a Wichita Falls highway "drone" video.</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="bg-[#0b0f17] p-4 border border-slate-800 rounded-sm font-mono-code space-y-2">
+                    <div class="text-sky-400 uppercase text-[11px] font-bold mb-2">Platform Footprint</div>
+                    <div class="flex justify-between border-b border-slate-800 pb-1"><span class="text-slate-400">X (@JamminLu)</span><span>85K – 87K</span></div>
+                    <div class="flex justify-between border-b border-slate-800 pb-1"><span class="text-slate-400">Archived TikTok</span><span>54,425</span></div>
+                    <div class="flex justify-between border-b border-slate-800 pb-1"><span class="text-slate-400">YouTube</span><span>1,720</span></div>
+                    <div class="flex justify-between"><span class="text-slate-400">P2P Rails</span><span>Venmo / CashApp</span></div>
+                </div>
+            </div>`,
+            unreelness: `<div class="grid grid-cols-1 lg:grid-cols-3 gap-5 text-xs">
+                <div class="lg:col-span-2 space-y-3">
+                    <h3 class="text-lg font-bold font-heading text-slate-100">Unreelness (<span class="font-mono-code text-[#d4a359]">@unreelness</span> / <span class="font-mono-code text-[#d4a359]">@unreelnessthegreat</span>)</h3>
+                    <p class="text-slate-300 leading-relaxed">Micro-tier "America First" political and culture-war commentator operating across TikTok, YouTube, X, Rumble, Twitch, and Lemon8 via <span class="font-mono-code text-slate-200">linktr.ee/Unreelness</span> (launched Feb 2026) with Venmo and Cash App links.</p>
+                    <div class="bg-[#0b0f17] p-3.5 border border-slate-800 rounded-sm space-y-1.5 text-slate-300">
+                        <div>&bull; <strong>Direct Bridge:</strong> Guest panelist on Joe Redden's Oct 2026 <em>Conservative Roundtable</em> alongside Sarah Fields &amp; Meghan Elinor.</div>
+                        <div>&bull; <strong>Media Pickup:</strong> Featured by Twitchy (Nov 11, 2026) for an X reply on Aliya Rahman's Minneapolis ICE lawsuit.</div>
+                        <div>&bull; <strong>Scraper Note:</strong> IDCrawl displays unrelated "Keith Finke" results due to keyword overlap; no link verified.</div>
+                    </div>
+                </div>
+                <div class="bg-[#0b0f17] p-4 border border-slate-800 rounded-sm font-mono-code space-y-2">
+                    <div class="text-sky-400 uppercase text-[11px] font-bold mb-2">Platform Footprint</div>
+                    <div class="flex justify-between border-b border-slate-800 pb-1"><span class="text-slate-400">YouTube</span><span>4,730</span></div>
+                    <div class="flex justify-between border-b border-slate-800 pb-1"><span class="text-slate-400">X</span><span>~1,000</span></div>
+                    <div class="flex justify-between border-b border-slate-800 pb-1"><span class="text-slate-400">Rumble</span><span>26</span></div>
+                    <div class="flex justify-between"><span class="text-slate-400">Live Events</span><span class="text-slate-500">None Verified</span></div>
+                </div>
+            </div>`,
+            millie: `<div class="grid grid-cols-1 lg:grid-cols-3 gap-5 text-xs">
+                <div class="lg:col-span-2 space-y-3">
+                    <h3 class="text-lg font-bold font-heading text-slate-100">MillieShushies (<span class="font-mono-code text-[#d4a359]">@milliexshushies</span> / <span class="font-mono-code text-[#d4a359]">@millieshushies</span>)</h3>
+                    <p class="text-slate-300 leading-relaxed">Micro-tier TikTok Live debater (recognized on <span class="font-mono-code">r/AskConservatives</span> for debating Dean Withers) and long-form breaking-news/court-document streamer across YouTube, Twitch (16 streams Dec 2025–Oct 2026), and verified Rumble (Jan 2026).</p>
+                    <div class="bg-[#0b0f17] p-3.5 border border-slate-800 rounded-sm space-y-1.5 text-slate-300">
+                        <div>&bull; <strong>Synchronized Topics:</strong> Oct 2026 streams on Abdul El-Sayed &amp; James Talarico; Jan 24, 2026 Alex Pretti shooting &amp; Austin ICE footage; Ilhan Omar, Zohran Mamdani, U.S.–Iran tensions, and <em>"I Am Charlie Kirk"</em>.</div>
+                        <div>&bull; <strong>Scraper Caveat:</strong> Adult-content SEO aggregator hits are boilerplate zero-follower scraping artifacts with no evidence of adult-platform operation.</div>
+                    </div>
+                </div>
+                <div class="bg-[#0b0f17] p-4 border border-slate-800 rounded-sm font-mono-code space-y-2">
+                    <div class="text-sky-400 uppercase text-[11px] font-bold mb-2">Platform Footprint</div>
+                    <div class="flex justify-between border-b border-slate-800 pb-1"><span class="text-slate-400">YouTube (42 vids)</span><span>3,080</span></div>
+                    <div class="flex justify-between border-b border-slate-800 pb-1"><span class="text-slate-400">Rumble (Verified)</span><span>207</span></div>
+                    <div class="flex justify-between border-b border-slate-800 pb-1"><span class="text-slate-400">Twitch Avg</span><span>5 – 16 (Peak 20)</span></div>
+                    <div class="flex justify-between"><span class="text-slate-400">Linktree / X</span><span class="text-slate-500">None Verified</span></div>
+                </div>
+            </div>`,
+            texus: `<div class="space-y-3 text-xs">
+                <h3 class="text-lg font-bold font-heading text-amber-400">texusoftrump &rarr; Probable Variant: <span class="font-mono-code text-slate-100">texasfortrump</span></h3>
+                <p class="text-slate-300 leading-relaxed">Zero exact matches exist across TikTok, Linktree, YouTube, X, or events for <span class="font-mono-code">texusoftrump</span> (exact-string hits are misspelled novelty t-shirts). Within the same conservative TikTok Live debate subculture, a <span class="font-mono-code">r/Destiny</span> thread cites <span class="font-mono-code text-amber-300">texasfortrump</span> as a weekend MAGA Live panelist sparring with progressive streamer IRI.</p>
+            </div>`,
+            penny: `<div class="space-y-3 text-xs">
+                <h3 class="text-lg font-bold font-heading text-rose-400">penny lanee — Unlinked Name-Collision Outlier</h3>
+                <p class="text-slate-300 leading-relaxed">Zero publicly indexed evidence links <span class="font-mono-code">penny lanee</span> to the conservative TikTok cohort. Queries collide across six non-political profiles: vlogger <strong>Penny Bennett</strong> (<span class="font-mono-code">@penny_lanee</span>, 1.82K YT), resale/chatbot/Unlockt handle <span class="font-mono-code">@pennylanee</span>, writer <strong>Jasmine Nicole</strong> (<span class="font-mono-code">@__pennylanee</span>), SI Swimsuit model <strong>Penny Lane</strong> (<span class="font-mono-code">@pennylaneisthename</span>), documentary filmmaker <strong>Penny Lane</strong> (<span class="font-mono-code">@lennypane</span>), and Portugal-based visual artist <span class="font-mono-code">@__thepennylane</span>.</p>
+            </div>`
+        };
+
+        function renderDossier(key) {
+            document.getElementById('dossier-panel').innerHTML = dossiers[key];
+        }
+        document.querySelectorAll('.dossier-tab').forEach(tab => {
+            tab.addEventListener('click', () => {
+                document.querySelectorAll('.dossier-tab').forEach(t => {
+                    t.className = 'dossier-tab px-4 py-2.5 rounded-t-sm text-slate-400 hover:text-slate-200 whitespace-nowrap';
+                });
+                tab.className = 'dossier-tab px-4 py-2.5 rounded-t-sm bg-[#111622] text-[#d4a359] border-t border-x border-slate-800 font-bold whitespace-nowrap';
+                renderDossier(tab.dataset.tab);
+            });
+        });
+
+        // ==========================================
+        // 3. TIMELINE (2024 – NOV 2026)
+        // ==========================================
+        const timelineEvents = [
+            { date: "Jan – May 2024", cat: "legal", creator: "Joe Redden", title: "Middle Class United, Inc. ($3M+ Raised)", desc: "Co-founds Maryland non-stock corp MCU and pitches $500 unregistered 'housing cooperative' memberships to ~6,500 investors on TikTok and YouTube." },
+            { date: "May – July 2024", cat: "media", creator: "Joe Redden", title: "TikTok Live Debates & Washington Post Citation", desc: "Debates Parkergetajob and Harry Sisson on TikTok Live; cited in July 2024 press referencing The Washington Post over post-Trump assassination attempt claims." },
+            { date: "Dec 31, 2024", cat: "media", creator: "Jamie Lujan", title: "Wichita Falls 'Drone Pack' Radio Coverage", desc: "106.3 The Buzz covers JamminLu's viral highway video, concluding the lights were 99% likely a local wind-turbine farm." },
+            { date: "June 26, 2025", cat: "legal", creator: "Joe Redden", title: "Clearwater, FL Arrest (VOP / DUI)", desc: "Pinellas County booking (Docket 2000917) for misdemeanor Violation of Probation / DUI and Resisting an Officer Without Violence." },
+            { date: "Sept 13, 2025", cat: "events", creator: "Jamie Lujan", title: "Dallas Common Sense Conference Keynote", desc: "Delivers main-program keynote alongside Col. Allen West and Zeek Arkham, organized by TX-30 GOP candidate Sholdon Daniels." },
+            { date: "Dec 2025 – Jan 2026", cat: "media", creator: "MillieShushies", title: "Twitch/Rumble Expansion & Alex Pretti Coverage", desc: "Launches Twitch Talk Shows and verified Rumble channel; covers Jan 24, 2026 Alex Pretti shooting and Minnesota unrest." },
+            { date: "May 21 & July 9, 2026", cat: "legal", creator: "Joe Redden", title: "MCU Dissolution & Permanent Securities Bar", desc: "Maryland Securities Division dissolves MCU ($414 pro-rata refund per $500 investor); Redden signs Consent Order (Docket 2025-0248) accepting permanent bar & $5,000 penalty." },
+            { date: "Aug – Sept 2026", cat: "events", creator: "Joe Redden", title: "Israel Visit & Poland Creator Delegation", desc: "Featured in Jerusalem Friends of Zion Museum Short and joins conservative delegation to Poland with ThatOpinionatedGirl." },
+            { date: "Oct 2026", cat: "media", creator: "Core Cohort", title: "Conservative Roundtable, Paramount Tactical & Senate Blitz", desc: "Redden hosts Unreelness on Conservative Roundtable; Redden & JamminLu guest on Paramount Tactical; synchronized attacks on Abdul El-Sayed." },
+            { date: "Nov 1 – 11, 2026", cat: "events", creator: "Redden, Higby & Unreelness", title: "U-M Reawaken USA Incident & Twitchy Pickup", desc: "Nov 1 unpermitted U-M table (Redden, Cam Higby, Liz Benichou) leads to assault charges against student Temulun Togochog (Nov 5); Twitchy features Unreelness on Nov 11." }
+        ];
+
+        function renderTimeline(filter = 'all') {
+            const dotMap = { legal: 'bg-rose-500', events: 'bg-sky-400', media: 'bg-emerald-400' };
+            const items = timelineEvents.filter(e => filter === 'all' || e.cat === filter);
+            document.getElementById('timeline-list').innerHTML = items.map(e => `
+                <div class="relative">
+                    <span class="absolute -left-[29px] top-1 w-2.5 h-2.5 rounded-none ${dotMap[e.cat]} border border-[#0b0f17]"></span>
+                    <div class="bg-[#0b0f17] border border-slate-800 p-3.5 rounded-sm">
+                        <div class="flex flex-wrap items-center justify-between gap-2 text-[11px] font-mono-code">
+                            <span class="text-[#d4a359] font-bold">${e.date}</span>
+                            <span class="text-slate-400">${e.creator}</span>
+                        </div>
+                        <h4 class="text-sm font-bold text-slate-100 mt-1">${e.title}</h4>
+                        <p class="text-xs text-slate-400 mt-1 leading-relaxed">${e.desc}</p>
+                    </div>
+                </div>
+            `).join('');
+        }
+
+        document.querySelectorAll('.tfilter-btn').forEach(btn => {
+            btn.addEventListener('click', () => {
+                document.querySelectorAll('.tfilter-btn').forEach(b => {
+                    b.className = 'tfilter-btn px-2.5 py-1 rounded-sm bg-[#111622] border border-slate-700 text-slate-300 uppercase';
+                });
+                btn.className = 'tfilter-btn px-2.5 py-1 rounded-sm bg-[#d4a359] text-slate-950 font-bold uppercase';
+                renderTimeline(btn.dataset.tfilter);
+            });
+        });
+
+        // ==========================================
+        // 4. INTERACTIVE CANVAS TOPOLOGY
+        // ==========================================
+        const canvas = document.getElementById('topologyCanvas');
+        const ctx = canvas.getContext('2d');
+        let selectedId = 'redden';
+
+        const nodes = [
+            { id: 'redden', label: 'Joe Redden', sub: '@theoldermillennial', rx: 0.36, ry: 0.46, r: 22, color: '#38bdf8', title: 'Joe Redden (@theoldermillennial) — Ecosystem Anchor', body: 'Directly bridges to Unreelness (Oct 2026 Conservative Roundtable), Jamie Lujan (Oct 2026 Paramount Tactical), and domain figure Cam Higby (Nov 1, 2026 U-M Reawaken USA table).' },
+            { id: 'unreelness', label: 'Unreelness', sub: '@unreelness', rx: 0.16, ry: 0.22, r: 16, color: '#38bdf8', title: 'Unreelness (@unreelness)', body: 'Live panelist on Redden\'s Oct 2026 Conservative Roundtable; shares mutual X circles with Meghan Elinor, Cam Higby, and ThatOpinionatedGirl.' },
+            { id: 'jamminlu', label: 'JamminLu', sub: 'Jamie Lujan', rx: 0.34, ry: 0.82, r: 18, color: '#38bdf8', title: 'Jamie Lujan (@JamminLu)', body: 'Featured guest on Paramount Tactical (Oct 21, 2026) shortly after Redden; co-keynoted Dallas Common Sense Conference with Zeek Arkham.' },
+            { id: 'millie', label: 'MillieShushies', sub: '@millieshushies', rx: 0.68, ry: 0.78, r: 16, color: '#38bdf8', title: 'MillieShushies (@millieshushies)', body: 'Converges with Redden in TikTok Live debates (vs. Dean Withers) and mirrors 2026 coverage of Abdul El-Sayed, James Talarico, and Minneapolis ICE unrest.' },
+            { id: 'higby', label: 'Cam Higby / Field', sub: 'camhigbyusa.com', rx: 0.60, ry: 0.20, r: 16, color: '#d4a359', title: 'Cross-Dataset Bridge: Cam Higby & Field Circle', body: 'Domain directory figure Cam Higby (Fearless Media) staffed the Nov 1, 2026 U-M Reawaken USA table with Redden and Liz Benichou; shares X mutuals with Unreelness.' },
+            { id: 'paramount', label: 'Paramount Tactical', sub: 'Melton / Zeek Arkham', rx: 0.15, ry: 0.68, r: 15, color: '#d4a359', title: 'Podcast Bridge: Paramount Tactical & Zeek Arkham', body: 'Gary Melton\'s 285K-sub podcast hosted both Redden and JamminLu in Oct 2026; Zeek Arkham bridges JamminLu\'s Dallas conference and Redden\'s media circuit.' },
+            { id: 'debaters', label: 'Live Opponents', sub: 'Withers / Parker / IRI', rx: 0.74, ry: 0.46, r: 15, color: '#fb7185', title: 'Adversarial TikTok Live Debate Arena', body: 'Shared progressive opponents: Dean Withers (debated MillieShushies), Parkergetajob & Harry Sisson (debated Redden), and IRI (weekend MAGA panels with texasfortrump).' },
+            { id: 'texus', label: 'texusoftrump', sub: 'Variant: texasfortrump', rx: 0.90, ry: 0.62, r: 13, color: '#fbbf24', title: 'texusoftrump (Probable Variant: texasfortrump)', body: 'Zero exact matches; r/Destiny threads identify texasfortrump as a weekend MAGA TikTok Live panelist sparring with IRI.' },
+            { id: 'penny', label: 'penny lanee', sub: 'Unlinked Outlier', rx: 0.90, ry: 0.22, r: 12, color: '#64748b', title: 'penny lanee — Unlinked Outlier', body: 'Zero verified connection to the conservative cohort; collides with 6 non-political entities.' }
+        ];
+
+        const edges = [
+            { from: 'redden', to: 'unreelness', label: 'Roundtable' },
+            { from: 'redden', to: 'paramount', label: 'Oct 2026' },
+            { from: 'jamminlu', to: 'paramount', label: 'Oct 2026' },
+            { from: 'redden', to: 'higby', label: 'U-M / MI' },
+            { from: 'unreelness', to: 'higby', label: 'X Mutuals' },
+            { from: 'redden', to: 'debaters', label: 'Live' },
+            { from: 'millie', to: 'debaters', label: 'vs Withers' },
+            { from: 'texus', to: 'debaters', label: 'vs IRI' }
+        ];
+
+        function drawTopology() {
+            const rect = canvas.parentElement.getBoundingClientRect();
+            const dpr = window.devicePixelRatio || 1;
+            canvas.width = rect.width * dpr;
+            canvas.height = rect.height * dpr;
+            ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+            const w = rect.width, h = rect.height;
+            ctx.clearRect(0, 0, w, h);
+
+            edges.forEach(e => {
+                const n1 = nodes.find(n => n.id === e.from), n2 = nodes.find(n => n.id === e.to);
+                const x1 = n1.rx * w, y1 = n1.ry * h, x2 = n2.rx * w, y2 = n2.ry * h;
+                const hi = e.from === selectedId || e.to === selectedId;
+                ctx.beginPath();
+                ctx.strokeStyle = hi ? '#d4a359' : 'rgba(148,163,184,0.28)';
+                ctx.lineWidth = hi ? 2 : 1;
+                ctx.moveTo(x1, y1);
+                ctx.lineTo(x2, y2);
+                ctx.stroke();
+                ctx.fillStyle = hi ? '#f8fafc' : '#64748b';
+                ctx.font = '600 9px Inter, sans-serif';
+                ctx.textAlign = 'center';
+                ctx.fillText(e.label, (x1 + x2) / 2, (y1 + y2) / 2 - 4);
+            });
+
+            nodes.forEach(n => {
+                const x = n.rx * w, y = n.ry * h, sel = n.id === selectedId;
+                if (sel) {
+                    ctx.beginPath();
+                    ctx.arc(x, y, n.r + 6, 0, Math.PI * 2);
+                    ctx.fillStyle = 'rgba(212,163,89,0.22)';
+                    ctx.fill();
+                }
+                ctx.beginPath();
+                ctx.arc(x, y, n.r, 0, Math.PI * 2);
+                ctx.fillStyle = n.color;
+                ctx.fill();
+                ctx.lineWidth = sel ? 2.5 : 1;
+                ctx.strokeStyle = sel ? '#ffffff' : '#0b0f17';
+                ctx.stroke();
+
+                ctx.fillStyle = '#f8fafc';
+                ctx.font = '700 10px Inter, sans-serif';
+                ctx.textAlign = 'center';
+                ctx.fillText(n.label, x, y + n.r + 13);
+                ctx.fillStyle = '#94a3b8';
+                ctx.font = '400 9px JetBrains Mono, monospace';
+                ctx.fillText(n.sub, x, y + n.r + 24);
+            });
+        }
+
+        canvas.addEventListener('click', e => {
+            const rect = canvas.getBoundingClientRect();
+            const cx = e.clientX - rect.left, cy = e.clientY - rect.top;
+            for (const n of nodes) {
+                if (Math.hypot(cx - n.rx * rect.width, cy - n.ry * rect.height) <= n.r + 10) {
+                    selectedId = n.id;
+                    drawTopology();
+                    document.getElementById('node-inspector').innerHTML = `
+                        <div class="font-bold text-[#d4a359] font-heading text-sm">${n.title}</div>
+                        <p class="mt-1 leading-relaxed">${n.body}</p>
+                    `;
+                    break;
+                }
+            }
+        });
+        window.addEventListener('resize', drawTopology);
+
+        // ==========================================
+        // 5. CHART.JS VISUALIZATIONS
+        // ==========================================
+        function initCharts() {
+            Chart.defaults.color = '#94a3b8';
+            Chart.defaults.font.family = 'Inter, sans-serif';
+
+            new Chart(document.getElementById('audienceScaleChart'), {
+                type: 'bar',
+                data: {
+                    labels: ['Joe Redden', 'Jamie Lujan', 'Unreelness', 'MillieShushies'],
+                    datasets: [
+                        { label: 'Tracked X', data: [310130, 86000, 1000, 0], backgroundColor: '#d4a359', borderRadius: 2 },
+                        { label: 'Tracked TikTok', data: [291600, 54425, 0, 0], backgroundColor: '#38bdf8', borderRadius: 2 },
+                        { label: 'YouTube Subs', data: [16100, 1720, 4730, 3080], backgroundColor: '#fb7185', borderRadius: 2 }
+                    ]
+                },
+                options: {
+                    responsive: true, maintainAspectRatio: false,
+                    scales: {
+                        x: { grid: { display: false } },
+                        y: { beginAtZero: true, grid: { color: '#1e293b' }, ticks: { callback: v => v >= 1000 ? (v/1000)+'K' : v } }
+                    },
+                    plugins: { legend: { position: 'bottom', labels: { boxWidth: 10, font: { size: 10 } } } }
+                }
+            });
+
+            new Chart(document.getElementById('reddenAuditChart'), {
+                type: 'bar',
+                data: {
+                    labels: ['TikTok', 'X (Twitter)', 'Instagram', 'Facebook', 'YouTube'],
+                    datasets: [
+                        { label: '2026 Media Kit Claim', data: [1000000, 0, 215000, 114000, 16000], backgroundColor: '#fbbf24', borderRadius: 2 },
+                        { label: 'Tracked Snapshot', data: [291600, 310130, 0, 0, 16100], backgroundColor: '#38bdf8', borderRadius: 2 }
+                    ]
+                },
+                options: {
+                    responsive: true, maintainAspectRatio: false,
+                    scales: {
+                        x: { grid: { display: false } },
+                        y: { beginAtZero: true, grid: { color: '#1e293b' }, ticks: { callback: v => v >= 1000000 ? '1M' : v >= 1000 ? (v/1000)+'K' : v } }
+                    },
+                    plugins: { legend: { position: 'bottom', labels: { boxWidth: 10, font: { size: 10 } } } }
+                }
+            });
+
+            new Chart(document.getElementById('thematicChart'), {
+                type: 'bar',
+                data: {
+                    labels: ['ICE & Minneapolis', 'Ban Resilience / P2P', '2026 Senate Races', 'Israel / Iran / Islam', 'Gender & C. Kirk'],
+                    datasets: [
+                        { label: 'Redden', data: [2, 2, 2, 2, 2], backgroundColor: '#d4a359' },
+                        { label: 'Lujan', data: [2, 2, 2, 0, 1], backgroundColor: '#38bdf8' },
+                        { label: 'Unreelness', data: [2, 2, 2, 1, 2], backgroundColor: '#10b981' },
+                        { label: 'MillieShushies', data: [2, 2, 2, 2, 2], backgroundColor: '#fb7185' }
+                    ]
+                },
+                options: {
+                    indexAxis: 'y', responsive: true, maintainAspectRatio: false,
+                    scales: {
+                        x: { stacked: true, max: 8, grid: { color: '#1e293b' } },
+                        y: { stacked: true, grid: { display: false }, ticks: { font: { size: 10 } } }
+                    },
+                    plugins: { legend: { position: 'bottom', labels: { boxWidth: 10, font: { size: 10 } } } }
+                }
+            });
+        }
+
+        // Init all
+        document.addEventListener('DOMContentLoaded', () => {
+            renderDomains();
+            renderDossier('redden');
+            renderTimeline('all');
+            drawTopology();
+            initCharts();
+        });
+    </script>
+</body>
+</html>
